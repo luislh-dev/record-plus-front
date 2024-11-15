@@ -11,12 +11,15 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
+    "jwt-decode": "^4.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
+    "@types/jwt-decode": "^3.1.0",
+    "@types/node": "^22.9.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react-swc": "^3.7.1",
