@@ -6,8 +6,8 @@ import { Login } from "./pages/Login";
 import { ProtectedPage } from "./pages/ProtectedPage";
 import { PrivateRoute } from "./components/PrivateRoute";
 import { People } from "./pages/People";
-import { Hospital } from "./pages/hospital";
-import { User } from "./pages/user";
+import { Hospital } from "./pages/Hospital";
+import { User } from "./pages/User";
 
 const App = () => {
   const { state } = useAuth();
