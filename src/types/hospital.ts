@@ -1,3 +1,4 @@
+import { PageRequest } from "./Pagination";
 import { State } from "./state";
 
 export interface Hospital {
@@ -17,3 +18,9 @@ export type HospitalList = Pick<
 > & {
   nameState: string;
 };
+
+export interface SearchParams extends PageRequest {
+  name?: string;
+  ruc?: string;
+  id?: number;
+}

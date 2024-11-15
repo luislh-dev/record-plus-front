@@ -1,5 +1,4 @@
 import React from "react";
-import { useHospitals } from "@/hooks/hospital/useHospital";
 import {
   Table,
   TableHeader,
@@ -16,10 +15,11 @@ import { statusColorMap } from "@/constants/statusColorMap";
 import { EyeIcon } from "@/icons/EyeIcon";
 import { EditIcon } from "@/icons/EditIcon";
 import { DeleteIcon } from "@/icons/DeleteIcon";
+import { useHospitalContext } from "@/contexts/hospital/hospitalContext";
 
 export function HospitalTable() {
-  const { hospitals, loading, error, setPage, currentPage, totalPages } =
-    useHospitals();
+  const { hospitals, error, setPage, currentPage, totalPages } =
+    useHospitalContext();
 
   const renderCell = React.useCallback(
     (hospital: Hospital, columnKey: React.Key) => {
@@ -73,26 +73,26 @@ export function HospitalTable() {
     { name: "Acciones", uuid: "actions" },
   ];
 
-  if (loading) return <div>Cargando...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   type Hospital = (typeof hospitals)[0];
 
   return (
     <Table
       aria-label="Tabla de hospitales"
       bottomContent={
-        <div className="flex w-full justify-start">
-          <TablePagination
-            isCompact
-            showControls
-            showShadow
-            color="primary"
-            page={currentPage + 1}
-            total={totalPages}
-            onChange={(page) => setPage(page - 1)}
-          />
-        </div>
+        !error &&
+        hospitals.length > 0 && (
+          <div className="flex w-full justify-start">
+            <TablePagination
+              isCompact
+              showControls
+              showShadow
+              color="primary"
+              page={currentPage + 1}
+              total={totalPages}
+              onChange={(page) => setPage(page - 1)}
+            />
+          </div>
+        )
       }
     >
       <TableHeader columns={columns}>
@@ -105,7 +105,14 @@ export function HospitalTable() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody items={hospitals}>
+      <TableBody
+        items={error ? [] : hospitals}
+        emptyContent={
+          error
+            ? "Ha ocurrido un error inesperado. Por favor, inténtelo de nuevo más tarde."
+            : "No se encontraron resultados..."
+        }
+      >
         {(item) => (
           <TableRow key={item.id}>
             {(columnKey) => (

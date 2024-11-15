@@ -13,13 +13,21 @@ export const useHospitals = () => {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(20);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     const fetchHospitals = async () => {
       try {
-        const data = await getHospitals({ pageNumber: page, pageSize });
+        setLoading(true);
+        console.log("Fetching with query:", searchQuery); // Debug log
+        const data = await getHospitals({
+          pageNumber: page,
+          pageSize,
+          name: searchQuery || undefined, // Only send if not empty
+          ruc: searchQuery || undefined,
+        });
+        console.log("Received data:", data); // Debug log
         setHospitals(data.content);
-        // Removemos la desestructuración de content ya que no lo usamos
         const { ...paginationData } = data;
         setPagination(paginationData);
       } catch (err) {
@@ -30,8 +38,18 @@ export const useHospitals = () => {
       }
     };
 
-    fetchHospitals();
-  }, [page, pageSize]);
+    // Reset to first page when search changes
+    if (page !== 0 && searchQuery) {
+      setPage(0);
+      return;
+    }
+
+    const debounceTimer = setTimeout(() => {
+      fetchHospitals();
+    }, 300); // Reduced debounce time
+
+    return () => clearTimeout(debounceTimer);
+  }, [page, pageSize, searchQuery]);
 
   return {
     hospitals,
@@ -42,5 +60,6 @@ export const useHospitals = () => {
     setPageSize,
     currentPage: page,
     totalPages: pagination?.totalPages ?? 0,
+    setSearchQuery,
   };
 };
