@@ -1,36 +1,55 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './contexts/useAuthContext';
-import { AuthLayout } from './layouts/AuthLayout';
-import { MainLayout } from './layouts/MainLayout';
-import { Login } from './pages/Login';
-import { ProtectedPage } from './pages/ProtectedPage';
-import { PrivateRoute } from './components/PrivateRoute';
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "./contexts/useAuthContext";
+import { AuthLayout } from "./layouts/AuthLayout";
+import { MainLayout } from "./layouts/MainLayout";
+import { Login } from "./pages/Login";
+import { ProtectedPage } from "./pages/ProtectedPage";
+import { PrivateRoute } from "./components/PrivateRoute";
+import { People } from "./pages/People";
+import { Hospital } from "./pages/hospital";
+import { User } from "./pages/user";
+import { useEffect } from "react";
 
 const App = () => {
   const { state } = useAuth();
 
+  useEffect(() => {
+    console.log("[App] Auth state changed:", {
+      isAuthenticated: state.isAuthenticated,
+      path: window.location.pathname,
+    });
+  }, [state.isAuthenticated]);
+
   return (
     <Routes>
-      {/* Rutas públicas */}
-      <Route element={<AuthLayout />}>
-        <Route path="/login" element={
-          state.isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
-        } />
+      {/* Public Routes */}
+      <Route path="/" element={<AuthLayout />}>
+        <Route index element={<Navigate to="/dashboard" replace />} />
+        <Route
+          path="login"
+          element={
+            state.isAuthenticated ? (
+              <Navigate to="/dashboard" replace />
+            ) : (
+              <Login />
+            )
+          }
+        />
       </Route>
 
-      {/* Rutas protegidas */}
-      <Route element={
-        <PrivateRoute>
-          <MainLayout />
-        </PrivateRoute>
-      }>
-        <Route path="/dashboard" element={<ProtectedPage />} />
+      {/* Protected Routes */}
+      <Route
+        element={
+          <PrivateRoute>
+            <MainLayout />
+          </PrivateRoute>
+        }
+      >
+        <Route path="dashboard" element={<ProtectedPage />} />
+        <Route path="people" element={<People />} />
+        <Route path="hospital" element={<Hospital />} />
+        <Route path="user" element={<User />} />
       </Route>
-
-      {/* Redirección por defecto */}
-      <Route path="*" element={
-        <Navigate to={state.isAuthenticated ? "/dashboard" : "/login"} replace />
-      } />
     </Routes>
   );
 };

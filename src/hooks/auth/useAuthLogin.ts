@@ -23,7 +23,7 @@ export const useAuthLogin = () => {
           authorities: decoded.authorities,
         },
       });
-      navigate("/protected");
+      navigate("/dashboard");
       return { success: true };
     } catch (error) {
       console.error("Login failed", error);
