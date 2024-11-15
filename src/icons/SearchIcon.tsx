@@ -1,9 +1,4 @@
-interface SearchIconProps extends React.SVGProps<SVGSVGElement> {
-  size?: number;
-  strokeWidth?: number;
-  width?: number;
-  height?: number;
-}
+import { iconProps } from "./IconProps";
 
 export const SearchIcon = ({
   size = 24,
@@ -11,7 +6,7 @@ export const SearchIcon = ({
   width,
   height,
   ...props
-}: SearchIconProps) => (
+}: iconProps) => (
   <svg
     aria-hidden="true"
     fill="none"
