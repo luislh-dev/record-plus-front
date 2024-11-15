@@ -2,7 +2,7 @@ import { useAuth } from "../contexts/useAuthContext";
 import { useNavigate } from "react-router-dom";
 import { useUsers } from "../hooks//user/useUsers";
 
-export const ProtectedPage = () => {
+export function ProtectedPage() {
   const { state, dispatch } = useAuth();
   const navigate = useNavigate();
   const { users, loading, error } = useUsers();
@@ -45,4 +45,4 @@ export const ProtectedPage = () => {
       </div>
     </div>
   );
-};
+}
