@@ -10,6 +10,7 @@ import {
   Chip,
   Tooltip,
   getKeyValue,
+  Pagination as TablePagination,
 } from "@nextui-org/react";
 import { statusColorMap } from "@/constants/statusColorMap";
 import { EyeIcon } from "@/icons/EyeIcon";
@@ -17,6 +18,9 @@ import { EditIcon } from "@/icons/EditIcon";
 import { DeleteIcon } from "@/icons/DeleteIcon";
 
 export function HospitalTable() {
+  const { hospitals, loading, error, setPage, currentPage, totalPages } =
+    useHospitals();
+
   const renderCell = React.useCallback(
     (hospital: Hospital, columnKey: React.Key) => {
       const cellValue = hospital[columnKey as keyof Hospital];
@@ -42,7 +46,7 @@ export function HospitalTable() {
                 </span>
               </Tooltip>
               <Tooltip content="Editar hospital">
-                <span className="text-lg text-default-400  cursor-pointer active:opacity-50">
+                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
                   <EditIcon />
                 </span>
               </Tooltip>
@@ -60,8 +64,6 @@ export function HospitalTable() {
     []
   );
 
-  const { hospitals, loading, error } = useHospitals();
-
   const columns = [
     { name: "Nombre", uuid: "name" },
     { name: "Teléfono", uuid: "phone" },
@@ -77,7 +79,22 @@ export function HospitalTable() {
   type Hospital = (typeof hospitals)[0];
 
   return (
-    <Table>
+    <Table
+      aria-label="Tabla de hospitales"
+      bottomContent={
+        <div className="flex w-full justify-start">
+          <TablePagination
+            isCompact
+            showControls
+            showShadow
+            color="primary"
+            page={currentPage + 1}
+            total={totalPages}
+            onChange={(page) => setPage(page - 1)}
+          />
+        </div>
+      }
+    >
       <TableHeader columns={columns}>
         {(column) => (
           <TableColumn
