@@ -12,11 +12,6 @@ export const ProtectedPage = () => {
     navigate("/login");
   };
 
-  if (!state.token) {
-    navigate("/login");
-    return null;
-  }
-
   if (loading) return <div>Cargando...</div>;
   if (error) return <div>Error: {error}</div>;
 
