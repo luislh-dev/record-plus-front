@@ -1,5 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/useAuthContext';
+import { AuthLayout } from './layouts/AuthLayout';
+import { MainLayout } from './layouts/MainLayout';
 import { Login } from './pages/Login';
 import { ProtectedPage } from './pages/ProtectedPage';
 import { PrivateRoute } from './components/PrivateRoute';
@@ -9,16 +11,25 @@ const App = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={
-        state.isAuthenticated ? <Navigate to="/protected" replace /> : <Login />
-      } />
-      <Route path="/protected" element={
+      {/* Rutas públicas */}
+      <Route element={<AuthLayout />}>
+        <Route path="/login" element={
+          state.isAuthenticated ? <Navigate to="/dashboard" replace /> : <Login />
+        } />
+      </Route>
+
+      {/* Rutas protegidas */}
+      <Route element={
         <PrivateRoute>
-          <ProtectedPage />
+          <MainLayout />
         </PrivateRoute>
-      } />
-      <Route path="/" element={
-        state.isAuthenticated ? <Navigate to="/protected" replace /> : <Navigate to="/login" replace />
+      }>
+        <Route path="/dashboard" element={<ProtectedPage />} />
+      </Route>
+
+      {/* Redirección por defecto */}
+      <Route path="*" element={
+        <Navigate to={state.isAuthenticated ? "/dashboard" : "/login"} replace />
       } />
     </Routes>
   );
