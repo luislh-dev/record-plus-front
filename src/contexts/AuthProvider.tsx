@@ -23,7 +23,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const initializeAuth = async () => {
       const token = getStoredToken();
-      console.log("[AuthProvider] Initializing with token:", token);
 
       if (token) {
         try {

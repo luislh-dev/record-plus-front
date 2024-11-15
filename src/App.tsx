@@ -8,17 +8,9 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import { People } from "./pages/People";
 import { Hospital } from "./pages/hospital";
 import { User } from "./pages/user";
-import { useEffect } from "react";
 
 const App = () => {
   const { state } = useAuth();
-
-  useEffect(() => {
-    console.log("[App] Auth state changed:", {
-      isAuthenticated: state.isAuthenticated,
-      path: window.location.pathname,
-    });
-  }, [state.isAuthenticated]);
 
   return (
     <Routes>
