@@ -1,7 +1,7 @@
 import { useLoginForm } from "../hooks/auth/useloginForm";
 import { useAuthLogin } from "../hooks/auth/useAuthLogin";
 
-export const Login = () => {
+export function Login() {
   const { username, password, setUsername, setPassword, resetForm } =
     useLoginForm();
   const { handleLogin } = useAuthLogin();
@@ -35,4 +35,4 @@ export const Login = () => {
       <button type="submit">Login</button>
     </form>
   );
-};
+}
