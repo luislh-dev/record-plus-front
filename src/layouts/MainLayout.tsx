@@ -1,6 +1,8 @@
 import { Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/useAuthContext";
 import { useAuthLogin } from "../hooks/auth/useAuthLogin";
+import { Link } from "@nextui-org/react";
+import { Roles } from "../constants/roles";
 
 export const MainLayout = () => {
   const { state } = useAuth();
@@ -11,8 +13,13 @@ export const MainLayout = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="grid grid-cols-[250px_1fr_1fr] grid-rows-[80px_1fr] min-h-screen">
         <aside className="bg-white shadow-lg row-span-2">
-          <div className="p-4">
+          <div className="p-4 max-w-max">
             <h1 className="text-xl font-bold">Record Plus</h1>
+            {state.authorities.includes(Roles.ADMIN) && (
+              <Link isBlock href="/hospital" color="foreground">
+                Hospitales
+              </Link>
+            )}
           </div>
         </aside>
 
