@@ -2,23 +2,39 @@ import { Outlet } from "react-router-dom";
 import { useAuth } from "../contexts/useAuthContext";
 import { useAuthLogin } from "../hooks/auth/useAuthLogin";
 import { Link } from "@nextui-org/react";
-import { Roles } from "../constants/roles";
+import { menuItems } from "@/constants/menuItems";
 
 export const MainLayout = () => {
   const { state } = useAuth();
 
   const { handleLogout } = useAuthLogin();
 
+  const hasAccess = (roles: string[]) => {
+    return roles.some((role) => state.authorities.includes(role));
+  };
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="grid grid-cols-[250px_1fr_1fr] grid-rows-[80px_1fr] min-h-screen">
         <aside className="bg-white shadow-lg row-span-2">
-          <div className="p-4 max-w-max">
-            <h1 className="text-xl font-bold">Record Plus</h1>
-            {state.authorities.includes(Roles.ADMIN) && (
-              <Link isBlock href="/hospital" color="foreground">
-                Hospitales
-              </Link>
+          <div className="p-4 flex flex-col gap-2">
+            <h1 className="text-xl font-bold mb-4">Record Plus</h1>
+            {menuItems.map(
+              (item) =>
+                hasAccess(item.roles) && (
+                  <Link
+                    key={item.path}
+                    isBlock
+                    href={item.path}
+                    color="foreground"
+                    className={`p-2 rounded ${
+                      location.pathname === item.path
+                        ? "bg-primary-50 text-primary-500"
+                        : "hover:bg-gray-100"
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                )
             )}
           </div>
         </aside>
