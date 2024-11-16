@@ -26,7 +26,7 @@ export const useHospitals = () => {
           name: searchQuery || undefined, // Only send if not empty
           ruc: searchQuery || undefined,
         });
-        console.log("Received data:", data); // Debug log
+
         setHospitals(data.content);
         const { ...paginationData } = data;
         setPagination(paginationData);
