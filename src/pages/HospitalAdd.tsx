@@ -1,8 +1,20 @@
-import { Button, Input } from "@nextui-org/react";
+import { useStates } from "@/hooks/state/useState";
+import { Button, Input, Select, SelectItem } from "@nextui-org/react";
+import React, { useEffect } from "react";
 import { Form, useNavigate } from "react-router-dom";
 
 export function HospitalAdd() {
   const navigate = useNavigate();
+
+  // Recuperar los estados
+  const state = useStates().state;
+  const [value, setValue] = React.useState<string>("");
+
+  useEffect(() => {
+    if (state.length > 0 && !value) {
+      setValue(state[0].id.toString());
+    }
+  }, [state, value]);
 
   return (
     <div className="space-y-6">
@@ -13,7 +25,7 @@ export function HospitalAdd() {
         </Button>
       </div>
 
-      <Form method="post" className="space-y-4">
+      <Form method="post" className="grid grid-cols-2 gap-4">
         <Input
           type="text"
           name="name"
@@ -21,6 +33,7 @@ export function HospitalAdd() {
           placeholder="Ingrese el nombre"
           isRequired
         />
+
         <Input
           type="text"
           name="ruc"
@@ -28,6 +41,7 @@ export function HospitalAdd() {
           placeholder="Ingrese el RUC"
           isRequired
         />
+
         <Input
           type="email"
           name="email"
@@ -35,6 +49,7 @@ export function HospitalAdd() {
           placeholder="Ingrese el correo"
           isRequired
         />
+
         <Input
           type="tel"
           name="phone"
@@ -42,7 +57,27 @@ export function HospitalAdd() {
           placeholder="Ingrese el teléfono"
           isRequired
         />
-        <div className="flex justify-end gap-2">
+
+        <Input
+          type="text"
+          name="address"
+          label="Dirección"
+          placeholder="Ingrese la dirección"
+          isRequired
+        />
+        <Select
+          label="Estados"
+          selectedKeys={value ? [value] : []}
+          onSelectionChange={(keys) => setValue(Array.from(keys)[0] as string)}
+        >
+          {state.map((item) => (
+            <SelectItem key={item.id} value={item.id.toString()}>
+              {item.name}
+            </SelectItem>
+          ))}
+        </Select>
+
+        <div className="col-span-2 flex justify-end gap-2">
           <Button type="submit" color="primary">
             Guardar
           </Button>
