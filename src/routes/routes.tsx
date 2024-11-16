@@ -1,7 +1,7 @@
 // routes.tsx
 import { hospitalAddAction } from "@/actions/hospitalAddAction";
-import { PrivateRoute } from "@/components/PrivateRoute";
-import { PublicRoute } from "@/components/PublicRoute";
+import { PrivateRoute } from "@/routes/PrivateRoute";
+import { PublicRoute } from "@/routes/PublicRoute";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { MainLayout } from "@/layouts/MainLayout";
 import { Hospital } from "@/pages/Hospital";
