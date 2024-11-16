@@ -8,6 +8,7 @@ import { PrivateRoute } from "./components/PrivateRoute";
 import { People } from "./pages/People";
 import { Hospital } from "./pages/Hospital";
 import { User } from "./pages/User";
+import { HospitalAdd } from "./pages/HospitalAdd";
 
 const App = () => {
   const { state } = useAuth();
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="dashboard" element={<ProtectedPage />} />
         <Route path="people" element={<People />} />
         <Route path="hospital" element={<Hospital />} />
+        <Route path="hospital/add" element={<HospitalAdd />} />
         <Route path="user" element={<User />} />
       </Route>
     </Routes>
