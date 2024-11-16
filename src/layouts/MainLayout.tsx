@@ -1,17 +1,17 @@
-import { Outlet } from "react-router-dom";
+import { Link as RouterLink, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/useAuthContext";
 import { useAuthLogin } from "../hooks/auth/useAuthLogin";
-import { Link } from "@nextui-org/react";
 import { menuItems } from "@/constants/menuItems";
 
 export const MainLayout = () => {
   const { state } = useAuth();
-
+  const location = useLocation();
   const { handleLogout } = useAuthLogin();
 
   const hasAccess = (roles: string[]) => {
     return roles.some((role) => state.authorities.includes(role));
   };
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="grid grid-cols-[250px_1fr_1fr] grid-rows-[80px_1fr] min-h-screen">
@@ -21,11 +21,9 @@ export const MainLayout = () => {
             {menuItems.map(
               (item) =>
                 hasAccess(item.roles) && (
-                  <Link
+                  <RouterLink
                     key={item.path}
-                    isBlock
-                    href={item.path}
-                    color="foreground"
+                    to={item.path}
                     className={`p-2 rounded ${
                       location.pathname === item.path
                         ? "bg-primary-50 text-primary-500"
@@ -33,7 +31,7 @@ export const MainLayout = () => {
                     }`}
                   >
                     {item.label}
-                  </Link>
+                  </RouterLink>
                 )
             )}
           </div>
