@@ -1,4 +1,3 @@
-// routes.tsx
 import { hospitalAddAction } from "@/actions/hospitalAddAction";
 import { PrivateRoute } from "@/routes/PrivateRoute";
 import { PublicRoute } from "@/routes/PublicRoute";
@@ -11,6 +10,8 @@ import { People } from "@/pages/People";
 import { ProtectedPage } from "@/pages/ProtectedPage";
 import { User } from "@/pages/User";
 import { createBrowserRouter, Navigate } from "react-router-dom";
+import { RoleBasedRoute } from "./RoleBasedRoute";
+import { Roles } from "@/constants/roles";
 
 export const router = createBrowserRouter([
   {
@@ -44,20 +45,38 @@ export const router = createBrowserRouter([
       },
       {
         path: "hospital",
-        element: <Hospital />,
+        element: (
+          <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
+            <Hospital />
+          </RoleBasedRoute>
+        ),
       },
       {
         path: "hospital/add",
-        element: <HospitalAdd />,
+        element: (
+          <RoleBasedRoute allowedRoles={[Roles.ADMIN]}>
+            <HospitalAdd />
+          </RoleBasedRoute>
+        ),
         action: hospitalAddAction,
       },
       {
         path: "people",
-        element: <People />,
+        element: (
+          <RoleBasedRoute
+            allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}
+          >
+            <People />
+          </RoleBasedRoute>
+        ),
       },
       {
         path: "user",
-        element: <User />,
+        element: (
+          <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
+            <User />
+          </RoleBasedRoute>
+        ),
       },
     ],
   },
