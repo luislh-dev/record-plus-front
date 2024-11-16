@@ -1,6 +1,6 @@
 // hospitalContext.ts
 import { createContext, useContext } from "react";
-import { HospitalListDTO } from "@/types/DTO/HospitalListDTO";
+import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
 
 interface HospitalContextType {
   hospitals: HospitalListDTO[];

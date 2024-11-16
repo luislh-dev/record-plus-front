@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getHospitals } from "@/services/hospitalService";
-import { HospitalListDTO } from "@/types/DTO/HospitalListDTO";
+import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
 import { PageResponse } from "@/types/Pagination";
 
 export const useHospitals = () => {

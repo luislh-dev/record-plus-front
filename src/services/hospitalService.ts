@@ -1,4 +1,4 @@
-import { HospitalListDTO } from "@/types/DTO/HospitalListDTO";
+import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
 import { api } from "./api";
 import { PageResponse } from "@/types/Pagination";
 import { SearchParams } from "@/types/hospital";
