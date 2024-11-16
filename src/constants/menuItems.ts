@@ -8,13 +8,13 @@ export const menuItems: MenuItem[] = [
     roles: [Roles.ADMIN],
   },
   {
-    label: "Pacientes",
-    path: "/patients",
-    roles: [Roles.DOCTOR, Roles.ADMIN],
+    label: "Usuarios",
+    path: "/user",
+    roles: [Roles.DOCTOR, Roles.ADMIN, Roles.MANAGEMENT],
   },
   {
-    label: "Citas",
-    path: "/appointments",
-    roles: [Roles.DOCTOR, Roles.PATIENT],
+    label: "Personas",
+    path: "/people",
+    roles: [Roles.DOCTOR, Roles.PATIENT, Roles.ADMIN, Roles.MANAGEMENT],
   },
 ];
