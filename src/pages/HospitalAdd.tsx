@@ -1,3 +1,4 @@
+import { useHospitals } from "@/hooks/hospital/useHospital";
 import { useStates } from "@/hooks/state/useState";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import React, { useEffect } from "react";
@@ -16,6 +17,29 @@ export function HospitalAdd() {
     }
   }, [state, value]);
 
+  const { createHospital, isCreating } = useHospitals();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    const hospitalData = {
+      name: formData.get("name") as string,
+      ruc: formData.get("ruc") as string,
+      email: formData.get("email") as string,
+      phone: formData.get("phone") as string,
+      address: formData.get("address") as string,
+      stateId: parseInt(value),
+    };
+
+    try {
+      await createHospital(hospitalData);
+      navigate(-1); // Go back after successful creation
+    } catch (error) {
+      console.error("Error creating hospital:", error);
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -25,7 +49,11 @@ export function HospitalAdd() {
         </Button>
       </div>
 
-      <Form method="post" className="grid grid-cols-2 gap-4">
+      <Form
+        method="post"
+        onSubmit={handleSubmit}
+        className="grid grid-cols-2 gap-4"
+      >
         <Input
           type="text"
           name="name"
@@ -78,7 +106,7 @@ export function HospitalAdd() {
         </Select>
 
         <div className="col-span-2 flex justify-end gap-2">
-          <Button type="submit" color="primary">
+          <Button type="submit" color="primary" isLoading={isCreating}>
             Guardar
           </Button>
         </div>

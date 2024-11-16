@@ -2,6 +2,7 @@ import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
 import { api } from "./api";
 import { PageResponse } from "@/types/Pagination";
 import { SearchParams } from "@/types/hospital";
+import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
 
 export const getHospitals = async (
   params: SearchParams
@@ -17,5 +18,20 @@ export const getHospitals = async (
       ...(id && { id }),
     },
   });
+  return response.data;
+};
+
+export const createHospital = async (
+  hospitalData: HospitalCreateRequest
+): Promise<HospitalCreateRequest> => {
+  const response = await api.post<HospitalCreateRequest>(
+    "/hospitals",
+    hospitalData,
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
   return response.data;
 };
