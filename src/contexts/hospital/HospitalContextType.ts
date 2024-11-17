@@ -28,4 +28,8 @@ export interface HospitalContextType {
   hospitalDetail: HospitalCreateRequest | null;
   loadingDetail: boolean;
   detailError: string | null;
+  isModalOpen: boolean;
+  handleDeleteClick: (id: number) => void;
+  closeModal: () => void;
+  handleConfirmDelete: () => void;
 }

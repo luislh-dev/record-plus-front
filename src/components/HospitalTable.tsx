@@ -10,7 +10,6 @@ import {
   Tooltip,
   getKeyValue,
   Pagination as TablePagination,
-  useDisclosure,
 } from "@nextui-org/react";
 import { statusColorMap } from "@/constants/statusColorMap";
 import { EyeIcon } from "@/icons/EyeIcon";
@@ -22,10 +21,6 @@ import { useNavigate } from "react-router-dom";
 
 export function HospitalTable() {
   const navigate = useNavigate();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [selectedHospitalId, setSelectedHospitalId] = React.useState<
-    number | null
-  >(null);
 
   const {
     hospitals,
@@ -33,26 +28,12 @@ export function HospitalTable() {
     setPage,
     currentPage,
     totalPages,
-    deleteHospital,
     isDeleting,
+    isModalOpen,
+    closeModal,
+    handleDeleteClick,
+    handleConfirmDelete,
   } = useHospitalContext();
-
-  const handleDelete = React.useCallback(
-    async (id: number) => {
-      setSelectedHospitalId(id);
-      onOpen();
-    },
-    [onOpen]
-  );
-
-  const handleConfirmDelete = React.useCallback(async () => {
-    if (selectedHospitalId) {
-      const success = await deleteHospital(selectedHospitalId);
-      if (!success) {
-        console.error("Error al eliminar el hospital");
-      }
-    }
-  }, [deleteHospital, selectedHospitalId]);
 
   const handleEdit = React.useCallback(
     (id: number) => {
@@ -98,7 +79,7 @@ export function HospitalTable() {
                   className={`text-lg text-danger cursor-pointer active:opacity-50 ${
                     isDeleting ? "opacity-50" : ""
                   }`}
-                  onClick={() => !isDeleting && handleDelete(hospital.id)}
+                  onClick={() => !isDeleting && handleDeleteClick(hospital.id)}
                 >
                   <DeleteIcon />
                 </span>
@@ -109,7 +90,7 @@ export function HospitalTable() {
           return getKeyValue(hospital, columnKey as string);
       }
     },
-    [handleDelete, handleEdit, isDeleting]
+    [handleEdit, handleDeleteClick, isDeleting]
   );
 
   const columns = [
@@ -172,8 +153,8 @@ export function HospitalTable() {
         </TableBody>
       </Table>
       <ModalConfirmDelete
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isModalOpen}
+        onClose={closeModal}
         onConfirm={handleConfirmDelete}
         isLoading={isDeleting}
         title="Eliminar Hospital"

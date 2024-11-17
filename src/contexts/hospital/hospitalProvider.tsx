@@ -32,6 +32,10 @@ export const HospitalProvider = ({ children }: HospitalProviderProps) => {
     hospitalDetail: hospitalState.hospitalDetail,
     loadingDetail: hospitalState.loadingDetail,
     detailError: hospitalState.detailError,
+    isModalOpen: hospitalState.isModalOpen,
+    handleDeleteClick: hospitalState.handleDeleteClick,
+    closeModal: hospitalState.closeModal,
+    handleConfirmDelete: hospitalState.handleConfirmDelete,
   };
 
   return (
