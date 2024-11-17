@@ -26,16 +26,22 @@ export const createHospital = async (
 ): Promise<HospitalCreateRequest> => {
   const response = await api.post<HospitalCreateRequest>(
     "/hospitals",
-    hospitalData,
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
+    hospitalData
   );
   return response.data;
 };
 
 export const deleteHospital = async (id: number): Promise<void> => {
   await api.delete(`/hospitals/${id}`);
+};
+
+export const updateHospital = async (
+  id: number,
+  data: HospitalCreateRequest
+) => {
+  const response = await api.patch<HospitalCreateRequest>(
+    `/hospitals/${id}`,
+    data
+  );
+  return response.data;
 };
