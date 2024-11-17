@@ -143,15 +143,9 @@ export const useHospitals = () => {
       },
 
       read: async (id: number) => {
-        try {
-          updateState({ status: { ...state.status, loadingDetail: true } });
-          const data = await getHospital(id);
-          updateState({ detail: data });
-          return data;
-        } catch (error) {
-          handleError("detail", "Error al obtener el hospital");
-          throw error;
-        }
+        const data = await getHospital(id);
+        updateState({ detail: data });
+        return data;
       },
 
       update: async (id: number, data: HospitalCreateRequest) => {

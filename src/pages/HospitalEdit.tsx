@@ -1,5 +1,5 @@
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
-import React, { useCallback, useEffect, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, useNavigate, useParams } from "react-router-dom";
 import { useHospitalContext } from "@/contexts/hospital/hospitalContext";
 import { useStates } from "@/hooks/state/useState";
@@ -16,39 +16,25 @@ export function HospitalEdit() {
     isUpdating,
   } = useHospitalContext();
 
-  // State management
   const { state } = useStates();
-  const [value, setValue] = React.useState<string>("");
-  const mountedRef = useRef(false);
-  const fetchAttemptedRef = useRef(false);
-
-  // Fetch hospital data
-  const fetchHospital = useCallback(async () => {
-    if (!id || !mountedRef.current || fetchAttemptedRef.current) return;
-    fetchAttemptedRef.current = true;
-    try {
-      const hospitalId = parseInt(id);
-      if (isNaN(hospitalId)) return;
-      await getHospital(hospitalId);
-    } catch (error) {
-      console.error("Error fetching hospital:", error);
-    }
-  }, [id, getHospital]);
+  const [stateValue, setStateValue] = useState<string>("");
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    mountedRef.current = true;
-    fetchHospital();
-    return () => {
-      mountedRef.current = false;
-    };
-  }, [fetchHospital]);
+    if (!id || isInitialized) return;
 
-  // Set initial state value
-  useEffect(() => {
-    if (hospitalDetail?.stateId) {
-      setValue(hospitalDetail.stateId.toString());
-    }
-  }, [hospitalDetail]);
+    const hospitalId = parseInt(id);
+    if (isNaN(hospitalId)) return;
+
+    getHospital(hospitalId)
+      .then((hospital) => {
+        if (hospital) {
+          setStateValue(hospital.stateId.toString());
+          setIsInitialized(true);
+        }
+      })
+      .catch(console.error);
+  }, [id, getHospital, isInitialized]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -61,7 +47,7 @@ export function HospitalEdit() {
       email: formData.get("email") as string,
       phone: formData.get("phone") as string,
       address: formData.get("address") as string,
-      stateId: parseInt(value),
+      stateId: parseInt(stateValue),
     };
 
     try {
@@ -137,8 +123,10 @@ export function HospitalEdit() {
 
         <Select
           label="Estados"
-          selectedKeys={value ? [value] : []}
-          onSelectionChange={(keys) => setValue(Array.from(keys)[0] as string)}
+          selectedKeys={stateValue ? [stateValue] : []}
+          onSelectionChange={(keys) =>
+            setStateValue(Array.from(keys)[0] as string)
+          }
         >
           {state.map((item) => (
             <SelectItem key={item.id} value={item.id.toString()}>
