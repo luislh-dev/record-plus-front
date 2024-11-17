@@ -15,6 +15,7 @@ import { Roles } from "@/constants/roles";
 import { hospitalUpdateAction } from "@/actions/hospital/HospitalupdateAction";
 import { HospitalEdit } from "@/pages/HospitalEdit";
 import { HospitalProvider } from "@/contexts/hospital/hospitalProvider";
+import { UserProvider } from "@/contexts/user/UserProvider";
 
 export const router = createBrowserRouter([
   {
@@ -90,7 +91,9 @@ export const router = createBrowserRouter([
         path: "user",
         element: (
           <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
-            <User />
+            <UserProvider>
+              <User />
+            </UserProvider>
           </RoleBasedRoute>
         ),
       },

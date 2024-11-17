@@ -1,27 +1,60 @@
-import { useState, useEffect } from "react";
-import { User } from "../../types/user";
+import { useState, useCallback } from "react";
 import { getUsers } from "../../services/userService";
+import { ApiServiceError } from "@/services/api/ApiErrorHandler";
+import { PageRequest, PageResponse } from "@/types/Pagination";
+import { UserSearchParams } from "@/types/DTO/user/UserSearchParams";
+import { UserListDTO } from "@/types/DTO/user/UserDto";
 
 export const useUsers = () => {
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [userPage, setUserPage] = useState<PageResponse<UserListDTO>>({
+    content: [],
+    pageable: {
+      pageNumber: 0,
+      pageSize: 20,
+      sort: { empty: true, sorted: false, unsorted: true },
+      offset: 0,
+      paged: true,
+      unpaged: false,
+    },
+    last: true,
+    totalElements: 0,
+    totalPages: 0,
+    size: 20,
+    number: 0,
+    sort: { empty: true, sorted: false, unsorted: true },
+    first: true,
+    numberOfElements: 0,
+    empty: true,
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<ApiServiceError | null>(null);
 
-  useEffect(() => {
-    const fetchUsers = async () => {
+  const fetchUsers = useCallback(
+    async (pageRequest?: PageRequest, searchParams?: UserSearchParams) => {
       try {
-        const data = await getUsers();
-        setUsers(data);
+        setLoading(true);
+        setError(null);
+        const data = await getUsers(pageRequest, searchParams);
+        setUserPage(data);
       } catch (err) {
-        setError("Error al cargar usuarios");
-        console.error(err);
+        setError(err as ApiServiceError);
       } finally {
         setLoading(false);
       }
-    };
+    },
+    []
+  );
 
-    fetchUsers();
-  }, []);
-
-  return { users, loading, error };
+  return {
+    users: userPage.content,
+    pagination: {
+      totalElements: userPage.totalElements,
+      totalPages: userPage.totalPages,
+      currentPage: userPage.number,
+      pageSize: userPage.size,
+    },
+    loading,
+    error,
+    fetchUsers,
+  };
 };

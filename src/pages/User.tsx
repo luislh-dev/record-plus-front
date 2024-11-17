@@ -1,7 +1,9 @@
+import { UserTable } from "@/components/UserTable";
+
 export function User() {
   return (
-    <div>
-      <h1>User</h1>
-    </div>
+    <>
+      <UserTable />
+    </>
   );
 }
