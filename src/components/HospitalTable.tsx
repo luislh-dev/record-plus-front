@@ -18,8 +18,10 @@ import { EditIcon } from "@/icons/EditIcon";
 import { DeleteIcon } from "@/icons/DeleteIcon";
 import { useHospitalContext } from "@/contexts/hospital/hospitalContext";
 import { ModalConfirmDelete } from "./ModalConfirmDelete";
+import { useNavigate } from "react-router-dom";
 
 export function HospitalTable() {
+  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedHospitalId, setSelectedHospitalId] = React.useState<
     number | null
@@ -52,6 +54,10 @@ export function HospitalTable() {
     }
   }, [deleteHospital, selectedHospitalId]);
 
+  const handleEdit = (id: number) => {
+    navigate(`/hospital/${id}/edit`);
+  };
+
   const renderCell = React.useCallback(
     (hospital: Hospital, columnKey: React.Key) => {
       const cellValue = hospital[columnKey as keyof Hospital];
@@ -77,7 +83,10 @@ export function HospitalTable() {
                 </span>
               </Tooltip>
               <Tooltip content="Editar hospital">
-                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                <span
+                  className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                  onClick={() => handleEdit(hospital.id)}
+                >
                   <EditIcon />
                 </span>
               </Tooltip>

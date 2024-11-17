@@ -12,6 +12,9 @@ import { User } from "@/pages/User";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { RoleBasedRoute } from "./RoleBasedRoute";
 import { Roles } from "@/constants/roles";
+import { hospitalUpdateAction } from "@/actions/hospital/HospitalupdateAction";
+import { HospitalEdit } from "@/pages/HospitalEdit";
+import { HospitalProvider } from "@/contexts/hospital/hospitalProvider";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +62,17 @@ export const router = createBrowserRouter([
           </RoleBasedRoute>
         ),
         action: hospitalAddAction,
+      },
+      {
+        path: "hospital/:id/edit",
+        element: (
+          <RoleBasedRoute allowedRoles={[Roles.ADMIN]}>
+            <HospitalProvider>
+              <HospitalEdit />
+            </HospitalProvider>
+          </RoleBasedRoute>
+        ),
+        action: hospitalUpdateAction,
       },
       {
         path: "people",

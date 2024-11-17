@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
   createHospital,
   deleteHospital,
+  getHospital,
   getHospitals,
   updateHospital,
 } from "@/services/hospitalService";
@@ -28,6 +29,11 @@ interface UpdateState {
 }
 
 export const useHospitals = () => {
+  const [hospitalDetail, setHospitalDetail] =
+    useState<HospitalCreateRequest | null>(null);
+  const [loadingDetail, setLoadingDetail] = useState(false);
+  const [detailError, setDetailError] = useState<string | null>(null);
+
   // State management
   const [deleteState, setDeleteState] = useState<DeleteState>({
     isDeleting: false,
@@ -141,6 +147,21 @@ export const useHospitals = () => {
     }
   };
 
+  const handleGetHospital = async (id: number) => {
+    try {
+      setLoadingDetail(true);
+      setDetailError(null);
+      const data = await getHospital(id);
+      setHospitalDetail(data);
+      return data;
+    } catch (error) {
+      setDetailError("Error al obtener el hospital");
+      throw error;
+    } finally {
+      setLoadingDetail(false);
+    }
+  };
+
   const handleUpdateHospital = async (
     id: number,
     hospitalData: HospitalCreateRequest
@@ -192,5 +213,11 @@ export const useHospitals = () => {
     updateHospital: handleUpdateHospital,
     isUpdating: updateState.isUpdating,
     updateError: updateState.error,
+
+    // Hospital detail
+    getHospital: handleGetHospital,
+    hospitalDetail,
+    loadingDetail,
+    detailError,
   } as const;
 };

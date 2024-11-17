@@ -28,6 +28,10 @@ export const HospitalProvider = ({ children }: HospitalProviderProps) => {
     updateHospital: hospitalState.updateHospital,
     isUpdating: hospitalState.isUpdating,
     updateError: hospitalState.updateError,
+    getHospital: hospitalState.getHospital,
+    hospitalDetail: hospitalState.hospitalDetail,
+    loadingDetail: hospitalState.loadingDetail,
+    detailError: hospitalState.detailError,
   };
 
   return (

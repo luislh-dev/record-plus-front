@@ -45,3 +45,10 @@ export const updateHospital = async (
   );
   return response.data;
 };
+
+export const getHospital = async (
+  id: number
+): Promise<HospitalCreateRequest> => {
+  const response = await api.get<HospitalCreateRequest>(`/hospitals/${id}`);
+  return response.data;
+};

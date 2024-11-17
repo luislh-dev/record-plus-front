@@ -24,4 +24,8 @@ export interface HospitalContextType {
   ) => Promise<HospitalCreateRequest>;
   isUpdating: boolean;
   updateError: string | null;
+  getHospital: (id: number) => Promise<HospitalCreateRequest>;
+  hospitalDetail: HospitalCreateRequest | null;
+  loadingDetail: boolean;
+  detailError: string | null;
 }
