@@ -1,4 +1,4 @@
-import { hospitalAddAction } from "@/actions/hospitalAddAction";
+import { hospitalAddAction } from "@/actions/hospital/hospitalAddAction";
 import { PrivateRoute } from "@/routes/PrivateRoute";
 import { PublicRoute } from "@/routes/PublicRoute";
 import { AuthLayout } from "@/layouts/AuthLayout";
