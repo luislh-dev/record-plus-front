@@ -10,14 +10,21 @@ import {
   Tooltip,
   getKeyValue,
   Pagination as TablePagination,
+  useDisclosure,
 } from "@nextui-org/react";
 import { statusColorMap } from "@/constants/statusColorMap";
 import { EyeIcon } from "@/icons/EyeIcon";
 import { EditIcon } from "@/icons/EditIcon";
 import { DeleteIcon } from "@/icons/DeleteIcon";
 import { useHospitalContext } from "@/contexts/hospital/hospitalContext";
+import { ModalConfirmDelete } from "./ModalConfirmDelete";
 
 export function HospitalTable() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedHospitalId, setSelectedHospitalId] = React.useState<
+    number | null
+  >(null);
+
   const {
     hospitals,
     error,
@@ -30,16 +37,20 @@ export function HospitalTable() {
 
   const handleDelete = React.useCallback(
     async (id: number) => {
-      if (window.confirm("¿Está seguro que desea eliminar este hospital?")) {
-        const success = await deleteHospital(id);
-        if (!success) {
-          // You can add a toast notification here if needed
-          console.error("Error al eliminar el hospital");
-        }
-      }
+      setSelectedHospitalId(id);
+      onOpen();
     },
-    [deleteHospital]
+    [onOpen]
   );
+
+  const handleConfirmDelete = React.useCallback(async () => {
+    if (selectedHospitalId) {
+      const success = await deleteHospital(selectedHospitalId);
+      if (!success) {
+        console.error("Error al eliminar el hospital");
+      }
+    }
+  }, [deleteHospital, selectedHospitalId]);
 
   const renderCell = React.useCallback(
     (hospital: Hospital, columnKey: React.Key) => {
@@ -101,51 +112,61 @@ export function HospitalTable() {
   type Hospital = (typeof hospitals)[0];
 
   return (
-    <Table
-      aria-label="Tabla de hospitales"
-      bottomContent={
-        !error &&
-        hospitals.length > 0 && (
-          <div className="flex w-full justify-start">
-            <TablePagination
-              isCompact
-              showControls
-              showShadow
-              color="primary"
-              page={currentPage + 1}
-              total={totalPages}
-              onChange={(page) => setPage(page - 1)}
-            />
-          </div>
-        )
-      }
-    >
-      <TableHeader columns={columns}>
-        {(column) => (
-          <TableColumn
-            key={column.uuid}
-            align={column.uuid === "actions" ? "center" : "start"}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody
-        items={error ? [] : hospitals}
-        emptyContent={
-          error
-            ? "Ha ocurrido un error inesperado. Por favor, inténtelo de nuevo más tarde."
-            : "No se encontraron resultados..."
+    <>
+      <Table
+        aria-label="Tabla de hospitales"
+        bottomContent={
+          !error &&
+          hospitals.length > 0 && (
+            <div className="flex w-full justify-start">
+              <TablePagination
+                isCompact
+                showControls
+                showShadow
+                color="primary"
+                page={currentPage + 1}
+                total={totalPages}
+                onChange={(page) => setPage(page - 1)}
+              />
+            </div>
+          )
         }
       >
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>{renderCell(item, columnKey)}</TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+        <TableHeader columns={columns}>
+          {(column) => (
+            <TableColumn
+              key={column.uuid}
+              align={column.uuid === "actions" ? "center" : "start"}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody
+          items={error ? [] : hospitals}
+          emptyContent={
+            error
+              ? "Ha ocurrido un error inesperado. Por favor, inténtelo de nuevo más tarde."
+              : "No se encontraron resultados..."
+          }
+        >
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => (
+                <TableCell>{renderCell(item, columnKey)}</TableCell>
+              )}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+      <ModalConfirmDelete
+        isOpen={isOpen}
+        onClose={onClose}
+        onConfirm={handleConfirmDelete}
+        isLoading={isDeleting}
+        title="Eliminar Hospital"
+        message="¿Está seguro que desea eliminar este hospital? Esta acción no se puede deshacer."
+      />
+    </>
   );
 }
