@@ -8,6 +8,7 @@ import { useUserContext } from "@/contexts/user/UserContext";
 import { GenericTable } from "./GenericTable";
 import { UserListDTO } from "@/types/DTO/user/UserDto";
 import { useNavigate } from "react-router-dom";
+import { ModalConfirmDelete } from "./ModalConfirmDelete";
 
 export function UserTable() {
   const navigate = useNavigate();
@@ -16,6 +17,11 @@ export function UserTable() {
     users,
     pagination: { currentPage, totalPages },
     fetchUsers,
+    userToDelete,
+    loading,
+    closeDeleteModal,
+    handleDeleteConfirm,
+    openDeleteModal,
   } = useUserContext();
 
   const handleEdit = React.useCallback(
@@ -67,25 +73,34 @@ export function UserTable() {
       name: "Acciones",
       uuid: "actions",
       align: "center",
-      render: (user: UserListDTO) => (
-        <div className="relative flex items-center justify-center w-full gap-2">
-          <Tooltip content="Editar usuario">
-            <span
-              className="text-lg text-default-400 cursor-pointer active:opacity-50"
-              onClick={() => handleEdit(user.id)}
-            >
-              <EditIcon />
-            </span>
-          </Tooltip>
-          <Tooltip content="Eliminar usuario">
-            <span
-              className={`text-lg text-danger cursor-pointer active:opacity-50 `}
-            >
-              <DeleteIcon />
-            </span>
-          </Tooltip>
-        </div>
-      ),
+      render: (user: UserListDTO) => {
+        const isActive = user.state?.toLowerCase() === "active".toLowerCase();
+
+        return (
+          <div className="relative flex items-center justify-center w-full gap-2">
+            <Tooltip content="Editar usuario">
+              <span
+                className="text-lg text-default-400 cursor-pointer active:opacity-50"
+                onClick={() => handleEdit(user.id)}
+              >
+                <EditIcon />
+              </span>
+            </Tooltip>
+            <Tooltip content="Eliminar usuario" isDisabled={!isActive}>
+              <span
+                className={`text-lg ${
+                  isActive
+                    ? "text-danger cursor-pointer active:opacity-50"
+                    : "text-danger/30 cursor-not-allowed"
+                }`}
+                onClick={isActive ? () => openDeleteModal(user) : undefined}
+              >
+                <DeleteIcon />
+              </span>
+            </Tooltip>
+          </div>
+        );
+      },
     },
   ];
 
@@ -97,6 +112,14 @@ export function UserTable() {
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={(page) => fetchUsers({ pageNumber: page, pageSize: 20 })}
+      />
+      <ModalConfirmDelete
+        isOpen={!!userToDelete}
+        onClose={closeDeleteModal}
+        onConfirm={handleDeleteConfirm}
+        title="Confirmar eliminación de usuario"
+        message={`¿Está seguro que desea eliminar al usuario ${userToDelete?.username}?`}
+        isLoading={loading}
       />
     </>
   );

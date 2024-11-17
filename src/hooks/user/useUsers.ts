@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { getUsers } from "../../services/userService";
+import { deleteUser, getUsers } from "../../services/userService";
 import { ApiServiceError } from "@/services/api/ApiErrorHandler";
 import { PageRequest, PageResponse } from "@/types/Pagination";
 import { UserSearchParams } from "@/types/DTO/user/UserSearchParams";
@@ -28,6 +28,7 @@ export const useUsers = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ApiServiceError | null>(null);
+  const [userToDelete, setUserToDelete] = useState<UserListDTO | null>(null);
 
   const fetchUsers = useCallback(
     async (pageRequest?: PageRequest, searchParams?: UserSearchParams) => {
@@ -45,6 +46,29 @@ export const useUsers = () => {
     []
   );
 
+  const openDeleteModal = useCallback((user: UserListDTO) => {
+    setUserToDelete(user);
+  }, []);
+
+  const closeDeleteModal = useCallback(() => {
+    setUserToDelete(null);
+  }, []);
+
+  const handleDeleteConfirm = useCallback(async (): Promise<void> => {
+    if (!userToDelete) return;
+
+    try {
+      setLoading(true);
+      await deleteUser(userToDelete.id);
+      await fetchUsers();
+      closeDeleteModal();
+    } catch (err) {
+      setError(err as ApiServiceError);
+    } finally {
+      setLoading(false);
+    }
+  }, [userToDelete, fetchUsers, closeDeleteModal]);
+
   return {
     users: userPage.content,
     pagination: {
@@ -56,5 +80,9 @@ export const useUsers = () => {
     loading,
     error,
     fetchUsers,
+    handleDeleteConfirm,
+    userToDelete,
+    openDeleteModal,
+    closeDeleteModal,
   };
 };

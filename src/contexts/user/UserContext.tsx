@@ -18,6 +18,10 @@ interface UserContextType {
     pageRequest?: PageRequest,
     searchParams?: UserSearchParams
   ) => Promise<void>;
+  handleDeleteConfirm: () => Promise<void>;
+  userToDelete: UserListDTO | null;
+  openDeleteModal: (user: UserListDTO) => void;
+  closeDeleteModal: () => void;
 }
 
 export const UserContext = createContext<UserContextType>({
@@ -31,6 +35,10 @@ export const UserContext = createContext<UserContextType>({
   loading: false,
   error: null,
   fetchUsers: async () => {},
+  handleDeleteConfirm: async () => {},
+  userToDelete: null,
+  openDeleteModal: () => {},
+  closeDeleteModal: () => {},
 });
 
 export const useUserContext = () => {
