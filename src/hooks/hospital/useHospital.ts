@@ -9,215 +9,208 @@ import {
 import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
 import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
 import { useDebounce } from "../useDebounce";
-import { PaginationState } from "@/types/Pagination";
 
 // Types
 interface HospitalState {
-  hospitals: HospitalListDTO[];
-  loading: boolean;
-  error: string | null;
+  data: HospitalListDTO[];
+  detail: HospitalCreateRequest | null;
+  pagination: {
+    page: number;
+    pageSize: number;
+    totalPages: number;
+  };
+  status: {
+    loading: boolean;
+    loadingDetail: boolean;
+    isCreating: boolean;
+    isUpdating: boolean;
+    isDeleting: boolean;
+  };
+  errors: {
+    main: string | null;
+    detail: string | null;
+    create: string | null;
+    update: string | null;
+    delete: string | null;
+  };
 }
 
-interface DeleteState {
-  isDeleting: boolean;
-  error: string | null;
-}
-
-interface UpdateState {
-  isUpdating: boolean;
-  error: string | null;
-}
-
-export const useHospitals = () => {
-  const [hospitalDetail, setHospitalDetail] =
-    useState<HospitalCreateRequest | null>(null);
-  const [loadingDetail, setLoadingDetail] = useState(false);
-  const [detailError, setDetailError] = useState<string | null>(null);
-
-  // State management
-  const [deleteState, setDeleteState] = useState<DeleteState>({
-    isDeleting: false,
-    error: null,
-  });
-
-  const [updateState, setUpdateState] = useState<UpdateState>({
-    isUpdating: false,
-    error: null,
-  });
-
-  const [hospitalState, setHospitalState] = useState<HospitalState>({
-    hospitals: [],
-    loading: true,
-    error: null,
-  });
-
-  const [paginationState, setPaginationState] = useState<PaginationState>({
+const initialState: HospitalState = {
+  data: [],
+  detail: null,
+  pagination: {
     page: 0,
     pageSize: 20,
     totalPages: 0,
-  });
-
-  const [searchQuery, setSearchQuery] = useState("");
-  const [createState, setCreateState] = useState({
+  },
+  status: {
+    loading: false,
+    loadingDetail: false,
     isCreating: false,
-    error: null as string | null,
-  });
+    isUpdating: false,
+    isDeleting: false,
+  },
+  errors: {
+    main: null,
+    detail: null,
+    create: null,
+    update: null,
+    delete: null,
+  },
+};
 
+export const useHospitals = () => {
+  const [state, setState] = useState<HospitalState>(initialState);
+  const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useDebounce(searchQuery, 300);
 
-  // Fetch hospitals
-  const fetchHospitals = useCallback(
-    async (pageNumber: number) => {
-      try {
-        setHospitalState((prev) => ({ ...prev, loading: true, error: null }));
+  // Función auxiliar para actualizar el estado
+  const updateState = (newState: Partial<HospitalState>) => {
+    setState((prev) => ({ ...prev, ...newState }));
+  };
 
-        const data = await getHospitals({
-          pageNumber,
-          pageSize: paginationState.pageSize,
+  // Función auxiliar para manejar errores
+  const handleError = (
+    type: keyof HospitalState["errors"],
+    message: string
+  ) => {
+    setState((prev) => ({
+      ...prev,
+      errors: { ...prev.errors, [type]: message },
+      status: {
+        ...prev.status,
+        [`is${type.charAt(0).toUpperCase() + type.slice(1)}ing`]: false,
+      },
+    }));
+  };
+
+  const fetchHospitals = useCallback(
+    async (page: number) => {
+      try {
+        updateState({
+          status: { ...state.status, loading: true },
+          errors: { ...state.errors, main: null },
+        });
+
+        const response = await getHospitals({
+          pageNumber: page,
+          pageSize: state.pagination.pageSize,
           name: debouncedSearch || undefined,
           ruc: debouncedSearch || undefined,
         });
 
-        setHospitalState({
-          hospitals: data.content,
-          loading: false,
-          error: null,
+        updateState({
+          data: response.content,
+          pagination: {
+            ...state.pagination,
+            totalPages: response.totalPages,
+          },
+          status: { ...state.status, loading: false },
         });
-        setPaginationState((prev) => ({
-          ...prev,
-          totalPages: data.totalPages,
-        }));
-      } catch (err) {
-        setHospitalState((prev) => ({
-          ...prev,
-          loading: false,
-          error: "Error al cargar hospitales",
-        }));
-        console.error(err);
+      } catch (error) {
+        handleError("main", "Error al cargar hospitales");
+        console.error(error);
       }
     },
-    [debouncedSearch, paginationState.pageSize]
+    [debouncedSearch, state.errors, state.pagination, state.status]
   );
 
-  // Handle pagination and search
+  // Efecto para búsqueda y paginación
   useEffect(() => {
-    if (debouncedSearch && paginationState.page !== 0) {
-      setPaginationState((prev) => ({ ...prev, page: 0 }));
+    if (debouncedSearch && state.pagination.page !== 0) {
+      updateState({ pagination: { ...state.pagination, page: 0 } });
       return;
     }
-    fetchHospitals(paginationState.page);
-  }, [debouncedSearch, paginationState.page, fetchHospitals]);
+    fetchHospitals(state.pagination.page);
+  }, [debouncedSearch, state.pagination, fetchHospitals]);
 
-  // Create hospital
-  const handleCreateHospital = async (hospitalData: HospitalCreateRequest) => {
-    try {
-      setCreateState({ isCreating: true, error: null });
-      const newHospital = await createHospital(hospitalData);
-      await fetchHospitals(0);
-      setPaginationState((prev) => ({ ...prev, page: 0 }));
-      return newHospital;
-    } catch (error) {
-      setCreateState((prev) => ({
-        ...prev,
-        error: "Error al crear el hospital",
-      }));
-      throw error;
-    } finally {
-      setCreateState((prev) => ({ ...prev, isCreating: false }));
-    }
-  };
+  // Operaciones CRUD simplificadas
+  const crud = {
+    create: async (data: HospitalCreateRequest) => {
+      try {
+        updateState({ status: { ...state.status, isCreating: true } });
+        const result = await createHospital(data);
+        await fetchHospitals(0);
+        updateState({ pagination: { ...state.pagination, page: 0 } });
+        return result;
+      } catch (error) {
+        handleError("create", "Error al crear el hospital");
+        throw error;
+      }
+    },
 
-  // Eliminar hospital
-  const handleDeleteHospital = async (hospitalId: number) => {
-    try {
-      setDeleteState({ isDeleting: true, error: null });
-      await deleteHospital(hospitalId);
-      await fetchHospitals(0);
-      setPaginationState((prev) => ({ ...prev, page: 0 }));
-      return true;
-    } catch (error) {
-      setDeleteState((prev) => ({
-        ...prev,
-        error: "Error al eliminar el hospital",
-      }));
-      console.error("Error al eliminar hospital:", error);
-      return false;
-    } finally {
-      setDeleteState((prev) => ({ ...prev, isDeleting: false }));
-    }
-  };
+    read: async (id: number) => {
+      try {
+        updateState({ status: { ...state.status, loadingDetail: true } });
+        const data = await getHospital(id);
+        updateState({ detail: data });
+        return data;
+      } catch (error) {
+        handleError("detail", "Error al obtener el hospital");
+        throw error;
+      }
+    },
 
-  const handleGetHospital = async (id: number) => {
-    try {
-      setLoadingDetail(true);
-      setDetailError(null);
-      const data = await getHospital(id);
-      setHospitalDetail(data);
-      return data;
-    } catch (error) {
-      setDetailError("Error al obtener el hospital");
-      throw error;
-    } finally {
-      setLoadingDetail(false);
-    }
-  };
+    update: async (id: number, data: HospitalCreateRequest) => {
+      try {
+        updateState({ status: { ...state.status, isUpdating: true } });
+        const result = await updateHospital(id, data);
+        await fetchHospitals(state.pagination.page);
+        return result;
+      } catch (error) {
+        handleError("update", "Error al actualizar el hospital");
+        throw error;
+      }
+    },
 
-  const handleUpdateHospital = async (
-    id: number,
-    hospitalData: HospitalCreateRequest
-  ) => {
-    try {
-      setUpdateState({ isUpdating: true, error: null });
-      const updatedHospital = await updateHospital(id, hospitalData);
-      await fetchHospitals(paginationState.page); // Refresh current page
-      return updatedHospital;
-    } catch (error) {
-      setUpdateState((prev) => ({
-        ...prev,
-        error: "Error al actualizar el hospital",
-      }));
-      throw error;
-    } finally {
-      setUpdateState((prev) => ({ ...prev, isUpdating: false }));
-    }
+    delete: async (id: number) => {
+      try {
+        updateState({ status: { ...state.status, isDeleting: true } });
+        await deleteHospital(id);
+        await fetchHospitals(0);
+        updateState({ pagination: { ...state.pagination, page: 0 } });
+        return true;
+      } catch {
+        handleError("delete", "Error al eliminar el hospital");
+        return false;
+      }
+    },
   };
 
   return {
-    // Hospital data and state
-    hospitals: hospitalState.hospitals,
-    loading: hospitalState.loading,
-    error: hospitalState.error,
+    // Data
+    hospitals: state.data,
+    hospitalDetail: state.detail,
 
     // Pagination
-    currentPage: paginationState.page,
-    totalPages: paginationState.totalPages,
+    currentPage: state.pagination.page,
+    totalPages: state.pagination.totalPages,
     setPage: (page: number) =>
-      setPaginationState((prev) => ({ ...prev, page })),
+      updateState({ pagination: { ...state.pagination, page } }),
     setPageSize: (pageSize: number) =>
-      setPaginationState((prev) => ({ ...prev, pageSize })),
+      updateState({ pagination: { ...state.pagination, pageSize } }),
 
     // Search
     setSearchQuery,
 
-    // Create functionality
-    createHospital: handleCreateHospital,
-    isCreating: createState.isCreating,
-    createError: createState.error,
+    // Status
+    loading: state.status.loading,
+    loadingDetail: state.status.loadingDetail,
+    isCreating: state.status.isCreating,
+    isUpdating: state.status.isUpdating,
+    isDeleting: state.status.isDeleting,
 
-    // Delete functionality
-    deleteHospital: handleDeleteHospital,
-    isDeleting: deleteState.isDeleting,
-    deleteError: deleteState.error,
+    // Errors
+    error: state.errors.main,
+    detailError: state.errors.detail,
+    createError: state.errors.create,
+    updateError: state.errors.update,
+    deleteError: state.errors.delete,
 
-    // Update functionality
-    updateHospital: handleUpdateHospital,
-    isUpdating: updateState.isUpdating,
-    updateError: updateState.error,
-
-    // Hospital detail
-    getHospital: handleGetHospital,
-    hospitalDetail,
-    loadingDetail,
-    detailError,
+    // CRUD operations
+    createHospital: crud.create,
+    getHospital: crud.read,
+    updateHospital: crud.update,
+    deleteHospital: crud.delete,
   } as const;
 };
