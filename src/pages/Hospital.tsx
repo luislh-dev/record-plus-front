@@ -1,6 +1,5 @@
 import { HospitalTable } from "@/components/HospitalTable";
 import { useHospitalContext } from "@/contexts/hospital/hospitalContext";
-import { HospitalProvider } from "@/contexts/hospital/hospitalProvider";
 import { SearchIcon } from "@/icons/SearchIcon";
 import { Button, Input } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
@@ -33,7 +32,7 @@ const SearchComponent = () => {
 export function Hospital() {
   const navigate = useNavigate();
   return (
-    <HospitalProvider>
+    <>
       <div className="flex flex-row items-center justify-between mx-3">
         <h1 className="text-3xl font-bold">Hospitales</h1>
         <Button color="primary" onClick={() => navigate("/hospital/add")}>
@@ -44,6 +43,6 @@ export function Hospital() {
         <SearchComponent />
       </div>
       <HospitalTable />
-    </HospitalProvider>
+    </>
   );
 }
