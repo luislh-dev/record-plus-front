@@ -54,9 +54,12 @@ export function HospitalTable() {
     }
   }, [deleteHospital, selectedHospitalId]);
 
-  const handleEdit = (id: number) => {
-    navigate(`/hospital/${id}/edit`);
-  };
+  const handleEdit = React.useCallback(
+    (id: number) => {
+      navigate(`/hospital/${id}/edit`);
+    },
+    [navigate]
+  );
 
   const renderCell = React.useCallback(
     (hospital: Hospital, columnKey: React.Key) => {
@@ -106,7 +109,7 @@ export function HospitalTable() {
           return getKeyValue(hospital, columnKey as string);
       }
     },
-    [handleDelete, isDeleting]
+    [handleDelete, handleEdit, isDeleting]
   );
 
   const columns = [
