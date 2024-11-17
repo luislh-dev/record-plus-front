@@ -50,7 +50,9 @@ export const router = createBrowserRouter([
         path: "hospital",
         element: (
           <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
-            <Hospital />
+            <HospitalProvider>
+              <Hospital />
+            </HospitalProvider>
           </RoleBasedRoute>
         ),
       },

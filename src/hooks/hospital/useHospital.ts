@@ -87,10 +87,11 @@ export const useHospitals = () => {
   const fetchHospitals = useCallback(
     async (page: number) => {
       try {
-        updateState({
-          status: { ...state.status, loading: true },
-          errors: { ...state.errors, main: null },
-        });
+        setState((prev) => ({
+          ...prev,
+          status: { ...prev.status, loading: true },
+          errors: { ...prev.errors, main: null },
+        }));
 
         const response = await getHospitals({
           pageNumber: page,
@@ -99,30 +100,28 @@ export const useHospitals = () => {
           ruc: debouncedSearch || undefined,
         });
 
-        updateState({
+        setState((prev) => ({
+          ...prev,
           data: response.content,
           pagination: {
-            ...state.pagination,
+            ...prev.pagination,
             totalPages: response.totalPages,
           },
-          status: { ...state.status, loading: false },
-        });
+          status: { ...prev.status, loading: false },
+        }));
       } catch (error) {
         handleError("main", "Error al cargar hospitales");
         console.error(error);
       }
     },
-    [debouncedSearch, state.errors, state.pagination, state.status]
+    [debouncedSearch, state.pagination.pageSize]
   );
 
   // Efecto para búsqueda y paginación
   useEffect(() => {
-    if (debouncedSearch && state.pagination.page !== 0) {
-      updateState({ pagination: { ...state.pagination, page: 0 } });
-      return;
-    }
-    fetchHospitals(state.pagination.page);
-  }, [debouncedSearch, state.pagination, fetchHospitals]);
+    const currentPage = debouncedSearch ? 0 : state.pagination.page;
+    fetchHospitals(currentPage);
+  }, [debouncedSearch, state.pagination.page, fetchHospitals]);
 
   // Operaciones CRUD simplificadas
   const crud = {
