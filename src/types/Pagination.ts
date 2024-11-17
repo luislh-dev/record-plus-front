@@ -7,6 +7,12 @@ export interface PageRequest {
   };
 }
 
+export interface PaginationState {
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}
+
 export interface PageResponse<T> {
   content: T[];
   pageable: {
