@@ -1,5 +1,5 @@
 import { api } from "./api/api";
-import { User } from "@/types/user";
+import { User } from "@/types/DTO/user/user";
 import {
   UserCreateDTO,
   UserListDTO,
