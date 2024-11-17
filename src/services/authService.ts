@@ -1,5 +1,5 @@
 import { UserAuth } from "../types/userAuth";
-import { api } from "./api";
+import { api } from "./api/api";
 
 export const login = async (user: UserAuth) => {
   return await api.post("/login", {

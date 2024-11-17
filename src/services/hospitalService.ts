@@ -1,5 +1,5 @@
 import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
-import { api } from "./api";
+import { api } from "./api/api";
 import { PageResponse } from "@/types/Pagination";
 import { SearchParams } from "@/types/hospital";
 import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
