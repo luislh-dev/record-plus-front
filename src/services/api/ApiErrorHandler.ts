@@ -1,11 +1,5 @@
+import { ApiError } from "@/types/errros/ApiError";
 import { AxiosError } from "axios";
-
-export interface ApiError {
-  code: string;
-  message: string;
-  details: string[];
-  timestamp: string;
-}
 
 export class ApiServiceError extends Error {
   constructor(public error: ApiError) {
