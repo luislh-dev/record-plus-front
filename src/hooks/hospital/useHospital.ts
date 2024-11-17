@@ -3,6 +3,7 @@ import {
   createHospital,
   deleteHospital,
   getHospitals,
+  updateHospital,
 } from "@/services/hospitalService";
 import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
 import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
@@ -21,10 +22,20 @@ interface DeleteState {
   error: string | null;
 }
 
+interface UpdateState {
+  isUpdating: boolean;
+  error: string | null;
+}
+
 export const useHospitals = () => {
   // State management
   const [deleteState, setDeleteState] = useState<DeleteState>({
     isDeleting: false,
+    error: null,
+  });
+
+  const [updateState, setUpdateState] = useState<UpdateState>({
+    isUpdating: false,
     error: null,
   });
 
@@ -130,6 +141,26 @@ export const useHospitals = () => {
     }
   };
 
+  const handleUpdateHospital = async (
+    id: number,
+    hospitalData: HospitalCreateRequest
+  ) => {
+    try {
+      setUpdateState({ isUpdating: true, error: null });
+      const updatedHospital = await updateHospital(id, hospitalData);
+      await fetchHospitals(paginationState.page); // Refresh current page
+      return updatedHospital;
+    } catch (error) {
+      setUpdateState((prev) => ({
+        ...prev,
+        error: "Error al actualizar el hospital",
+      }));
+      throw error;
+    } finally {
+      setUpdateState((prev) => ({ ...prev, isUpdating: false }));
+    }
+  };
+
   return {
     // Hospital data and state
     hospitals: hospitalState.hospitals,
@@ -156,5 +187,10 @@ export const useHospitals = () => {
     deleteHospital: handleDeleteHospital,
     isDeleting: deleteState.isDeleting,
     deleteError: deleteState.error,
+
+    // Update functionality
+    updateHospital: handleUpdateHospital,
+    isUpdating: updateState.isUpdating,
+    updateError: updateState.error,
   } as const;
 };

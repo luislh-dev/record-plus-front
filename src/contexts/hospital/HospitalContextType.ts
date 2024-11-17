@@ -18,4 +18,10 @@ export interface HospitalContextType {
   deleteHospital: (id: number) => Promise<boolean>;
   isDeleting: boolean;
   deleteError: string | null;
+  updateHospital: (
+    id: number,
+    data: HospitalCreateRequest
+  ) => Promise<HospitalCreateRequest>;
+  isUpdating: boolean;
+  updateError: string | null;
 }
