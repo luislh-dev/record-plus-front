@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import { createHospital, getHospitals } from "@/services/hospitalService";
+import {
+  createHospital,
+  deleteHospital,
+  getHospitals,
+} from "@/services/hospitalService";
 import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
 import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
 import { useDebounce } from "../useDebounce";
@@ -12,8 +16,18 @@ interface HospitalState {
   error: string | null;
 }
 
+interface DeleteState {
+  isDeleting: boolean;
+  error: string | null;
+}
+
 export const useHospitals = () => {
   // State management
+  const [deleteState, setDeleteState] = useState<DeleteState>({
+    isDeleting: false,
+    error: null,
+  });
+
   const [hospitalState, setHospitalState] = useState<HospitalState>({
     hospitals: [],
     loading: true,
@@ -96,6 +110,26 @@ export const useHospitals = () => {
     }
   };
 
+  // Eliminar hospital
+  const handleDeleteHospital = async (hospitalId: number) => {
+    try {
+      setDeleteState({ isDeleting: true, error: null });
+      await deleteHospital(hospitalId);
+      await fetchHospitals(0);
+      setPaginationState((prev) => ({ ...prev, page: 0 }));
+      return true;
+    } catch (error) {
+      setDeleteState((prev) => ({
+        ...prev,
+        error: "Error al eliminar el hospital",
+      }));
+      console.error("Error al eliminar hospital:", error);
+      return false;
+    } finally {
+      setDeleteState((prev) => ({ ...prev, isDeleting: false }));
+    }
+  };
+
   return {
     // Hospital data and state
     hospitals: hospitalState.hospitals,
@@ -117,5 +151,10 @@ export const useHospitals = () => {
     createHospital: handleCreateHospital,
     isCreating: createState.isCreating,
     createError: createState.error,
+
+    // Delete functionality
+    deleteHospital: handleDeleteHospital,
+    isDeleting: deleteState.isDeleting,
+    deleteError: deleteState.error,
   } as const;
 };

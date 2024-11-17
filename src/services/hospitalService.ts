@@ -35,3 +35,7 @@ export const createHospital = async (
   );
   return response.data;
 };
+
+export const deleteHospital = async (id: number): Promise<void> => {
+  await api.delete(`/hospitals/${id}`);
+};

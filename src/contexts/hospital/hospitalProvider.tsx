@@ -22,6 +22,9 @@ export const HospitalProvider = ({ children }: HospitalProviderProps) => {
     createHospital: hospitalState.createHospital,
     isCreating: hospitalState.isCreating,
     createError: hospitalState.createError,
+    deleteHospital: hospitalState.deleteHospital,
+    isDeleting: hospitalState.isDeleting,
+    deleteError: hospitalState.deleteError,
   };
 
   return (

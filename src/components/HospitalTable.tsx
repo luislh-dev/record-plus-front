@@ -18,8 +18,28 @@ import { DeleteIcon } from "@/icons/DeleteIcon";
 import { useHospitalContext } from "@/contexts/hospital/hospitalContext";
 
 export function HospitalTable() {
-  const { hospitals, error, setPage, currentPage, totalPages } =
-    useHospitalContext();
+  const {
+    hospitals,
+    error,
+    setPage,
+    currentPage,
+    totalPages,
+    deleteHospital,
+    isDeleting,
+  } = useHospitalContext();
+
+  const handleDelete = React.useCallback(
+    async (id: number) => {
+      if (window.confirm("¿Está seguro que desea eliminar este hospital?")) {
+        const success = await deleteHospital(id);
+        if (!success) {
+          // You can add a toast notification here if needed
+          console.error("Error al eliminar el hospital");
+        }
+      }
+    },
+    [deleteHospital]
+  );
 
   const renderCell = React.useCallback(
     (hospital: Hospital, columnKey: React.Key) => {
@@ -51,7 +71,12 @@ export function HospitalTable() {
                 </span>
               </Tooltip>
               <Tooltip content="Eliminar hospital">
-                <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                <span
+                  className={`text-lg text-danger cursor-pointer active:opacity-50 ${
+                    isDeleting ? "opacity-50" : ""
+                  }`}
+                  onClick={() => !isDeleting && handleDelete(hospital.id)}
+                >
                   <DeleteIcon />
                 </span>
               </Tooltip>
@@ -61,7 +86,7 @@ export function HospitalTable() {
           return getKeyValue(hospital, columnKey as string);
       }
     },
-    []
+    [handleDelete, isDeleting]
   );
 
   const columns = [
