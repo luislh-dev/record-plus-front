@@ -1,16 +1,31 @@
-// HospitalProvider.tsx
+import { ReactNode } from "react";
 import { HospitalContext } from "./hospitalContext";
 import { useHospitals } from "@/hooks/hospital/useHospital";
+import { HospitalContextType } from "./HospitalContextType";
 
-export const HospitalProvider = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+interface HospitalProviderProps {
+  children: ReactNode;
+}
+
+export const HospitalProvider = ({ children }: HospitalProviderProps) => {
   const hospitalState = useHospitals();
 
+  const contextValue: HospitalContextType = {
+    hospitals: hospitalState.hospitals,
+    loading: hospitalState.loading,
+    error: hospitalState.error,
+    currentPage: hospitalState.currentPage,
+    totalPages: hospitalState.totalPages,
+    setPage: hospitalState.setPage,
+    setPageSize: hospitalState.setPageSize,
+    setSearchQuery: hospitalState.setSearchQuery,
+    createHospital: hospitalState.createHospital,
+    isCreating: hospitalState.isCreating,
+    createError: hospitalState.createError,
+  };
+
   return (
-    <HospitalContext.Provider value={hospitalState}>
+    <HospitalContext.Provider value={contextValue}>
       {children}
     </HospitalContext.Provider>
   );

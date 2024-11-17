@@ -1,16 +1,5 @@
-// hospitalContext.ts
 import { createContext, useContext } from "react";
-import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
-
-interface HospitalContextType {
-  hospitals: HospitalListDTO[];
-  loading: boolean;
-  error: string | null;
-  currentPage: number;
-  totalPages: number;
-  setPage: (page: number) => void;
-  setSearchQuery: (query: string) => void;
-}
+import { HospitalContextType } from "./HospitalContextType";
 
 export const HospitalContext = createContext<HospitalContextType | undefined>(
   undefined
