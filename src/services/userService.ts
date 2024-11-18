@@ -5,36 +5,25 @@ import {
   UserListDTO,
   UserUpdateDTO,
 } from "@/types/DTO/user/UserDto";
-import { PageRequest, PageResponse } from "@/types/Pagination";
+import { PageResponse } from "@/types/Pagination";
 import { UserSearchParams } from "@/types/DTO/user/UserSearchParams";
 
 export const getUsers = async (
-  pageRequest?: PageRequest,
   searchParams?: UserSearchParams
 ): Promise<PageResponse<UserListDTO>> => {
-  const params = new URLSearchParams();
-
-  // Add pagination params
-  if (pageRequest) {
-    params.append("page", pageRequest.pageNumber.toString());
-    params.append("size", pageRequest.pageSize.toString());
-    if (pageRequest.sort?.field) {
-      params.append(
-        "sort",
-        `${pageRequest.sort.field},${pageRequest.sort.direction || "asc"}`
-      );
-    }
-  }
-
-  // Add search params
-  if (searchParams) {
-    Object.entries(searchParams).forEach(([key, value]) => {
-      if (value) params.append(key, value);
-    });
-  }
-
-  const response = await api.get<PageResponse<UserListDTO>>("/users/search", {
-    params,
+  const { pageNumber, pageSize, sort, username, dni, hospital, id, role } =
+    searchParams || {};
+  const response = await api.get<PageResponse<UserListDTO>>("/users", {
+    params: {
+      page: pageNumber,
+      size: pageSize,
+      ...(sort && { sort: `${sort.field},${sort.direction}` }),
+      ...(username && { username }),
+      ...(dni && { dni }),
+      ...(hospital && { hospital }),
+      ...(id && { id }),
+      ...(role && { role }),
+    },
   });
   return response.data;
 };

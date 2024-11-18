@@ -14,7 +14,7 @@ export function UserTable() {
   const navigate = useNavigate();
 
   const {
-    users,
+    users = [],
     pagination: { currentPage, totalPages },
     fetchUsers,
     userToDelete,

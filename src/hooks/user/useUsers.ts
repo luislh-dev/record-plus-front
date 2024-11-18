@@ -36,7 +36,9 @@ export const useUsers = () => {
       try {
         setLoading(true);
         setError(null);
-        const data = await getUsers(pageRequest, {
+        const data = await getUsers({
+          pageNumber: pageRequest?.pageNumber ?? 0,
+          pageSize: pageRequest?.pageSize ?? 20,
           ...searchParams,
           username: searchQuery,
           dni: searchQuery,
