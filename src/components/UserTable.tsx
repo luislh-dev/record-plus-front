@@ -74,7 +74,7 @@ export function UserTable() {
       uuid: "actions",
       align: "center",
       render: (user: UserListDTO) => {
-        const isActive = user.state?.toLowerCase() === "active".toLowerCase();
+        const isActive = user.state?.toLowerCase() === "activo".toLowerCase();
 
         return (
           <div className="relative flex items-center justify-center w-full gap-2">
