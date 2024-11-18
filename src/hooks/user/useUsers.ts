@@ -1,5 +1,5 @@
-import { useState, useCallback } from "react";
-import { deleteUser, getUsers } from "../../services/userService";
+import { useState, useCallback, useEffect } from "react";
+import { deleteUser, getUsers } from "@/services/userService";
 import { ApiServiceError } from "@/services/api/ApiErrorHandler";
 import { PageRequest, PageResponse } from "@/types/Pagination";
 import { UserSearchParams } from "@/types/DTO/user/UserSearchParams";
@@ -29,13 +29,19 @@ export const useUsers = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<ApiServiceError | null>(null);
   const [userToDelete, setUserToDelete] = useState<UserListDTO | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const fetchUsers = useCallback(
     async (pageRequest?: PageRequest, searchParams?: UserSearchParams) => {
       try {
         setLoading(true);
         setError(null);
-        const data = await getUsers(pageRequest, searchParams);
+        const data = await getUsers(pageRequest, {
+          ...searchParams,
+          username: searchQuery,
+          dni: searchQuery,
+          hospital: searchQuery,
+        });
         setUserPage(data);
       } catch (err) {
         setError(err as ApiServiceError);
@@ -43,8 +49,12 @@ export const useUsers = () => {
         setLoading(false);
       }
     },
-    []
+    [searchQuery]
   );
+
+  useEffect(() => {
+    fetchUsers({ pageNumber: 0, pageSize: 20 });
+  }, [searchQuery, fetchUsers]);
 
   const openDeleteModal = useCallback((user: UserListDTO) => {
     setUserToDelete(user);
@@ -84,5 +94,6 @@ export const useUsers = () => {
     userToDelete,
     openDeleteModal,
     closeDeleteModal,
+    setSearchQuery,
   };
 };

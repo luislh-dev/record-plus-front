@@ -22,6 +22,7 @@ interface UserContextType {
   userToDelete: UserListDTO | null;
   openDeleteModal: (user: UserListDTO) => void;
   closeDeleteModal: () => void;
+  setSearchQuery: (query: string) => void;
 }
 
 export const UserContext = createContext<UserContextType>({
@@ -39,6 +40,7 @@ export const UserContext = createContext<UserContextType>({
   userToDelete: null,
   openDeleteModal: () => {},
   closeDeleteModal: () => {},
+  setSearchQuery: () => {},
 });
 
 export const useUserContext = () => {
