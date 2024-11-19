@@ -19,7 +19,7 @@ export type HospitalList = Pick<
   nameState: string;
 };
 
-export interface SearchParams extends PageRequest {
+export interface HospitalSearchParams extends PageRequest {
   name?: string;
   ruc?: string;
   id?: number;
