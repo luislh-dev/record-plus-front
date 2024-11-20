@@ -1,22 +1,26 @@
 import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
 import { api } from "./api/api";
 import { PageResponse } from "@/types/Pagination";
-import { SearchParams } from "@/types/hospital";
+import { HospitalSearchParams } from "@/types/hospital";
 import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
 
 export const getHospitals = async (
-  params: SearchParams
+  params?: Partial<HospitalSearchParams>
 ): Promise<PageResponse<HospitalListDTO>> => {
-  const { pageNumber, pageSize, sort, name, ruc, id } = params;
+  // Incluir únicamente parámetros no nulos o indefinidos
+  const queryParams = {
+    ...(params?.name && { name: params.name }),
+    ...(params?.ruc && { ruc: params.ruc }),
+    ...(params?.id && { id: params.id }),
+    ...(params?.pageNumber !== undefined && { page: params.pageNumber }),
+    ...(params?.pageSize !== undefined && { size: params.pageSize }),
+    ...(params?.sort && {
+      sort: `${params.sort.field},${params.sort.direction}`,
+    }),
+  };
+
   const response = await api.get<PageResponse<HospitalListDTO>>("/hospitals", {
-    params: {
-      page: pageNumber,
-      size: pageSize,
-      ...(sort && { sort: `${sort.field},${sort.direction}` }),
-      ...(name && { name }),
-      ...(ruc && { ruc }),
-      ...(id && { id }),
-    },
+    params: queryParams,
   });
   return response.data;
 };
