@@ -26,6 +26,8 @@ interface GenericTableProps<T> {
   emptyMessage?: string;
   errorMessage?: string;
   showPagination?: boolean;
+  isLoading?: boolean;
+  loadingContent?: React.ReactNode;
 }
 
 export function GenericTable<T extends { id: number | string }>({
@@ -38,38 +40,38 @@ export function GenericTable<T extends { id: number | string }>({
   emptyMessage = "No se encontraron resultados...",
   errorMessage = "Ha ocurrido un error inesperado. Por favor, inténtelo de nuevo más tarde.",
   showPagination = true,
+  isLoading = false,
+  loadingContent = "Cargando...",
 }: GenericTableProps<T>) {
-  const renderCell = (item: T, columnKey: keyof T | "actions") => {
-    const column = columns.find((col) => col.uuid === columnKey);
+  const renderCell = React.useCallback(
+    (item: T, columnKey: keyof T | "actions") => {
+      const column = columns.find((col) => col.uuid === columnKey);
+      return column?.render
+        ? column.render(item)
+        : (item[columnKey as keyof T] as unknown as React.ReactNode);
+    },
+    [columns]
+  );
 
-    if (column?.render) {
-      return column.render(item);
-    }
-
-    return item[columnKey as keyof T] as unknown as React.ReactNode;
-  };
+  const renderPagination = () =>
+    !error &&
+    data.length > 0 &&
+    showPagination && (
+      <div className="flex w-full justify-start">
+        <TablePagination
+          isCompact
+          showControls
+          showShadow
+          color="primary"
+          page={currentPage + 1}
+          total={totalPages}
+          onChange={(page) => onPageChange?.(page - 1)}
+        />
+      </div>
+    );
 
   return (
-    <Table
-      aria-label="Tabla genérica"
-      bottomContent={
-        !error &&
-        data.length > 0 &&
-        showPagination && (
-          <div className="flex w-full justify-start">
-            <TablePagination
-              isCompact
-              showControls
-              showShadow
-              color="primary"
-              page={currentPage + 1}
-              total={totalPages}
-              onChange={(page) => onPageChange?.(page - 1)}
-            />
-          </div>
-        )
-      }
-    >
+    <Table aria-label="Tabla genérica" bottomContent={renderPagination()}>
       <TableHeader>
         {columns.map((column) => (
           <TableColumn
@@ -83,6 +85,8 @@ export function GenericTable<T extends { id: number | string }>({
       <TableBody
         items={error ? [] : data}
         emptyContent={error ? errorMessage : emptyMessage}
+        isLoading={isLoading}
+        loadingContent={isLoading && data.length === 0 ? loadingContent : null}
       >
         {(item) => (
           <TableRow key={item.id}>
