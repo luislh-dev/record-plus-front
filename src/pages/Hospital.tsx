@@ -9,8 +9,10 @@ import { EyeIcon } from "@/icons/EyeIcon";
 import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
 import { Chip, Input, Tooltip } from "@nextui-org/react";
 import { ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function Hospital() {
+  const navigate = useNavigate();
   const {
     data: hospitals,
     isLoading,
@@ -62,7 +64,10 @@ export function Hospital() {
             </span>
           </Tooltip>
           <Tooltip content="Editar hospital">
-            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+            <span
+              className="text-lg text-default-400 cursor-pointer active:opacity-50"
+              onClick={() => navigate(`/hospitals/${hospital.id}/edit`)}
+            >
               <EditIcon />
             </span>
           </Tooltip>
