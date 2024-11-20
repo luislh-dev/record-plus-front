@@ -24,6 +24,12 @@ export function HospitalEdit() {
   const [stateValue, setStateValue] = useState<string>("");
 
   useEffect(() => {
+    if (hospital?.stateId) {
+      setStateValue(hospital.stateId.toString());
+    }
+  }, [hospital]);
+
+  useEffect(() => {
     if (id) {
       getById(parseInt(id));
     }
@@ -120,10 +126,12 @@ export function HospitalEdit() {
 
         <Select
           label="Estados"
-          selectedKeys={[hospital?.stateId.toString() || ""]}
-          onSelectionChange={(keys) =>
-            setStateValue(Array.from(keys)[0] as string)
-          }
+          value={stateValue}
+          selectedKeys={stateValue ? [stateValue] : []}
+          onSelectionChange={(keys) => {
+            const selected = Array.from(keys)[0] as string;
+            setStateValue(selected);
+          }}
         >
           {state.map((item) => (
             <SelectItem key={item.id} value={item.id.toString()}>
