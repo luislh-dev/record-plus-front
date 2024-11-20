@@ -4,7 +4,7 @@ import { MenuItem } from "@/types/MenuItem";
 export const menuItems: MenuItem[] = [
   {
     label: "Hospitales",
-    path: "/hospital",
+    path: "/hospitals",
     roles: [Roles.ADMIN],
   },
   {
