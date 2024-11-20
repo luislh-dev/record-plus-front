@@ -1,47 +1,40 @@
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, useNavigate, useParams } from "react-router-dom";
-import { useHospitalContext } from "@/contexts/hospital/hospitalContext";
 import { useStates } from "@/hooks/state/useState";
+import { useHospital } from "@/hooks/useHospital";
+import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
 
 export function HospitalEdit() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const {
-    getHospital,
-    hospitalDetail,
-    loadingDetail,
-    detailError,
-    updateHospital,
-    isUpdating,
-  } = useHospitalContext();
-
   const { state } = useStates();
+
+  const {
+    getById,
+    getByIdState: {
+      isLoading: isLoadingHospital,
+      data: hospital,
+      error: getError,
+    },
+    handleUpdate,
+    updateState: { isUpdating, error: updateError },
+  } = useHospital();
+
   const [stateValue, setStateValue] = useState<string>("");
-  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    if (!id || isInitialized) return;
+    if (id) {
+      getById(parseInt(id));
+    }
+  }, [id, getById]);
 
-    const hospitalId = parseInt(id);
-    if (isNaN(hospitalId)) return;
-
-    getHospital(hospitalId)
-      .then((hospital) => {
-        if (hospital) {
-          setStateValue(hospital.stateId.toString());
-          setIsInitialized(true);
-        }
-      })
-      .catch(console.error);
-  }, [id, getHospital, isInitialized]);
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (!id) return;
 
-    const formData = new FormData(event.currentTarget);
-    const hospitalData = {
+    const formData = new FormData(e.currentTarget);
+    const data: HospitalCreateRequest = {
       name: formData.get("name") as string,
       ruc: formData.get("ruc") as string,
       email: formData.get("email") as string,
@@ -51,16 +44,20 @@ export function HospitalEdit() {
     };
 
     try {
-      await updateHospital(parseInt(id), hospitalData);
+      await handleUpdate(parseInt(id), data);
       navigate(-1);
     } catch (error) {
       console.error("Error updating hospital:", error);
     }
   };
 
-  if (loadingDetail) return <div>Cargando...</div>;
-  if (detailError) return <div>Error: {detailError}</div>;
-  if (!hospitalDetail) return <div>No se encontró el hospital</div>;
+  if (isLoadingHospital) {
+    return <div>Cargando...</div>;
+  }
+
+  if (getError) {
+    return <div>Error: {getError}</div>;
+  }
 
   return (
     <div className="space-y-6">
@@ -81,7 +78,7 @@ export function HospitalEdit() {
           name="name"
           label="Nombre del Hospital"
           placeholder="Ingrese el nombre"
-          defaultValue={hospitalDetail.name}
+          defaultValue={hospital?.name}
           isRequired
         />
 
@@ -90,7 +87,7 @@ export function HospitalEdit() {
           name="ruc"
           label="RUC"
           placeholder="Ingrese el RUC"
-          defaultValue={hospitalDetail.ruc}
+          defaultValue={hospital?.ruc}
           isRequired
         />
 
@@ -99,7 +96,7 @@ export function HospitalEdit() {
           name="email"
           label="Correo electrónico"
           placeholder="Ingrese el correo"
-          defaultValue={hospitalDetail.email}
+          defaultValue={hospital?.email}
           isRequired
         />
 
@@ -108,7 +105,7 @@ export function HospitalEdit() {
           name="phone"
           label="Teléfono"
           placeholder="Ingrese el teléfono"
-          defaultValue={hospitalDetail.phone}
+          defaultValue={hospital?.phone}
           isRequired
         />
 
@@ -117,13 +114,13 @@ export function HospitalEdit() {
           name="address"
           label="Dirección"
           placeholder="Ingrese la dirección"
-          defaultValue={hospitalDetail.address}
+          defaultValue={hospital?.address}
           isRequired
         />
 
         <Select
           label="Estados"
-          selectedKeys={stateValue ? [stateValue] : []}
+          selectedKeys={[hospital?.stateId.toString() || ""]}
           onSelectionChange={(keys) =>
             setStateValue(Array.from(keys)[0] as string)
           }
@@ -141,6 +138,8 @@ export function HospitalEdit() {
           </Button>
         </div>
       </Form>
+
+      {updateError && <div className="text-danger">{updateError}</div>}
     </div>
   );
 }
