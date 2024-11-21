@@ -1,9 +1,9 @@
 import { useStates } from "@/hooks/state/useState";
-import { useHospital } from "@/pages/hospital/hooks/useHospital";
 import { HospitalCreateRequest } from "@/pages/hospital/types/HospitalCreateRequest";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Form, useNavigate } from "react-router-dom";
+import { useHospitalCreate } from "./hooks/useHospitalCreate";
 
 export function HospitalAdd() {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ export function HospitalAdd() {
   const {
     handleCreate,
     createState: { isCreating, error: createError },
-  } = useHospital();
+  } = useHospitalCreate();
 
   useEffect(() => {
     if (state.length > 0 && !stateValue) {
