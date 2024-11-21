@@ -4,7 +4,7 @@ import {
   getHospital,
   getHospitals,
   updateHospital,
-} from "@/services/hospitalService";
+} from "../service/hospitalService";
 import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
 import { useGenericSearch } from "@/hooks/generic/useGenericSearch";
 import { useCallback, useState } from "react";
