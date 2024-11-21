@@ -2,7 +2,7 @@ import { GenericTable } from "@/components/GenericTable";
 import { ModalConfirmDelete } from "@/components/ModalConfirmDelete";
 import { State } from "@/constants/state";
 import { statusColorMap } from "@/constants/statusColorMap";
-import { useHospital } from "@/hooks/useHospital";
+import { useHospital } from "@/pages/hospital/hooks/useHospital";
 import { Add } from "@/icons/Add";
 import { DeleteIcon } from "@/icons/DeleteIcon";
 import { EditIcon } from "@/icons/EditIcon";

@@ -2,7 +2,7 @@ import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import { Form, useNavigate, useParams } from "react-router-dom";
 import { useStates } from "@/hooks/state/useState";
-import { useHospital } from "@/hooks/useHospital";
+import { useHospital } from "@/pages/hospital/hooks/useHospital";
 import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
 
 export function HospitalEdit() {

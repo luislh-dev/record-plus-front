@@ -1,5 +1,5 @@
 import { useStates } from "@/hooks/state/useState";
-import { useHospital } from "@/hooks/useHospital";
+import { useHospital } from "@/pages/hospital/hooks/useHospital";
 import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";

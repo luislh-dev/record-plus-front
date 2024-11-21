@@ -7,7 +7,7 @@ import {
 } from "@/services/hospitalService";
 import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
 import { HospitalSearchParams } from "@/types/hospital";
-import { useGenericSearch } from "./generic/useGenericSearch";
+import { useGenericSearch } from "@/hooks/generic/useGenericSearch";
 import { useCallback, useState } from "react";
 import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
 
