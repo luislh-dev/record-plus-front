@@ -5,11 +5,11 @@ import {
   getHospitals,
   updateHospital,
 } from "@/services/hospitalService";
-import { HospitalListDTO } from "@/pages/hospital/types/dto/HospitalListDTO";
-import { HospitalSearchParams } from "@/types/hospital";
+import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
 import { useGenericSearch } from "@/hooks/generic/useGenericSearch";
 import { useCallback, useState } from "react";
-import { HospitalCreateRequest } from "@/pages/hospital/types/dto/HospitalCreateRequest";
+import { HospitalCreateRequest } from "@/pages/hospital/types/HospitalCreateRequest";
+import { HospitalSearchParams } from "../types/hospital";
 
 interface UseParams {
   initialPageSize?: number;

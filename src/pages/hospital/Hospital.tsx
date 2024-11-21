@@ -7,7 +7,7 @@ import { Add } from "@/icons/Add";
 import { DeleteIcon } from "@/icons/DeleteIcon";
 import { EditIcon } from "@/icons/EditIcon";
 import { EyeIcon } from "@/icons/EyeIcon";
-import { HospitalListDTO } from "@/pages/hospital/types/dto/HospitalListDTO";
+import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
 import { Button, Chip, Input, Tooltip } from "@nextui-org/react";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";

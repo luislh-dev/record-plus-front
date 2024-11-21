@@ -1,5 +1,5 @@
-import { PageRequest } from "./Pagination";
-import { State } from "./state";
+import { PageRequest } from "@/types/Pagination";
+import { State } from "@/types/state";
 
 export interface Hospital {
   id: number;
