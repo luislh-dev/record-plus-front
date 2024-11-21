@@ -4,6 +4,7 @@ import { Form, useNavigate, useParams } from "react-router-dom";
 import { useStates } from "@/hooks/state/useState";
 import { useHospital } from "@/pages/hospital/hooks/useHospital";
 import { HospitalCreateRequest } from "@/pages/hospital/types/HospitalCreateRequest";
+import { useHospitalUpdate } from "./hooks/useHospitalUpdate";
 
 export function HospitalEdit() {
   const navigate = useNavigate();
@@ -17,9 +18,12 @@ export function HospitalEdit() {
       data: hospital,
       error: getError,
     },
+  } = useHospital();
+
+  const {
     handleUpdate,
     updateState: { isUpdating, error: updateError },
-  } = useHospital();
+  } = useHospitalUpdate();
 
   const [stateValue, setStateValue] = useState<string>("");
 

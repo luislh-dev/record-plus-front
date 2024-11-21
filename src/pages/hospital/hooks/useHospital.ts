@@ -2,7 +2,6 @@ import {
   deleteHospital,
   getHospital,
   getHospitals,
-  updateHospital,
 } from "../service/hospitalService";
 import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
 import { useGenericSearch } from "@/hooks/generic/useGenericSearch";
@@ -31,10 +30,6 @@ export function useHospital(params: UseParams = {}) {
     data: null as HospitalCreateRequest | null,
   });
 
-  const [updateState, setUpdateState] = useState({
-    isUpdating: false,
-    error: null as string | null,
-  });
   // Buscar y listar
   const result = useGenericSearch<HospitalListDTO, HospitalSearchParams>({
     ...params,
@@ -94,28 +89,6 @@ export function useHospital(params: UseParams = {}) {
     }
   }, []);
 
-  // Actualizar
-  const handleUpdate = useCallback(
-    async (id: number, data: HospitalCreateRequest) => {
-      setUpdateState({ isUpdating: true, error: null });
-
-      try {
-        await updateHospital(id, data);
-        result.refresh(); // Refresh list after update
-      } catch (error) {
-        console.error("Error updating hospital:", error);
-        setUpdateState({
-          isUpdating: false,
-          error: "Error al actualizar el hospital",
-        });
-        throw error; // Re-throw to handle in component
-      } finally {
-        setUpdateState((prev) => ({ ...prev, isUpdating: false }));
-      }
-    },
-    [result]
-  );
-
   return {
     // listar y buscar
     ...result,
@@ -126,10 +99,6 @@ export function useHospital(params: UseParams = {}) {
     openDeleteModal,
     closeDeleteModal,
     handleDelete,
-
-    // actualizar
-    updateState,
-    handleUpdate,
 
     // obtener por id
     getByIdState,
