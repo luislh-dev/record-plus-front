@@ -4,7 +4,7 @@ import { AuthLayout } from "@/layouts/AuthLayout";
 import { MainLayout } from "@/layouts/MainLayout";
 import { Login } from "@/pages/Login";
 import { People } from "@/pages/people/People";
-import { User } from "@/pages/User";
+import { User } from "@/pages/user/User";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { RoleBasedRoute } from "./RoleBasedRoute";
 import { Roles } from "@/constants/roles";
