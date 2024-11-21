@@ -1,8 +1,8 @@
-import { useAuth } from "../../contexts/useAuthContext";
+import { useAuth } from "@/contexts/useAuthContext";
 import { useNavigate } from "react-router-dom";
-import { login } from "../../services/authService";
-import { decodeToken } from "../../utils/tokenUtils";
-import { removeStoredToken } from "../../utils/tokenUtils";
+import { login } from "@/services/authService";
+import { decodeToken } from "@/utils/tokenUtils";
+import { removeStoredToken } from "@/utils/tokenUtils";
 
 export const useAuthLogin = () => {
   const { dispatch } = useAuth();
