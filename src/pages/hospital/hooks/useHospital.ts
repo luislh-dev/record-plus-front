@@ -1,12 +1,8 @@
-import {
-  deleteHospital,
-  getHospital,
-  getHospitals,
-} from "../service/hospitalService";
+import { deleteHospital, getHospitals } from "../service/hospitalService";
 import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
 import { useGenericSearch } from "@/hooks/generic/useGenericSearch";
 import { useCallback, useState } from "react";
-import { HospitalCreateRequest } from "@/pages/hospital/types/HospitalCreateRequest";
+
 import { HospitalSearchParams } from "../types/hospital";
 
 interface UseParams {
@@ -23,11 +19,6 @@ export function useHospital(params: UseParams = {}) {
   const [modalState, setModalState] = useState({
     isOpen: false,
     hospitalId: null as number | null,
-  });
-  const [getByIdState, setGetByIdState] = useState({
-    isLoading: false,
-    error: null as string | null,
-    data: null as HospitalCreateRequest | null,
   });
 
   // Buscar y listar
@@ -65,30 +56,6 @@ export function useHospital(params: UseParams = {}) {
     setModalState({ isOpen: false, hospitalId: null });
   }, []);
 
-  // Obtener por id
-  const getById = useCallback(async (id: number) => {
-    setGetByIdState((prev) => ({ ...prev, isLoading: true, error: null }));
-
-    try {
-      const hospital = await getHospital(id);
-      setGetByIdState((prev) => ({
-        ...prev,
-        data: hospital,
-        isLoading: false,
-      }));
-      return hospital;
-    } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Error al obtener el hospital";
-      setGetByIdState((prev) => ({
-        ...prev,
-        error: message,
-        isLoading: false,
-      }));
-      throw error;
-    }
-  }, []);
-
   return {
     // listar y buscar
     ...result,
@@ -99,9 +66,5 @@ export function useHospital(params: UseParams = {}) {
     openDeleteModal,
     closeDeleteModal,
     handleDelete,
-
-    // obtener por id
-    getByIdState,
-    getById,
   };
 }
