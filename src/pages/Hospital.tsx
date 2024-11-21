@@ -7,7 +7,7 @@ import { DeleteIcon } from "@/icons/DeleteIcon";
 import { EditIcon } from "@/icons/EditIcon";
 import { EyeIcon } from "@/icons/EyeIcon";
 import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
-import { Chip, Input, Tooltip } from "@nextui-org/react";
+import { Button, Chip, Input, Tooltip } from "@nextui-org/react";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -97,20 +97,28 @@ export function Hospital() {
   return (
     <>
       <div>
-        <h1>Lista de Hospitales</h1>
-        <Input
-          classNames={{
-            base: "max-w-full sm:max-w-[15rem] h-10",
-            mainWrapper: "h-full",
-            input: "text-small",
-            inputWrapper:
-              "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-          }}
-          type="text"
-          placeholder="Buscar hospital..."
-          value={searchTerm}
-          onChange={(e) => handleSearch(e.target.value)}
-        />
+        <div className="flex max-w-full justify-between">
+          <h1>Lista de Hospitales</h1>
+          <Button color="primary" onClick={() => navigate("/hospitals/add")}>
+            Agregar Hospital
+          </Button>
+        </div>
+        <search>
+          <Input
+            classNames={{
+              base: "max-w-full sm:max-w-[15rem] h-10",
+              mainWrapper: "h-full",
+              input: "text-small",
+              inputWrapper:
+                "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
+            }}
+            onClear={() => handleSearch("")}
+            type="text"
+            placeholder="Buscar hospital..."
+            value={searchTerm}
+            onChange={(e) => handleSearch(e.target.value)}
+          />
+        </search>
         <GenericTable<HospitalListDTO>
           columns={columns}
           data={hospitals}
