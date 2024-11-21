@@ -3,6 +3,7 @@ import { ModalConfirmDelete } from "@/components/ModalConfirmDelete";
 import { State } from "@/constants/state";
 import { statusColorMap } from "@/constants/statusColorMap";
 import { useHospital } from "@/hooks/useHospital";
+import { Add } from "@/icons/Add";
 import { DeleteIcon } from "@/icons/DeleteIcon";
 import { EditIcon } from "@/icons/EditIcon";
 import { EyeIcon } from "@/icons/EyeIcon";
@@ -97,13 +98,17 @@ export function Hospital() {
   return (
     <>
       <div>
-        <div className="flex max-w-full justify-between">
-          <h1>Lista de Hospitales</h1>
-          <Button color="primary" onClick={() => navigate("/hospitals/add")}>
+        <div className="flex max-w-full justify-between px-3">
+          <h1 className="text-2xl font-bold">Lista de Hospitales</h1>
+          <Button
+            color="primary"
+            onClick={() => navigate("/hospitals/add")}
+            endContent={<Add size={18} />}
+          >
             Agregar Hospital
           </Button>
         </div>
-        <search>
+        <search className="px-2 pb-2 pt-4">
           <Input
             classNames={{
               base: "max-w-full sm:max-w-[15rem] h-10",
