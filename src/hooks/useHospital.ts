@@ -1,4 +1,5 @@
 import {
+  createHospital,
   deleteHospital,
   getHospital,
   getHospitals,
@@ -24,6 +25,11 @@ export function useHospital(params: UseParams = {}) {
   const [modalState, setModalState] = useState({
     isOpen: false,
     hospitalId: null as number | null,
+  });
+
+  const [createState, setCreateState] = useState({
+    isCreating: false,
+    error: null as string | null,
   });
 
   const [getByIdState, setGetByIdState] = useState({
@@ -70,6 +76,28 @@ export function useHospital(params: UseParams = {}) {
   const closeDeleteModal = useCallback(() => {
     setModalState({ isOpen: false, hospitalId: null });
   }, []);
+
+  // Crear
+  const handleCreate = useCallback(
+    async (data: HospitalCreateRequest) => {
+      setCreateState({ isCreating: true, error: null });
+
+      try {
+        await createHospital(data);
+        result.refresh(); // Refresh list after creation
+      } catch (error) {
+        console.error("Error creating hospital:", error);
+        setCreateState({
+          isCreating: false,
+          error: "Error al crear el hospital",
+        });
+        throw error;
+      } finally {
+        setCreateState((prev) => ({ ...prev, isCreating: false }));
+      }
+    },
+    [result]
+  );
 
   // Obtener por id
   const getById = useCallback(async (id: number) => {
@@ -127,6 +155,10 @@ export function useHospital(params: UseParams = {}) {
     openDeleteModal,
     closeDeleteModal,
     handleDelete,
+
+    // crear
+    createState,
+    handleCreate,
 
     // actualizar
     updateState,
