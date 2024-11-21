@@ -1,7 +1,8 @@
-import { useHospitals } from "@/hooks/hospital/useHospital";
 import { useStates } from "@/hooks/state/useState";
+import { useHospital } from "@/hooks/useHospital";
+import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, useNavigate } from "react-router-dom";
 
 export function HospitalAdd() {
@@ -9,32 +10,35 @@ export function HospitalAdd() {
 
   // Recuperar los estados
   const state = useStates().state;
-  const [value, setValue] = React.useState<string>("");
+  const [stateValue, setStateValue] = useState<string>("");
+
+  const {
+    handleCreate,
+    createState: { isCreating, error: createError },
+  } = useHospital();
 
   useEffect(() => {
-    if (state.length > 0 && !value) {
-      setValue(state[0].id.toString());
+    if (state.length > 0 && !stateValue) {
+      setStateValue(state[0].id.toString());
     }
-  }, [state, value]);
+  }, [state, stateValue]);
 
-  const { createHospital, isCreating } = useHospitals();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-
-    const hospitalData = {
+    const formData = new FormData(e.currentTarget);
+    const data: HospitalCreateRequest = {
       name: formData.get("name") as string,
       ruc: formData.get("ruc") as string,
       email: formData.get("email") as string,
       phone: formData.get("phone") as string,
       address: formData.get("address") as string,
-      stateId: parseInt(value),
+      stateId: parseInt(stateValue),
     };
 
     try {
-      await createHospital(hospitalData);
-      navigate(-1); // Go back after successful creation
+      await handleCreate(data);
+      navigate("/hospitals");
     } catch (error) {
       console.error("Error creating hospital:", error);
     }
@@ -95,8 +99,10 @@ export function HospitalAdd() {
         />
         <Select
           label="Estados"
-          selectedKeys={value ? [value] : []}
-          onSelectionChange={(keys) => setValue(Array.from(keys)[0] as string)}
+          selectedKeys={stateValue ? [stateValue] : []}
+          onSelectionChange={(keys) =>
+            setStateValue(Array.from(keys)[0] as string)
+          }
         >
           {state.map((item) => (
             <SelectItem key={item.id} value={item.id.toString()}>
@@ -111,6 +117,7 @@ export function HospitalAdd() {
           </Button>
         </div>
       </Form>
+      {createError && <div className="text-danger">{createError}</div>}
     </div>
   );
 }
