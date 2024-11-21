@@ -10,9 +10,9 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import { RoleBasedRoute } from "./RoleBasedRoute";
 import { Roles } from "@/constants/roles";
 import { UserProvider } from "@/contexts/user/UserProvider";
-import { Hospital } from "@/pages/Hospital";
-import { HospitalEdit } from "@/pages/HospitalEdit";
-import { HospitalAdd } from "@/pages/HospitalAdd";
+import { Hospital } from "@/pages/hospital/Hospital";
+import { HospitalEdit } from "@/pages/hospital/HospitalEdit";
+import { HospitalAdd } from "@/pages/hospital/HospitalAdd";
 
 export const router = createBrowserRouter([
   {
