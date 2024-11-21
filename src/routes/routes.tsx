@@ -12,6 +12,7 @@ import { Roles } from "@/constants/roles";
 import { UserProvider } from "@/contexts/user/UserProvider";
 import { Hospital } from "@/pages/Hospital";
 import { HospitalEdit } from "@/pages/HospitalEdit";
+import { HospitalAdd } from "@/pages/HospitalAdd";
 
 export const router = createBrowserRouter([
   {
@@ -72,9 +73,6 @@ export const router = createBrowserRouter([
       </PrivateRoute>
     ),
     children: [
-      // ... existing routes ...
-
-      // Hospital routes
       {
         path: "hospitals",
         children: [
@@ -83,6 +81,14 @@ export const router = createBrowserRouter([
             element: (
               <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
                 <Hospital />
+              </RoleBasedRoute>
+            ),
+          },
+          {
+            path: "add",
+            element: (
+              <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
+                <HospitalAdd />
               </RoleBasedRoute>
             ),
           },
