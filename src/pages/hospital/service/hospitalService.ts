@@ -1,8 +1,8 @@
-import { HospitalListDTO } from "@/types/DTO/hospital/HospitalListDTO";
+import { HospitalListDTO } from "@/pages/hospital/types/dto/HospitalListDTO";
 import { api } from "@/services/api/api";
 import { PageResponse } from "@/types/Pagination";
 import { HospitalSearchParams } from "@/types/hospital";
-import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
+import { HospitalCreateRequest } from "@/pages/hospital/types/dto/HospitalCreateRequest";
 
 export const getHospitals = async (
   params?: Partial<HospitalSearchParams>

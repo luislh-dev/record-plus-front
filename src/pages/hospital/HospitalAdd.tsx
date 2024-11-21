@@ -1,6 +1,6 @@
 import { useStates } from "@/hooks/state/useState";
 import { useHospital } from "@/pages/hospital/hooks/useHospital";
-import { HospitalCreateRequest } from "@/types/DTO/hospital/HospitalCreateRequest";
+import { HospitalCreateRequest } from "@/pages/hospital/types/dto/HospitalCreateRequest";
 import { Button, Input, Select, SelectItem } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import { Form, useNavigate } from "react-router-dom";
