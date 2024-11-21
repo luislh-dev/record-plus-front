@@ -4,7 +4,6 @@ import { AuthLayout } from "@/layouts/AuthLayout";
 import { MainLayout } from "@/layouts/MainLayout";
 import { Login } from "@/pages/Login";
 import { People } from "@/pages/people/People";
-import { ProtectedPage } from "@/pages/ProtectedPage";
 import { User } from "@/pages/User";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { RoleBasedRoute } from "./RoleBasedRoute";
@@ -13,6 +12,7 @@ import { UserProvider } from "@/contexts/user/UserProvider";
 import { Hospital } from "@/pages/hospital/Hospital";
 import { HospitalEdit } from "@/pages/hospital/HospitalEdit";
 import { HospitalAdd } from "@/pages/hospital/HospitalAdd";
+import { Home } from "@/pages/home/Home";
 
 export const router = createBrowserRouter([
   {
@@ -42,7 +42,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "dashboard",
-        element: <ProtectedPage />,
+        element: <Home />,
       },
       {
         path: "people",
