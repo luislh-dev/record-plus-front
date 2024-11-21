@@ -3,7 +3,7 @@ import { PublicRoute } from "@/routes/PublicRoute";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { MainLayout } from "@/layouts/MainLayout";
 import { Login } from "@/pages/Login";
-import { People } from "@/pages/People";
+import { People } from "@/pages/people/People";
 import { ProtectedPage } from "@/pages/ProtectedPage";
 import { User } from "@/pages/User";
 import { createBrowserRouter, Navigate } from "react-router-dom";
