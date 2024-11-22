@@ -15,6 +15,11 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
   fetchData,
   initialFilters = {},
 }: UseGenericSearchParams<TEntity, TSearchParams>) {
+  const defaultSort = {
+    field: "updatedAt",
+    direction: "asc" as const,
+  };
+
   const [data, setData] = useState<TEntity[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -27,6 +32,7 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
   const [filters, setFilters] = useState<Partial<TSearchParams>>({
     pageNumber: 0,
     pageSize: initialPageSize,
+    sort: defaultSort,
     ...initialFilters,
   });
 

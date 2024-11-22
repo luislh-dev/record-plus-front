@@ -22,6 +22,8 @@ export function Hospital() {
     handleSearch,
     pagination,
     setPage,
+    sortConfig,
+    handleSort,
     deleteState: { isDeleting },
     isOpen,
     openDeleteModal,
@@ -34,8 +36,9 @@ export function Hospital() {
     uuid: keyof Hospital | "actions";
     align?: "start" | "center" | "end";
     render?: (hospital: Hospital) => ReactNode;
+    sortable?: boolean;
   }> = [
-    { name: "Nombre", uuid: "name" },
+    { name: "Nombre", uuid: "name", sortable: true },
     { name: "Teléfono", uuid: "phone" },
     { name: "Correo electrónico", uuid: "email" },
     { name: "RUC", uuid: "ruc" },
@@ -134,6 +137,8 @@ export function Hospital() {
           totalPages={pagination.totalPages}
           currentPage={pagination.currentPage}
           onPageChange={setPage}
+          onSort={handleSort}
+          sortConfig={sortConfig}
         />
       </div>
       <ModalConfirmDelete

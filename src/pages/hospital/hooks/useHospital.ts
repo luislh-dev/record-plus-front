@@ -2,7 +2,6 @@ import { deleteHospital, getHospitals } from "../service/hospitalService";
 import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
 import { useGenericSearch } from "@/hooks/generic/useGenericSearch";
 import { useCallback, useState } from "react";
-
 import { HospitalSearchParams } from "../types/hospital";
 
 interface UseParams {
@@ -21,11 +20,33 @@ export function useHospital(params: UseParams = {}) {
     hospitalId: null as number | null,
   });
 
+  const [sortConfig, setSortConfig] = useState({
+    field: "name",
+    direction: "asc" as "asc" | "desc",
+  });
+
   // Buscar y listar
   const result = useGenericSearch<HospitalListDTO, HospitalSearchParams>({
     ...params,
     fetchData: getHospitals,
+    initialFilters: {
+      sort: sortConfig,
+    },
   });
+
+  // Ordenar por campo y dirección
+  const handleSort = useCallback(
+    (field: keyof HospitalListDTO) => {
+      const newDirection =
+        sortConfig.field === field && sortConfig.direction === "asc"
+          ? "desc"
+          : "asc";
+
+      setSortConfig({ field, direction: newDirection });
+      result.setSort(field, newDirection);
+    },
+    [sortConfig, result]
+  );
 
   // Eliminar
   const handleDelete = useCallback(async () => {
@@ -59,6 +80,8 @@ export function useHospital(params: UseParams = {}) {
   return {
     // listar y buscar
     ...result,
+    handleSort,
+    sortConfig,
 
     // eliminar
     deleteState,

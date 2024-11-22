@@ -14,6 +14,7 @@ interface Column<T> {
   uuid: keyof T | "actions";
   align?: "start" | "center" | "end";
   render?: (item: T) => React.ReactNode;
+  sortable?: boolean;
 }
 
 interface GenericTableProps<T> {
@@ -28,6 +29,11 @@ interface GenericTableProps<T> {
   showPagination?: boolean;
   isLoading?: boolean;
   loadingContent?: React.ReactNode;
+  onSort?: (field: keyof T) => void;
+  sortConfig?: {
+    field: string;
+    direction: "asc" | "desc";
+  };
 }
 
 export function GenericTable<T extends { id: number | string }>({
@@ -42,6 +48,8 @@ export function GenericTable<T extends { id: number | string }>({
   showPagination = true,
   isLoading = false,
   loadingContent = "Cargando...",
+  onSort,
+  sortConfig,
 }: GenericTableProps<T>) {
   const renderCell = React.useCallback(
     (item: T, columnKey: keyof T | "actions") => {
@@ -77,8 +85,21 @@ export function GenericTable<T extends { id: number | string }>({
           <TableColumn
             key={String(column.uuid)}
             align={column.align || "start"}
+            onClick={() => {
+              if (column.sortable && onSort) {
+                onSort(column.uuid as keyof T);
+              }
+            }}
+            style={{
+              cursor: column.sortable ? "pointer" : "default",
+            }}
           >
-            {column.name}
+            <div className="flex items-center gap-2">
+              {column.name}
+              {column.sortable && sortConfig?.field === column.uuid && (
+                <span>{sortConfig.direction === "asc" ? "↑" : "↓"}</span>
+              )}
+            </div>
           </TableColumn>
         ))}
       </TableHeader>
