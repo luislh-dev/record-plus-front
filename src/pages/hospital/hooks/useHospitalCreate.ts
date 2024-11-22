@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
-import { HospitalCreateRequest } from "../types/HospitalCreateRequest";
 import { createHospital } from "../service/hospitalService";
+import { HospitalCreateValues } from "../models/hospitalCreateSchema";
+import { toHospitalCreateRequest } from "../adapter/hospitalAdapter";
 
 export function useHospitalCreate(onSuccess?: () => void) {
   const [createState, setCreateState] = useState({
@@ -9,11 +10,11 @@ export function useHospitalCreate(onSuccess?: () => void) {
   });
 
   const handleCreate = useCallback(
-    async (data: HospitalCreateRequest) => {
+    async (data: HospitalCreateValues) => {
       setCreateState({ isCreating: true, error: null });
 
       try {
-        await createHospital(data);
+        await createHospital(toHospitalCreateRequest(data));
         onSuccess?.();
       } catch (error) {
         console.error("Error creating hospital:", error);
