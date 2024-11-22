@@ -8,20 +8,26 @@ import { CustomInput } from "@/components/CustomInput";
 import { Button } from "@nextui-org/react";
 import { CustomSelect } from "@/components/CustomSelect";
 import { useStates } from "@/hooks/state/useState";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { ApiError } from "@/types/errros/ApiError";
 
 interface Props {
   onSubmit: (data: HospitalCreateValues) => void;
   isSubmitting?: boolean;
   defaultValues?: HospitalCreateValues;
+  apiErrors?: ApiError | null;
 }
 
 export const HospitalForm = ({
   onSubmit,
   isSubmitting,
   defaultValues,
+  apiErrors,
 }: Props) => {
   const state = useStates().state;
+  const [backendErrors, setBackendErrors] = useState<Record<string, string>>(
+    {}
+  );
 
   const {
     control,
@@ -46,6 +52,19 @@ export const HospitalForm = ({
     }
   }, [state, setValue]);
 
+  useEffect(() => {
+    if (apiErrors?.details) {
+      const parsedErrors: Record<string, string> = {};
+      apiErrors.details.forEach((detail) => {
+        const [field, message] = detail.split(": ");
+        parsedErrors[field] = message;
+      });
+      setBackendErrors(parsedErrors);
+    } else {
+      setBackendErrors({});
+    }
+  }, [apiErrors]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
       <CustomInput
@@ -53,7 +72,12 @@ export const HospitalForm = ({
         control={control}
         label="Nombre del hospital"
         placeholder="Ingrese el nombre"
-        error={errors.name}
+        error={
+          errors.name ||
+          (backendErrors["name"]
+            ? { message: backendErrors["name"], type: "backend" }
+            : undefined)
+        }
         isRequired
       />
       <CustomInput
@@ -61,7 +85,12 @@ export const HospitalForm = ({
         control={control}
         label="Dirección"
         placeholder="Ingrese la dirección"
-        error={errors.address}
+        error={
+          errors.address ||
+          (backendErrors["address"]
+            ? { message: backendErrors["address"], type: "backend" }
+            : undefined)
+        }
         isRequired
       />
       <CustomInput
@@ -69,7 +98,12 @@ export const HospitalForm = ({
         control={control}
         label="Teléfono"
         placeholder="Ingrese el teléfono"
-        error={errors.phone}
+        error={
+          errors.phone ||
+          (backendErrors["phone"]
+            ? { message: backendErrors["phone"], type: "backend" }
+            : undefined)
+        }
         isRequired
       />
       <CustomInput
@@ -77,7 +111,12 @@ export const HospitalForm = ({
         control={control}
         label="Correo electrónico"
         placeholder="Ingrese el correo"
-        error={errors.email}
+        error={
+          errors.email ||
+          (backendErrors["email"]
+            ? { message: backendErrors["email"], type: "backend" }
+            : undefined)
+        }
         isRequired
       />
       <CustomInput
@@ -85,7 +124,12 @@ export const HospitalForm = ({
         control={control}
         label="RUC"
         placeholder="Ingrese el RUC"
-        error={errors.ruc}
+        error={
+          errors.ruc ||
+          (backendErrors["ruc"]
+            ? { message: backendErrors["ruc"], type: "backend" }
+            : undefined)
+        }
         isRequired
       />
       <CustomSelect
@@ -93,7 +137,12 @@ export const HospitalForm = ({
         control={control}
         label="Estado"
         options={state}
-        error={errors.stateId}
+        error={
+          errors.stateId ||
+          (backendErrors["stateId"]
+            ? { message: backendErrors["stateId"], type: "backend" }
+            : undefined)
+        }
       />
       <div className="col-span-2 flex justify-end gap-2">
         <Button type="submit" color="primary" isLoading={isSubmitting}>

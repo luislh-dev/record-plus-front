@@ -21,7 +21,7 @@ export function HospitalEdit() {
 
   const {
     handleUpdate,
-    updateState: { isUpdating, error: updateError },
+    updateState: { isLoading: isUpdating, error: updateError },
   } = useHospitalUpdate();
 
   useEffect(() => {
@@ -67,9 +67,8 @@ export function HospitalEdit() {
           ruc: hospital?.ruc || "",
           stateId: hospital?.stateId || 0,
         }}
+        apiErrors={updateError}
       />
-
-      {updateError && <div className="text-danger">{updateError}</div>}
     </div>
   );
 }

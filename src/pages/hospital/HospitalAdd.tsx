@@ -6,9 +6,10 @@ import { HospitalCreateValues } from "./models/hospitalCreateSchema";
 
 export function HospitalAdd() {
   const navigate = useNavigate();
+
   const {
     handleCreate,
-    createState: { isCreating, error: createError },
+    createState: { isLoading, error },
   } = useHospitalCreate();
 
   const onSubmit = async (data: HospitalCreateValues) => {
@@ -29,9 +30,11 @@ export function HospitalAdd() {
         </Button>
       </div>
 
-      <HospitalForm onSubmit={onSubmit} isSubmitting={isCreating} />
-
-      {createError && <div className="text-danger">{createError}</div>}
+      <HospitalForm
+        onSubmit={onSubmit}
+        isSubmitting={isLoading}
+        apiErrors={error}
+      />
     </div>
   );
 }
