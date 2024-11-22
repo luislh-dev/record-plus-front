@@ -7,7 +7,8 @@ import { HospitalSearchParams } from "../types/hospital";
 export const getHospitals = async (
   params?: Partial<HospitalSearchParams>
 ): Promise<PageResponse<HospitalListDTO>> => {
-  // Incluir únicamente parámetros no nulos o indefinidos
+  const defaultSort = "updatedAt,asc";
+
   const queryParams = {
     ...(params?.name && { name: params.name }),
     ...(params?.ruc && { ruc: params.ruc }),
@@ -15,7 +16,9 @@ export const getHospitals = async (
     ...(params?.pageNumber !== undefined && { page: params.pageNumber }),
     ...(params?.pageSize !== undefined && { size: params.pageSize }),
     ...(params?.sort && {
-      sort: `${params.sort.field},${params.sort.direction}`,
+      sort: params?.sort
+        ? `${params.sort.field},${params.sort.direction}`
+        : defaultSort,
     }),
   };
 
