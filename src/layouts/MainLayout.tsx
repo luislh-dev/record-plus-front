@@ -14,7 +14,7 @@ export const MainLayout = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="grid grid-cols-[250px_1fr_1fr] grid-rows-[80px_1fr] min-h-screen">
+      <div className="grid grid-cols-[200px_1fr_1fr] grid-rows-[80px_1fr] min-h-screen">
         <aside className="bg-white shadow-lg row-span-2">
           <div className="p-4 flex flex-col gap-2">
             <h1 className="text-xl font-bold mb-4">Record Plus</h1>
@@ -52,7 +52,7 @@ export const MainLayout = () => {
           </div>
         </nav>
 
-        <main className="col-span-2 p-6">
+        <main className="col-span-2 p-6 bg-gray-200">
           <Outlet />
         </main>
       </div>
