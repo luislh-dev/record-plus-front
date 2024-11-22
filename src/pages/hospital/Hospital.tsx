@@ -6,7 +6,6 @@ import { useHospital } from "@/pages/hospital/hooks/useHospital";
 import { Add } from "@/icons/Add";
 import { DeleteIcon } from "@/icons/DeleteIcon";
 import { EditIcon } from "@/icons/EditIcon";
-import { EyeIcon } from "@/icons/EyeIcon";
 import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
 import { Button, Chip, Input, Tooltip } from "@nextui-org/react";
 import { ReactNode } from "react";
@@ -62,11 +61,6 @@ export function Hospital() {
       align: "center",
       render: (hospital: Hospital) => (
         <div className="relative flex items-center justify-center w-full gap-2">
-          <Tooltip content="Ver detalles">
-            <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-              <EyeIcon />
-            </span>
-          </Tooltip>
           <Tooltip content="Editar hospital">
             <span
               className="text-lg text-default-400 cursor-pointer active:opacity-50"
