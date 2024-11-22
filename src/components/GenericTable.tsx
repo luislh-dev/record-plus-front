@@ -1,13 +1,5 @@
+import { Pagination } from "@nextui-org/react";
 import React from "react";
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Pagination as TablePagination,
-} from "@nextui-org/react";
 
 interface Column<T> {
   name: string;
@@ -66,7 +58,7 @@ export function GenericTable<T extends { id: number | string }>({
     data.length > 0 &&
     showPagination && (
       <div className="flex w-full justify-start">
-        <TablePagination
+        <Pagination
           isCompact
           showControls
           showShadow
@@ -74,51 +66,104 @@ export function GenericTable<T extends { id: number | string }>({
           page={currentPage + 1}
           total={totalPages}
           onChange={(page) => onPageChange?.(page - 1)}
+          size="lg"
         />
       </div>
     );
 
   return (
-    <Table aria-label="Tabla genérica" bottomContent={renderPagination()}>
-      <TableHeader>
-        {columns.map((column) => (
-          <TableColumn
-            key={String(column.uuid)}
-            align={column.align || "start"}
-            onClick={() => {
-              if (column.sortable && onSort) {
-                onSort(column.uuid as keyof T);
-              }
-            }}
-            style={{
-              cursor: column.sortable ? "pointer" : "default",
-            }}
-          >
-            <div className="flex items-center gap-2">
-              {column.name}
-              {column.sortable && sortConfig?.field === column.uuid && (
-                <span>{sortConfig.direction === "asc" ? "↑" : "↓"}</span>
+    <div className="w-full">
+      <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-2">
+        {/* Add overflow container */}
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[800px] border-collapse">
+            {" "}
+            {/* Add min-width */}
+            <thead>
+              <tr className="rounded-t-lg">
+                {columns.map((column) => (
+                  <th
+                    key={String(column.uuid)}
+                    className={`
+                        p-4 text-left border-b whitespace-nowrap
+                        ${column.sortable ? "cursor-pointer " : ""}
+                        ${column === columns[0] ? "rounded-tl-lg" : ""}
+                        ${
+                          column === columns[columns.length - 1]
+                            ? "rounded-tr-lg"
+                            : ""
+                        }
+                      `}
+                    onClick={() => {
+                      if (column.sortable && onSort) {
+                        onSort(column.uuid as keyof T);
+                      }
+                    }}
+                  >
+                    <div className="flex items-center">
+                      {column.name}
+                      {column.sortable && sortConfig?.field === column.uuid && (
+                        <span className="ml-2">
+                          {sortConfig.direction === "asc" ? "↑" : "↓"}
+                        </span>
+                      )}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {isLoading ? (
+                <tr>
+                  <td
+                    colSpan={columns.length}
+                    className="text-center p-20 text-gray-500 font-semibold"
+                  >
+                    {loadingContent}
+                  </td>
+                </tr>
+              ) : error ? (
+                <tr>
+                  <td
+                    colSpan={columns.length}
+                    className="text-center p-20 text-red-500 font-semibold"
+                  >
+                    {errorMessage}
+                  </td>
+                </tr>
+              ) : data.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={columns.length}
+                    className="text-center p-20 text-gray-500"
+                  >
+                    {emptyMessage}
+                  </td>
+                </tr>
+              ) : (
+                data.map((item) => (
+                  <tr
+                    key={item.id}
+                    className="hover:bg-gray-50 last:border-b-0"
+                  >
+                    {columns.map((column) => (
+                      <td
+                        key={String(column.uuid)}
+                        className={`p-4 whitespace-nowrap ${
+                          column.align ? `text-${column.align}` : ""
+                        }`}
+                      >
+                        {renderCell(item, column.uuid)}
+                      </td>
+                    ))}
+                  </tr>
+                ))
               )}
-            </div>
-          </TableColumn>
-        ))}
-      </TableHeader>
-      <TableBody
-        items={error ? [] : data}
-        emptyContent={error ? errorMessage : emptyMessage}
-        isLoading={isLoading}
-        loadingContent={isLoading && data.length === 0 ? loadingContent : null}
-      >
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => (
-              <TableCell>
-                {renderCell(item, columnKey as keyof T | "actions")}
-              </TableCell>
-            )}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div className="px-3 py-4">{renderPagination()}</div>
+    </div>
   );
 }
