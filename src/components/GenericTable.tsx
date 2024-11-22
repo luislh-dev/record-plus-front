@@ -120,7 +120,7 @@ export function GenericTable<T extends { id: number | string }>({
               </tr>
             </thead>
             <tbody>
-              {isLoading ? (
+              {isLoading && !data.length ? (
                 <tr>
                   <td
                     colSpan={columns.length}
@@ -151,7 +151,9 @@ export function GenericTable<T extends { id: number | string }>({
                 data.map((item) => (
                   <tr
                     key={item.id}
-                    className="hover:bg-gray-50 last:border-b-0"
+                    className={`hover:bg-gray-50 last:border-b-0 ${
+                      isLoading ? "opacity-50" : ""
+                    }`}
                   >
                     {columns.map((column) => (
                       <td
