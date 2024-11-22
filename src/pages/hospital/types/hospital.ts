@@ -11,14 +11,6 @@ export interface Hospital {
   state: State;
 }
 
-// Vista simplificada de la lista de hospitales
-export type HospitalList = Pick<
-  Hospital,
-  "id" | "name" | "phone" | "email" | "ruc"
-> & {
-  nameState: string;
-};
-
 export interface HospitalSearchParams extends PageRequest {
   name?: string;
   ruc?: string;
