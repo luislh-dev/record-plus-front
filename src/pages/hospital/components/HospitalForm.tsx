@@ -8,8 +8,9 @@ import { CustomInput } from "@/components/CustomInput";
 import { Button } from "@nextui-org/react";
 import { CustomSelect } from "@/components/CustomSelect";
 import { useStates } from "@/hooks/state/useState";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ApiError } from "@/types/errros/ApiError";
+import { useApiErrors } from "@/hooks/useApiErrors";
 
 interface Props {
   onSubmit: (data: HospitalCreateValues) => void;
@@ -25,9 +26,7 @@ export const HospitalForm = ({
   apiErrors,
 }: Props) => {
   const state = useStates().state;
-  const [backendErrors, setBackendErrors] = useState<Record<string, string>>(
-    {}
-  );
+  const { backendErrors } = useApiErrors(apiErrors);
 
   const {
     control,
@@ -51,19 +50,6 @@ export const HospitalForm = ({
       setValue("stateId", state[0].id);
     }
   }, [state, setValue]);
-
-  useEffect(() => {
-    if (apiErrors?.details) {
-      const parsedErrors: Record<string, string> = {};
-      apiErrors.details.forEach((detail) => {
-        const [field, message] = detail.split(": ");
-        parsedErrors[field] = message;
-      });
-      setBackendErrors(parsedErrors);
-    } else {
-      setBackendErrors({});
-    }
-  }, [apiErrors]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
