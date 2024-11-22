@@ -13,9 +13,14 @@ import { useEffect } from "react";
 interface Props {
   onSubmit: (data: HospitalCreateValues) => void;
   isSubmitting?: boolean;
+  defaultValues?: HospitalCreateValues;
 }
 
-export const HospitalForm = ({ onSubmit, isSubmitting }: Props) => {
+export const HospitalForm = ({
+  onSubmit,
+  isSubmitting,
+  defaultValues,
+}: Props) => {
   const state = useStates().state;
 
   const {
@@ -26,7 +31,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting }: Props) => {
   } = useForm<HospitalCreateValues>({
     resolver: zodResolver(hospitalCreateSchema),
     mode: "onChange",
-    defaultValues: {
+    defaultValues: defaultValues || {
       name: "",
       address: "",
       phone: "",
