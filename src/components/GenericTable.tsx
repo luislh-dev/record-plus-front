@@ -1,3 +1,5 @@
+import { ArrowDown } from "@/icons/ArrowDown";
+import { ArrowUp } from "@/icons/ArrowUp";
 import { Pagination } from "@nextui-org/react";
 import React from "react";
 
@@ -74,11 +76,8 @@ export function GenericTable<T extends { id: number | string }>({
   return (
     <div className="w-full">
       <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-2">
-        {/* Add overflow container */}
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[800px] border-collapse">
-            {" "}
-            {/* Add min-width */}
+          <table className="w-full min-w-full border-collapse">
             <thead>
               <tr className="rounded-t-lg">
                 {columns.map((column) => (
@@ -86,7 +85,7 @@ export function GenericTable<T extends { id: number | string }>({
                     key={String(column.uuid)}
                     className={`
                         p-4 text-left border-b whitespace-nowrap
-                        ${column.sortable ? "cursor-pointer " : ""}
+                        ${column.sortable ? "cursor-pointer" : ""}
                         ${column === columns[0] ? "rounded-tl-lg" : ""}
                         ${
                           column === columns[columns.length - 1]
@@ -100,11 +99,19 @@ export function GenericTable<T extends { id: number | string }>({
                       }
                     }}
                   >
-                    <div className="flex items-center">
+                    <div
+                      className={`flex items-center ${
+                        sortConfig ? "justify-between" : ""
+                      }`}
+                    >
                       {column.name}
                       {column.sortable && sortConfig?.field === column.uuid && (
                         <span className="ml-2">
-                          {sortConfig.direction === "asc" ? "↑" : "↓"}
+                          {sortConfig.direction === "asc" ? (
+                            <ArrowUp />
+                          ) : (
+                            <ArrowDown />
+                          )}
                         </span>
                       )}
                     </div>
@@ -126,7 +133,7 @@ export function GenericTable<T extends { id: number | string }>({
                 <tr>
                   <td
                     colSpan={columns.length}
-                    className="text-center p-20 text-red-500 font-semibold"
+                    className="text-center p-20 text-red-400 font-semibold"
                   >
                     {errorMessage}
                   </td>
