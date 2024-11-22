@@ -84,15 +84,16 @@ export function GenericTable<T extends { id: number | string }>({
                   <th
                     key={String(column.uuid)}
                     className={`
-                        p-4 text-left border-b whitespace-nowrap
-                        ${column.sortable ? "cursor-pointer" : ""}
-                        ${column === columns[0] ? "rounded-tl-lg" : ""}
-                        ${
-                          column === columns[columns.length - 1]
-                            ? "rounded-tr-lg"
-                            : ""
-                        }
-                      `}
+                    p-4 whitespace-nowrap border-b
+                    ${column.sortable ? "cursor-pointer" : ""}
+                    ${column === columns[0] ? "rounded-tl-lg" : ""}
+                    ${
+                      column === columns[columns.length - 1]
+                        ? "rounded-tr-lg"
+                        : ""
+                    }
+                    ${column.align === "center" ? "text-center" : "text-left"}
+                  `}
                     onClick={() => {
                       if (column.sortable && onSort) {
                         onSort(column.uuid as keyof T);
@@ -101,7 +102,11 @@ export function GenericTable<T extends { id: number | string }>({
                   >
                     <div
                       className={`flex items-center ${
-                        sortConfig ? "justify-between" : ""
+                        column.align === "center"
+                          ? "justify-center"
+                          : sortConfig
+                          ? "justify-between"
+                          : "justify-start"
                       }`}
                     >
                       {column.name}
@@ -159,7 +164,11 @@ export function GenericTable<T extends { id: number | string }>({
                       <td
                         key={String(column.uuid)}
                         className={`p-4 whitespace-nowrap ${
-                          column.align ? `text-${column.align}` : ""
+                          column.align === "center"
+                            ? "text-center"
+                            : column.align === "end"
+                            ? "text-right"
+                            : "text-left"
                         }`}
                       >
                         {renderCell(item, column.uuid)}
