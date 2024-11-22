@@ -15,4 +15,5 @@ export interface HospitalSearchParams extends PageRequest {
   name?: string;
   ruc?: string;
   id?: number;
+  stateId?: number;
 }

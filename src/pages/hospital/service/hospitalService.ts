@@ -13,6 +13,7 @@ export const getHospitals = async (
     ...(params?.name && { name: params.name }),
     ...(params?.ruc && { ruc: params.ruc }),
     ...(params?.id && { id: params.id }),
+    ...(params?.stateId && { stateId: params.stateId }),
     ...(params?.pageNumber !== undefined && { page: params.pageNumber }),
     ...(params?.pageSize !== undefined && { size: params.pageSize }),
     ...(params?.sort && {
