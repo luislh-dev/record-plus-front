@@ -10,7 +10,7 @@ export interface SortConfig {
 }
 
 export interface PaginationState {
-  page: number;
+  currentPage: number;
   pageSize: number;
   totalPages: number;
   totalElements: number;
