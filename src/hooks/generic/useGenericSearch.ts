@@ -15,10 +15,10 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
   fetchData,
   initialFilters = {},
 }: UseGenericSearchParams<TEntity, TSearchParams>) {
-  const defaultSort = {
-    field: "updatedAt",
-    direction: "asc" as const,
-  };
+  const [sortConfig, setSortConfig] = useState({
+    field: "name",
+    direction: "asc" as "asc" | "desc",
+  });
 
   const [data, setData] = useState<TEntity[]>([]);
   const [isLoading, setLoading] = useState(true);
@@ -32,9 +32,27 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
   const [filters, setFilters] = useState<Partial<TSearchParams>>({
     pageNumber: 0,
     pageSize: initialPageSize,
-    sort: defaultSort,
+    initialFilters: {
+      sort: sortConfig,
+    },
     ...initialFilters,
   });
+
+  // Ordenar por campo y dirección
+  const handleSort = useCallback(
+    (field: keyof TEntity) => {
+      const direction =
+        sortConfig.field === field && sortConfig.direction === "asc"
+          ? "desc"
+          : "asc";
+      setSortConfig({ field: field as string, direction });
+      setFilters((prev) => ({
+        ...prev,
+        sort: { field: field as string, direction },
+      }));
+    },
+    [sortConfig]
+  );
 
   // Estado de paginación
   const [pagination, setPagination] = useState({
@@ -120,5 +138,8 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
     setSort,
     refresh: () => fetchItems(filters),
     setFilters,
+    handleSort,
+    setSortConfig,
+    sortConfig,
   };
 }
