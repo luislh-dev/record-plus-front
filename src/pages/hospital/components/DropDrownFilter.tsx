@@ -13,25 +13,23 @@ import {
 
 interface DropDownFilterProps {
   onStateChange: (stateId: number | null) => void;
-  selectedState: string;
+  selectedState: number | null;
 }
 
 export function DropDownFilter({
   onStateChange,
-  selectedState = "todos",
+  selectedState = null,
 }: DropDownFilterProps) {
   const { state } = useStates();
 
   const handleValueChange = (selectedValue: string) => {
+    // Si se selecciona "Todos", se pasa null
     if (selectedValue === "todos") {
       onStateChange(null);
-      return;
     }
-
-    // Find the state object by name and pass its ID
-    const selectedStateObj = state.find((s) => s.name === selectedValue);
-    if (selectedStateObj) {
-      onStateChange(selectedStateObj.id);
+    // Si se selecciona un estado, se pasa el ID
+    else {
+      onStateChange(parseInt(selectedValue));
     }
   };
 
@@ -61,7 +59,7 @@ export function DropDownFilter({
           <DropdownItem textValue="Estados">
             <RadioGroup
               aria-label="Seleccionar estado"
-              value={selectedState}
+              value={selectedState?.toString() || "todos"}
               onValueChange={handleValueChange}
             >
               <Radio
@@ -72,7 +70,11 @@ export function DropDownFilter({
                 Todos
               </Radio>
               {state?.map((item) => (
-                <Radio key={item.id} value={item.name} aria-label={item.name}>
+                <Radio
+                  key={item.id}
+                  value={item.id.toString()}
+                  aria-label={item.name}
+                >
                   {item.name}
                 </Radio>
               ))}

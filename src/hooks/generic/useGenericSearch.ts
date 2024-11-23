@@ -37,6 +37,7 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedState, setState] = useState<number | null>(null);
   const [sortConfig, setSortConfig] = useState<SortConfig>({
     field: "name",
     direction: "asc",
@@ -104,6 +105,11 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
     setSearchTerm(term);
   }, []);
 
+  const handleStateChange = useCallback((stateId: number | null) => {
+    setState(stateId);
+    setFilters((prev) => ({ ...prev, stateId }));
+  }, []);
+
   const handleSort = useCallback(
     (field: keyof TEntity) => {
       const direction =
@@ -139,6 +145,7 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
     pagination,
     filters,
     sortConfig,
+    selectedState,
 
     // Acciones
     handleSearch,
@@ -146,6 +153,7 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
     setPage,
     setPageSize,
     setFilters,
+    handleStateChange,
     refresh: () => fetchItems(filters),
   };
 }

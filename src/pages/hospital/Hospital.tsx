@@ -29,6 +29,8 @@ export function Hospital() {
     openDeleteModal,
     closeDeleteModal,
     handleDelete,
+    selectedState,
+    handleStateChange,
   } = useHospital();
 
   // Definición de columnas para la tabla
@@ -88,8 +90,8 @@ export function Hospital() {
         <SearchBar
           searchTerm={searchTerm}
           onSearch={handleSearch}
-          selectedState=""
-          onStateChange={() => {}}
+          selectedState={selectedState}
+          onStateChange={handleStateChange}
         />
 
         {/* Tabla de hospitales */}

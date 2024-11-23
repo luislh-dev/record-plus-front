@@ -6,7 +6,7 @@ import { Search } from "@/icons/Search";
 interface SearchBarProps {
   searchTerm: string;
   onSearch: (term: string) => void;
-  selectedState: string;
+  selectedState: number | null;
   onStateChange: (state: number | null) => void;
 }
 
