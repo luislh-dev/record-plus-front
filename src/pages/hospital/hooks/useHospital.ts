@@ -4,29 +4,50 @@ import { useGenericSearch } from "@/hooks/generic/useGenericSearch";
 import { useCallback, useState } from "react";
 import { HospitalSearchParams } from "../types/hospital";
 
-interface UseParams {
+interface UseHospitalParams {
   initialPageSize?: number;
   searchDelay?: number;
 }
 
-export function useHospital(params: UseParams = {}) {
-  const [deleteState, setDeleteState] = useState({
+interface DeleteState {
+  isDeleting: boolean;
+  error: string | null;
+}
+
+interface ModalState {
+  isOpen: boolean;
+  hospitalId: number | null;
+}
+
+/**
+ * Hook específico para la gestión de hospitales
+ * Extiende useGenericSearch con funcionalidad específica de hospitales
+ */
+export function useHospital({
+  initialPageSize,
+  searchDelay,
+}: UseHospitalParams = {}) {
+  // Estados para el modal de eliminación
+  const [deleteState, setDeleteState] = useState<DeleteState>({
     isDeleting: false,
-    error: null as string | null,
+    error: null,
   });
 
-  const [modalState, setModalState] = useState({
+  const [modalState, setModalState] = useState<ModalState>({
     isOpen: false,
-    hospitalId: null as number | null,
+    hospitalId: null,
   });
 
-  // Buscar y listar
-  const result = useGenericSearch<HospitalListDTO, HospitalSearchParams>({
-    ...params,
-    fetchData: getHospitals,
-  });
+  // Inicializar búsqueda genérica
+  const searchResults = useGenericSearch<HospitalListDTO, HospitalSearchParams>(
+    {
+      initialPageSize,
+      searchDelay,
+      fetchData: getHospitals,
+    }
+  );
 
-  // Eliminar
+  // Manejadores del modal de eliminación
   const handleDelete = useCallback(async () => {
     if (!modalState.hospitalId) return;
 
@@ -34,10 +55,10 @@ export function useHospital(params: UseParams = {}) {
 
     try {
       await deleteHospital(modalState.hospitalId);
-      result.refresh();
+      searchResults.refresh();
       setModalState({ isOpen: false, hospitalId: null });
     } catch (error) {
-      console.error("Error deleting hospital:", error);
+      console.error("Error al eliminar hospital:", error);
       setDeleteState({
         isDeleting: false,
         error: "Error al eliminar el hospital",
@@ -45,7 +66,7 @@ export function useHospital(params: UseParams = {}) {
     } finally {
       setDeleteState((prev) => ({ ...prev, isDeleting: false }));
     }
-  }, [modalState.hospitalId, result]);
+  }, [modalState.hospitalId, searchResults]);
 
   const openDeleteModal = useCallback((hospitalId: number) => {
     setModalState({ isOpen: true, hospitalId });
@@ -56,10 +77,10 @@ export function useHospital(params: UseParams = {}) {
   }, []);
 
   return {
-    // listar y buscar
-    ...result,
+    // Propagamos todos los resultados de búsqueda
+    ...searchResults,
 
-    // eliminar
+    // Estado y acciones de eliminación
     deleteState,
     isOpen: modalState.isOpen,
     openDeleteModal,
