@@ -1,8 +1,5 @@
-import { getHospitals } from "../service/hospitalService";
-import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
-import { useGenericSearch } from "@/hooks/generic/useGenericSearch";
-import { HospitalSearchParams } from "../types/hospital";
 import { useHospitalDelete } from "./UseHospitalDelete";
+import { useHospitalSearch } from "./useHospitalSearch";
 
 interface UseHospitalParams {
   initialPageSize?: number;
@@ -18,13 +15,10 @@ export function useHospital({
   searchDelay,
 }: UseHospitalParams = {}) {
   // Inicializar búsqueda genérica
-  const searchResults = useGenericSearch<HospitalListDTO, HospitalSearchParams>(
-    {
-      initialPageSize,
-      searchDelay,
-      fetchData: getHospitals,
-    }
-  );
+  const searchResults = useHospitalSearch({
+    initialPageSize,
+    searchDelay,
+  });
 
   const deleteResults = useHospitalDelete(() => {
     searchResults.refresh();
