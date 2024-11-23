@@ -10,6 +10,8 @@ import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
 import { Button, Chip, Input, Tooltip } from "@nextui-org/react";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
+import { DropDownFilter } from "./components/DropDrownFilter";
+import { FilterList } from "@/icons/FIlterList";
 
 export function Hospital() {
   const navigate = useNavigate();
@@ -105,7 +107,7 @@ export function Hospital() {
             Agregar Hospital
           </Button>
         </div>
-        <search className="px-2 pb-2 pt-4">
+        <search className="px-2 pb-2 pt-4 flex gap-x-4">
           <Input
             classNames={{
               base: "max-w-full sm:max-w-[15rem] h-10",
@@ -120,6 +122,11 @@ export function Hospital() {
             value={searchTerm}
             onChange={(e) => handleSearch(e.target.value)}
           />
+          <DropDownFilter onStateChange={() => {}} selectedState={""} />
+          <Button>
+            <FilterList />
+            Ordenar
+          </Button>
         </search>
         <GenericTable<HospitalListDTO>
           columns={columns}
