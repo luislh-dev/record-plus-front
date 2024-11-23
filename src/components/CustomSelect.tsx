@@ -32,21 +32,37 @@ export const CustomSelect = <T extends FieldValues>({
       <Controller
         name={name}
         control={control}
-        render={({ field }) => (
-          <Select
-            label={label}
-            selectedKeys={field.value ? [field.value.toString()] : []}
-            onChange={(e) => field.onChange(Number(e.target.value))}
-            errorMessage={error?.message}
-            isInvalid={!!error}
-          >
-            {options.map((option) => (
-              <SelectItem key={option.id} value={option.id}>
-                {option.name}
-              </SelectItem>
-            ))}
-          </Select>
-        )}
+        render={({ field: { onChange, value } }) => {
+          // Asegurarse de que value sea un string para el Set
+          const selectedValue = value ? value.toString() : "";
+
+          return (
+            <Select
+              label={label}
+              selectedKeys={
+                selectedValue ? new Set([selectedValue]) : new Set()
+              }
+              onSelectionChange={(keys) => {
+                const selected = Array.from(keys)[0];
+                onChange(selected ? Number(selected) : null);
+              }}
+              defaultSelectedKeys={
+                selectedValue ? new Set([selectedValue]) : new Set()
+              }
+              errorMessage={error?.message}
+              isInvalid={!!error}
+            >
+              {options.map((option) => (
+                <SelectItem
+                  key={option.id.toString()}
+                  value={option.id.toString()}
+                >
+                  {option.name}
+                </SelectItem>
+              ))}
+            </Select>
+          );
+        }}
       />
     </div>
   );

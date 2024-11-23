@@ -42,14 +42,16 @@ export const HospitalForm = ({
       phone: "",
       email: "",
       ruc: "",
+      stateId: 0,
     },
   });
 
+  // Solo establecemos el valor inicial si no hay un defaultValue
   useEffect(() => {
-    if (state.length > 0) {
+    if (state.length > 0 && !defaultValues?.stateId) {
       setValue("stateId", state[0].id);
     }
-  }, [state, setValue]);
+  }, [state, setValue, defaultValues]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
@@ -122,7 +124,7 @@ export const HospitalForm = ({
         name="stateId"
         control={control}
         label="Estado"
-        options={state}
+        options={state.map((s) => ({ id: s.id, name: s.name }))}
         error={
           errors.stateId ||
           (backendErrors["stateId"]
