@@ -124,7 +124,7 @@ export const HospitalForm = ({
         name="stateId"
         control={control}
         label="Estado"
-        options={state.map((s) => ({ id: s.id, name: s.name }))}
+        options={state}
         error={
           errors.stateId ||
           (backendErrors["stateId"]

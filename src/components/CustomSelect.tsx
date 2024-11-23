@@ -33,22 +33,16 @@ export const CustomSelect = <T extends FieldValues>({
         name={name}
         control={control}
         render={({ field: { onChange, value } }) => {
-          // Asegurarse de que value sea un string para el Set
           const selectedValue = value ? value.toString() : "";
-
           return (
             <Select
               label={label}
-              selectedKeys={
-                selectedValue ? new Set([selectedValue]) : new Set()
-              }
+              selectedKeys={selectedValue}
               onSelectionChange={(keys) => {
                 const selected = Array.from(keys)[0];
                 onChange(selected ? Number(selected) : null);
               }}
-              defaultSelectedKeys={
-                selectedValue ? new Set([selectedValue]) : new Set()
-              }
+              defaultSelectedKeys={selectedValue}
               errorMessage={error?.message}
               isInvalid={!!error}
             >
