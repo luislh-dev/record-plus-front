@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react";
 
 interface DropDownFilterProps {
-  onStateChange: (stateId: string | number) => void;
+  onStateChange: (stateId: number | null) => void;
   selectedState: string;
 }
 
@@ -24,7 +24,7 @@ export function DropDownFilter({
 
   const handleValueChange = (selectedValue: string) => {
     if (selectedValue === "todos") {
-      onStateChange("");
+      onStateChange(null);
       return;
     }
 

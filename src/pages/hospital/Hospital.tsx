@@ -1,20 +1,19 @@
 import { GenericTable } from "@/components/GenericTable";
 import { ModalConfirmDelete } from "@/components/ModalConfirmDelete";
-import { State } from "@/constants/state";
 import { statusColorMap } from "@/constants/statusColorMap";
 import { useHospital } from "@/pages/hospital/hooks/useHospital";
 import { Add } from "@/icons/Add";
-import { DeleteIcon } from "@/icons/DeleteIcon";
-import { EditIcon } from "@/icons/EditIcon";
-import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
-import { Button, Chip, Input, Tooltip } from "@nextui-org/react";
-import { ReactNode } from "react";
+import { Button, Chip } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
-import { DropDownFilter } from "./components/DropDrownFilter";
-import { FilterList } from "@/icons/FIlterList";
+import { HospitalListDTO } from "./types/HospitalListDTO";
+import { HospitalTableColumn } from "./types/hospital";
+import { SearchBar } from "./components/SearchBar";
+import { ActionsCell } from "./components/ActionCells";
 
 export function Hospital() {
   const navigate = useNavigate();
+
+  // Obtener toda la funcionalidad del hook
   const {
     data: hospitals,
     isLoading,
@@ -32,21 +31,29 @@ export function Hospital() {
     handleDelete,
   } = useHospital();
 
-  const columns: Array<{
-    name: string;
-    uuid: keyof Hospital | "actions";
-    align?: "start" | "center" | "end";
-    render?: (hospital: Hospital) => ReactNode;
-    sortable?: boolean;
-  }> = [
-    { name: "Nombre", uuid: "name", sortable: true },
-    { name: "Teléfono", uuid: "phone" },
-    { name: "Correo electrónico", uuid: "email" },
-    { name: "RUC", uuid: "ruc" },
+  // Definición de columnas para la tabla
+  const columns: HospitalTableColumn[] = [
+    {
+      name: "Nombre",
+      uuid: "name",
+      sortable: true,
+    },
+    {
+      name: "Teléfono",
+      uuid: "phone",
+    },
+    {
+      name: "Correo electrónico",
+      uuid: "email",
+    },
+    {
+      name: "RUC",
+      uuid: "ruc",
+    },
     {
       name: "Estado",
       uuid: "state",
-      render: (hospital: Hospital) => (
+      render: (hospital: HospitalListDTO) => (
         <Chip
           className="capitalize"
           color={statusColorMap[hospital.state] || "default"}
@@ -61,74 +68,32 @@ export function Hospital() {
       name: "Acciones",
       uuid: "actions",
       align: "center",
-      render: (hospital: Hospital) => (
-        <div className="relative flex items-center justify-center w-full gap-2">
-          <Tooltip content="Editar hospital">
-            <span
-              className="text-lg text-default-400 cursor-pointer active:opacity-50"
-              onClick={() => navigate(`/hospitals/${hospital.id}/edit`)}
-            >
-              <EditIcon />
-            </span>
-          </Tooltip>
-          <Tooltip content="Eliminar hospital">
-            <span
-              className={`text-lg transition-all duration-200 ${
-                hospital.state.includes(State.INACTIVO)
-                  ? "text-danger/40 pointer-events-none cursor-not-allowed opacity-70"
-                  : "text-danger cursor-pointer active:opacity-50 hover:opacity-80"
-              }`}
-              onClick={() => {
-                if (!hospital.state.includes(State.INACTIVO)) {
-                  openDeleteModal(hospital.id);
-                }
-              }}
-            >
-              <DeleteIcon />
-            </span>
-          </Tooltip>
-        </div>
+      render: (hospital: HospitalListDTO) => (
+        <ActionsCell
+          hospital={hospital}
+          onEdit={() => navigate(`/hospitals/${hospital.id}/edit`)}
+          onDelete={() => openDeleteModal(hospital.id)}
+        />
       ),
     },
   ];
 
-  type Hospital = (typeof hospitals)[0];
-
   return (
     <>
       <div>
-        <div className="flex max-w-full justify-between px-3">
-          <h1 className="text-2xl font-bold">Lista de Hospitales</h1>
-          <Button
-            color="primary"
-            onClick={() => navigate("/hospitals/add")}
-            endContent={<Add size={18} />}
-          >
-            Agregar Hospital
-          </Button>
-        </div>
-        <search className="px-2 pb-2 pt-4 flex gap-x-4">
-          <Input
-            classNames={{
-              base: "max-w-full sm:max-w-[15rem] h-10",
-              mainWrapper: "h-full",
-              input: "text-small",
-              inputWrapper:
-                "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
-            }}
-            onClear={() => handleSearch("")}
-            type="text"
-            placeholder="Buscar hospital..."
-            value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
-          />
-          <DropDownFilter onStateChange={() => {}} selectedState={""} />
-          <Button>
-            <FilterList />
-            Ordenar
-          </Button>
-        </search>
-        <GenericTable<HospitalListDTO>
+        {/* Encabezado */}
+        <Header onAddHospital={() => navigate("/hospitals/add")} />
+
+        {/* Barra de búsqueda y filtros */}
+        <SearchBar
+          searchTerm={searchTerm}
+          onSearch={handleSearch}
+          selectedState=""
+          onStateChange={() => {}}
+        />
+
+        {/* Tabla de hospitales */}
+        <GenericTable
           columns={columns}
           data={hospitals}
           error={error}
@@ -142,6 +107,8 @@ export function Hospital() {
           sortConfig={sortConfig}
         />
       </div>
+
+      {/* Modal de confirmación para eliminar */}
       <ModalConfirmDelete
         isOpen={isOpen}
         onClose={closeDeleteModal}
@@ -151,5 +118,26 @@ export function Hospital() {
         message="¿Está seguro que desea eliminar este hospital? Esta acción no se puede deshacer."
       />
     </>
+  );
+}
+
+// Componentes auxiliares para mejorar la legibilidad
+
+interface HeaderProps {
+  onAddHospital: () => void;
+}
+
+function Header({ onAddHospital }: HeaderProps) {
+  return (
+    <div className="flex max-w-full justify-between px-3">
+      <h1 className="text-2xl font-bold">Lista de Hospitales</h1>
+      <Button
+        color="primary"
+        onClick={onAddHospital}
+        endContent={<Add size={18} />}
+      >
+        Agregar Hospital
+      </Button>
+    </div>
   );
 }
