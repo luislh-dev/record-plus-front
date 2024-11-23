@@ -25,4 +25,8 @@ export const hospitalCreateSchema = z.object({
   stateId: z.number().min(1, "Estado es requerido"),
 });
 
+// Este tipo es para inferir el tipo de los valores
 export type HospitalCreateValues = z.infer<typeof hospitalCreateSchema>;
+
+// Este tipo es para obtener las claves del objeto
+export type HospitalKeys = keyof z.infer<typeof hospitalCreateSchema>;
