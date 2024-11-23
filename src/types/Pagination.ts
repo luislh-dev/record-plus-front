@@ -8,6 +8,10 @@ export interface SortConfig {
   field: string;
   direction: "asc" | "desc";
 }
+export interface SortConfigGeneric<T extends string = string> {
+  field: T;
+  direction: "asc" | "desc";
+}
 
 export interface PaginationState {
   currentPage: number;
