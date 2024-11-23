@@ -66,11 +66,17 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
    * Obtiene los datos aplicando los filtros actuales
    */
   const fetchItems = useCallback(
-    async (params: Partial<TSearchParams>) => {
+    async (currentFilters: Partial<TSearchParams>, searchTerm?: string) => {
       setLoading(true);
       setError(null);
 
       try {
+        // Combinar filtros actuales con el término de búsqueda
+        const params = {
+          ...currentFilters,
+          name: searchTerm || undefined,
+        } as Partial<TSearchParams>;
+
         const response = await fetchData(params);
         setData(response.content);
         setPagination({
@@ -92,12 +98,7 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
 
   // Efecto para actualizar datos cuando cambian los filtros
   useEffect(() => {
-    const updatedFilters = {
-      ...filters,
-      name: debouncedSearchTerm || undefined,
-    } as Partial<TSearchParams>;
-
-    fetchItems(updatedFilters);
+    fetchItems(filters, debouncedSearchTerm);
   }, [debouncedSearchTerm, filters, fetchItems]);
 
   // Manejadores de eventos
@@ -128,6 +129,10 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
     setFilters((prev) => ({ ...prev, pageNumber: page }));
   }, []);
 
+  const refresh = useCallback(() => {
+    fetchItems(filters, debouncedSearchTerm);
+  }, [fetchItems, filters, debouncedSearchTerm]);
+
   const setPageSize = useCallback((newPageSize: number) => {
     setFilters((prev) => ({
       ...prev,
@@ -154,6 +159,6 @@ export function useGenericSearch<TEntity, TSearchParams extends PageRequest>({
     setPageSize,
     setFilters,
     handleStateChange,
-    refresh: () => fetchItems(filters),
+    refresh,
   };
 }
