@@ -1,6 +1,7 @@
 import { Button, Input } from "@nextui-org/react";
 import { DropDownFilter } from "./DropDrownFilter";
 import { FilterList } from "@/icons/FIlterList";
+import { Search } from "@/icons/Search";
 
 interface SearchBarProps {
   searchTerm: string;
@@ -30,6 +31,7 @@ export function SearchBar({
         placeholder="Buscar hospital..."
         value={searchTerm}
         onChange={(e) => onSearch(e.target.value)}
+        startContent={<Search />}
       />
       <DropDownFilter
         onStateChange={onStateChange}
