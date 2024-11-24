@@ -30,7 +30,7 @@ export function useHospitalSearch({
   // Estados principales
   const { sortConfig, handleSort, getSortQuery } = useSort<HospitalSortField>({
     defaultField: "name",
-    defaultDirection: "desc",
+    defaultDirection: "asc",
     sortableFields: Object.keys(
       HOSPITAL_SORTABLE_FIELDS
     ) as HospitalSortField[],
