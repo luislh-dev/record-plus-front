@@ -1,10 +1,20 @@
 import { useDebounce } from "@/hooks/useDebounce";
-import { PaginationState, SortConfigGeneric } from "@/types/Pagination";
+import { PaginationState } from "@/types/Pagination";
 import { useState, useCallback, useEffect } from "react";
 import { HospitalSearchParams } from "../types/hospital";
 import { HospitalListDTO } from "../types/HospitalListDTO";
 import { getHospitals } from "../service/hospitalService";
-import { AllowedSortFields } from "../types/SortTypes";
+import { useSort } from "@/hooks/useSort";
+
+export const HOSPITAL_SORTABLE_FIELDS = {
+  name: { field: "name", label: "Nombre" },
+  phone: { field: "phone", label: "Teléfono" },
+  email: { field: "email", label: "Correo electrónico" },
+  ruc: { field: "ruc", label: "RUC" },
+} as const;
+
+// Esto extraerá las keys del objeto
+export type HospitalSortField = keyof typeof HOSPITAL_SORTABLE_FIELDS;
 
 interface UseHospitalParams {
   initialPageSize?: number;
@@ -18,17 +28,19 @@ export function useHospitalSearch({
   initialFilters = {},
 }: UseHospitalParams = {}) {
   // Estados principales
+  const { sortConfig, handleSort, getSortQuery } = useSort<HospitalSortField>({
+    defaultField: "name",
+    defaultDirection: "desc",
+    sortableFields: Object.keys(
+      HOSPITAL_SORTABLE_FIELDS
+    ) as HospitalSortField[],
+  });
+
   const [data, setData] = useState<HospitalListDTO[]>([]);
   const [isLoading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedState, setState] = useState<number | null>(null);
-  const [sortConfig, setSortConfig] = useState<
-    SortConfigGeneric<AllowedSortFields>
-  >({
-    field: "name",
-    direction: "asc",
-  });
 
   // Configuración de paginación
   const [pagination, setPagination] = useState<PaginationState>({
@@ -61,11 +73,11 @@ export function useHospitalSearch({
       setError(null);
 
       try {
-        // Combinar filtros actuales con el término de búsqueda
         const params = {
           ...currentFilters,
           name: searchTerm || undefined,
-        } as Partial<HospitalSearchParams>;
+          sort: getSortQuery(), // Usar el nuevo helper para obtener el query de ordenamiento
+        };
 
         const response = await getHospitals(params);
         setData(response.content);
@@ -83,7 +95,7 @@ export function useHospitalSearch({
         setLoading(false);
       }
     },
-    []
+    [getSortQuery]
   );
 
   // Efecto para actualizar datos cuando cambian los filtros
@@ -104,14 +116,6 @@ export function useHospitalSearch({
     }
     setFilters((prev) => ({ ...prev, stateId }));
   }, []);
-
-  const handleSort = useCallback(
-    (sortConfig: SortConfigGeneric<AllowedSortFields>) => {
-      setSortConfig(sortConfig);
-      setFilters((prev) => ({ ...prev, sort: sortConfig }));
-    },
-    []
-  );
 
   const setPage = useCallback((page: number) => {
     setFilters((prev) => ({ ...prev, pageNumber: page }));

@@ -11,7 +11,6 @@ import { ActionsCell } from "./components/ActionCells";
 import { DropDownFilter } from "./components/DropDrownFilter";
 import { DropDownSort } from "./components/DropDownSort";
 import { Search } from "@/icons/Search";
-import { AllowedSortFields } from "./types/SortTypes";
 
 export function Hospital() {
   const navigate = useNavigate();
@@ -123,17 +122,7 @@ export function Hospital() {
           totalPages={pagination.totalPages}
           currentPage={pagination.currentPage}
           onPageChange={setPage}
-          onSort={(field) => {
-            const newDirection =
-              field === sortConfig.field && sortConfig.direction === "asc"
-                ? "desc"
-                : "asc";
-
-            handleSort({
-              field: field as AllowedSortFields,
-              direction: newDirection,
-            });
-          }}
+          onSort={handleSort}
           sortConfig={sortConfig}
         />
       </div>

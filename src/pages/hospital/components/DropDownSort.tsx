@@ -1,5 +1,5 @@
 import { FilterList } from "@/icons/FIlterList";
-import { SortConfigGeneric } from "@/types/Pagination";
+import { SortConfig } from "@/types/Pagination";
 import {
   Button,
   Dropdown,
@@ -10,34 +10,22 @@ import {
 import { Key, useEffect, useState } from "react";
 import { ArrowUp } from "@/icons/ArrowUp";
 import { ArrowDown } from "@/icons/ArrowDown";
-import { AllowedSortFields } from "../types/SortTypes";
+import { HOSPITAL_SORTABLE_FIELDS } from "../hooks/useHospitalSearch";
 
 interface DropDownSortProps {
-  selectedSort?: SortConfigGeneric<AllowedSortFields>;
-  onSortSelected: (value: SortConfigGeneric<AllowedSortFields>) => void;
+  selectedSort?: SortConfig;
+  onSortSelected: (value: string) => void;
 }
-
-const FIELD_LABELS: Record<AllowedSortFields, string> = {
-  name: "Nombre",
-  phone: "Teléfono",
-  email: "Correo electrónico",
-  ruc: "RUC",
-};
 
 export function DropDownSort({
   onSortSelected,
   selectedSort,
 }: DropDownSortProps) {
-  const [currentSort, setCurrentSort] = useState<
-    SortConfigGeneric<AllowedSortFields>
-  >(
-    selectedSort ?? {
-      field: "name",
-      direction: "asc",
-    }
-  );
+  const [currentSort, setCurrentSort] = useState<SortConfig>({
+    field: "name",
+    direction: "asc",
+  });
 
-  // Actualizamos el estado local cuando cambia selectedSort desde fuera
   useEffect(() => {
     if (selectedSort) {
       setCurrentSort(selectedSort);
@@ -45,22 +33,15 @@ export function DropDownSort({
   }, [selectedSort]);
 
   const handleAction = (key: Key) => {
-    const selectedValue = key as AllowedSortFields;
+    const field = key.toString();
+    const direction =
+      currentSort.field === field && currentSort.direction === "asc"
+        ? "desc"
+        : "asc";
 
-    if (selectedValue) {
-      const newDirection =
-        selectedValue === currentSort.field && currentSort.direction === "asc"
-          ? "desc"
-          : "asc";
-
-      const newSort: SortConfigGeneric<AllowedSortFields> = {
-        field: selectedValue,
-        direction: newDirection,
-      };
-
-      setCurrentSort(newSort);
-      onSortSelected(newSort);
-    }
+    setCurrentSort({ field, direction });
+    console.log({ field, direction });
+    onSortSelected(field);
   };
 
   return (
@@ -77,17 +58,22 @@ export function DropDownSort({
         onAction={handleAction}
         closeOnSelect={false}
       >
-        {(Object.keys(FIELD_LABELS) as AllowedSortFields[]).map((key) => (
+        {Object.values(HOSPITAL_SORTABLE_FIELDS).map((field) => (
           <DropdownItem
-            key={key}
-            textValue={`Ordenar por ${FIELD_LABELS[key].toLowerCase()}`}
-            aria-label={`Ordenar por ${FIELD_LABELS[key].toLowerCase()}`}
+            key={field.field}
+            textValue={field.field}
+            aria-label={`ordenar por ${field.label.toLowerCase()}`}
             endContent={
-              key === currentSort.field &&
-              (currentSort.direction === "asc" ? <ArrowUp /> : <ArrowDown />)
+              currentSort.field === field.field ? (
+                currentSort.direction === "asc" ? (
+                  <ArrowUp />
+                ) : (
+                  <ArrowDown />
+                )
+              ) : null
             }
           >
-            {FIELD_LABELS[key]}
+            {field.label}
           </DropdownItem>
         ))}
       </DropdownMenu>
