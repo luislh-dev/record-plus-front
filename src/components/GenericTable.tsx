@@ -1,5 +1,6 @@
 import { ArrowDown } from "@/icons/ArrowDown";
 import { ArrowUp } from "@/icons/ArrowUp";
+import { SortConfig } from "@/types/Pagination";
 import { Pagination } from "@nextui-org/react";
 import React from "react";
 
@@ -24,10 +25,7 @@ interface GenericTableProps<T> {
   isLoading?: boolean;
   loadingContent?: React.ReactNode;
   onSort?: (field: keyof T) => void;
-  sortConfig?: {
-    field: string;
-    direction: "asc" | "desc";
-  };
+  sortConfig?: SortConfig;
 }
 
 export function GenericTable<T extends { id: number | string }>({
