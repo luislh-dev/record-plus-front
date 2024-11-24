@@ -11,7 +11,9 @@ interface ActionsCellProps {
 }
 
 export function ActionsCell({ hospital, onEdit, onDelete }: ActionsCellProps) {
-  const isInactive = hospital.state.includes(State.INACTIVO);
+  const isInactive =
+    hospital.state.includes(State.INACTIVO) ||
+    hospital.state.includes(State.ELIMINADO);
 
   return (
     <div className="relative flex items-center justify-center w-full gap-2">
