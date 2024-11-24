@@ -1,9 +1,10 @@
 import { useDebounce } from "@/hooks/useDebounce";
-import { PaginationState, SortConfig } from "@/types/Pagination";
+import { PaginationState, SortConfigGeneric } from "@/types/Pagination";
 import { useState, useCallback, useEffect } from "react";
 import { HospitalSearchParams } from "../types/hospital";
 import { HospitalListDTO } from "../types/HospitalListDTO";
 import { getHospitals } from "../service/hospitalService";
+import { AllowedSortFields } from "../types/SortTypes";
 
 interface UseHospitalParams {
   initialPageSize?: number;
@@ -22,7 +23,9 @@ export function useHospitalSearch({
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedState, setState] = useState<number | null>(null);
-  const [sortConfig, setSortConfig] = useState<SortConfig>({
+  const [sortConfig, setSortConfig] = useState<
+    SortConfigGeneric<AllowedSortFields>
+  >({
     field: "name",
     direction: "asc",
   });
@@ -103,17 +106,11 @@ export function useHospitalSearch({
   }, []);
 
   const handleSort = useCallback(
-    (field: keyof HospitalListDTO) => {
-      const direction =
-        sortConfig.field === field && sortConfig.direction === "asc"
-          ? "desc"
-          : "asc";
-      const newSortConfig: SortConfig = { field: field as string, direction };
-
-      setSortConfig(newSortConfig);
-      setFilters((prev) => ({ ...prev, sort: newSortConfig }));
+    (sortConfig: SortConfigGeneric<AllowedSortFields>) => {
+      setSortConfig(sortConfig);
+      setFilters((prev) => ({ ...prev, sort: sortConfig }));
     },
-    [sortConfig]
+    []
   );
 
   const setPage = useCallback((page: number) => {

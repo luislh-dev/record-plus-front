@@ -7,7 +7,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
-import { Key, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import { ArrowUp } from "@/icons/ArrowUp";
 import { ArrowDown } from "@/icons/ArrowDown";
 import { AllowedSortFields } from "../types/SortTypes";
@@ -30,7 +30,19 @@ export function DropDownSort({
 }: DropDownSortProps) {
   const [currentSort, setCurrentSort] = useState<
     SortConfigGeneric<AllowedSortFields>
-  >(selectedSort || { field: "name", direction: "asc" });
+  >(
+    selectedSort ?? {
+      field: "name",
+      direction: "asc",
+    }
+  );
+
+  // Actualizamos el estado local cuando cambia selectedSort desde fuera
+  useEffect(() => {
+    if (selectedSort) {
+      setCurrentSort(selectedSort);
+    }
+  }, [selectedSort]);
 
   const handleAction = (key: Key) => {
     const selectedValue = key as AllowedSortFields;
@@ -75,7 +87,7 @@ export function DropDownSort({
               (currentSort.direction === "asc" ? <ArrowUp /> : <ArrowDown />)
             }
           >
-            {FIELD_LABELS[key]}{" "}
+            {FIELD_LABELS[key]}
           </DropdownItem>
         ))}
       </DropdownMenu>
