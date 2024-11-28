@@ -28,7 +28,13 @@ export function SearchParamsDropdown({
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button aria-label="Seleccionar parametros">Parámetros</Button>
+        <Button aria-label="Seleccionar parametros">
+          {selectedParams.size > 0
+            ? `${selectedParams.size} parámetro${
+                selectedParams.size > 1 ? "s" : ""
+              } seleccionado${selectedParams.size > 1 ? "s" : ""}`
+            : "Seleccionar parámetros"}
+        </Button>
       </DropdownTrigger>
       <DropdownMenu
         closeOnSelect={false}
