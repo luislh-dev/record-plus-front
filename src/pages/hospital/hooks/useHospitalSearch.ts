@@ -142,10 +142,13 @@ export function useHospitalSearch({
   }, [debouncedSearchTerm, filters, fetchHospitals]);
 
   // Manejadores de eventos
+
+  // Manejador de búsqueda
   const handleSearch = useCallback((term: string) => {
     setSearchTerm(term);
   }, []);
 
+  // Manejador de cambio de estado de hospital
   const handleStateChange = useCallback((stateId: number | null) => {
     setState(stateId);
     if (stateId === null) {
@@ -155,14 +158,17 @@ export function useHospitalSearch({
     setFilters((prev) => ({ ...prev, stateId }));
   }, []);
 
+  // Manejador de cambio de página
   const setPage = useCallback((page: number) => {
     setFilters((prev) => ({ ...prev, pageNumber: page }));
   }, []);
 
+  // Refrescar datos
   const refresh = useCallback(() => {
     fetchHospitals(filters, debouncedSearchTerm);
   }, [fetchHospitals, filters, debouncedSearchTerm]);
 
+  // Manejador de cambio de tamaño de página
   const setPageSize = useCallback((newPageSize: number) => {
     setFilters((prev) => ({
       ...prev,
