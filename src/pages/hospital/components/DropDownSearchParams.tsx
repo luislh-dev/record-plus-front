@@ -1,61 +1,44 @@
-import { Selected } from "@/types/Selected";
+import { SearchParam } from "@/types/SearchParam";
 import {
   Button,
   Dropdown,
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-  Selection,
 } from "@nextui-org/react";
 import { useState } from "react";
 
-interface Props {
-  data: Selected[];
-  selected: (selected: Selected[]) => void;
-  label?: string;
+interface SearchParamsDropdownProps {
+  params: SearchParam[];
+  onParamsChange: (selectedParams: string[]) => void;
 }
+export function SearchParamsDropdown({
+  params,
+  onParamsChange,
+}: SearchParamsDropdownProps) {
+  const [selectedParams, setSelectedParams] = useState<Set<string>>(
+    new Set([params[0]?.id])
+  );
 
-export function DropDownSearchParams({
-  data,
-  selected,
-  label = "Sin información",
-}: Props) {
-  const [selectedKeys, setSelectedKeys] = useState<Selection>(() => {
-    return data.length > 0 ? new Set([data[0].UUID]) : new Set([]);
-  });
-
-  const handleSelectionChange = (keys: Selection) => {
-    setSelectedKeys(keys);
-
-    const selectedItems = Array.from(keys as Set<string>)
-      .map((key) => data.find((item) => item.UUID === key))
-      .filter((item): item is Selected => item !== undefined);
-
-    selected(selectedItems);
+  const handleSelectionChange = (keys: Set<string>) => {
+    setSelectedParams(keys);
+    onParamsChange(Array.from(keys));
   };
 
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button aria-label="abrir, para los parámetros de búsqueda">
-          Parámetros -{" "}
-          {selectedKeys === "all"
-            ? "Todos"
-            : (selectedKeys as Set<string>).size}{" "}
-          seleccionados
-        </Button>
+        <Button aria-label="Seleccionar parametros">Parámetros</Button>
       </DropdownTrigger>
       <DropdownMenu
-        aria-label={label}
         closeOnSelect={false}
         selectionMode="multiple"
         disallowEmptySelection
-        selectedKeys={selectedKeys}
-        onSelectionChange={handleSelectionChange}
+        selectedKeys={selectedParams}
+        onSelectionChange={(keys) => handleSelectionChange(keys as Set<string>)}
+        items={params}
       >
-        {data.map((item) => (
-          <DropdownItem key={item.UUID}>{item.label}</DropdownItem>
-        ))}
+        {(param) => <DropdownItem key={param.id}>{param.label}</DropdownItem>}
       </DropdownMenu>
     </Dropdown>
   );

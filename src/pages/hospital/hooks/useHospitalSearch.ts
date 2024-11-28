@@ -25,6 +25,18 @@ interface UseHospitalParams {
 // Campos válidos para búsqueda
 type SearchableFields = keyof Pick<HospitalSearchParams, "name" | "ruc" | "id">;
 
+/**
+ * Verifica si un campo es válido para búsqueda
+ * @param field Campo a verificar
+ * @returns Si el campo es válido
+ */
+function isValidSearchField(field: string): field is SearchableFields {
+  return ["name", "ruc", "id"].includes(field);
+}
+
+/**
+ * Hook para manejar la búsqueda de hospitales
+ */
 export function useHospitalSearch({
   initialPageSize = 20,
   searchDelay = 300,
@@ -44,9 +56,7 @@ export function useHospitalSearch({
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedState, setState] = useState<number | null>(null);
-  const [selectedSearchParams, setSelectedSearchParams] = useState<
-    SearchableFields[]
-  >(["name"]);
+  const [searchFields, setSearchFields] = useState<string[]>(["name"]);
 
   // Configuración de paginación
   const [pagination, setPagination] = useState<PaginationState>({
@@ -86,15 +96,18 @@ export function useHospitalSearch({
 
         // Aplicar término de búsqueda solo a los parámetros seleccionados
         if (searchTerm) {
-          selectedSearchParams.forEach((param) => {
-            if (param === "id") {
-              const parsedId = parseInt(searchTerm);
-              if (!isNaN(parsedId)) {
-                params[param] = parsedId;
+          searchFields.forEach((field) => {
+            if (isValidSearchField(field)) {
+              // Verificar que el campo sea válido
+              if (field === "id") {
+                const numericId = parseInt(searchTerm);
+                if (!isNaN(numericId)) {
+                  params.id = numericId;
+                }
+              } else {
+                // Si el campo es "name" o "ruc" se agrega a los parámetros
+                params[field] = searchTerm;
               }
-            } else {
-              // Ahora TypeScript sabe que param solo puede ser 'name' o 'ruc'
-              params[param] = searchTerm;
             }
           });
         }
@@ -115,16 +128,12 @@ export function useHospitalSearch({
         setLoading(false);
       }
     },
-    [getSortQuery, selectedSearchParams]
+    [getSortQuery, searchFields]
   );
 
   // Manejador para los parámetros de búsqueda
   const handleSearchParamsChange = useCallback((params: string[]) => {
-    setSelectedSearchParams(
-      params.filter((param): param is SearchableFields =>
-        ["name", "ruc", "id"].includes(param)
-      )
-    );
+    setSearchFields(params.filter(isValidSearchField));
   }, []);
 
   // Efecto para actualizar datos cuando cambian los filtros
@@ -172,6 +181,7 @@ export function useHospitalSearch({
     filters,
     sortConfig,
     selectedState,
+    searchFields,
 
     // Acciones
     handleSearch,
@@ -182,5 +192,6 @@ export function useHospitalSearch({
     handleStateChange,
     refresh,
     handleSearchParamsChange,
+    setSearchFields,
   };
 }

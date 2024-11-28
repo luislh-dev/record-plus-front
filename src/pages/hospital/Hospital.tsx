@@ -11,14 +11,8 @@ import { ActionsCell } from "./components/ActionCells";
 import { DropDownFilter } from "./components/DropDrownFilter";
 import { DropDownSort } from "./components/DropDownSort";
 import { Search } from "@/icons/Search";
-import { DropDownSearchParams } from "./components/DropDownSearchParams";
-import { Selected } from "@/types/Selected";
-
-const searchParams: Selected[] = [
-  { UUID: "name", value: "name", label: "Nombre" },
-  { UUID: "ruc", value: "ruc", label: "RUC" },
-  { UUID: "id", value: "id", label: "ID" },
-];
+import { SearchParamsDropdown } from "./components/DropDownSearchParams";
+import { SEARCH_PARAMS } from "./constants/searchParams";
 
 export function Hospital() {
   const navigate = useNavigate();
@@ -114,12 +108,9 @@ export function Hospital() {
             onChange={(e) => handleSearch(e.target.value)}
             startContent={<Search />}
           />
-          <DropDownSearchParams
-            data={searchParams}
-            selected={(params) => {
-              handleSearchParamsChange(params.map((param) => param.value));
-            }}
-            label="Parámetros de búsqueda"
+          <SearchParamsDropdown
+            params={SEARCH_PARAMS}
+            onParamsChange={handleSearchParamsChange}
           />
           <DropDownFilter
             onStateChange={handleStateChange}
