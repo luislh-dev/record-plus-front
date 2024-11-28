@@ -22,6 +22,9 @@ interface UseHospitalParams {
   initialFilters?: Partial<HospitalSearchParams>;
 }
 
+// Campos válidos para búsqueda
+type SearchableFields = keyof Pick<HospitalSearchParams, "name" | "ruc" | "id">;
+
 export function useHospitalSearch({
   initialPageSize = 20,
   searchDelay = 300,
@@ -41,6 +44,9 @@ export function useHospitalSearch({
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedState, setState] = useState<number | null>(null);
+  const [selectedSearchParams, setSelectedSearchParams] = useState<
+    SearchableFields[]
+  >(["name"]);
 
   // Configuración de paginación
   const [pagination, setPagination] = useState<PaginationState>({
@@ -75,9 +81,23 @@ export function useHospitalSearch({
       try {
         const params = {
           ...currentFilters,
-          name: searchTerm || undefined,
           sort: getSortQuery(), // Usar el nuevo helper para obtener el query de ordenamiento
         };
+
+        // Aplicar término de búsqueda solo a los parámetros seleccionados
+        if (searchTerm) {
+          selectedSearchParams.forEach((param) => {
+            if (param === "id") {
+              const parsedId = parseInt(searchTerm);
+              if (!isNaN(parsedId)) {
+                params[param] = parsedId;
+              }
+            } else {
+              // Ahora TypeScript sabe que param solo puede ser 'name' o 'ruc'
+              params[param] = searchTerm;
+            }
+          });
+        }
 
         const response = await getHospitals(params);
         setData(response.content);
@@ -95,8 +115,17 @@ export function useHospitalSearch({
         setLoading(false);
       }
     },
-    [getSortQuery]
+    [getSortQuery, selectedSearchParams]
   );
+
+  // Manejador para los parámetros de búsqueda
+  const handleSearchParamsChange = useCallback((params: string[]) => {
+    setSelectedSearchParams(
+      params.filter((param): param is SearchableFields =>
+        ["name", "ruc", "id"].includes(param)
+      )
+    );
+  }, []);
 
   // Efecto para actualizar datos cuando cambian los filtros
   useEffect(() => {
@@ -152,5 +181,6 @@ export function useHospitalSearch({
     setFilters,
     handleStateChange,
     refresh,
+    handleSearchParamsChange,
   };
 }

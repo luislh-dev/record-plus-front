@@ -11,6 +11,14 @@ import { ActionsCell } from "./components/ActionCells";
 import { DropDownFilter } from "./components/DropDrownFilter";
 import { DropDownSort } from "./components/DropDownSort";
 import { Search } from "@/icons/Search";
+import { DropDownSearchParams } from "./components/DropDownSearchParams";
+import { Selected } from "@/types/Selected";
+
+const searchParams: Selected[] = [
+  { UUID: "name", value: "name", label: "Nombre" },
+  { UUID: "ruc", value: "ruc", label: "RUC" },
+  { UUID: "id", value: "id", label: "ID" },
+];
 
 export function Hospital() {
   const navigate = useNavigate();
@@ -33,6 +41,7 @@ export function Hospital() {
     handleDelete,
     selectedState,
     handleStateChange,
+    handleSearchParamsChange,
   } = useHospital();
 
   // Definición de columnas para la tabla
@@ -104,6 +113,13 @@ export function Hospital() {
             value={searchTerm}
             onChange={(e) => handleSearch(e.target.value)}
             startContent={<Search />}
+          />
+          <DropDownSearchParams
+            data={searchParams}
+            selected={(params) => {
+              handleSearchParamsChange(params.map((param) => param.value));
+            }}
+            label="Parámetros de búsqueda"
           />
           <DropDownFilter
             onStateChange={handleStateChange}
