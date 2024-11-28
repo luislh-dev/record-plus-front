@@ -7,8 +7,7 @@ interface UseHospitalParams {
 }
 
 /**
- * Hook específico para la gestión de hospitales
- * Extiende useGenericSearch con funcionalidad específica de hospitales
+ * Hook para manejar la búsqueda y eliminación de hospitales
  */
 export function useHospital({
   initialPageSize,
