@@ -5,17 +5,10 @@ import { HospitalSearchParams } from "../types/hospital";
 import { HospitalListDTO } from "../types/HospitalListDTO";
 import { getHospitals } from "../service/hospitalService";
 import { useSort } from "@/hooks/useSort";
-
-export const HOSPITAL_SORTABLE_FIELDS = {
-  name: { field: "name", label: "Nombre" },
-  phone: { field: "phone", label: "Teléfono" },
-  email: { field: "email", label: "Correo electrónico" },
-  ruc: { field: "ruc", label: "RUC" },
-  updatedAt: { field: "updatedAt", label: "Actualizado" },
-} as const;
-
-// Esto extraerá las keys del objeto
-export type HospitalSortField = keyof typeof HOSPITAL_SORTABLE_FIELDS;
+import {
+  HOSPITAL_SORTABLE_FIELDS,
+  HospitalSortField,
+} from "../constants/sortableFields";
 
 interface UseHospitalParams {
   initialPageSize?: number;

@@ -10,7 +10,7 @@ import {
 import { Key, useEffect, useState } from "react";
 import { ArrowUp } from "@/icons/ArrowUp";
 import { ArrowDown } from "@/icons/ArrowDown";
-import { HOSPITAL_SORTABLE_FIELDS } from "../hooks/useHospitalSearch";
+import { HOSPITAL_SORTABLE_FIELDS } from "../constants/sortableFields";
 
 interface DropDownSortProps {
   selectedSort?: SortConfig;
