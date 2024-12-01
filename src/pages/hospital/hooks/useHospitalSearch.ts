@@ -11,6 +11,7 @@ export const HOSPITAL_SORTABLE_FIELDS = {
   phone: { field: "phone", label: "Teléfono" },
   email: { field: "email", label: "Correo electrónico" },
   ruc: { field: "ruc", label: "RUC" },
+  updatedAt: { field: "updatedAt", label: "Actualizado" },
 } as const;
 
 // Esto extraerá las keys del objeto
@@ -44,8 +45,8 @@ export function useHospitalSearch({
 }: UseHospitalParams = {}) {
   // Estados principales
   const { sortConfig, handleSort, getSortQuery } = useSort<HospitalSortField>({
-    defaultField: "name",
-    defaultDirection: "asc",
+    defaultField: "updatedAt",
+    defaultDirection: "desc",
     sortableFields: Object.keys(
       HOSPITAL_SORTABLE_FIELDS
     ) as HospitalSortField[],
