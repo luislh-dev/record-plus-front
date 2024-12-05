@@ -26,6 +26,9 @@ dist-ssr
 #package-lock.json
 package-lock.json
 
+#pnpm-lock.yaml
+pnpm-lock.yaml
+
 # Environment
 .env
 .env.local
