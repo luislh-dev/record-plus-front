@@ -1,50 +1,58 @@
-# React + TypeScript + Vite
+# Sistema Administrativo de Gestión Hospitalaria - Frontend
+## Descrpción
+Sistema web para la gestión administrativa de hospitales, permitiendo el manejo de expedientes médicos, gestión de usuarios, doctores y pacientes. Esta aplicación frontend está construida con React + TypeScript + Vite.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Características Principales
+- 🏥 Gestión de expedientes médicos
+- 👨‍⚕️ Administración de personal médico
+- 👥 Control de pacientes
+- 📊 Reportes y estadísticas
+- 🔐 Sistema de autenticación y autorización
 
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Requisisitos previos
+1. Clonar el repositorio:
+```
+git clone https://github.com/LuisLopez-developer/record-plus-front.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+2. Instalar dependencias:
 ```
+npm install
+# o
+yarn install
+```
+
+3.  Configurar variables de entorno:
+
+```
+cp .env.example .env
+```
+
+Editar el archivo `.env` con las configuraciones necesarias.
+
+4. Inicar el servidor de desarrollo:
+````
+npm run dev
+# o
+yarn dev
+````
+
+## Tecnologías Principales
+
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
+
+## Estructura del Proyecto
+````
+src/
+  ├── components/     # Componentes reutilizables
+  ├── pages/          # Páginas de la aplicación
+  ├── services/       # Servicios y llamadas API
+  ├── contexts/       # Contextos de React
+  ├── hooks/          # Hooks personalizados
+  ├── types/          # Definiciones de tipos
+  └── utils/          # Utilidades y helpers
+````
