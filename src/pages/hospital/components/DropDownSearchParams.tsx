@@ -29,16 +29,12 @@ export function SearchParamsDropdown({
     <Dropdown>
       <DropdownTrigger>
         <Button aria-label="Seleccionar parametros">
-          {selectedParams.size > 0
-            ? `${selectedParams.size} parámetro${
-                selectedParams.size > 1 ? "s" : ""
-              } seleccionado${selectedParams.size > 1 ? "s" : ""}`
-            : "Seleccionar parámetros"}
+          Buscar por {params.find((param) => param.id === selectedParams.values().next().value)?.label}
         </Button>
       </DropdownTrigger>
       <DropdownMenu
         closeOnSelect={false}
-        selectionMode="multiple"
+        selectionMode="single"
         disallowEmptySelection
         selectedKeys={selectedParams}
         onSelectionChange={(keys) => handleSelectionChange(keys as Set<string>)}
