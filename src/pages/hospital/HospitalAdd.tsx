@@ -1,10 +1,10 @@
 import { Button } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
-import { useHospitalCreate } from "./hooks/useHospitalCreate";
 import { HospitalForm } from "./components/HospitalForm";
+import { useHospitalCreate } from "./hooks/useHospitalCreate";
 import { HospitalCreateValues } from "./models/hospitalCreateSchema";
 
-export function HospitalAdd() {
+const HospitalAdd = () => {
   const navigate = useNavigate();
 
   const {
@@ -37,4 +37,6 @@ export function HospitalAdd() {
       />
     </div>
   );
-}
+};
+
+export default HospitalAdd;

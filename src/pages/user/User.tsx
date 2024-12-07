@@ -3,7 +3,7 @@ import { UserTable } from "@/components/UserTable";
 import { Button } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 
-export function User() {
+const User = () => {
   const navigate = useNavigate();
 
   return (
@@ -22,3 +22,5 @@ export function User() {
     </>
   );
 }
+
+export default User;

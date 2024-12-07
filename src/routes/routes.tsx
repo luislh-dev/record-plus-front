@@ -1,23 +1,31 @@
-import { PrivateRoute } from "@/routes/PrivateRoute";
-import { PublicRoute } from "@/routes/PublicRoute";
-import { AuthLayout } from "@/layouts/AuthLayout";
-import { MainLayout } from "@/layouts/MainLayout";
-import { Login } from "@/pages/Login";
-import { People } from "@/pages/people/People";
-import { User } from "@/pages/user/User";
-import { createBrowserRouter, Navigate } from "react-router-dom";
-import { RoleBasedRoute } from "./RoleBasedRoute";
 import { Roles } from "@/constants/roles";
 import { UserProvider } from "@/contexts/user/UserProvider";
-import { Hospital } from "@/pages/hospital/Hospital";
-import { HospitalEdit } from "@/pages/hospital/HospitalEdit";
-import { HospitalAdd } from "@/pages/hospital/HospitalAdd";
+import { AuthLayout } from "@/layouts/AuthLayout";
+import { MainLayout } from "@/layouts/MainLayout";
 import { Home } from "@/pages/home/Home";
+import { Login } from "@/pages/Login";
+import { PrivateRoute } from "@/routes/PrivateRoute";
+import { PublicRoute } from "@/routes/PublicRoute";
+import { lazy, Suspense } from "react";
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import { RoleBasedRoute } from "./RoleBasedRoute";
+
+const People = lazy(() => import("@/pages/people/People"));
+
+const User = lazy(() => import("@/pages/user/User"));
+
+const Hospital = lazy(() => import("@/pages/hospital/Hospital"));
+const HospitalEdit = lazy(() => import("@/pages/hospital/HospitalEdit"));
+const HospitalAdd = lazy(() => import("@/pages/hospital/HospitalAdd"));
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <AuthLayout />,
+    element: (
+      <Suspense>
+        <AuthLayout />
+      </Suspense>
+    ),
     children: [
       {
         index: true,
@@ -35,9 +43,11 @@ export const router = createBrowserRouter([
   },
   {
     element: (
-      <PrivateRoute>
-        <MainLayout />
-      </PrivateRoute>
+      <Suspense>
+        <PrivateRoute>
+          <MainLayout />
+        </PrivateRoute>
+      </Suspense>
     ),
     children: [
       {

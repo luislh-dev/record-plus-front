@@ -6,7 +6,7 @@ import { useHospitalGetBy } from "./hooks/useHospitalGetBy";
 import { HospitalForm } from "./components/HospitalForm";
 import { HospitalCreateValues } from "./models/hospitalCreateSchema";
 
-export function HospitalEdit() {
+const HospitalEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
@@ -71,4 +71,6 @@ export function HospitalEdit() {
       />
     </div>
   );
-}
+};
+
+export default HospitalEdit;

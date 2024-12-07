@@ -14,7 +14,7 @@ import { Search } from "@/icons/Search";
 import { SearchParamsDropdown } from "./components/DropDownSearchParams";
 import { SEARCH_PARAMS } from "./constants/searchParams";
 
-export function Hospital() {
+const Hospital= () => {
   const navigate = useNavigate();
 
   // Obtener toda la funcionalidad del hook
@@ -167,3 +167,5 @@ function Header({ onAddHospital }: HeaderProps) {
     </div>
   );
 }
+
+export default Hospital;
