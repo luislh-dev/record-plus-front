@@ -9,11 +9,12 @@ import {
   HOSPITAL_SORTABLE_FIELDS,
   HospitalSortField,
 } from "../constants/sortableFields";
+import { HospitalRequestParams } from "../types/HospitalRequestParams";
 
 interface UseHospitalParams {
   initialPageSize?: number;
   searchDelay?: number;
-  initialFilters?: Partial<HospitalSearchParams>;
+  initialFilters?: HospitalRequestParams;
 }
 
 // Campos válidos para búsqueda
@@ -64,28 +65,24 @@ export function useHospitalSearch({
   const debouncedSearchTerm = useDebounce(searchTerm, searchDelay);
 
   // Estado unificado de filtros
-  const [filters, setFilters] = useState<Partial<HospitalSearchParams>>({
-    pageNumber: 0,
-    pageSize: initialPageSize,
+  const [filters, setFilters] = useState<HospitalRequestParams>({
+    page: 0,
+    size: initialPageSize,
     ...initialFilters,
-    sort: sortConfig,
   });
 
   /**
    * Obtiene los datos de hospitales aplicando los filtros actuales
    */
   const fetchHospitals = useCallback(
-    async (
-      currentFilters: Partial<HospitalSearchParams>,
-      searchTerm?: string
-    ) => {
+    async (currentFilters: HospitalRequestParams, searchTerm?: string) => {
       setLoading(true);
       setError(null);
 
       try {
         const params = {
           ...currentFilters,
-          sort: getSortQuery(), // Usar el nuevo helper para obtener el query de ordenamiento
+          sort: `${getSortQuery().field},${getSortQuery().field}`, // Usar el nuevo helper para obtener el query de ordenamiento
         };
 
         // Aplicar término de búsqueda solo a los parámetros seleccionados
@@ -107,6 +104,7 @@ export function useHospitalSearch({
         }
 
         const response = await getHospitals(params);
+
         setData(response.content);
         setPagination({
           totalPages: response.totalPages,
