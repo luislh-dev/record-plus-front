@@ -92,12 +92,7 @@ export function useHospitalSearch({
   );
 
   // Query principal
-  const {
-    data: queryData,
-    isLoading,
-    error,
-    refetch,
-  } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["hospitals", filters, debouncedSearchTerm, sortConfig],
     queryFn: async () => {
       const params = buildSearchParams(filters, debouncedSearchTerm);
@@ -107,12 +102,12 @@ export function useHospitalSearch({
   });
 
   // Extraer datos y estado de paginación
-  const data = queryData?.content ?? [];
+  const hospitals = data?.content ?? [];
   const pagination: PaginationState = {
-    totalPages: queryData?.totalPages ?? 0,
-    totalElements: queryData?.totalElements ?? 0,
-    pageSize: queryData?.size ?? initialPageSize,
-    currentPage: queryData?.number ?? 0,
+    totalPages: data?.totalPages ?? 0,
+    totalElements: data?.totalElements ?? 0,
+    pageSize: data?.size ?? initialPageSize,
+    currentPage: data?.number ?? 0,
   };
 
   // Manejadores de eventos
@@ -148,7 +143,7 @@ export function useHospitalSearch({
 
   // Prefetch siguiente página
   const prefetchNextPage = useCallback(() => {
-    if (queryData && queryData.number < queryData.totalPages - 1) {
+    if (data && data.number < data.totalPages - 1) {
       const nextPageFilters = {
         ...filters,
         page: (filters.page ?? 0) + 1,
@@ -171,12 +166,12 @@ export function useHospitalSearch({
     debouncedSearchTerm,
     sortConfig,
     buildSearchParams,
-    queryData,
+    data,
   ]);
 
   return {
     // Datos y estado
-    data,
+    hospitals,
     isLoading,
     error: error ? "Error al cargar los hospitales" : null,
     searchTerm,

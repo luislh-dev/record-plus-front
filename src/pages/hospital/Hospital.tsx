@@ -14,12 +14,12 @@ import { Search } from "@/icons/Search";
 import { SearchParamsDropdown } from "./components/DropDownSearchParams";
 import { SEARCH_PARAMS } from "./constants/searchParams";
 
-const Hospital= () => {
+const Hospital = () => {
   const navigate = useNavigate();
 
   // Obtener toda la funcionalidad del hook
   const {
-    data: hospitals,
+    hospitals,
     isLoading,
     error,
     searchTerm,
@@ -145,7 +145,7 @@ const Hospital= () => {
       />
     </>
   );
-}
+};
 
 // Componentes auxiliares para mejorar la legibilidad
 
