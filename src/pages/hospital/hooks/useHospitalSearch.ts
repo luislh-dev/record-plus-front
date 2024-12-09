@@ -1,7 +1,6 @@
 import { useDebounce } from "@/hooks/useDebounce";
 import { PaginationState } from "@/types/Pagination";
 import { useState, useCallback, useEffect } from "react";
-import { HospitalSearchParams } from "../types/hospital";
 import { HospitalListDTO } from "../types/HospitalListDTO";
 import { getHospitals } from "../service/hospitalService";
 import { useSort } from "@/hooks/useSort";
@@ -18,7 +17,10 @@ interface UseHospitalParams {
 }
 
 // Campos válidos para búsqueda
-type SearchableFields = keyof Pick<HospitalSearchParams, "name" | "ruc" | "id">;
+type SearchableFields = keyof Pick<
+  HospitalRequestParams,
+  "name" | "ruc" | "id"
+>;
 
 /**
  * Verifica si un campo es válido para búsqueda
