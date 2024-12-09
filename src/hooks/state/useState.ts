@@ -1,27 +1,16 @@
 import { getStates } from "@/services/stateService";
-import { State } from "@/types/state";
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 export const useStates = () => {
-  const [state, setState] = useState<State[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const {
+    data: state,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["states"],
+    queryFn: async () => getStates(),
+    staleTime: 1000 * 60 * 60 * 24, // 24 horas
+  });
 
-  useEffect(() => {
-    const fetchStates = async () => {
-      try {
-        setLoading(true);
-        const data = await getStates();
-        setState(data);
-      } catch (err) {
-        setError("Error al cargar estados");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchStates();
-  }, []);
-
-  return { state, loading, error };
+  return { state: state ?? [], isLoading, isError };
 };
