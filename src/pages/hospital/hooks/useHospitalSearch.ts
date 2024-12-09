@@ -1,7 +1,6 @@
 import { useDebounce } from "@/hooks/useDebounce";
 import { PaginationState } from "@/types/Pagination";
-import { useState, useCallback, useEffect } from "react";
-import { HospitalListDTO } from "../types/HospitalListDTO";
+import { useState, useCallback } from "react";
 import { getHospitals } from "../service/hospitalService";
 import { useSort } from "@/hooks/useSort";
 import {
@@ -9,6 +8,7 @@ import {
   HospitalSortField,
 } from "../constants/sortableFields";
 import { HospitalRequestParams } from "../types/HospitalRequestParams";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 interface UseHospitalParams {
   initialPageSize?: number;
@@ -39,7 +39,9 @@ export function useHospitalSearch({
   searchDelay = 300,
   initialFilters = {},
 }: UseHospitalParams = {}) {
-  // Estados principales
+  const queryClient = useQueryClient();
+
+  // Estados y configuración de ordenamiento
   const { sortConfig, handleSort, getSortQuery } = useSort<HospitalSortField>({
     defaultField: "updatedAt",
     defaultDirection: "desc",
@@ -48,101 +50,81 @@ export function useHospitalSearch({
     ) as HospitalSortField[],
   });
 
-  const [data, setData] = useState<HospitalListDTO[]>([]);
-  const [isLoading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // Estados locales
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedState, setState] = useState<number | null>(null);
   const [searchFields, setSearchFields] = useState<string[]>(["name"]);
-
-  // Configuración de paginación
-  const [pagination, setPagination] = useState<PaginationState>({
-    totalPages: 0,
-    totalElements: 0,
-    pageSize: initialPageSize,
-    currentPage: 0,
-  });
-
-  // Aplicar debounce al término de búsqueda
-  const debouncedSearchTerm = useDebounce(searchTerm, searchDelay);
-
-  // Estado unificado de filtros
   const [filters, setFilters] = useState<HospitalRequestParams>({
     page: 0,
     size: initialPageSize,
     ...initialFilters,
   });
 
-  /**
-   * Obtiene los datos de hospitales aplicando los filtros actuales
-   */
-  const fetchHospitals = useCallback(
-    async (currentFilters: HospitalRequestParams, searchTerm?: string) => {
-      setLoading(true);
-      setError(null);
+  // Aplicar debounce al término de búsqueda
+  const debouncedSearchTerm = useDebounce(searchTerm, searchDelay);
 
-      try {
-        const params = {
-          ...currentFilters,
-          sort: `${getSortQuery().field},${getSortQuery().direction}`, // Usar el nuevo helper para obtener el query de ordenamiento
-        };
+  // Construir parámetros de búsqueda
+  const buildSearchParams = useCallback(
+    (baseFilters: HospitalRequestParams, searchTerm?: string) => {
+      const params = {
+        ...baseFilters,
+        sort: `${getSortQuery().field},${getSortQuery().direction}`,
+      };
 
-        // Aplicar término de búsqueda solo a los parámetros seleccionados
-        if (searchTerm) {
-          searchFields.forEach((field) => {
-            if (isValidSearchField(field)) {
-              // Verificar que el campo sea válido
-              if (field === "id") {
-                const numericId = parseInt(searchTerm);
-                if (!isNaN(numericId)) {
-                  params.id = numericId;
-                }
-              } else {
-                // Si el campo es "name" o "ruc" se agrega a los parámetros
-                params[field] = searchTerm;
+      if (searchTerm) {
+        searchFields.forEach((field) => {
+          if (isValidSearchField(field)) {
+            if (field === "id") {
+              const numericId = parseInt(searchTerm);
+              if (!isNaN(numericId)) {
+                params.id = numericId;
               }
+            } else {
+              params[field] = searchTerm;
             }
-          });
-        }
-
-        const response = await getHospitals(params);
-
-        setData(response.content);
-        setPagination({
-          totalPages: response.totalPages,
-          totalElements: response.totalElements,
-          pageSize: response.size,
-          currentPage: response.number,
+          }
         });
-      } catch (err) {
-        setError("Error al cargar los hospitales");
-        setData([]);
-        console.error("Error en fetchHospitals:", err);
-      } finally {
-        setLoading(false);
       }
+
+      return params;
     },
     [getSortQuery, searchFields]
   );
 
-  // Manejador para los parámetros de búsqueda
+  // Query principal
+  const {
+    data: queryData,
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey: ["hospitals", filters, debouncedSearchTerm, sortConfig],
+    queryFn: async () => {
+      const params = buildSearchParams(filters, debouncedSearchTerm);
+      return getHospitals(params);
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutos
+  });
+
+  // Extraer datos y estado de paginación
+  const data = queryData?.content ?? [];
+  const pagination: PaginationState = {
+    totalPages: queryData?.totalPages ?? 0,
+    totalElements: queryData?.totalElements ?? 0,
+    pageSize: queryData?.size ?? initialPageSize,
+    currentPage: queryData?.number ?? 0,
+  };
+
+  // Manejadores de eventos
+  const handleSearch = useCallback((term: string) => {
+    setSearchTerm(term);
+    setFilters((prev) => ({ ...prev, page: 0 }));
+  }, []);
+
   const handleSearchParamsChange = useCallback((params: string[]) => {
     setSearchFields(params.filter(isValidSearchField));
   }, []);
 
-  // Efecto para actualizar datos cuando cambian los filtros
-  useEffect(() => {
-    fetchHospitals(filters, debouncedSearchTerm);
-  }, [debouncedSearchTerm, filters, fetchHospitals]);
-
-  // Manejadores de eventos
-
-  // Manejador de búsqueda
-  const handleSearch = useCallback((term: string) => {
-    setSearchTerm(term);
-  }, []);
-
-  // Manejador de cambio de estado de hospital
   const handleStateChange = useCallback((stateId: number | null) => {
     setState(stateId);
     if (stateId === null) {
@@ -152,30 +134,51 @@ export function useHospitalSearch({
     setFilters((prev) => ({ ...prev, stateId }));
   }, []);
 
-  // Manejador de cambio de página
   const setPage = useCallback((page: number) => {
-    setFilters((prev) => ({ ...prev, pageNumber: page }));
+    setFilters((prev) => ({ ...prev, page }));
   }, []);
 
-  // Refrescar datos
-  const refresh = useCallback(() => {
-    fetchHospitals(filters, debouncedSearchTerm);
-  }, [fetchHospitals, filters, debouncedSearchTerm]);
-
-  // Manejador de cambio de tamaño de página
   const setPageSize = useCallback((newPageSize: number) => {
     setFilters((prev) => ({
       ...prev,
-      pageSize: newPageSize,
-      pageNumber: 0,
+      size: newPageSize,
+      page: 0,
     }));
   }, []);
+
+  // Prefetch siguiente página
+  const prefetchNextPage = useCallback(() => {
+    if (queryData && queryData.number < queryData.totalPages - 1) {
+      const nextPageFilters = {
+        ...filters,
+        page: (filters.page ?? 0) + 1,
+      };
+      const params = buildSearchParams(nextPageFilters, debouncedSearchTerm);
+
+      queryClient.prefetchQuery({
+        queryKey: [
+          "hospitals",
+          nextPageFilters,
+          debouncedSearchTerm,
+          sortConfig,
+        ],
+        queryFn: () => getHospitals(params),
+      });
+    }
+  }, [
+    queryClient,
+    filters,
+    debouncedSearchTerm,
+    sortConfig,
+    buildSearchParams,
+    queryData,
+  ]);
 
   return {
     // Datos y estado
     data,
     isLoading,
-    error,
+    error: error ? "Error al cargar los hospitales" : null,
     searchTerm,
     pagination,
     filters,
@@ -190,8 +193,9 @@ export function useHospitalSearch({
     setPageSize,
     setFilters,
     handleStateChange,
-    refresh,
+    refresh: refetch,
     handleSearchParamsChange,
     setSearchFields,
+    prefetchNextPage,
   };
 }
