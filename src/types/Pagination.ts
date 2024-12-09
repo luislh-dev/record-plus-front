@@ -1,9 +1,3 @@
-export interface PageRequest {
-  pageNumber?: number;
-  pageSize?: number;
-  sort?: SortConfig;
-}
-
 export interface SortConfig {
   field: string;
   direction: "asc" | "desc";
