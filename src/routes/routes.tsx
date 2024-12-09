@@ -6,26 +6,18 @@ import { Home } from "@/pages/home/Home";
 import { Login } from "@/pages/Login";
 import { PrivateRoute } from "@/routes/PrivateRoute";
 import { PublicRoute } from "@/routes/PublicRoute";
-import { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import { RoleBasedRoute } from "./RoleBasedRoute";
-
-const People = lazy(() => import("@/pages/people/People"));
-
-const User = lazy(() => import("@/pages/user/User"));
-
-const Hospital = lazy(() => import("@/pages/hospital/Hospital"));
-const HospitalEdit = lazy(() => import("@/pages/hospital/HospitalEdit"));
-const HospitalAdd = lazy(() => import("@/pages/hospital/HospitalAdd"));
+import HospitalAdd from "@/pages/hospital/HospitalAdd";
+import HospitalEdit from "@/pages/hospital/HospitalEdit";
+import People from "@/pages/people/People";
+import User from "@/pages/user/User";
+import Hospital from "@/pages/hospital/Hospital";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Suspense>
-        <AuthLayout />
-      </Suspense>
-    ),
+    element: <AuthLayout />,
     children: [
       {
         index: true,
@@ -43,11 +35,9 @@ export const router = createBrowserRouter([
   },
   {
     element: (
-      <Suspense>
-        <PrivateRoute>
-          <MainLayout />
-        </PrivateRoute>
-      </Suspense>
+      <PrivateRoute>
+        <MainLayout />
+      </PrivateRoute>
     ),
     children: [
       {
