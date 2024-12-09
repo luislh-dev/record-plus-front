@@ -82,7 +82,7 @@ export function useHospitalSearch({
       try {
         const params = {
           ...currentFilters,
-          sort: `${getSortQuery().field},${getSortQuery().field}`, // Usar el nuevo helper para obtener el query de ordenamiento
+          sort: `${getSortQuery().field},${getSortQuery().direction}`, // Usar el nuevo helper para obtener el query de ordenamiento
         };
 
         // Aplicar término de búsqueda solo a los parámetros seleccionados
