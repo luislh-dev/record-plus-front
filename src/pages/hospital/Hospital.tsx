@@ -13,6 +13,7 @@ import { DropDownSort } from "./components/DropDownSort";
 import { Search } from "@/icons/Search";
 import { SearchParamsDropdown } from "./components/DropDownSearchParams";
 import { SEARCH_PARAMS } from "./constants/searchParams";
+import { Align } from "@/constants/align";
 
 const Hospital = () => {
   const navigate = useNavigate();
@@ -74,7 +75,7 @@ const Hospital = () => {
     {
       name: "Acciones",
       uuid: "actions",
-      align: "center",
+      align: Align.CENTER,
       render: (hospital: HospitalListDTO) => (
         <ActionsCell
           hospital={hospital}
