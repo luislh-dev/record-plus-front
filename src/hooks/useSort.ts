@@ -1,4 +1,4 @@
-import { SortConfig, SortDirection, SortOptions } from "@/types/Sort";
+import { SortConfig, SortDirection, SortOptions } from "@/types/sorting";
 import { useCallback, useState } from "react";
 
 /**
@@ -11,11 +11,11 @@ import { useCallback, useState } from "react";
  */
 export function useSort<T extends string>({
   defaultField,
-  defaultDirection = "asc",
+  defaultDirection = SortDirection.ASC,
   sortableFields,
 }: SortOptions<T>) {
   // Estado principal que mantiene la configuración actual del ordenamiento
-  const [sortConfig, setSortConfig] = useState<SortConfig<T>>({
+  const [sortConfig, setSortConfig] = useState<SortConfig>({
     field: defaultField,
     direction: defaultDirection,
   });
@@ -40,7 +40,7 @@ export function useSort<T extends string>({
    */
   const toggleSortDirection = useCallback(
     (direction: SortDirection): SortDirection => {
-      return direction === "asc" ? "desc" : "asc";
+      return direction === "asc" ? SortDirection.DESC : SortDirection.ASC;
     },
     []
   );
