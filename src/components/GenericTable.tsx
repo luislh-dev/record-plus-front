@@ -1,6 +1,7 @@
 import { Align } from "@/constants/align";
 import { ArrowDown } from "@/icons/ArrowDown";
 import { ArrowUp } from "@/icons/ArrowUp";
+import { UnfoldMore } from "@/icons/UnfoldMore";
 import { SortConfig } from "@/types/Pagination";
 import { SortDirection } from "@/types/sorting";
 import { Pagination } from "@nextui-org/react";
@@ -110,12 +111,16 @@ export function GenericTable<T extends { id: number | string }>({
                       }`}
                     >
                       {column.name}
-                      {column.sortable && sortConfig?.field === column.uuid && (
+                      {column.sortable && (
                         <span className="ml-2">
-                          {sortConfig.direction === SortDirection.ASC ? (
-                            <ArrowUp />
+                          {sortConfig?.field === column.uuid ? (
+                            sortConfig.direction === SortDirection.ASC ? (
+                              <ArrowUp />
+                            ) : (
+                              <ArrowDown />
+                            )
                           ) : (
-                            <ArrowDown />
+                            <UnfoldMore />
                           )}
                         </span>
                       )}
