@@ -1,4 +1,4 @@
-import { PageRequest } from "@/types/Pagination";
+import { PageRequest } from "@/types/page/PageRequest";
 
 export interface UserSearchParams extends PageRequest {
   username?: string;

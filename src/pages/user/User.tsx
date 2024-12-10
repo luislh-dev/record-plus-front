@@ -1,5 +1,3 @@
-import { UserSearch } from "@/components/UserSearch";
-import { UserTable } from "@/components/UserTable";
 import { Button } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 
@@ -14,13 +12,8 @@ const User = () => {
           Agregar Usuarios
         </Button>
       </div>
-      <div className="mx-4 pb-4 pt-3">
-        <UserSearch />
-      </div>
-
-      <UserTable />
     </>
   );
-}
+};
 
 export default User;

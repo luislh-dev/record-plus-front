@@ -1,5 +1,4 @@
 import { Roles } from "@/constants/roles";
-import { UserProvider } from "@/contexts/user/UserProvider";
 import { AuthLayout } from "@/layouts/AuthLayout";
 import { MainLayout } from "@/layouts/MainLayout";
 import { Home } from "@/pages/home/Home";
@@ -58,9 +57,7 @@ export const router = createBrowserRouter([
         path: "user",
         element: (
           <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
-            <UserProvider>
-              <User />
-            </UserProvider>
+            <User />
           </RoleBasedRoute>
         ),
       },
