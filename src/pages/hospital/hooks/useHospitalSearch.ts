@@ -10,6 +10,7 @@ import {
 import { HospitalRequestParams } from "../types/HospitalRequestParams";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { SEARCH_PARAMS } from "../constants/searchParams";
+import { SortDirection } from "@/types/sorting";
 
 interface UseHospitalParams {
   initialPageSize?: number;
@@ -30,7 +31,7 @@ export function useHospitalSearch({
   // Estados y configuración de ordenamiento
   const { sortConfig, handleSort, getSortQuery } = useSort<HospitalSortField>({
     defaultField: "updatedAt",
-    defaultDirection: "desc",
+    defaultDirection: SortDirection.DESC,
     sortableFields: Object.keys(
       HOSPITAL_SORTABLE_FIELDS
     ) as HospitalSortField[],

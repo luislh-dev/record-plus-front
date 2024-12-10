@@ -2,8 +2,7 @@ import { Align } from "@/constants/align";
 import { ArrowDown } from "@/icons/ArrowDown";
 import { ArrowUp } from "@/icons/ArrowUp";
 import { UnfoldMore } from "@/icons/UnfoldMore";
-import { SortConfig } from "@/types/Pagination";
-import { SortDirection } from "@/types/sorting";
+import { SortConfig, SortDirection } from "@/types/sorting";
 import { Pagination } from "@nextui-org/react";
 import React, { useEffect, useRef } from "react";
 

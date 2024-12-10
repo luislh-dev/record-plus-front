@@ -1,5 +1,4 @@
 import { FilterList } from "@/icons/FIlterList";
-import { SortConfig } from "@/types/Pagination";
 import {
   Button,
   Dropdown,
@@ -11,6 +10,7 @@ import { Key, useEffect, useState } from "react";
 import { ArrowUp } from "@/icons/ArrowUp";
 import { ArrowDown } from "@/icons/ArrowDown";
 import { HOSPITAL_SORTABLE_FIELDS } from "../constants/sortableFields";
+import { SortConfig, SortDirection } from "@/types/sorting";
 
 interface DropDownSortProps {
   selectedSort?: SortConfig;
@@ -23,7 +23,7 @@ export function DropDownSort({
 }: DropDownSortProps) {
   const [currentSort, setCurrentSort] = useState<SortConfig>({
     field: "name",
-    direction: "asc",
+    direction: SortDirection.ASC,
   });
 
   useEffect(() => {
@@ -35,9 +35,9 @@ export function DropDownSort({
   const handleAction = (key: Key) => {
     const field = key.toString();
     const direction =
-      currentSort.field === field && currentSort.direction === "asc"
-        ? "desc"
-        : "asc";
+      currentSort.field === field && currentSort.direction === SortDirection.ASC
+        ? SortDirection.DESC
+        : SortDirection.ASC;
 
     setCurrentSort({ field, direction });
     console.log({ field, direction });
@@ -65,7 +65,7 @@ export function DropDownSort({
             aria-label={`ordenar por ${field.label.toLowerCase()}`}
             endContent={
               currentSort.field === field.field ? (
-                currentSort.direction === "asc" ? (
+                currentSort.direction === SortDirection.ASC ? (
                   <ArrowUp />
                 ) : (
                   <ArrowDown />
