@@ -9,26 +9,12 @@ import {
 } from "../constants/sortableFields";
 import { HospitalRequestParams } from "../types/HospitalRequestParams";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { SEARCH_PARAMS } from "../constants/searchParams";
 
 interface UseHospitalParams {
   initialPageSize?: number;
   searchDelay?: number;
   initialFilters?: HospitalRequestParams;
-}
-
-// Campos válidos para búsqueda
-type SearchableFields = keyof Pick<
-  HospitalRequestParams,
-  "name" | "ruc" | "id"
->;
-
-/**
- * Verifica si un campo es válido para búsqueda
- * @param field Campo a verificar
- * @returns Si el campo es válido
- */
-function isValidSearchField(field: string): field is SearchableFields {
-  return ["name", "ruc", "id"].includes(field);
 }
 
 /**
@@ -73,13 +59,17 @@ export function useHospitalSearch({
 
       if (searchTerm) {
         searchFields.forEach((field) => {
-          if (isValidSearchField(field)) {
+          // Solo procesar si el campo está en searchFields y es un campo válido
+          if (SEARCH_PARAMS.some((param) => param.id === field)) {
+            // Caso especial para ID si se necesita
             if (field === "id") {
               const numericId = parseInt(searchTerm);
               if (!isNaN(numericId)) {
                 params.id = numericId;
               }
-            } else {
+            }
+            // Para RUC y name
+            else if (field === "ruc" || field === "name") {
               params[field] = searchTerm;
             }
           }
@@ -98,7 +88,6 @@ export function useHospitalSearch({
       const params = buildSearchParams(filters, debouncedSearchTerm);
       return getHospitals(params);
     },
-    staleTime: 1000 * 60 * 5, // 5 minutos
   });
 
   // Extraer datos y estado de paginación
@@ -117,7 +106,7 @@ export function useHospitalSearch({
   }, []);
 
   const handleSearchParamsChange = useCallback((params: string[]) => {
-    setSearchFields(params.filter(isValidSearchField));
+    setSearchFields(params);
   }, []);
 
   const handleStateChange = useCallback((stateId: number | null) => {
