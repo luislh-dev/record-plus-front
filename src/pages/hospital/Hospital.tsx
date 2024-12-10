@@ -49,14 +49,17 @@ const Hospital = () => {
     {
       name: "Teléfono",
       uuid: "phone",
+      sortable: true,
     },
     {
       name: "Correo electrónico",
       uuid: "email",
+      sortable: true,
     },
     {
       name: "RUC",
       uuid: "ruc",
+      sortable: true,
     },
     {
       name: "Estado",
