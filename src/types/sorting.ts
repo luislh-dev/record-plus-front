@@ -1,6 +1,18 @@
 export enum SortDirection {
+  NONE = "none",
   ASC = "asc",
   DESC = "desc",
+}
+
+export interface SortConfig {
+  field: string;
+  direction: SortDirection;
+}
+
+export interface SortOptions<T extends string> {
+  defaultField: T;
+  defaultDirection?: SortDirection;
+  sortableFields: T[];
 }
 
 export type SortableKeys<T> = {
@@ -8,6 +20,6 @@ export type SortableKeys<T> = {
 }[keyof T];
 
 export interface GenericSortConfig<T> {
-  sortBy: SortableKeys<T>;
+  field: SortableKeys<T>;
   direction: SortDirection;
 }
