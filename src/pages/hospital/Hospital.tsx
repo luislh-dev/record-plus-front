@@ -64,6 +64,7 @@ const Hospital = () => {
     {
       name: "Estado",
       uuid: "state",
+      align: Align.CENTER,
       render: (hospital: HospitalListDTO) => (
         <Chip
           className="capitalize"
