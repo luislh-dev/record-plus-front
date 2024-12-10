@@ -1,8 +1,8 @@
 import { createContext, useContext } from "react";
 import { ApiServiceError } from "@/services/api/ApiErrorHandler";
 import { UserListDTO } from "@/types/DTO/user/UserDto";
-import { PageRequest } from "@/types/Pagination";
 import { UserSearchParams } from "@/types/DTO/user/UserSearchParams";
+import { PageRequest } from "@/types/page/PageRequest";
 
 interface UserContextType {
   users: UserListDTO[];
