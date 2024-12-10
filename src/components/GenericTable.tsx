@@ -103,7 +103,7 @@ export function GenericTable<T extends { id: number | string }>({
                   >
                     <div
                       className={`flex items-center ${
-                        column.align === "center"
+                        column.align === Align.CENTER
                           ? "justify-center"
                           : sortConfig
                           ? "justify-between"
@@ -169,9 +169,9 @@ export function GenericTable<T extends { id: number | string }>({
                       <td
                         key={String(column.uuid)}
                         className={`p-4 whitespace-nowrap ${
-                          column.align === "center"
+                          column.align === Align.CENTER
                             ? "text-center"
-                            : column.align === "end"
+                            : column.align === Align.END
                             ? "text-right"
                             : "text-left"
                         }`}
