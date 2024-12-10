@@ -5,7 +5,7 @@ import { UnfoldMore } from "@/icons/UnfoldMore";
 import { SortConfig } from "@/types/Pagination";
 import { SortDirection } from "@/types/sorting";
 import { Pagination } from "@nextui-org/react";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 interface Column<T> {
   name: string;
@@ -46,6 +46,14 @@ export function GenericTable<T extends { id: number | string }>({
   onSort,
   sortConfig,
 }: GenericTableProps<T>) {
+  const lastValidData = useRef<T[]>([]);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      lastValidData.current = data;
+    }
+  }, [data]);
+
   const renderCell = React.useCallback(
     (item: T, columnKey: keyof T | "actions") => {
       const column = columns.find((col) => col.uuid === columnKey);
@@ -93,7 +101,11 @@ export function GenericTable<T extends { id: number | string }>({
                         ? "rounded-tr-lg"
                         : ""
                     }
-                    ${column.align === "center" ? "text-center" : "text-left"}
+                    ${
+                      column.align === Align.CENTER
+                        ? "text-center"
+                        : "text-left"
+                    }
                   `}
                     onClick={() => {
                       if (column.sortable && onSort) {
@@ -130,16 +142,7 @@ export function GenericTable<T extends { id: number | string }>({
               </tr>
             </thead>
             <tbody>
-              {isLoading && !data.length ? (
-                <tr>
-                  <td
-                    colSpan={columns.length}
-                    className="text-center p-20 text-gray-500 font-semibold"
-                  >
-                    {loadingContent}
-                  </td>
-                </tr>
-              ) : error ? (
+              {error ? (
                 <tr>
                   <td
                     colSpan={columns.length}
@@ -148,20 +151,37 @@ export function GenericTable<T extends { id: number | string }>({
                     {errorMessage}
                   </td>
                 </tr>
-              ) : data.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan={columns.length}
-                    className="text-center p-20 text-gray-500"
+              ) : isLoading &&
+                !data.length &&
+                lastValidData.current.length > 0 ? (
+                // Usar datos en caché durante la carga si existen
+                lastValidData.current.map((item) => (
+                  <tr
+                    key={item.id}
+                    className="hover:bg-gray-50 last:border-b-0 transition-opacity duration-200 opacity-50"
                   >
-                    {emptyMessage}
-                  </td>
-                </tr>
-              ) : (
+                    {columns.map((column) => (
+                      <td
+                        key={String(column.uuid)}
+                        className={`p-4 whitespace-nowrap ${
+                          column.align === Align.CENTER
+                            ? "text-center"
+                            : column.align === Align.END
+                            ? "text-right"
+                            : "text-left"
+                        }`}
+                      >
+                        {renderCell(item, column.uuid)}
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              ) : data.length > 0 ? (
+                // Mostrar datos actuales
                 data.map((item) => (
                   <tr
                     key={item.id}
-                    className={`hover:bg-gray-50 last:border-b-0 ${
+                    className={`hover:bg-gray-50 last:border-b-0 transition-opacity duration-200 ${
                       isLoading ? "opacity-50" : ""
                     }`}
                   >
@@ -181,6 +201,25 @@ export function GenericTable<T extends { id: number | string }>({
                     ))}
                   </tr>
                 ))
+              ) : isLoading ? (
+                // Solo mostrar loading cuando no hay datos ni caché
+                <tr>
+                  <td
+                    colSpan={columns.length}
+                    className="text-center p-20 text-gray-500 font-semibold"
+                  >
+                    {loadingContent}
+                  </td>
+                </tr>
+              ) : (
+                <tr>
+                  <td
+                    colSpan={columns.length}
+                    className="text-center p-20 text-gray-500"
+                  >
+                    {emptyMessage}
+                  </td>
+                </tr>
               )}
             </tbody>
           </table>
