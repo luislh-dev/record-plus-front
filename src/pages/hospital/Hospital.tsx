@@ -12,31 +12,26 @@ import { DropDownFilter } from "./components/DropDrownFilter";
 import { DropDownSort } from "./components/DropDownSort";
 import { Search } from "@/icons/Search";
 import { SearchParamsDropdown } from "./components/DropDownSearchParams";
-import { SEARCH_PARAMS } from "./constants/searchParams";
 import { Align } from "@/constants/align";
+import { useSearchStore } from "./stores/searchStore";
 
 const Hospital = () => {
   const navigate = useNavigate();
+
+  const { searchTerm, setSearchTerm, setPage, sortConfig, setSortConfig } =
+    useSearchStore();
 
   // Obtener toda la funcionalidad del hook
   const {
     hospitals,
     isLoading,
     error,
-    searchTerm,
-    handleSearch,
     pagination,
-    setPage,
-    sortConfig,
-    handleSort,
     deleteState: { isDeleting },
     isOpen,
     openDeleteModal,
     closeDeleteModal,
     handleDelete,
-    selectedState,
-    handleStateChange,
-    handleSearchParamsChange,
   } = useHospital();
 
   // Definición de columnas para la tabla
@@ -106,35 +101,31 @@ const Hospital = () => {
               inputWrapper:
                 "h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20",
             }}
-            onClear={() => handleSearch("")}
+            onClear={() => setSearchTerm("")}
             type="text"
             placeholder="Buscar hospital..."
             value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={(e) => setSearchTerm(e.target.value)}
             startContent={<Search />}
           />
-          <SearchParamsDropdown
-            params={SEARCH_PARAMS}
-            onParamsChange={handleSearchParamsChange}
-          />
-          <DropDownFilter
-            onStateChange={handleStateChange}
-            selectedState={selectedState}
-          />
-          <DropDownSort onSortSelected={handleSort} selectedSort={sortConfig} />
+          <SearchParamsDropdown />
+          <DropDownFilter />
+          <DropDownSort />
         </search>
         {/* Tabla de hospitales */}
         <GenericTable
           columns={columns}
           data={hospitals}
-          error={error}
+          error={error?.message}
           emptyMessage="No se encontraron hospitales."
           isLoading={isLoading}
           loadingContent="Cargando hospitales..."
           totalPages={pagination.totalPages}
           currentPage={pagination.currentPage}
           onPageChange={setPage}
-          onSort={handleSort}
+          onSort={(field) =>
+            setSortConfig({ field, direction: sortConfig.direction })
+          }
           sortConfig={sortConfig}
         />
       </div>

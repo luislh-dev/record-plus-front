@@ -10,26 +10,21 @@ import {
   Radio,
   RadioGroup,
 } from "@nextui-org/react";
+import { useSearchStore } from "../stores/searchStore";
 
-interface DropDownFilterProps {
-  onStateChange: (stateId: number | null) => void;
-  selectedState: number | null;
-}
-
-export function DropDownFilter({
-  onStateChange,
-  selectedState = null,
-}: DropDownFilterProps) {
+export function DropDownFilter() {
   const { state } = useStates();
+
+  const { selectedState, setSelectedState } = useSearchStore();
 
   const handleValueChange = (selectedValue: string) => {
     // Si se selecciona "Todos", se pasa null
     if (selectedValue === "todos") {
-      onStateChange(null);
+      setSelectedState(null);
     }
     // Si se selecciona un estado, se pasa el ID
     else {
-      onStateChange(parseInt(selectedValue));
+      setSelectedState(parseInt(selectedValue));
     }
   };
 

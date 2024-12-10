@@ -1,26 +1,15 @@
 import { useHospitalDelete } from "./UseHospitalDelete";
 import { useHospitalSearch } from "./useHospitalSearch";
 
-interface UseHospitalParams {
-  initialPageSize?: number;
-  searchDelay?: number;
-}
-
 /**
  * Hook para manejar la búsqueda y eliminación de hospitales
  */
-export function useHospital({
-  initialPageSize,
-  searchDelay,
-}: UseHospitalParams = {}) {
+export function useHospital() {
   // Inicializar búsqueda genérica
-  const searchResults = useHospitalSearch({
-    initialPageSize,
-    searchDelay,
-  });
+  const searchResults = useHospitalSearch();
 
   const deleteResults = useHospitalDelete(() => {
-    searchResults.refresh();
+    searchResults.refetch();
   });
 
   return {

@@ -6,42 +6,24 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/react";
-import { Key, useEffect, useState } from "react";
+import { Key } from "react";
 import { ArrowUp } from "@/icons/ArrowUp";
 import { ArrowDown } from "@/icons/ArrowDown";
 import { HOSPITAL_SORTABLE_FIELDS } from "../constants/sortableFields";
-import { SortConfig, SortDirection } from "@/types/sorting";
+import { SortDirection } from "@/types/sorting";
+import { useSearchStore } from "../stores/searchStore";
 
-interface DropDownSortProps {
-  selectedSort?: SortConfig;
-  onSortSelected: (value: string) => void;
-}
-
-export function DropDownSort({
-  onSortSelected,
-  selectedSort,
-}: DropDownSortProps) {
-  const [currentSort, setCurrentSort] = useState<SortConfig>({
-    field: "name",
-    direction: SortDirection.ASC,
-  });
-
-  useEffect(() => {
-    if (selectedSort) {
-      setCurrentSort(selectedSort);
-    }
-  }, [selectedSort]);
+export function DropDownSort() {
+  const { sortConfig, setSortConfig } = useSearchStore();
 
   const handleAction = (key: Key) => {
     const field = key.toString();
     const direction =
-      currentSort.field === field && currentSort.direction === SortDirection.ASC
+      sortConfig.field === field && sortConfig.direction === "asc"
         ? SortDirection.DESC
         : SortDirection.ASC;
 
-    setCurrentSort({ field, direction });
-    console.log({ field, direction });
-    onSortSelected(field);
+    setSortConfig({ field, direction });
   };
 
   return (
@@ -54,7 +36,7 @@ export function DropDownSort({
       <DropdownMenu
         variant="faded"
         disallowEmptySelection
-        selectedKeys={new Set([currentSort.field])}
+        selectedKeys={new Set([sortConfig.field])}
         onAction={handleAction}
         closeOnSelect={false}
       >
@@ -64,8 +46,8 @@ export function DropDownSort({
             textValue={field.field}
             aria-label={`ordenar por ${field.label.toLowerCase()}`}
             endContent={
-              currentSort.field === field.field ? (
-                currentSort.direction === SortDirection.ASC ? (
+              sortConfig.field === field.field ? (
+                sortConfig.direction === SortDirection.ASC ? (
                   <ArrowUp />
                 ) : (
                   <ArrowDown />

@@ -1,4 +1,3 @@
-import { SearchParam } from "@/types/SearchParam";
 import {
   Button,
   Dropdown,
@@ -7,29 +6,31 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import { useState } from "react";
+import { useSearchStore } from "../stores/searchStore";
+import { SEARCH_PARAMS } from "../constants/searchParams";
 
-interface SearchParamsDropdownProps {
-  params: SearchParam[];
-  onParamsChange: (selectedParams: string[]) => void;
-}
-export function SearchParamsDropdown({
-  params,
-  onParamsChange,
-}: SearchParamsDropdownProps) {
+export function SearchParamsDropdown() {
+  const { setSearchFields } = useSearchStore();
+
   const [selectedParams, setSelectedParams] = useState<Set<string>>(
-    new Set([params[0]?.id])
+    new Set([SEARCH_PARAMS[0]?.id])
   );
 
   const handleSelectionChange = (keys: Set<string>) => {
     setSelectedParams(keys);
-    onParamsChange(Array.from(keys));
+    setSearchFields(Array.from(keys));
   };
 
   return (
     <Dropdown>
       <DropdownTrigger>
         <Button aria-label="Seleccionar parametros">
-          Buscar por {params.find((param) => param.id === selectedParams.values().next().value)?.label}
+          Buscar por{" "}
+          {
+            SEARCH_PARAMS.find(
+              (param) => param.id === Array.from(selectedParams)[0]
+            )?.label
+          }
         </Button>
       </DropdownTrigger>
       <DropdownMenu
@@ -38,7 +39,7 @@ export function SearchParamsDropdown({
         disallowEmptySelection
         selectedKeys={selectedParams}
         onSelectionChange={(keys) => handleSelectionChange(keys as Set<string>)}
-        items={params}
+        items={SEARCH_PARAMS}
       >
         {(param) => <DropdownItem key={param.id}>{param.label}</DropdownItem>}
       </DropdownMenu>
