@@ -39,7 +39,9 @@ export function useHospitalSearch({
   // Estados locales
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedState, setState] = useState<number | null>(null);
-  const [searchFields, setSearchFields] = useState<string[]>(["name"]);
+  const [searchFields, setSearchFields] = useState<string[]>(
+    SEARCH_PARAMS.map((param) => param.id)
+  );
   const [filters, setFilters] = useState<HospitalRequestParams>({
     page: 0,
     size: initialPageSize,
