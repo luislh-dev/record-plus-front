@@ -1,8 +1,3 @@
-export interface SortConfig {
-  field: string;
-  direction: "asc" | "desc";
-}
-
 export interface PaginationState {
   currentPage: number;
   pageSize: number;
