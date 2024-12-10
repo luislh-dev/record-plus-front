@@ -1,13 +1,15 @@
+import { Align } from "@/constants/align";
 import { ArrowDown } from "@/icons/ArrowDown";
 import { ArrowUp } from "@/icons/ArrowUp";
 import { SortConfig } from "@/types/Pagination";
+import { SortDirection } from "@/types/sorting";
 import { Pagination } from "@nextui-org/react";
 import React from "react";
 
 interface Column<T> {
   name: string;
   uuid: keyof T | "actions";
-  align?: "start" | "center" | "end";
+  align?: Align;
   render?: (item: T) => React.ReactNode;
   sortable?: boolean;
 }
@@ -110,7 +112,7 @@ export function GenericTable<T extends { id: number | string }>({
                       {column.name}
                       {column.sortable && sortConfig?.field === column.uuid && (
                         <span className="ml-2">
-                          {sortConfig.direction === "asc" ? (
+                          {sortConfig.direction === SortDirection.ASC ? (
                             <ArrowUp />
                           ) : (
                             <ArrowDown />
