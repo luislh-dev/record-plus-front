@@ -5,7 +5,6 @@ import { Button } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { DropDownFilter } from "./components/DropDrownFilter";
 import { DropDownSort } from "./components/DropDownSort";
-import { SearchParamsDropdown } from "./components/DropDownSearchParams";
 import { SearchImput } from "./components/Search";
 import { HospitalList } from "./components/HospitalList";
 
@@ -31,7 +30,6 @@ const Hospital = () => {
         {/* Barra de búsqueda y filtros */}
         <search className="px-2 pb-2 pt-4 flex gap-x-4">
           <SearchImput />
-          <SearchParamsDropdown />
           <DropDownFilter />
           <DropDownSort />
         </search>
