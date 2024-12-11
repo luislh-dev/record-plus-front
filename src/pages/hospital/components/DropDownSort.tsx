@@ -19,7 +19,7 @@ export function DropDownSort() {
   const handleAction = (key: Key) => {
     const field = key.toString();
     const direction =
-      sortConfig.field === field && sortConfig.direction === "asc"
+      sortConfig.field === field && sortConfig.direction === SortDirection.ASC
         ? SortDirection.DESC
         : SortDirection.ASC;
 
