@@ -9,8 +9,6 @@ import {
   DropdownTrigger,
   Radio,
   RadioGroup,
-  Select,
-  SelectItem,
 } from "@nextui-org/react";
 import { useSearchStore } from "../stores/searchStore";
 import { SEARCH_PARAMS } from "../constants/searchParams";
