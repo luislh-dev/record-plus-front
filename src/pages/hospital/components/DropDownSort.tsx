@@ -12,18 +12,14 @@ import { ArrowDown } from "@/icons/ArrowDown";
 import { HOSPITAL_SORTABLE_FIELDS } from "../constants/sortableFields";
 import { SortDirection } from "@/types/sorting";
 import { useSearchStore } from "../stores/searchStore";
+import { useHandleSort } from "@/hooks/useHandleSort";
 
 export function DropDownSort() {
   const { sortConfig, setSortConfig } = useSearchStore();
+  const { getNewSortConfig } = useHandleSort(sortConfig);
 
   const handleAction = (key: Key) => {
-    const field = key.toString();
-    const direction =
-      sortConfig.field === field && sortConfig.direction === SortDirection.ASC
-        ? SortDirection.DESC
-        : SortDirection.ASC;
-
-    setSortConfig({ field, direction });
+    setSortConfig(getNewSortConfig(key.toString()));
   };
 
   return (

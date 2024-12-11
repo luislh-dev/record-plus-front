@@ -8,13 +8,13 @@ import { ActionsCell } from "./ActionCells";
 import { useNavigate } from "react-router-dom";
 import { useHospital } from "../hooks/useHospital";
 import { useSearchStore } from "../stores/searchStore";
-import { SortDirection } from "@/types/sorting";
+import { useHandleSort } from "@/hooks/useHandleSort";
 
 export const HospitalList = () => {
   const navigate = useNavigate();
 
   const { setPage, sortConfig, setSortConfig } = useSearchStore();
-
+  const { getNewSortConfig } = useHandleSort(sortConfig);
   const { hospitals, isLoading, error, pagination, openDeleteModal } =
     useHospital();
 
@@ -69,13 +69,7 @@ export const HospitalList = () => {
   ];
 
   const handleSort = (field: keyof HospitalListDTO) => {
-    setSortConfig({
-      field,
-      direction:
-        sortConfig.field === field && sortConfig.direction === SortDirection.ASC
-          ? SortDirection.DESC
-          : SortDirection.ASC,
-    });
+    setSortConfig(getNewSortConfig(field));
   };
 
   return (
