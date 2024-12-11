@@ -8,20 +8,15 @@ import { ActionsCell } from "./ActionCells";
 import { useNavigate } from "react-router-dom";
 import { useHospital } from "../hooks/useHospital";
 import { useSearchStore } from "../stores/searchStore";
+import { SortDirection } from "@/types/sorting";
 
 export const HospitalList = () => {
   const navigate = useNavigate();
 
   const { setPage, sortConfig, setSortConfig } = useSearchStore();
 
-  const {
-    hospitals,
-    isLoading,
-    error,
-    pagination,
-
-    openDeleteModal,
-  } = useHospital();
+  const { hospitals, isLoading, error, pagination, openDeleteModal } =
+    useHospital();
 
   const columns: HospitalTableColumn[] = [
     {
@@ -73,21 +68,32 @@ export const HospitalList = () => {
     },
   ];
 
+  const handleSort = (field: keyof HospitalListDTO) => {
+    setSortConfig({
+      field,
+      direction:
+        sortConfig.field === field && sortConfig.direction === SortDirection.ASC
+          ? SortDirection.DESC
+          : SortDirection.ASC,
+    });
+  };
+
   return (
-    <GenericTable
-      columns={columns}
-      data={hospitals}
-      error={error?.message}
-      emptyMessage="No se encontraron hospitales."
-      isLoading={isLoading}
-      loadingContent="Cargando hospitales..."
-      totalPages={pagination.totalPages}
-      currentPage={pagination.currentPage}
-      onPageChange={setPage}
-      onSort={(field) =>
-        setSortConfig({ field, direction: sortConfig.direction })
-      }
-      sortConfig={sortConfig}
-    />
+    <>
+      {/* TODO: falta corregir el sort change */}
+      <GenericTable
+        columns={columns}
+        data={hospitals}
+        error={error?.message}
+        emptyMessage="No se encontraron hospitales."
+        isLoading={isLoading}
+        loadingContent="Cargando hospitales..."
+        totalPages={pagination.totalPages}
+        currentPage={pagination.currentPage}
+        onPageChange={setPage}
+        onSort={(field) => handleSort(field as keyof HospitalListDTO)}
+        sortConfig={sortConfig}
+      />
+    </>
   );
 };
