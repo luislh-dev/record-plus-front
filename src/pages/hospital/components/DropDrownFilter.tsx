@@ -12,12 +12,25 @@ import {
 } from "@nextui-org/react";
 import { useSearchStore } from "../stores/searchStore";
 import { SEARCH_PARAMS } from "../constants/searchParams";
+import { useHospital } from "../hooks/useHospital";
 
 export function DropDownFilter() {
   const { state } = useStates();
 
-  const { selectedState, setSelectedState, searchFields, setSearchFields } =
-    useSearchStore();
+  const {
+    selectedState,
+    setSelectedState,
+    searchFields,
+    setSearchFields,
+    searchTerm,
+  } = useSearchStore();
+
+  const { refetch } = useHospital();
+
+  const handleParamsChange = (selectedValue: string) => {
+    setSearchFields([selectedValue]);
+    if (searchTerm !== "") refetch();
+  };
 
   const handleValueChange = (selectedValue: string) => {
     // Si se selecciona "Todos", se pasa null
@@ -53,7 +66,7 @@ export function DropDownFilter() {
             <RadioGroup
               aria-label="Seleccionar parámetro de búsqueda"
               value={searchFields[0]}
-              onValueChange={(value) => setSearchFields([value])}
+              onValueChange={handleParamsChange}
             >
               {SEARCH_PARAMS.map((param) => (
                 <Radio key={param.id} value={param.id} aria-label={param.label}>
