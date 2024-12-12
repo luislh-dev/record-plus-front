@@ -1,35 +1,34 @@
 import { SortConfigGeneric, SortDirection } from "@/types/sorting";
 import { SortableUserFields } from "../types/UserListDTO";
 import { create } from "zustand";
-import { HospitalRequestParams } from "@/pages/hospital/types/HospitalRequestParams";
 import { SEARCH_PARAMS } from "../constants/searchParams";
-import { UserRequestParams } from "../types/UserRequestParams";
+import { SearchFieldKeys, UserRequestParams } from "../types/UserRequestParams";
 
 interface SearchState {
   // Estado
   searchTerm: string;
   sortConfig: SortConfigGeneric<SortableUserFields>;
   selectedState: number | null;
-  searchFields: string[];
-  filters: HospitalRequestParams;
+  selectedSearchField: SearchFieldKeys;
+  filters: UserRequestParams;
 
   // Acciones
   setSearchTerm: (searchTerm: string) => void;
   setSortConfig: (config: SortConfigGeneric<SortableUserFields>) => void;
   setSelectedState: (stateId: number | null) => void;
-  setSearchFields: (fields: string[]) => void;
-  setFilters: (filters: HospitalRequestParams) => void;
+  setSelectedSearchField: (field: SearchFieldKeys) => void;
+  setFilters: (filters: UserRequestParams) => void;
   setPage: (page: number) => void;
 
   // Utilidades
-  buildSearchParams: () => HospitalRequestParams;
+  buildSearchParams: () => UserRequestParams;
 }
 
 export const useUserSearchStore = create<SearchState>((set, get) => ({
   searchTerm: "",
   sortConfig: { field: "username", direction: SortDirection.DESC },
   selectedState: null,
-  searchFields: [SEARCH_PARAMS[0].id],
+  selectedSearchField: "username",
   filters: { page: 0, size: 20 },
 
   setSearchTerm: (term) =>
@@ -46,24 +45,43 @@ export const useUserSearchStore = create<SearchState>((set, get) => ({
       filters: {
         ...state.filters,
         stateId: stateId ?? undefined,
+        page: 0,
       },
     })),
 
-  setSearchFields: (fields) => set({ searchFields: fields }),
+  setSelectedSearchField: (field) =>
+    set((state) => {
+      // Limpiar el campo de búsqueda anterior del filtro
+      const newFilters = { ...state.filters };
+      SEARCH_PARAMS.forEach((param) => {
+        delete newFilters[param.id];
+      });
+
+      return {
+        selectedSearchField: field,
+        filters: newFilters,
+      };
+    }),
 
   setFilters: (filters) => set({ filters }),
 
   setPage: (page) => set({ filters: { ...get().filters, page } }),
 
   buildSearchParams: () => {
-    const { searchTerm, selectedState, sortConfig, filters } = get();
+    const {
+      searchTerm,
+      selectedState,
+      sortConfig,
+      selectedSearchField,
+      filters,
+    } = get();
     const params: UserRequestParams = {
       ...filters,
       sort: `${sortConfig.field},${sortConfig.direction}`,
     };
 
     if (searchTerm) {
-      params.name = searchTerm;
+      params[selectedSearchField] = searchTerm;
     }
 
     if (selectedState) {
