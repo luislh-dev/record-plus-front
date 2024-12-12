@@ -8,6 +8,10 @@ import { Chip } from "@nextui-org/react";
 import { statusColorMap } from "@/constants/statusColorMap";
 import { GenericTable } from "@/components/GenericTable";
 import { useUserSearch } from "../hooks/useUserSearch";
+import { ModalConfirmDelete } from "@/components/ModalConfirmDelete";
+import { useUserDelete } from "../hooks/useUsersDeletes";
+import { ActionsCell } from "@/components/ActionsCell";
+import { State } from "@/constants/state";
 
 export const UserList = () => {
   const navigate = useNavigate();
@@ -15,6 +19,13 @@ export const UserList = () => {
   const { setPage, sortConfig, setSortConfig } = useUserSearchStore();
   const { getNewSortConfig } = useHandleSortGeneric(sortConfig);
   const { users, isLoading, error, pagination } = useUserSearch();
+  const {
+    handleDelete,
+    openDeleteModal,
+    closeDeleteModal,
+    deleteState: { isLoading: isDeleting },
+    isOpen,
+  } = useUserDelete();
 
   const columns: TableColumn<UserListDTO>[] = [
     {
@@ -56,23 +67,47 @@ export const UserList = () => {
         </Chip>
       ),
     },
+    {
+      name: "Acciones",
+      key: "actions",
+      render: (user: UserListDTO) => (
+        <ActionsCell
+          state={user.state}
+          onEdit={function (): void {
+            throw new Error("Function not implemented.");
+          }}
+          onDelete={() => openDeleteModal(user.id)}
+          inactiveStates={[State.INACTIVO, State.ELIMINADO]}
+        />
+      ),
+    },
   ];
 
   return (
-    <GenericTable
-      columns={columns}
-      data={users}
-      isLoading={isLoading}
-      error={error?.message}
-      emptyMessage="No se encontraron usuarios"
-      loadingContent="Cargando usuarios..."
-      totalPages={pagination.totalPages}
-      currentPage={pagination.currentPage}
-      onPageChange={setPage}
-      onSort={(field) =>
-        setSortConfig(getNewSortConfig(field as keyof UserListDTO))
-      }
-      sortConfig={sortConfig}
-    />
+    <>
+      <GenericTable
+        columns={columns}
+        data={users}
+        isLoading={isLoading}
+        error={error?.message}
+        emptyMessage="No se encontraron usuarios"
+        loadingContent="Cargando usuarios..."
+        totalPages={pagination.totalPages}
+        currentPage={pagination.currentPage}
+        onPageChange={setPage}
+        onSort={(field) =>
+          setSortConfig(getNewSortConfig(field as keyof UserListDTO))
+        }
+        sortConfig={sortConfig}
+      />
+      <ModalConfirmDelete
+        isOpen={isOpen}
+        onClose={closeDeleteModal}
+        onConfirm={handleDelete}
+        isLoading={isDeleting}
+        title="Eliminar Usuario"
+        message="¿Estás seguro de que deseas eliminar este usuario?"
+      />
+    </>
   );
 };
