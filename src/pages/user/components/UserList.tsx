@@ -14,8 +14,6 @@ import { ActionsCell } from "@/components/ActionsCell";
 import { State } from "@/constants/state";
 
 export const UserList = () => {
-  const navigate = useNavigate();
-
   const { setPage, sortConfig, setSortConfig } = useUserSearchStore();
   const { getNewSortConfig } = useHandleSortGeneric(sortConfig);
   const { users, isLoading, error, pagination } = useUserSearch();
