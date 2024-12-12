@@ -5,18 +5,28 @@ import { statusColorMap } from "@/constants/statusColorMap";
 import { Chip } from "@nextui-org/react";
 import { ActionsCell } from "./ActionCells";
 import { useNavigate } from "react-router-dom";
-import { useHospital } from "../hooks/useHospital";
 import { useSearchStore } from "../stores/searchStore";
 import { useHandleSort } from "@/hooks/useHandleSort";
 import { TableColumn } from "@/types/TableColumn";
+import { ModalConfirmDelete } from "@/components/ModalConfirmDelete";
+import { useHospitalDelete } from "../hooks/UseHospitalDelete";
+import { useHospitalSearch } from "../hooks/useHospitalSearch";
 
 export const HospitalList = () => {
   const navigate = useNavigate();
 
   const { setPage, sortConfig, setSortConfig } = useSearchStore();
   const { getNewSortConfig } = useHandleSort(sortConfig);
-  const { hospitals, isLoading, error, pagination, openDeleteModal } =
-    useHospital();
+  const { hospitals, isLoading, error, pagination } = useHospitalSearch();
+
+  // Obtener toda la funcionalidad del hook
+  const {
+    deleteState: { isLoading: isDeleting },
+    isOpen,
+    closeDeleteModal,
+    handleDelete,
+    openDeleteModal,
+  } = useHospitalDelete();
 
   const columns: TableColumn<HospitalListDTO>[] = [
     {
@@ -87,6 +97,16 @@ export const HospitalList = () => {
         onPageChange={setPage}
         onSort={(field) => handleSort(field as keyof HospitalListDTO)}
         sortConfig={sortConfig}
+      />
+
+      {/* Modal de confirmación para eliminar */}
+      <ModalConfirmDelete
+        isOpen={isOpen}
+        onClose={closeDeleteModal}
+        onConfirm={handleDelete}
+        isLoading={isDeleting}
+        title="Eliminar Hospital"
+        message="¿Está seguro que desea eliminar este hospital? Esta acción no se puede deshacer."
       />
     </>
   );
