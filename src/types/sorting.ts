@@ -9,6 +9,11 @@ export interface SortConfig {
   direction: SortDirection;
 }
 
+export interface SortConfigGeneric<T> {
+  field: T;
+  direction: SortDirection;
+}
+
 export interface SortOptions<T extends string> {
   defaultField: T;
   defaultDirection?: SortDirection;
