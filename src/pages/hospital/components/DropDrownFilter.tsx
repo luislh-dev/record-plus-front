@@ -12,7 +12,7 @@ import {
 } from "@nextui-org/react";
 import { useSearchStore } from "../stores/searchStore";
 import { SEARCH_PARAMS } from "../constants/searchParams";
-import { useHospital } from "../hooks/useHospital";
+import { useHospitalSearch } from "../hooks/useHospitalSearch";
 
 export function DropDownFilter() {
   const { state } = useStates();
@@ -25,7 +25,7 @@ export function DropDownFilter() {
     searchTerm,
   } = useSearchStore();
 
-  const { refetch } = useHospital();
+  const { refetch } = useHospitalSearch();
 
   const handleParamsChange = (selectedValue: string) => {
     setSearchFields([selectedValue]);
