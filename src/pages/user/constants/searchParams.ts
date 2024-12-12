@@ -3,6 +3,6 @@ import { UserSearchFields } from "../types/UserRequestParams";
 
 // Constante con los parámetros de búsqueda permitidos
 export const SEARCH_PARAMS: searchParamGeneric<UserSearchFields>[] = [
-  { id: "name", label: "Nombre" },
+  { id: "username", label: "Nombre" },
   { id: "dni", label: "DNI" },
 ];

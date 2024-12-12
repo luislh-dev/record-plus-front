@@ -1,7 +1,7 @@
 import { PageRequest } from "@/types/page/PageRequest";
 
 export interface UserRequestParams extends PageRequest {
-  name?: string;
+  username?: string;
   dni?: string;
   hospitalName?: string;
   roleId?: number;
