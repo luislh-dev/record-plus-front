@@ -11,16 +11,29 @@ import {
   RadioGroup,
 } from "@nextui-org/react";
 import { useUserSearchStore } from "../stores/searchStore";
+import { SEARCH_PARAMS } from "../constants/searchParams";
+import { SearchFieldKeys } from "../types/UserRequestParams";
 
 export function DropDownFilter() {
   const { state } = useStates();
 
-  const { selectedState, setSelectedState } = useUserSearchStore();
+  const {
+    selectedState,
+    setSelectedState,
+    selectedSearchField,
+    setSelectedSearchField,
+  } = useUserSearchStore();
 
-  const handleParamsChange = (selectedValue: string) => {
-    if (selectedValue === "all") setSelectedState(null);
+  const handleStateChange = (selectedValue: string) => {
+    if (selectedValue === "all") {
+      setSelectedState(null);
+    } else {
+      setSelectedState(parseInt(selectedValue));
+    }
+  };
 
-    if (selectedValue !== "all") setSelectedState(parseInt(selectedValue));
+  const handleSearchParamChange = (selectedValue: string) => {
+    setSelectedSearchField(selectedValue as SearchFieldKeys);
   };
 
   return (
@@ -41,12 +54,31 @@ export function DropDownFilter() {
         aria-label="Lista para selecionar los filtros de la web"
         closeOnSelect={false}
       >
+        <DropdownSection title="Parámetro de busqueda" aria-label="Parámetros">
+          <DropdownItem textValue="Parámetros">
+            <RadioGroup
+              aria-label="Seleccionar un parámetro de busqueda"
+              value={selectedSearchField}
+              onValueChange={handleSearchParamChange}
+            >
+              {SEARCH_PARAMS.map((param) => (
+                <Radio
+                  key={param.id}
+                  value={param.id}
+                  aria-label={`Seleccionar ${param.label} como parámetro de busqueda`}
+                >
+                  {param.label}
+                </Radio>
+              ))}
+            </RadioGroup>
+          </DropdownItem>
+        </DropdownSection>
         <DropdownSection title="Estados" aria-label="Sección de estados">
           <DropdownItem textValue="Estados">
             <RadioGroup
               aria-label="Seleccionar un estado"
               value={selectedState?.toString() || "all"}
-              onValueChange={handleParamsChange}
+              onValueChange={handleStateChange}
             >
               <Radio
                 key="all"
