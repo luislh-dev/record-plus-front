@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useUserSearchStore } from "../stores/searchStore";
 import { useHandleSortGeneric } from "@/hooks/useHandleSort";
 import { TableColumn } from "@/types/TableColumn";
