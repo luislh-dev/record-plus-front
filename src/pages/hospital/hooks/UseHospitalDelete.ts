@@ -1,46 +1,39 @@
 import { useCallback, useState } from "react";
 import { deleteHospital } from "../service/hospitalService";
-
-interface DeleteState {
-  isDeleting: boolean;
-  error: string | null;
-}
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface ModalState {
   isOpen: boolean;
   hospitalId: number | null;
 }
 
-export function useHospitalDelete(onSuccess?: () => void) {
-  const [deleteState, setDeleteState] = useState<DeleteState>({
-    isDeleting: false,
-    error: null,
-  });
+export function useHospitalDelete() {
+  const queryClient = useQueryClient();
 
   const [modalState, setModalState] = useState<ModalState>({
     isOpen: false,
     hospitalId: null,
   });
 
+  const mutation = useMutation({
+    mutationFn: (hospitalId: number) => deleteHospital(hospitalId),
+    onSuccess: async () => {
+      // Esperar a que se complete la invalidación antes de cerrar el modal
+      await queryClient.invalidateQueries({ queryKey: ["hospitals"] });
+      setModalState({ isOpen: false, hospitalId: null });
+    },
+  });
+
   const handleDelete = useCallback(async () => {
     if (!modalState.hospitalId) return;
 
-    setDeleteState({ isDeleting: true, error: null });
-
     try {
-      await deleteHospital(modalState.hospitalId);
-      onSuccess?.();
-      setModalState({ isOpen: false, hospitalId: null });
+      // Usar mutateAsync en lugar de mutate para esperar la respuesta
+      await mutation.mutateAsync(modalState.hospitalId);
     } catch (error) {
       console.error("Error al eliminar hospital:", error);
-      setDeleteState({
-        isDeleting: false,
-        error: "Error al eliminar el hospital",
-      });
-    } finally {
-      setDeleteState((prev) => ({ ...prev, isDeleting: false }));
     }
-  }, [modalState, onSuccess]);
+  }, [modalState.hospitalId, mutation]);
 
   // Manejadores del modal de eliminación
   const openDeleteModal = useCallback((hospitalId: number) => {
@@ -49,10 +42,14 @@ export function useHospitalDelete(onSuccess?: () => void) {
 
   const closeDeleteModal = useCallback(() => {
     setModalState({ isOpen: false, hospitalId: null });
+    mutation.reset(); // resetear estado de la mutación
   }, []);
 
   return {
-    deleteState,
+    deleteState: {
+      isLoading: mutation.isPending,
+      error: mutation.error ? "Error al eliminar el hospital" : null,
+    },
     isOpen: modalState.isOpen,
     handleDelete,
     openDeleteModal,
