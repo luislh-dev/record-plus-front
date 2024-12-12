@@ -13,16 +13,24 @@ import {
 import { useUserSearchStore } from "../stores/searchStore";
 import { SEARCH_PARAMS } from "../constants/searchParams";
 import { SearchFieldKeys } from "../types/UserRequestParams";
+import { useRole } from "@/hooks/role/useRole";
+import { useUserSearch } from "../hooks/useUserSearch";
 
 export function DropDownFilter() {
   const { state } = useStates();
+  const { roles } = useRole();
 
   const {
     selectedState,
     setSelectedState,
+    selectedRole,
+    setSelectedRole,
     selectedSearchField,
     setSelectedSearchField,
+    searchTerm,
   } = useUserSearchStore();
+
+  const { refetch } = useUserSearch();
 
   const handleStateChange = (selectedValue: string) => {
     if (selectedValue === "all") {
@@ -32,8 +40,17 @@ export function DropDownFilter() {
     }
   };
 
+  const handleRoleChange = (selectedValue: string) => {
+    if (selectedValue === "all") {
+      setSelectedRole(null);
+    } else {
+      setSelectedRole(parseInt(selectedValue));
+    }
+  };
+
   const handleSearchParamChange = (selectedValue: string) => {
     setSelectedSearchField(selectedValue as SearchFieldKeys);
+    if (searchTerm !== "") refetch();
   };
 
   return (
@@ -68,6 +85,28 @@ export function DropDownFilter() {
                   aria-label={`Seleccionar ${param.label} como parámetro de busqueda`}
                 >
                   {param.label}
+                </Radio>
+              ))}
+            </RadioGroup>
+          </DropdownItem>
+        </DropdownSection>
+        <DropdownSection title="Roles" aria-label="Sección de roles">
+          <DropdownItem textValue="Roles">
+            <RadioGroup
+              aria-label="Selecionar un rol"
+              value={selectedRole?.toString() || "all"}
+              onValueChange={handleRoleChange}
+            >
+              <Radio key="all" value="all" aria-label="Mostrar todos los roles">
+                Todos
+              </Radio>
+              {roles.map((r) => (
+                <Radio
+                  key={r.id}
+                  value={r.id.toString()}
+                  aria-label={`Mostrar solo los roles de ${r.name}`}
+                >
+                  {r.name}
                 </Radio>
               ))}
             </RadioGroup>
