@@ -3,7 +3,6 @@ import { HospitalListDTO } from "../types/HospitalListDTO";
 import { Align } from "@/constants/align";
 import { statusColorMap } from "@/constants/statusColorMap";
 import { Chip } from "@nextui-org/react";
-import { ActionsCell } from "./ActionCells";
 import { useNavigate } from "react-router-dom";
 import { useSearchStore } from "../stores/searchStore";
 import { useHandleSort } from "@/hooks/useHandleSort";
@@ -11,6 +10,8 @@ import { TableColumn } from "@/types/TableColumn";
 import { ModalConfirmDelete } from "@/components/ModalConfirmDelete";
 import { useHospitalDelete } from "../hooks/UseHospitalDelete";
 import { useHospitalSearch } from "../hooks/useHospitalSearch";
+import { ActionsCell } from "@/components/ActionsCell";
+import { State } from "@/constants/state";
 
 export const HospitalList = () => {
   const navigate = useNavigate();
@@ -70,9 +71,10 @@ export const HospitalList = () => {
       align: Align.CENTER,
       render: (hospital: HospitalListDTO) => (
         <ActionsCell
-          hospital={hospital}
           onEdit={() => navigate(`/hospitals/${hospital.id}/edit`)}
           onDelete={() => openDeleteModal(hospital.id)}
+          state={hospital.state}
+          inactiveStates={[State.ELIMINADO, State.INACTIVO]}
         />
       ),
     },
