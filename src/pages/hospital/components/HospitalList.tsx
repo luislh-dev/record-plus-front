@@ -3,12 +3,12 @@ import { HospitalListDTO } from "../types/HospitalListDTO";
 import { Align } from "@/constants/align";
 import { statusColorMap } from "@/constants/statusColorMap";
 import { Chip } from "@nextui-org/react";
-import { HospitalTableColumn } from "../types/hospital";
 import { ActionsCell } from "./ActionCells";
 import { useNavigate } from "react-router-dom";
 import { useHospital } from "../hooks/useHospital";
 import { useSearchStore } from "../stores/searchStore";
 import { useHandleSort } from "@/hooks/useHandleSort";
+import { TableColumn } from "@/types/TableColumn";
 
 export const HospitalList = () => {
   const navigate = useNavigate();
@@ -18,30 +18,30 @@ export const HospitalList = () => {
   const { hospitals, isLoading, error, pagination, openDeleteModal } =
     useHospital();
 
-  const columns: HospitalTableColumn[] = [
+  const columns: TableColumn<HospitalListDTO>[] = [
     {
       name: "Nombre",
-      uuid: "name",
+      key: "name",
       sortable: true,
     },
     {
       name: "Teléfono",
-      uuid: "phone",
+      key: "phone",
       sortable: true,
     },
     {
       name: "Correo electrónico",
-      uuid: "email",
+      key: "email",
       sortable: true,
     },
     {
       name: "RUC",
-      uuid: "ruc",
+      key: "ruc",
       sortable: true,
     },
     {
       name: "Estado",
-      uuid: "state",
+      key: "state",
       align: Align.CENTER,
       render: (hospital: HospitalListDTO) => (
         <Chip
@@ -56,7 +56,7 @@ export const HospitalList = () => {
     },
     {
       name: "Acciones",
-      uuid: "actions",
+      key: "actions",
       align: Align.CENTER,
       render: (hospital: HospitalListDTO) => (
         <ActionsCell

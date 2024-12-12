@@ -3,19 +3,12 @@ import { ArrowDown } from "@/icons/ArrowDown";
 import { ArrowUp } from "@/icons/ArrowUp";
 import { UnfoldMore } from "@/icons/UnfoldMore";
 import { SortConfig, SortDirection } from "@/types/sorting";
+import { TableColumn } from "@/types/TableColumn";
 import { Pagination } from "@nextui-org/react";
 import React, { useEffect, useRef } from "react";
 
-interface Column<T> {
-  name: string;
-  uuid: keyof T | "actions";
-  align?: Align;
-  render?: (item: T) => React.ReactNode;
-  sortable?: boolean;
-}
-
 interface GenericTableProps<T> {
-  columns: Column<T>[];
+  columns: TableColumn<T>[];
   data: T[];
   currentPage?: number;
   totalPages?: number;
@@ -55,7 +48,7 @@ export function GenericTable<T extends { id: number | string }>({
 
   const renderCell = React.useCallback(
     (item: T, columnKey: keyof T | "actions") => {
-      const column = columns.find((col) => col.uuid === columnKey);
+      const column = columns.find((col) => col.key === columnKey);
       return column?.render
         ? column.render(item)
         : (item[columnKey as keyof T] as unknown as React.ReactNode);
@@ -90,7 +83,7 @@ export function GenericTable<T extends { id: number | string }>({
               <tr className="rounded-t-lg">
                 {columns.map((column) => (
                   <th
-                    key={String(column.uuid)}
+                    key={String(column.key)}
                     className={`
                     p-4 whitespace-nowrap border-b
                     ${column.sortable ? "cursor-pointer" : ""}
@@ -108,7 +101,7 @@ export function GenericTable<T extends { id: number | string }>({
                   `}
                     onClick={() => {
                       if (column.sortable && onSort) {
-                        onSort(column.uuid as keyof T);
+                        onSort(column.key as keyof T);
                       }
                     }}
                   >
@@ -124,7 +117,7 @@ export function GenericTable<T extends { id: number | string }>({
                       {column.name}
                       {column.sortable && (
                         <span className="ml-2">
-                          {sortConfig?.field === column.uuid ? (
+                          {sortConfig?.field === column.key ? (
                             sortConfig.direction === SortDirection.ASC ? (
                               <ArrowUp />
                             ) : (
@@ -161,7 +154,7 @@ export function GenericTable<T extends { id: number | string }>({
                   >
                     {columns.map((column) => (
                       <td
-                        key={String(column.uuid)}
+                        key={String(column.key)}
                         className={`p-4 whitespace-nowrap ${
                           column.align === Align.CENTER
                             ? "text-center"
@@ -170,7 +163,7 @@ export function GenericTable<T extends { id: number | string }>({
                             : "text-left"
                         }`}
                       >
-                        {renderCell(item, column.uuid)}
+                        {renderCell(item, column.key)}
                       </td>
                     ))}
                   </tr>
@@ -186,7 +179,7 @@ export function GenericTable<T extends { id: number | string }>({
                   >
                     {columns.map((column) => (
                       <td
-                        key={String(column.uuid)}
+                        key={String(column.key)}
                         className={`p-4 whitespace-nowrap ${
                           column.align === Align.CENTER
                             ? "text-center"
@@ -195,7 +188,7 @@ export function GenericTable<T extends { id: number | string }>({
                             : "text-left"
                         }`}
                       >
-                        {renderCell(item, column.uuid)}
+                        {renderCell(item, column.key)}
                       </td>
                     ))}
                   </tr>
