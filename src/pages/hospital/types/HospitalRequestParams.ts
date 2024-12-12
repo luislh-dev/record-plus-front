@@ -5,5 +5,4 @@ export interface HospitalRequestParams extends PageRequest {
   ruc?: string;
   id?: number;
   stateId?: number;
-  sort?: string;
 }
