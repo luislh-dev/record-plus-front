@@ -1,8 +1,12 @@
-import { searchParamGeneric } from "@/types/SearchParam";
-import { UserSearchFields } from "../types/UserRequestParams";
+import { SearchFieldKeys } from "../types/UserRequestParams";
 
-// Constante con los parámetros de búsqueda permitidos
-export const SEARCH_PARAMS: searchParamGeneric<UserSearchFields>[] = [
+interface SearchParam {
+  id: SearchFieldKeys;
+  label: string;
+}
+
+export const SEARCH_PARAMS: SearchParam[] = [
   { id: "username", label: "Nombre" },
   { id: "dni", label: "DNI" },
+  { id: "hospitalName", label: "Hospital" },
 ];

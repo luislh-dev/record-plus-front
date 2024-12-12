@@ -8,5 +8,5 @@ export interface UserRequestParams extends PageRequest {
   stateId?: number;
 }
 
-// Tipo que excluye las propiedades heredadas de PageRequest
-export type UserSearchFields = Omit<UserRequestParams, keyof PageRequest>;
+// tipo de datos de los campos de búsqueda
+export type SearchFieldKeys = "username" | "dni" | "hospitalName";
