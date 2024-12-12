@@ -9,6 +9,7 @@ interface SearchState {
   searchTerm: string;
   sortConfig: SortConfigGeneric<SortableUserFields>;
   selectedState: number | null;
+  selectedRole: number | null;
   selectedSearchField: SearchFieldKeys;
   filters: UserRequestParams;
 
@@ -16,6 +17,7 @@ interface SearchState {
   setSearchTerm: (searchTerm: string) => void;
   setSortConfig: (config: SortConfigGeneric<SortableUserFields>) => void;
   setSelectedState: (stateId: number | null) => void;
+  setSelectedRole: (roleId: number | null) => void;
   setSelectedSearchField: (field: SearchFieldKeys) => void;
   setFilters: (filters: UserRequestParams) => void;
   setPage: (page: number) => void;
@@ -28,6 +30,7 @@ export const useUserSearchStore = create<SearchState>((set, get) => ({
   searchTerm: "",
   sortConfig: { field: "username", direction: SortDirection.DESC },
   selectedState: null,
+  selectedRole: null,
   selectedSearchField: "username",
   filters: { page: 0, size: 20 },
 
@@ -45,6 +48,16 @@ export const useUserSearchStore = create<SearchState>((set, get) => ({
       filters: {
         ...state.filters,
         stateId: stateId ?? undefined,
+        page: 0,
+      },
+    })),
+
+  setSelectedRole: (roleId) =>
+    set((state) => ({
+      selectedRole: roleId,
+      filters: {
+        ...state.filters,
+        roleId: roleId ?? undefined,
         page: 0,
       },
     })),
