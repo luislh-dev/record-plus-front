@@ -1,11 +1,5 @@
 import { Select, SelectItem } from "@nextui-org/react";
-import {
-  Control,
-  Controller,
-  FieldError,
-  FieldValues,
-  Path,
-} from "react-hook-form";
+import { Control, Controller, FieldError, FieldValues, Path } from "react-hook-form";
 
 interface Option {
   id: number;
@@ -18,6 +12,7 @@ interface Props<T extends FieldValues> {
   label: string;
   options: Option[];
   error?: FieldError;
+  isRequired?: boolean;
 }
 
 export const CustomSelect = <T extends FieldValues>({
@@ -26,6 +21,7 @@ export const CustomSelect = <T extends FieldValues>({
   label,
   options,
   error,
+  isRequired = true,
 }: Props<T>) => {
   return (
     <div>
@@ -42,15 +38,14 @@ export const CustomSelect = <T extends FieldValues>({
                 const selected = Array.from(keys)[0];
                 onChange(selected ? Number(selected) : null);
               }}
+              labelPlacement="outside"
+              isRequired={isRequired}
               defaultSelectedKeys={selectedValue}
               errorMessage={error?.message}
               isInvalid={!!error}
             >
               {options.map((option) => (
-                <SelectItem
-                  key={option.id.toString()}
-                  value={option.id.toString()}
-                >
+                <SelectItem key={option.id.toString()} value={option.id.toString()}>
                   {option.name}
                 </SelectItem>
               ))}
