@@ -1,6 +1,9 @@
+import { useDebounce } from "@/hooks/useDebounce";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { useCallback, useState } from "react";
+import { getHospital, getHospitalsByName } from "../service/hospitalService";
 import { HospitalCreateRequest } from "../types/HospitalCreateRequest";
-import { getHospital } from "../service/hospitalService";
+import { HospitalFindByNameParams } from "../types/HospitalRequestParams";
 
 export function useHospitalGetBy() {
   const [getByIdState, setGetByIdState] = useState({
@@ -22,8 +25,7 @@ export function useHospitalGetBy() {
       }));
       return hospital;
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : "Error al obtener el hospital";
+      const message = error instanceof Error ? error.message : "Error al obtener el hospital";
       setGetByIdState((prev) => ({
         ...prev,
         error: message,
@@ -34,4 +36,36 @@ export function useHospitalGetBy() {
   }, []);
 
   return { getByIdState, getById };
+}
+
+export function useHospitalGetByName() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  const fetchHospitals = async ({ pageParam = 0 }) => {
+    const params: HospitalFindByNameParams = {
+      name: debouncedSearchTerm,
+      size: 10,
+      page: pageParam,
+    };
+    return getHospitalsByName(params);
+  };
+
+  const query = useInfiniteQuery({
+    queryKey: ["hospitalsName", debouncedSearchTerm],
+    queryFn: fetchHospitals,
+    initialPageParam: 0,
+    getNextPageParam: (lastPage, allPages) => {
+      return lastPage.last ? undefined : allPages.length;
+    },
+  });
+
+  const hospitals = query.data?.pages.flatMap((page) => page.content) ?? [];
+
+  return {
+    ...query,
+    hospitals,
+    searchTerm,
+    setSearchTerm,
+  };
 }
