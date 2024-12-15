@@ -12,6 +12,7 @@ import HospitalEdit from "@/pages/hospital/HospitalEdit";
 import People from "@/pages/people/People";
 import User from "@/pages/user/User";
 import Hospital from "@/pages/hospital/Hospital";
+import { UserAdd } from "@/pages/user/UserAdd";
 
 export const router = createBrowserRouter([
   {
@@ -53,14 +54,6 @@ export const router = createBrowserRouter([
           </RoleBasedRoute>
         ),
       },
-      {
-        path: "user",
-        element: (
-          <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
-            <User />
-          </RoleBasedRoute>
-        ),
-      },
     ],
   },
   {
@@ -94,6 +87,27 @@ export const router = createBrowserRouter([
             element: (
               <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
                 <HospitalEdit />
+              </RoleBasedRoute>
+            ),
+          },
+        ],
+      },
+      {
+        path: "user",
+        children: [
+          {
+            index: true,
+            element: (
+              <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
+                <User />
+              </RoleBasedRoute>
+            ),
+          },
+          {
+            path: "add",
+            element: (
+              <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
+                <UserAdd />
               </RoleBasedRoute>
             ),
           },
