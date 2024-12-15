@@ -6,3 +6,7 @@ export interface HospitalRequestParams extends PageRequest {
   id?: number;
   stateId?: number;
 }
+
+export interface HospitalFindByNameParams extends PageRequest {
+  name: string;
+}

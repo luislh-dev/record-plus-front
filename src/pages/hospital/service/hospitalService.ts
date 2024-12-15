@@ -2,7 +2,8 @@ import { HospitalCreateRequest } from "@/pages/hospital/types/HospitalCreateRequ
 import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
 import { api } from "@/services/api/api";
 import { PageResponse } from "@/types/Pagination";
-import { HospitalRequestParams } from "../types/HospitalRequestParams";
+import { HospitalNameListDTO } from "../types/HospitalNameListDTO";
+import { HospitalFindByNameParams, HospitalRequestParams } from "../types/HospitalRequestParams";
 
 export const getHospitals = async (
   params?: HospitalRequestParams,
@@ -31,5 +32,14 @@ export const updateHospital = async (id: number, data: HospitalCreateRequest) =>
 
 export const getHospital = async (id: number): Promise<HospitalCreateRequest> => {
   const response = await api.get<HospitalCreateRequest>(`/hospitals/${id}`);
+  return response.data;
+};
+
+export const getHospitalsByName = async (
+  params: HospitalFindByNameParams,
+): Promise<PageResponse<HospitalNameListDTO>> => {
+  const response = await api.get<PageResponse<HospitalNameListDTO>>("/hospitals/findByName", {
+    params,
+  });
   return response.data;
 };
