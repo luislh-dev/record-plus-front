@@ -1,11 +1,5 @@
 import { Input } from "@nextui-org/react";
-import {
-  Control,
-  FieldError,
-  Controller,
-  FieldValues,
-  Path,
-} from "react-hook-form";
+import { Control, Controller, FieldError, FieldValues, Path } from "react-hook-form";
 
 interface Props<T extends FieldValues> {
   name: Path<T>;
@@ -38,6 +32,7 @@ export const CustomInput = <T extends FieldValues>({
               value={field.value?.toString()}
               type={type}
               label={label}
+              labelPlacement="outside"
               placeholder={placeholder}
               isInvalid={!!error}
               isRequired={isRequired}
