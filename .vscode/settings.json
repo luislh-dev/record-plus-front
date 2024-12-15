@@ -1,6 +1,7 @@
 {
   "editor.tabSize": 2,
   "editor.formatOnSave": true,
+  "notebook.formatOnSave.enabled": true,
   "editor.wordWrapColumn": 100,
   "editor.wordWrap": "wordWrapColumn",
   "editor.rulers": [100],
@@ -8,7 +9,6 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "prettier.requireConfig": true,
-  "prettier.singleQuote": false, 
-  "prettier.tabWidth": 2 
+  "prettier.singleQuote": false,
+  "prettier.tabWidth": 2
 }
