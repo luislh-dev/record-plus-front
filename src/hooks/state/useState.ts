@@ -1,3 +1,4 @@
+import { ONE_WEEK_IN_MS } from "@/constants/times";
 import { getStates } from "@/services/stateService";
 import { useQuery } from "@tanstack/react-query";
 
@@ -9,7 +10,8 @@ export const useStates = () => {
   } = useQuery({
     queryKey: ["states"],
     queryFn: async () => getStates(),
-    staleTime: 1000 * 60 * 60 * 24, // 24 horas
+    staleTime: ONE_WEEK_IN_MS,
+    gcTime: ONE_WEEK_IN_MS,
   });
 
   return { state: state ?? [], isLoading, isError };
