@@ -2,7 +2,6 @@ import { Button } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import { HospitalForm } from "./components/HospitalForm";
 import { useHospitalCreate } from "./hooks/useHospitalCreate";
-import { HospitalCreateValues } from "./models/hospitalCreateSchema";
 
 const HospitalAdd = () => {
   const navigate = useNavigate();
@@ -11,15 +10,6 @@ const HospitalAdd = () => {
     handleCreate,
     createState: { isLoading, error },
   } = useHospitalCreate();
-
-  const onSubmit = async (data: HospitalCreateValues) => {
-    try {
-      await handleCreate(data);
-      navigate("/hospitals");
-    } catch (error) {
-      console.error("Error creating hospital:", error);
-    }
-  };
 
   return (
     <div className="space-y-6">
@@ -30,11 +20,7 @@ const HospitalAdd = () => {
         </Button>
       </div>
 
-      <HospitalForm
-        onSubmit={onSubmit}
-        isSubmitting={isLoading}
-        apiErrors={error}
-      />
+      <HospitalForm onSubmit={handleCreate} isSubmitting={isLoading} apiErrors={error} />
     </div>
   );
 };
