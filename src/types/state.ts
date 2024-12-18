@@ -1,4 +1,3 @@
-export interface State {
-  id: number;
-  name: string;
-}
+import { BaseEntity } from "./BaseEntity";
+
+export interface State extends BaseEntity {}
