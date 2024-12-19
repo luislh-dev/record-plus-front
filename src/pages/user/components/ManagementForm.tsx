@@ -37,7 +37,6 @@ export const ManagementForm = ({}: Props) => {
     personData,
     handleDniSearch,
     handleCreatePerson,
-    onOpen,
     isCreating,
   } = usePeopleModal((data, dni) => {
     // Este callback solo se ejecutará cuando la creación sea exitosa
