@@ -98,10 +98,12 @@ export const ManagementForm = ({}: Props) => {
         </header>
         <form onSubmit={handleSubmit(handleCreate)} className="flex flex-col gap-4">
           <div>
-            <Input
+            <CustomInput
+              control={control}
+              error={errors.personDNI}
+              name="personDNI"
               type="text"
               label="DNI"
-              labelPlacement="outside"
               placeholder="Ingrese DNI"
               onInput={allowOnlyNumbers}
               onChange={(e) => searchByDni(e.target.value)}
