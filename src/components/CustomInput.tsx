@@ -1,3 +1,4 @@
+import { InputVariant } from "@/types/InputVariant";
 import { Input } from "@nextui-org/react";
 import { Control, Controller, FieldError, FieldValues, Path } from "react-hook-form";
 
@@ -9,6 +10,7 @@ interface Props<T extends FieldValues> {
   placeholder?: string;
   type?: string;
   error?: FieldError;
+  variant?: InputVariant;
 }
 
 export const CustomInput = <T extends FieldValues>({
@@ -19,6 +21,7 @@ export const CustomInput = <T extends FieldValues>({
   isRequired = false,
   type,
   error,
+  variant,
 }: Props<T>) => {
   return (
     <div>
@@ -30,6 +33,7 @@ export const CustomInput = <T extends FieldValues>({
             <Input
               {...field}
               value={field.value?.toString()}
+              variant={variant}
               type={type}
               label={label}
               labelPlacement="outside"
