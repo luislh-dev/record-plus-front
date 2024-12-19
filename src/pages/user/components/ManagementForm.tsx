@@ -31,39 +31,12 @@ export const ManagementForm = ({}: Props) => {
     useHospitalGetByName();
 
   const {
-    isOpen,
-    onClose,
-    documentNumber,
-    personData,
-    handleDniSearch,
-    handleCreatePerson,
-    isCreating,
-  } = usePeopleModal((data, dni) => {
-    // Este callback solo se ejecutará cuando la creación sea exitosa
-    setValue("personDNI", dni);
-    setValue("personalInfo", {
-      name: data.name,
-      surnames: `${data.fatherLastName} ${data.motherLastName}`,
-      phone: data.phone,
-    });
-  });
-  const { isLoading: isSubmitting, handleCreate } = useUserManagementCreate();
-
-  const [, scrollerRef] = useInfiniteScroll({
-    hasMore: hasNextPage,
-    isEnabled: isOpen,
-    shouldUseLoader: false,
-    onLoadMore: fetchNextPage,
-  });
-
-  const { state } = useStates();
-
-  const {
     control,
     handleSubmit,
     setValue,
     watch,
     formState: { errors },
+    reset,
   } = useForm<UserManagementCreateValues>({
     resolver: zodResolver(userManagementCreateSchema),
     mode: "onChange",
@@ -75,8 +48,47 @@ export const ManagementForm = ({}: Props) => {
       password: "",
       passwordConfirmation: "",
       stateId: 0,
+      personalInfo: {
+        name: "",
+        surnames: "",
+        phone: "",
+      },
     },
   });
+
+  const {
+    isOpen,
+    onClose,
+    documentNumber,
+    personData,
+    handleDniSearch,
+    handleCreatePerson,
+    isCreating,
+  } = usePeopleModal((data, dni) => {
+    const formData = {
+      personDNI: dni,
+      personalInfo: {
+        name: data.name,
+        surnames: `${data.fatherLastName} ${data.motherLastName}`,
+        phone: data.phone,
+      },
+    };
+    // Resetear los valores del formulario
+    reset((prevData) => ({
+      ...prevData,
+      ...formData,
+    }));
+  });
+  const { isLoading: isSubmitting, handleCreate } = useUserManagementCreate();
+
+  const [, scrollerRef] = useInfiniteScroll({
+    hasMore: hasNextPage,
+    isEnabled: isOpen,
+    shouldUseLoader: false,
+    onLoadMore: fetchNextPage,
+  });
+
+  const { state } = useStates();
 
   useEffect(() => {
     if (state.length > 0) {

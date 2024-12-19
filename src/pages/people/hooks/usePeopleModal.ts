@@ -1,5 +1,5 @@
 import { useDisclosure } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PeopleCreateRequiredValues } from "../models/peopleCreateRequiredSchema";
 import { MinimalPeopleResponseDto } from "../types/MinimalPeopleResponseDto";
 import { useCreateRequeridPerson } from "./useCreatePerson";
@@ -27,11 +27,20 @@ export const usePeopleModal = (
 
   const handleDniSearch = async (dni: string) => {
     if (dni.length === 8) {
-      await getPerson(dni);
       setDocumentNumber(dni);
-      onOpen();
+      await getPerson(dni);
     }
   };
+
+  useEffect(() => {
+    if (person) {
+      if (person.fromReniec) {
+        onOpen();
+      } else {
+        onCreateSuccess(person, documentNumber);
+      }
+    }
+  }, [person, onOpen]);
 
   const handleCreatePerson = async (data: PeopleCreateRequiredValues) => {
     try {
@@ -44,7 +53,7 @@ export const usePeopleModal = (
           fatherLastName: data.paternalSurname,
           motherLastName: data.maternalSurname,
           phone: data.phone ?? "",
-          isFromReniec: true,
+          fromReniec: true,
         },
         documentNumber,
       );

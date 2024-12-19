@@ -3,5 +3,5 @@ export interface MinimalPeopleResponseDto {
   fatherLastName: string;
   motherLastName: string;
   phone: string;
-  isFromReniec: boolean;
+  fromReniec: boolean;
 }
