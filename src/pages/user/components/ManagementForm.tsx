@@ -88,7 +88,6 @@ export const ManagementForm = ({}: Props) => {
   const searchByDni = (dni: string) => {
     if (dni.length === 8) {
       handleDniSearch(dni);
-      onOpen();
     }
   };
   return (

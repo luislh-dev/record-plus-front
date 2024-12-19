@@ -29,6 +29,7 @@ export const usePeopleModal = (
     if (dni.length === 8) {
       await getPerson(dni);
       setDocumentNumber(dni);
+      onOpen();
     }
   };
 
