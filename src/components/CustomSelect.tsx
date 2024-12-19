@@ -1,3 +1,4 @@
+import { InputVariant } from "@/types/InputVariant";
 import { Select, SelectItem } from "@nextui-org/react";
 import { Control, Controller, FieldError, FieldValues, Path } from "react-hook-form";
 
@@ -13,6 +14,8 @@ interface Props<T extends FieldValues> {
   options: Option[];
   error?: FieldError;
   isRequired?: boolean;
+  placeholder?: string;
+  variant?: InputVariant;
 }
 
 export const CustomSelect = <T extends FieldValues>({
@@ -22,6 +25,8 @@ export const CustomSelect = <T extends FieldValues>({
   options,
   error,
   isRequired = true,
+  placeholder,
+  variant,
 }: Props<T>) => {
   return (
     <div>
@@ -32,12 +37,14 @@ export const CustomSelect = <T extends FieldValues>({
           const selectedValue = value ? value.toString() : "";
           return (
             <Select
+              variant={variant}
               label={label}
               selectedKeys={selectedValue}
               onSelectionChange={(keys) => {
                 const selected = Array.from(keys)[0];
                 onChange(selected ? Number(selected) : null);
               }}
+              placeholder={placeholder}
               labelPlacement="outside"
               isRequired={isRequired}
               defaultSelectedKeys={selectedValue}
