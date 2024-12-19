@@ -19,7 +19,7 @@ const variantClasses = {
   label: "text-sm font-medium uppercase tracking-wide",
   metric: "text-4xl font-bold",
   status: "text-sm font-semibold uppercase",
-  error: "text-sm font-medium",
+  error: "text-xs",
 };
 
 const colorClasses = {
@@ -30,7 +30,7 @@ const colorClasses = {
   primary: "text-blue-600",
   success: "text-green-600",
   warning: "text-yellow-600",
-  danger: "text-red-600",
+  danger: "text-danger",
   info: "text-cyan-600",
 };
 
