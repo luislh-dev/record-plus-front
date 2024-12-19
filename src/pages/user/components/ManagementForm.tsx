@@ -203,6 +203,7 @@ export const ManagementForm = ({}: Props) => {
             />
             <CustomInput
               name="password"
+              type="password"
               control={control}
               label="Contraseña"
               placeholder="Ingrese la contraseña"
@@ -211,6 +212,7 @@ export const ManagementForm = ({}: Props) => {
             />
             <CustomInput
               name="passwordConfirmation"
+              type="password"
               control={control}
               label="Confirmar contraseña"
               placeholder="Confirme la contraseña"
