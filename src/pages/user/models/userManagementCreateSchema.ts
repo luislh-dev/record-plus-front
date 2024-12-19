@@ -38,6 +38,14 @@ export const userManagementCreateSchema = z
       .regex(/[a-z]/, "Confirmación de contraseña debe tener al menos una letra minuscula")
       .regex(/[0-9]/, "Confirmación de contraseña debe tener al menos un número")
       .regex(/[^A-Za-z0-9]/, "Confirmación de contraseña debe tener al menos un caracter especial"),
+
+    personalInfo: z
+      .object({
+        name: z.string().optional(),
+        surnames: z.string().optional(),
+        phone: z.string().optional(),
+      })
+      .optional(),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "Las contraseñas no coinciden",
