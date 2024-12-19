@@ -34,7 +34,7 @@ export const CustomSelect = <T extends FieldValues>({
         name={name}
         control={control}
         render={({ field: { onChange, value } }) => {
-          const selectedValue = value ? value.toString() : "";
+          const selectedValue = value ? new Set([value.toString()]) : new Set([]);
           return (
             <Select
               variant={variant}
