@@ -10,20 +10,15 @@ import {
   Radio,
   RadioGroup,
 } from "@nextui-org/react";
-import { useSearchStore } from "../stores/searchStore";
 import { SEARCH_PARAMS } from "../constants/searchParams";
 import { useHospitalSearch } from "../hooks/useHospitalSearch";
+import { useSearchStore } from "../stores/searchStore";
 
 export function DropDownFilter() {
   const { state } = useStates();
 
-  const {
-    selectedState,
-    setSelectedState,
-    searchFields,
-    setSearchFields,
-    searchTerm,
-  } = useSearchStore();
+  const { selectedState, setSelectedState, searchFields, setSearchFields, searchTerm } =
+    useSearchStore();
 
   const { refetch } = useHospitalSearch();
 
@@ -62,7 +57,7 @@ export function DropDownFilter() {
         closeOnSelect={false}
       >
         <DropdownSection title="Parámetro de busqueda" aria-label="Parámetros">
-          <DropdownItem textValue="Parámetros">
+          <DropdownItem textValue="Parámetros" key={"params"}>
             <RadioGroup
               aria-label="Seleccionar parámetro de búsqueda"
               value={searchFields[0]}
@@ -77,25 +72,17 @@ export function DropDownFilter() {
           </DropdownItem>
         </DropdownSection>
         <DropdownSection title="Estados" aria-label="Sección de estados">
-          <DropdownItem textValue="Estados">
+          <DropdownItem textValue="Estados" key={"estados"}>
             <RadioGroup
               aria-label="Seleccionar estado"
               value={selectedState?.toString() || "todos"}
               onValueChange={handleValueChange}
             >
-              <Radio
-                key="todos"
-                value="todos"
-                aria-label="Mostrar todos los estados"
-              >
+              <Radio key="todos" value="todos" aria-label="Mostrar todos los estados">
                 Todos
               </Radio>
               {state?.map((item) => (
-                <Radio
-                  key={item.id}
-                  value={item.id.toString()}
-                  aria-label={item.name}
-                >
+                <Radio key={item.id} value={item.id.toString()} aria-label={item.name}>
                   {item.name}
                 </Radio>
               ))}
