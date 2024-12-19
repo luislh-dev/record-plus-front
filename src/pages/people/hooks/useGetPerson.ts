@@ -10,7 +10,6 @@ export function useGetPersonByDni() {
 
   const getPerson = async (dni: string) => {
     setLoading(true);
-    // llamar al servicio de creación de usuario
     try {
       setPerson(await getPersonNameByDni(dni));
     } catch (error) {
