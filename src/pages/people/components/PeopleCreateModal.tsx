@@ -1,0 +1,215 @@
+import { CustomInput } from "@/components/CustomInput";
+import { CustomSelect } from "@/components/CustomSelect";
+import { Typography } from "@/components/Typography";
+import { useDocumentType } from "@/hooks/documenttype/useDocumentType";
+import { useGender } from "@/hooks/gender/useGender";
+import { getPeruDateTime, parsePeruDate, PERU_LOCALE, PERU_TIMEZONE } from "@/utils/peruDateTime";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CalendarDate, parseDate } from "@internationalized/date";
+import {
+  Alert,
+  Button,
+  DatePicker,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+} from "@nextui-org/react";
+import { useEffect } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { useCreateRequeridPerson } from "../hooks/useCreatePerson";
+import {
+  peopleCreateRequiredSchema,
+  PeopleCreateRequiredValues,
+} from "../models/peopleCreateRequiredSchema";
+import { MinimalPeopleResponseDto } from "../types/MinimalPeopleResponseDto";
+
+interface Props {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: (data: MinimalPeopleResponseDto) => void;
+  documentNumber: string;
+  personData: MinimalPeopleResponseDto;
+}
+
+export const PeopleCreateModal = ({
+  isOpen,
+  onClose,
+  onConfirm,
+  documentNumber,
+  personData,
+}: Props) => {
+  const { documentType } = useDocumentType();
+  const { gender } = useGender();
+  const { isCreating, error, handleCreate } = useCreateRequeridPerson();
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<PeopleCreateRequiredValues>({
+    resolver: zodResolver(peopleCreateRequiredSchema),
+    mode: "onChange",
+  });
+
+  useEffect(() => {
+    if (personData) {
+      setValue("name", personData.name);
+      setValue("paternalSurname", personData.fatherLastName);
+      setValue("maternalSurname", personData.motherLastName);
+      setValue("typeDocumentId", 1);
+      setValue("documentNumber", documentNumber);
+      setValue("birthdate", new Date(getPeruDateTime()));
+    }
+  }, [personData, documentNumber, setValue]);
+
+  const onSubmit = async (data: PeopleCreateRequiredValues) => {
+    await handleCreate(data);
+
+    if (error) return;
+
+    onConfirm({
+      name: data.name,
+      fatherLastName: data.paternalSurname,
+      motherLastName: data.maternalSurname,
+      phone: data.phone ?? "",
+      isFromReniec: true,
+    });
+  };
+  return (
+    <>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        isDismissable={false}
+        size="2xl"
+        aria-label="Modal de creación de persona"
+      >
+        <ModalContent aria-label="Contenido del modal de creación de persona">
+          <>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <ModalHeader className="flex flex-col" aria-label="Cabezera de la modal de creación">
+                <Typography as="h3" variant="subsection">
+                  Confirmar datos de RENIEC
+                </Typography>
+                <Typography variant="body" color="muted">
+                  Se encontraron los siguientes datos en RENIEC. Por favor confirme que son
+                  correctos.
+                </Typography>
+              </ModalHeader>
+              <ModalBody>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Typography variant="data-title" color="muted">
+                      Nombres
+                    </Typography>
+                    <Typography variant="body-small" className="font-medium">
+                      {personData.name}
+                    </Typography>
+                  </div>
+                  <div>
+                    <Typography variant="data-title" color="muted">
+                      Apellidos
+                    </Typography>
+                    <Typography variant="body-small" className="font-medium">
+                      {personData.fatherLastName} {personData.motherLastName}
+                    </Typography>
+                  </div>
+                </div>
+                <Alert
+                  variant="bordered"
+                  description="Utiliza los datos recuperados para completar el formulario y registrar a la persona en el sistema de manera precisa."
+                />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <CustomSelect
+                    variant="bordered"
+                    name="typeDocumentId"
+                    control={control}
+                    options={documentType}
+                    label="Tipo de documento"
+                    isRequired
+                  />
+                  <CustomInput
+                    name="documentNumber"
+                    variant="bordered"
+                    control={control}
+                    type="text"
+                    label="Número de documento"
+                    isRequired
+                    error={errors.documentNumber}
+                    placeholder="Ingese el número de documento"
+                  />
+                  <Controller
+                    control={control}
+                    name="birthdate"
+                    render={({ field: { onChange, value } }) => {
+                      const today = getPeruDateTime();
+                      const defaultDate = parseDate(parsePeruDate(today));
+                      const selectedDate = value ? parseDate(parsePeruDate(value)) : defaultDate;
+
+                      return (
+                        <div className="flex flex-col gap-1">
+                          <DatePicker
+                            isInvalid={!!errors.birthdate}
+                            label="Fecha de nacimiento"
+                            variant="bordered"
+                            labelPlacement="outside"
+                            isRequired
+                            value={selectedDate}
+                            onChange={(date: CalendarDate | null) => {
+                              if (date) {
+                                const newDate = new Date(date.toString());
+                                // Ajustar la zona horaria al guardar
+                                const peruDate = new Date(
+                                  newDate.toLocaleString(PERU_LOCALE, {
+                                    timeZone: PERU_TIMEZONE,
+                                  }),
+                                );
+                                onChange(peruDate);
+                              }
+                            }}
+                          />
+                          <Typography variant="error" className="h-4 pl-1">
+                            {errors.birthdate?.message}
+                          </Typography>
+                        </div>
+                      );
+                    }}
+                  />
+
+                  <CustomSelect
+                    variant="bordered"
+                    control={control}
+                    name="sexTypeId"
+                    label="Genero"
+                    options={gender}
+                    placeholder="Seleccione un genero"
+                  />
+                  <CustomInput
+                    name="phone"
+                    variant="bordered"
+                    control={control}
+                    type="text"
+                    label="Teléfono"
+                    error={errors.phone}
+                    placeholder="Ingrese el teléfono"
+                  />
+                </div>
+              </ModalBody>
+              <ModalFooter>
+                <Button type="button" color="danger" variant="flat" onPress={onClose}>
+                  Cancelar
+                </Button>
+                <Button type="submit" color="primary" isLoading={isCreating}>
+                  Confirmar
+                </Button>
+              </ModalFooter>
+            </form>
+          </>
+        </ModalContent>
+      </Modal>
+    </>
+  );
+};
