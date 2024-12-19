@@ -84,11 +84,6 @@ export const ManagementForm = ({}: Props) => {
     }
   }, [state, setValue]);
 
-  const searchByDni = (dni: string) => {
-    if (dni.length === 8) {
-      handleDniSearch(dni);
-    }
-  };
   return (
     <>
       <PeopleCreateModal
@@ -119,7 +114,7 @@ export const ManagementForm = ({}: Props) => {
               label="DNI"
               placeholder="Ingrese DNI"
               onInput={allowOnlyNumbers}
-              onChange={(e) => searchByDni(e.target.value)}
+              onChange={(e) => handleDniSearch(e.target.value)}
             />
           </div>
           <div>
