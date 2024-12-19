@@ -18,7 +18,6 @@ import {
 } from "@nextui-org/react";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useCreateRequeridPerson } from "../hooks/useCreatePerson";
 import {
   peopleCreateRequiredSchema,
   PeopleCreateRequiredValues,
@@ -31,6 +30,7 @@ interface Props {
   onConfirm: (data: PeopleCreateRequiredValues) => void;
   documentNumber: string;
   personData: MinimalPeopleResponseDto;
+  isLoading?: boolean;
 }
 
 export const PeopleCreateModal = ({
@@ -39,10 +39,10 @@ export const PeopleCreateModal = ({
   onConfirm,
   documentNumber,
   personData,
+  isLoading = false,
 }: Props) => {
   const { documentType } = useDocumentType();
   const { gender } = useGender();
-  const { isCreating } = useCreateRequeridPerson();
 
   const {
     control,
@@ -183,7 +183,7 @@ export const PeopleCreateModal = ({
                 <Button type="button" color="danger" variant="flat" onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button type="submit" color="primary" isLoading={isCreating}>
+                <Button type="submit" color="primary" isLoading={isLoading}>
                   Confirmar
                 </Button>
               </ModalFooter>
