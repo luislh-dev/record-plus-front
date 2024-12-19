@@ -1,16 +1,13 @@
-import { useForm } from "react-hook-form";
-import {
-  HospitalCreateValues,
-  hospitalCreateSchema,
-} from "../models/hospitalCreateSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { CustomInput } from "@/components/CustomInput";
-import { Button } from "@nextui-org/react";
 import { CustomSelect } from "@/components/CustomSelect";
 import { useStates } from "@/hooks/state/useState";
-import { useEffect } from "react";
-import { ApiError } from "@/types/errros/ApiError";
 import { useApiErrors } from "@/hooks/useApiErrors";
+import { ApiError } from "@/types/errros/ApiError";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@nextui-org/react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { HospitalCreateValues, hospitalCreateSchema } from "../models/hospitalCreateSchema";
 
 interface Props {
   onSubmit: (data: HospitalCreateValues) => void;
@@ -19,12 +16,7 @@ interface Props {
   apiErrors?: ApiError | null;
 }
 
-export const HospitalForm = ({
-  onSubmit,
-  isSubmitting,
-  defaultValues,
-  apiErrors,
-}: Props) => {
+export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors }: Props) => {
   const state = useStates().state;
   const { backendErrors } = useApiErrors(apiErrors);
 
@@ -62,9 +54,7 @@ export const HospitalForm = ({
         placeholder="Ingrese el nombre"
         error={
           errors.name ||
-          (backendErrors["name"]
-            ? { message: backendErrors["name"], type: "backend" }
-            : undefined)
+          (backendErrors["name"] ? { message: backendErrors["name"], type: "backend" } : undefined)
         }
         isRequired
       />
@@ -114,9 +104,7 @@ export const HospitalForm = ({
         placeholder="Ingrese el RUC"
         error={
           errors.ruc ||
-          (backendErrors["ruc"]
-            ? { message: backendErrors["ruc"], type: "backend" }
-            : undefined)
+          (backendErrors["ruc"] ? { message: backendErrors["ruc"], type: "backend" } : undefined)
         }
         isRequired
       />
