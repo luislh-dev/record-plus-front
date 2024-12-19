@@ -26,18 +26,23 @@ export const getPeruDateTime = () => {
   );
 };
 
-export const parsePeruDate = (date: Date | null): string => {
-  if (!date) return "";
+export const parsePeruDate = (date: Date | string | null): string => {
+  if (!date) return new Date().toISOString().split("T")[0];
 
-  const peruDate = date.toLocaleString(PERU_LOCALE, {
-    timeZone: PERU_TIMEZONE,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-  });
+  try {
+    const dateObj = typeof date === "string" ? new Date(date) : date;
+    const peruDate = dateObj.toLocaleString(PERU_LOCALE, {
+      timeZone: PERU_TIMEZONE,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    });
 
-  const [day, month, year] = peruDate.split("/");
-  return `${year}-${month}-${day}`;
+    const [day, month, year] = peruDate.split("/");
+    return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+  } catch {
+    return new Date().toISOString().split("T")[0];
+  }
 };
 
 export const getPeruDateTimeParts = () => {

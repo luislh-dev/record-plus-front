@@ -3,7 +3,7 @@ import { CustomSelect } from "@/components/CustomSelect";
 import { Typography } from "@/components/Typography";
 import { useDocumentType } from "@/hooks/documenttype/useDocumentType";
 import { useGender } from "@/hooks/gender/useGender";
-import { getPeruDateTime, parsePeruDate, PERU_LOCALE, PERU_TIMEZONE } from "@/utils/peruDateTime";
+import { getPeruDateTime, parsePeruDate } from "@/utils/peruDateTime";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarDate, parseDate } from "@internationalized/date";
 import {
@@ -28,7 +28,7 @@ import { MinimalPeopleResponseDto } from "../types/MinimalPeopleResponseDto";
 interface Props {
   isOpen: boolean;
   onClose: () => void;
-  onConfirm: (data: MinimalPeopleResponseDto) => void;
+  onConfirm: (data: PeopleCreateRequiredValues) => void;
   documentNumber: string;
   personData: MinimalPeopleResponseDto;
 }
@@ -42,7 +42,7 @@ export const PeopleCreateModal = ({
 }: Props) => {
   const { documentType } = useDocumentType();
   const { gender } = useGender();
-  const { isCreating, error, handleCreate } = useCreateRequeridPerson();
+  const { isCreating } = useCreateRequeridPerson();
 
   const {
     control,
@@ -65,19 +65,6 @@ export const PeopleCreateModal = ({
     }
   }, [personData, documentNumber, setValue]);
 
-  const onSubmit = async (data: PeopleCreateRequiredValues) => {
-    await handleCreate(data);
-
-    if (error) return;
-
-    onConfirm({
-      name: data.name,
-      fatherLastName: data.paternalSurname,
-      motherLastName: data.maternalSurname,
-      phone: data.phone ?? "",
-      isFromReniec: true,
-    });
-  };
   return (
     <>
       <Modal
@@ -89,7 +76,7 @@ export const PeopleCreateModal = ({
       >
         <ModalContent aria-label="Contenido del modal de creación de persona">
           <>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onConfirm)}>
               <ModalHeader className="flex flex-col" aria-label="Cabezera de la modal de creación">
                 <Typography as="h3" variant="subsection">
                   Confirmar datos de RENIEC
@@ -146,8 +133,8 @@ export const PeopleCreateModal = ({
                     name="birthdate"
                     render={({ field: { onChange, value } }) => {
                       const today = getPeruDateTime();
-                      const defaultDate = parseDate(parsePeruDate(today));
-                      const selectedDate = value ? parseDate(parsePeruDate(value)) : defaultDate;
+                      const formattedDate = value instanceof Date ? value : today;
+                      const selectedDate = parseDate(parsePeruDate(formattedDate));
 
                       return (
                         <div className="flex flex-col gap-1">
@@ -161,13 +148,7 @@ export const PeopleCreateModal = ({
                             onChange={(date: CalendarDate | null) => {
                               if (date) {
                                 const newDate = new Date(date.toString());
-                                // Ajustar la zona horaria al guardar
-                                const peruDate = new Date(
-                                  newDate.toLocaleString(PERU_LOCALE, {
-                                    timeZone: PERU_TIMEZONE,
-                                  }),
-                                );
-                                onChange(peruDate);
+                                onChange(newDate);
                               }
                             }}
                           />
