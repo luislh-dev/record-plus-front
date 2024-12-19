@@ -34,7 +34,7 @@ export const usePeopleModal = (
 
   useEffect(() => {
     if (person) {
-      if (person.fromReniec) {
+      if (person.hasExternalSource) {
         onOpen();
       } else {
         onCreateSuccess(person, documentNumber);
@@ -53,7 +53,7 @@ export const usePeopleModal = (
           fatherLastName: data.paternalSurname,
           motherLastName: data.maternalSurname,
           phone: data.phone ?? "",
-          fromReniec: true,
+          hasExternalSource: true,
         },
         documentNumber,
       );
