@@ -176,6 +176,7 @@ export const PeopleCreateModal = ({
                     label="Teléfono"
                     error={errors.phone}
                     placeholder="Ingrese el teléfono"
+                    isRequired
                   />
                 </div>
               </ModalBody>
