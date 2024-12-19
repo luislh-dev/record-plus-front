@@ -5,7 +5,7 @@ import { useDocumentType } from "@/hooks/documenttype/useDocumentType";
 import { useGender } from "@/hooks/gender/useGender";
 import { getPeruDateTime, parsePeruDate } from "@/utils/peruDateTime";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CalendarDate, parseDate } from "@internationalized/date";
+import { parseDate } from "@internationalized/date";
 import {
   Alert,
   Button,
@@ -145,7 +145,7 @@ export const PeopleCreateModal = ({
                             labelPlacement="outside"
                             isRequired
                             value={selectedDate}
-                            onChange={(date: CalendarDate | null) => {
+                            onChange={(date) => {
                               if (date) {
                                 const newDate = new Date(date.toString());
                                 onChange(newDate);
