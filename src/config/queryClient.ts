@@ -17,7 +17,7 @@ persistQueryClient({
   dehydrateOptions: {
     shouldDehydrateQuery: (query) => {
       // Solo persistir queries específicas
-      const persistentQueries = ["states", "documentType"];
+      const persistentQueries = ["states", "documentType", "gender"];
       return persistentQueries.includes(query.queryKey[0] as string);
     },
   },
