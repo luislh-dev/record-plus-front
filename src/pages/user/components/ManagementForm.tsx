@@ -30,12 +30,24 @@ export const ManagementForm = ({}: Props) => {
   const { hospitals, isLoading, fetchNextPage, hasNextPage, setSearchTerm } =
     useHospitalGetByName();
 
-  const { isOpen, onClose, documentNumber, personData, handleDniSearch, handleModalConfirm } =
-    usePeopleModal((data) => {
-      setValue("personDNI", documentNumber);
-      setValue("name", data.name);
+  const {
+    isOpen,
+    onClose,
+    documentNumber,
+    personData,
+    handleDniSearch,
+    handleCreatePerson,
+    onOpen,
+    isCreating,
+  } = usePeopleModal((data, dni) => {
+    // Este callback solo se ejecutará cuando la creación sea exitosa
+    setValue("personDNI", dni);
+    setValue("personalInfo", {
+      name: data.name,
+      surnames: `${data.fatherLastName} ${data.motherLastName}`,
+      phone: data.phone,
     });
-
+  });
   const { isLoading: isSubmitting, handleCreate } = useUserManagementCreate();
 
   const [, scrollerRef] = useInfiniteScroll({
@@ -51,6 +63,7 @@ export const ManagementForm = ({}: Props) => {
     control,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<UserManagementCreateValues>({
     resolver: zodResolver(userManagementCreateSchema),
@@ -75,6 +88,7 @@ export const ManagementForm = ({}: Props) => {
   const searchByDni = (dni: string) => {
     if (dni.length === 8) {
       handleDniSearch(dni);
+      onOpen();
     }
   };
   return (
@@ -82,8 +96,9 @@ export const ManagementForm = ({}: Props) => {
       <PeopleCreateModal
         isOpen={isOpen}
         onClose={onClose}
-        onConfirm={handleModalConfirm}
+        onConfirm={handleCreatePerson}
         documentNumber={documentNumber}
+        isLoading={isCreating}
         personData={personData || ({} as MinimalPeopleResponseDto)}
       />
       <section className="flex flex-col gap-5">
@@ -127,7 +142,10 @@ export const ManagementForm = ({}: Props) => {
                       }
                     }}
                     onInputChange={(value) => setSearchTerm(value)}
-                    onSelectionChange={onChange}
+                    onSelectionChange={(item) => {
+                      onChange(item);
+                      setValue("hospitalId", parseInt(item as string));
+                    }}
                     labelPlacement="outside"
                   >
                     {(item) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
@@ -141,6 +159,7 @@ export const ManagementForm = ({}: Props) => {
             <Input
               type="text"
               label="Nombre"
+              value={watch("personalInfo.name")}
               labelPlacement="outside"
               placeholder="Nombre"
               disabled
@@ -148,7 +167,7 @@ export const ManagementForm = ({}: Props) => {
             <Input
               type="text"
               label="Apellidos"
-              value={`${personData?.fatherLastName ?? ""} ${personData?.motherLastName ?? ""}`}
+              value={watch("personalInfo.surnames")}
               labelPlacement="outside"
               placeholder="Apellidos"
               disabled
@@ -156,7 +175,7 @@ export const ManagementForm = ({}: Props) => {
             <Input
               type="phone"
               label="Teléfono"
-              value={personData?.phone || ""}
+              value={watch("personalInfo.phone")}
               labelPlacement="outside"
               placeholder="Teléfono"
               disabled
@@ -181,6 +200,7 @@ export const ManagementForm = ({}: Props) => {
               control={control}
               label="Estado"
               options={state}
+              error={errors.stateId}
               isRequired
             />
             <CustomInput
