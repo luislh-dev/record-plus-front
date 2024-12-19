@@ -1,45 +1,75 @@
 import { useDisclosure } from "@nextui-org/react";
 import { useState } from "react";
+import { PeopleCreateRequiredValues } from "../models/peopleCreateRequiredSchema";
 import { MinimalPeopleResponseDto } from "../types/MinimalPeopleResponseDto";
+import { useCreateRequeridPerson } from "./useCreatePerson";
 import { useGetPersonByDni } from "./useGetPerson";
 
 interface UsePeopleModalResult {
   isOpen: boolean;
-  onOpen: () => void;
   onClose: () => void;
+  onOpen: () => void;
   documentNumber: string;
   personData: MinimalPeopleResponseDto | null;
   isSearching: boolean;
+  isCreating: boolean;
   handleDniSearch: (dni: string) => Promise<void>;
-  handleModalConfirm: (data: MinimalPeopleResponseDto) => void;
+  handleCreatePerson: (data: PeopleCreateRequiredValues) => Promise<void>;
 }
 
 export const usePeopleModal = (
-  onSuccess: (data: MinimalPeopleResponseDto) => void,
+  onCreateSuccess: (data: MinimalPeopleResponseDto, documentNumber: string) => void,
 ): UsePeopleModalResult => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onClose: closeModal, onOpen } = useDisclosure();
   const [documentNumber, setDocumentNumber] = useState("");
   const { isLoading: isSearching, getPerson, person } = useGetPersonByDni();
+  const { isCreating, handleCreate } = useCreateRequeridPerson();
 
   const handleDniSearch = async (dni: string) => {
-    await getPerson(dni);
-    setDocumentNumber(dni);
-    onOpen();
+    if (dni.length === 8) {
+      await getPerson(dni);
+      setDocumentNumber(dni);
+    }
   };
 
-  const handleModalConfirm = (data: MinimalPeopleResponseDto) => {
-    onSuccess(data);
-    onClose();
+  const handleCreatePerson = async (data: PeopleCreateRequiredValues) => {
+    try {
+      await handleCreate(data);
+
+      // Solo si la creación fue exitosa, llamamos al callback con los datos
+      onCreateSuccess(
+        {
+          name: data.name,
+          fatherLastName: data.paternalSurname,
+          motherLastName: data.maternalSurname,
+          phone: data.phone ?? "",
+          isFromReniec: true,
+        },
+        documentNumber,
+      );
+
+      closeModal();
+    } catch (error) {
+      // Manejar el error si es necesario
+      console.error("Error creating person:", error);
+      throw error;
+    }
+  };
+
+  const onClose = () => {
+    closeModal();
+    setDocumentNumber("");
   };
 
   return {
     isOpen,
-    onOpen,
     onClose,
+    onOpen,
     documentNumber,
     personData: person,
     isSearching,
+    isCreating,
     handleDniSearch,
-    handleModalConfirm,
+    handleCreatePerson,
   };
 };
