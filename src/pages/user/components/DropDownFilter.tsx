@@ -1,3 +1,4 @@
+import { useRole } from "@/hooks/role/useRole";
 import { useStates } from "@/hooks/state/useState";
 import { Tune } from "@/icons/Tune";
 import {
@@ -10,11 +11,10 @@ import {
   Radio,
   RadioGroup,
 } from "@nextui-org/react";
-import { useUserSearchStore } from "../stores/searchStore";
 import { SEARCH_PARAMS } from "../constants/searchParams";
-import { SearchFieldKeys } from "../types/UserRequestParams";
-import { useRole } from "@/hooks/role/useRole";
 import { useUserSearch } from "../hooks/useUserSearch";
+import { useUserSearchStore } from "../stores/searchStore";
+import { SearchFieldKeys } from "../types/UserRequestParams";
 
 export function DropDownFilter() {
   const { state } = useStates();
@@ -72,7 +72,7 @@ export function DropDownFilter() {
         closeOnSelect={false}
       >
         <DropdownSection title="Parámetro de busqueda" aria-label="Parámetros">
-          <DropdownItem textValue="Parámetros">
+          <DropdownItem textValue="Parámetros" key={"Parámetros"}>
             <RadioGroup
               aria-label="Seleccionar un parámetro de busqueda"
               value={selectedSearchField}
@@ -91,7 +91,7 @@ export function DropDownFilter() {
           </DropdownItem>
         </DropdownSection>
         <DropdownSection title="Roles" aria-label="Sección de roles">
-          <DropdownItem textValue="Roles">
+          <DropdownItem textValue="Roles" key={"Roles"}>
             <RadioGroup
               aria-label="Selecionar un rol"
               value={selectedRole?.toString() || "all"}
@@ -113,17 +113,13 @@ export function DropDownFilter() {
           </DropdownItem>
         </DropdownSection>
         <DropdownSection title="Estados" aria-label="Sección de estados">
-          <DropdownItem textValue="Estados">
+          <DropdownItem textValue="Estados" key={"Estados"}>
             <RadioGroup
               aria-label="Seleccionar un estado"
               value={selectedState?.toString() || "all"}
               onValueChange={handleStateChange}
             >
-              <Radio
-                key="all"
-                value="all"
-                aria-label="Mostrar todos los estados."
-              >
+              <Radio key="all" value="all" aria-label="Mostrar todos los estados.">
                 Todos
               </Radio>
               {state.map((s) => (
