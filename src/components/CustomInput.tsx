@@ -11,6 +11,8 @@ interface Props<T extends FieldValues> {
   type?: string;
   error?: FieldError;
   variant?: InputVariant;
+  onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const CustomInput = <T extends FieldValues>({
@@ -22,6 +24,8 @@ export const CustomInput = <T extends FieldValues>({
   type,
   error,
   variant,
+  onInput,
+  onChange,
 }: Props<T>) => {
   return (
     <div>
@@ -32,6 +36,11 @@ export const CustomInput = <T extends FieldValues>({
           <div className="flex flex-col gap-1">
             <Input
               {...field}
+              onInput={onInput}
+              onChange={(e) => {
+                field.onChange(e);
+                onChange?.(e);
+              }}
               value={field.value?.toString()}
               variant={variant}
               type={type}
