@@ -8,7 +8,6 @@ import { useHospitalGetByName } from "@/pages/hospital/hooks/useHospitalGetBy";
 import { PeopleCreateModal } from "@/pages/people/components/PeopleCreateModal";
 import { usePersonSearch } from "@/pages/people/hooks/usePersonSearch";
 import { MinimalPeopleResponseDto } from "@/pages/people/types/MinimalPeopleResponseDto";
-import { ApiError } from "@/types/errros/ApiError";
 import { allowOnlyNumbers } from "@/utils/allowOnlyNumbers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -29,14 +28,7 @@ import {
   UserManagementCreateValues,
 } from "../models/userManagementCreateSchema";
 
-interface Props {
-  onSubmit: (data: UserManagementCreateValues) => void;
-  isSubmitting?: boolean;
-  defaultValues?: UserManagementCreateValues;
-  apiErrors?: ApiError | null;
-}
-
-export const ManagementForm = ({}: Props) => {
+export const ManagementForm = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const { hospitals, isLoading, fetchNextPage, hasNextPage, setSearchTerm } =
@@ -197,7 +189,7 @@ export const ManagementForm = ({}: Props) => {
             <Input
               type="text"
               label="Nombre"
-              value={watch("personalInfo.name")}
+              value={watch("personalInfo.name") || ""}
               labelPlacement="outside"
               placeholder="Nombre"
               disabled
@@ -205,7 +197,7 @@ export const ManagementForm = ({}: Props) => {
             <Input
               type="text"
               label="Apellidos"
-              value={watch("personalInfo.surnames")}
+              value={watch("personalInfo.surnames") || ""}
               labelPlacement="outside"
               placeholder="Apellidos"
               disabled
@@ -213,7 +205,7 @@ export const ManagementForm = ({}: Props) => {
             <Input
               type="phone"
               label="Teléfono"
-              value={watch("personalInfo.phone")}
+              value={watch("personalInfo.phone") || ""}
               labelPlacement="outside"
               placeholder="Teléfono"
               disabled
