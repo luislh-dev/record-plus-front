@@ -29,12 +29,24 @@ export const usePersonSearch = ({
 }: UsePersonSearchProps): UsePersonSearchResult => {
   const [documentNumber, setDocumentNumber] = useState("");
   const [documentId, setDocumentId] = useState(DNI_ID);
-  const { isLoading: isSearching, getPerson, person } = useGetPersonByDni();
+  const { isLoading: isSearching, getPerson, person, error, clearPerson } = useGetPersonByDni();
   const { isCreating, handleCreate } = useCreateRequeridPerson();
 
   // Efecto para actualizar el formulario con los datos de la persona
   useEffect(() => {
-    if (!person) return;
+    // Si hay error o no hay persona, limpiar formulario
+    if (error || !person) {
+      reset((prevData) => ({
+        ...prevData,
+        personDNI: documentNumber,
+        personalInfo: {
+          name: "",
+          surnames: "",
+          phone: "",
+        },
+      }));
+      return;
+    }
 
     const formData = {
       personDNI: documentNumber,
@@ -49,27 +61,31 @@ export const usePersonSearch = ({
       ...prevData,
       ...formData,
     }));
-  }, [person, documentNumber, reset]);
+  }, [person, error, documentNumber, reset]);
 
   // Efecto para manejar la búsqueda automática
   useEffect(() => {
-    if (person && onSearchSuccess) {
+    if (person && !error && onSearchSuccess) {
       onSearchSuccess(person);
     }
-  }, [person]);
+  }, [person, error]);
 
   // Efecto para buscar la persona
   useEffect(() => {
     const searchPerson = async () => {
       if (documentNumber.length >= 8 && documentNumber.length <= 10 && documentId) {
-        await getPerson(documentId, documentNumber);
+        try {
+          await getPerson(documentId, documentNumber);
+        } catch (err) {
+          // El error ya está siendo manejado en useGetPersonByDni
+          // y propagado a través del estado error
+        }
+      } else if (documentNumber.length === 0) {
+        clearPerson();
       }
     };
 
-    const timeoutId = setTimeout(() => {
-      searchPerson();
-    }, 500);
-
+    const timeoutId = setTimeout(searchPerson, 500);
     return () => clearTimeout(timeoutId);
   }, [documentNumber, documentId]);
 
