@@ -8,6 +8,7 @@ export function useGetPersonByDni() {
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
   const [person, setPerson] = useState<MinimalPeopleResponseDto | null>(null);
+  const [success, setSuccess] = useState(false);
 
   const getPerson = async (documentId: number, documentNumber: string) => {
     setLoading(true);
@@ -15,11 +16,13 @@ export function useGetPersonByDni() {
     try {
       const result = await getPersonNameByDocument(documentId, documentNumber);
       setPerson(result);
+      setSuccess(true);
     } catch (err) {
       setPerson(null);
       if (err instanceof ApiServiceError) {
         setError(err.error);
       }
+      setSuccess(false);
       throw err;
     } finally {
       setLoading(false);
@@ -31,5 +34,5 @@ export function useGetPersonByDni() {
     setError(null);
   };
 
-  return { isLoading, error, getPerson, person, clearPerson };
+  return { isLoading, error, getPerson, person, clearPerson, success };
 }
