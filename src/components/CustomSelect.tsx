@@ -26,7 +26,7 @@ export const CustomSelect = <T extends FieldValues>({
   error,
   isRequired = true,
   placeholder,
-  variant,
+  variant = "bordered",
 }: Props<T>) => {
   return (
     <div>

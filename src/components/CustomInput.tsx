@@ -23,7 +23,7 @@ export const CustomInput = <T extends FieldValues>({
   isRequired = false,
   type,
   error,
-  variant,
+  variant = "bordered",
   onInput,
   onChange,
 }: Props<T>) => {
