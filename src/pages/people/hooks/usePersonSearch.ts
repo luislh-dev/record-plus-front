@@ -17,6 +17,7 @@ interface UsePersonSearchResult {
   documentId: number;
   isSearching: boolean;
   isCreating: boolean;
+  success: boolean;
   personData: MinimalPeopleResponseDto | null;
   setDocumentNumber: (value: string) => void;
   setDocumentId: (value: number) => void;
@@ -29,7 +30,14 @@ export const usePersonSearch = ({
 }: UsePersonSearchProps): UsePersonSearchResult => {
   const [documentNumber, setDocumentNumber] = useState("");
   const [documentId, setDocumentId] = useState(DNI_ID);
-  const { isLoading: isSearching, getPerson, person, error, clearPerson } = useGetPersonByDni();
+  const {
+    isLoading: isSearching,
+    getPerson,
+    person,
+    error,
+    clearPerson,
+    success,
+  } = useGetPersonByDni();
   const { isCreating, handleCreate } = useCreateRequeridPerson();
 
   // Efecto para actualizar el formulario con los datos de la persona
@@ -130,6 +138,7 @@ export const usePersonSearch = ({
     isSearching,
     isCreating,
     personData: person,
+    success,
     setDocumentNumber,
     setDocumentId,
     handleCreatePerson,

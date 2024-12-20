@@ -4,6 +4,7 @@ import { Typography } from "@/components/Typography";
 import { DNI_ID } from "@/constants/documentType";
 import { useDocumentType } from "@/hooks/documenttype/useDocumentType";
 import { useStates } from "@/hooks/state/useState";
+import { TaskAlt } from "@/icons/TaskAlt";
 import { useHospitalGetByName } from "@/pages/hospital/hooks/useHospitalGetBy";
 import { PeopleCreateModal } from "@/pages/people/components/PeopleCreateModal";
 import { usePersonSearch } from "@/pages/people/hooks/usePersonSearch";
@@ -17,6 +18,7 @@ import {
   Input,
   Select,
   SelectItem,
+  Spinner,
   useDisclosure,
 } from "@nextui-org/react";
 import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
@@ -65,6 +67,7 @@ export const ManagementForm = () => {
     documentId,
     isSearching,
     isCreating,
+    success,
     personData,
     setDocumentNumber,
     setDocumentId,
@@ -138,20 +141,28 @@ export const ManagementForm = () => {
               </Select>
             </div>
             <div className="w-2/3">
-              <CustomInput
-                control={control}
-                error={errors.personDNI}
-                name="personDNI"
-                type="text"
-                label="DNI"
-                placeholder="Ingrese DNI"
-                onInput={allowOnlyNumbers}
-                onChange={(e) => {
-                  const value = e.target.value;
-                  setDocumentNumber(value);
-                  setValue("personDNI", value);
-                }}
-              />
+              <div className="flex items-center gap-2 w-full">
+                <div className="flex-1">
+                  <CustomInput
+                    control={control}
+                    error={errors.personDNI}
+                    name="personDNI"
+                    type="text"
+                    label="DNI"
+                    placeholder="Ingrese DNI"
+                    onInput={allowOnlyNumbers}
+                    onChange={(e) => {
+                      const value = e.target.value;
+                      setDocumentNumber(value);
+                      setValue("personDNI", value);
+                    }}
+                  />
+                </div>
+                {isSearching && <Spinner size="sm" />}
+                {success && documentNumber.length >= 8 && !isSearching && isOpen && !personData && (
+                  <TaskAlt size={24} color="#4CAF50" />
+                )}
+              </div>
             </div>
           </div>
           <div>
