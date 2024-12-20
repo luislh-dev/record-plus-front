@@ -14,8 +14,9 @@ export const userManagementCreateSchema = z
 
     personDNI: z
       .string()
-      .min(1, "DNI es requerido")
-      .regex(/^[0-9]{8}$/, "DNI debe tener 8 dígitos"),
+      .min(1, "Número de documento es requerido")
+      .min(8, "Número de documento debe tener al menos 8 caracteres")
+      .max(20, "Número de documento debe tener máximo 20 caracteres"),
 
     stateId: z.number().min(1, "Estado es requerido"),
 
