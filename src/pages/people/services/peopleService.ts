@@ -6,10 +6,15 @@ export const getPersonNameByDocument = async (
   id: number,
   documentNumber: string,
 ): Promise<MinimalPeopleResponseDto> => {
-  const response = await api.get<MinimalPeopleResponseDto>(
-    `/people/getPersonNameByDocument/${id}/${documentNumber}`,
-  );
-  return response.data;
+  try {
+    const response = await api.get<MinimalPeopleResponseDto>(
+      `/people/getPersonNameByDocument/${id}/${documentNumber}`,
+    );
+    return response.data;
+  } catch (error: any) {
+    // El interceptor ya maneja la transformación a ApiServiceError
+    throw error;
+  }
 };
 
 export const createPerson = async (data: PeopleCreateFullDto): Promise<void> => {
