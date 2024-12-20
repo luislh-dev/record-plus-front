@@ -48,6 +48,12 @@ export const usePersonSearch = ({
       return;
     }
 
+    // Si la persona tiene fuente externa, limpiar formulario y salir
+    if (person.hasExternalSource) {
+      clearPerson();
+      return;
+    }
+
     const formData = {
       personDNI: documentNumber,
       personalInfo: {
