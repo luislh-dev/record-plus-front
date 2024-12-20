@@ -4,4 +4,5 @@ export interface MinimalPeopleResponseDto {
   motherLastName: string;
   phone: string;
   hasExternalSource: boolean;
+  dataSource?: string;
 }
