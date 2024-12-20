@@ -65,6 +65,8 @@ export const PeopleCreateModal = ({
     }
   }, [personData, documentNumber, setValue]);
 
+  const dataSource = personData.dataSource?.toUpperCase() || "RENIEC";
+
   return (
     <>
       <Modal
@@ -79,10 +81,10 @@ export const PeopleCreateModal = ({
             <form onSubmit={handleSubmit(onConfirm)}>
               <ModalHeader className="flex flex-col" aria-label="Cabezera de la modal de creación">
                 <Typography as="h3" variant="subsection">
-                  Confirmar datos de RENIEC
+                  Confirmar datos de {dataSource}
                 </Typography>
                 <Typography variant="body" color="muted">
-                  Se encontraron los siguientes datos en RENIEC. Por favor confirme que son
+                  Se encontraron los siguientes datos en {dataSource}. Por favor confirme que son
                   correctos.
                 </Typography>
               </ModalHeader>
