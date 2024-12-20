@@ -1,15 +1,25 @@
 import { CustomInput } from "@/components/CustomInput";
 import { CustomSelect } from "@/components/CustomSelect";
 import { Typography } from "@/components/Typography";
+import { DNI_ID } from "@/constants/documentType";
+import { useDocumentType } from "@/hooks/documenttype/useDocumentType";
 import { useStates } from "@/hooks/state/useState";
 import { useHospitalGetByName } from "@/pages/hospital/hooks/useHospitalGetBy";
 import { PeopleCreateModal } from "@/pages/people/components/PeopleCreateModal";
-import { usePeopleModal } from "@/pages/people/hooks/usePeopleModal";
+import { usePersonSearch } from "@/pages/people/hooks/usePersonSearch";
 import { MinimalPeopleResponseDto } from "@/pages/people/types/MinimalPeopleResponseDto";
 import { ApiError } from "@/types/errros/ApiError";
 import { allowOnlyNumbers } from "@/utils/allowOnlyNumbers";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Autocomplete, AutocompleteItem, Button, Input } from "@nextui-org/react";
+import {
+  Autocomplete,
+  AutocompleteItem,
+  Button,
+  Input,
+  Select,
+  SelectItem,
+  useDisclosure,
+} from "@nextui-org/react";
 import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -27,6 +37,8 @@ interface Props {
 }
 
 export const ManagementForm = ({}: Props) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
   const { hospitals, isLoading, fetchNextPage, hasNextPage, setSearchTerm } =
     useHospitalGetByName();
 
@@ -57,28 +69,23 @@ export const ManagementForm = ({}: Props) => {
   });
 
   const {
-    isOpen,
-    onClose,
     documentNumber,
-    personData,
-    handleDniSearch,
-    handleCreatePerson,
+    documentId,
+    isSearching,
     isCreating,
-  } = usePeopleModal((data, dni) => {
-    const formData = {
-      personDNI: dni,
-      personalInfo: {
-        name: data.name,
-        surnames: `${data.fatherLastName} ${data.motherLastName}`,
-        phone: data.phone,
-      },
-    };
-    // Resetear los valores del formulario
-    reset((prevData) => ({
-      ...prevData,
-      ...formData,
-    }));
+    personData,
+    setDocumentNumber,
+    setDocumentId,
+    handleCreatePerson,
+  } = usePersonSearch({
+    onSearchSuccess: (person) => {
+      if (person.hasExternalSource) {
+        onOpen();
+      }
+    },
+    reset,
   });
+
   const { isLoading: isSubmitting, handleCreate } = useUserManagementCreate();
 
   const [, scrollerRef] = useInfiniteScroll({
@@ -89,6 +96,7 @@ export const ManagementForm = ({}: Props) => {
   });
 
   const { state } = useStates();
+  const { documentType } = useDocumentType();
 
   useEffect(() => {
     if (state.length > 0) {
@@ -117,17 +125,42 @@ export const ManagementForm = ({}: Props) => {
           </Typography>
         </header>
         <form onSubmit={handleSubmit(handleCreate)} className="flex flex-col gap-4">
-          <div>
-            <CustomInput
-              control={control}
-              error={errors.personDNI}
-              name="personDNI"
-              type="text"
-              label="DNI"
-              placeholder="Ingrese DNI"
-              onInput={allowOnlyNumbers}
-              onChange={(e) => handleDniSearch(e.target.value)}
-            />
+          <div className="flex gap-4">
+            <div className="w-1/3">
+              <Select
+                label="Tipo de documento"
+                labelPlacement="outside"
+                className="w-full"
+                selectedKeys={[documentId.toString()]}
+                onSelectionChange={(keys) => {
+                  const selected = Array.from(keys)[0];
+                  setDocumentId(selected ? Number(selected) : DNI_ID);
+                }}
+                isDisabled={isSearching}
+              >
+                {documentType.map((data) => (
+                  <SelectItem key={data.id.toString()} value={data.id.toString()}>
+                    {data.name}
+                  </SelectItem>
+                ))}
+              </Select>
+            </div>
+            <div className="w-2/3">
+              <CustomInput
+                control={control}
+                error={errors.personDNI}
+                name="personDNI"
+                type="text"
+                label="DNI"
+                placeholder="Ingrese DNI"
+                onInput={allowOnlyNumbers}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setDocumentNumber(value);
+                  setValue("personDNI", value);
+                }}
+              />
+            </div>
           </div>
           <div>
             <Controller

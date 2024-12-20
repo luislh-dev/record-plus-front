@@ -1,6 +1,6 @@
 import { ApiServiceError } from "@/services/api/ApiErrorHandler";
 import { useState } from "react";
-import { getPersonNameByDni } from "../services/peopleService";
+import { getPersonNameByDocument } from "../services/peopleService";
 import { MinimalPeopleResponseDto } from "../types/MinimalPeopleResponseDto";
 
 export function useGetPersonByDni() {
@@ -8,10 +8,10 @@ export function useGetPersonByDni() {
   const [error, setError] = useState<ApiServiceError | null>(null);
   const [person, setPerson] = useState<MinimalPeopleResponseDto | null>(null);
 
-  const getPerson = async (dni: string) => {
+  const getPerson = async (documentId: number, documentNumber: string) => {
     setLoading(true);
     try {
-      setPerson(await getPersonNameByDni(dni));
+      setPerson(await getPersonNameByDocument(documentId, documentNumber));
     } catch (error) {
       if (error instanceof ApiServiceError) {
         setError(error);
