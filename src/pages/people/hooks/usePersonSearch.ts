@@ -56,9 +56,8 @@ export const usePersonSearch = ({
       return;
     }
 
-    // Si la persona tiene fuente externa, limpiar formulario y salir
+    // Si la persona tiene fuente externa, no actualizar el formulario
     if (person.hasExternalSource) {
-      clearPerson();
       return;
     }
 
