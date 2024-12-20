@@ -94,11 +94,12 @@ export const usePersonSearch = ({
           // El error ya está siendo manejado en useGetPersonByDni
           // y propagado a través del estado error
         }
-      } else if (documentNumber.length === 0) {
+      } else if (documentNumber.length < 8) {
         clearPerson();
       }
     };
 
+    // Debounce para evitar llamadas innecesarias
     const timeoutId = setTimeout(searchPerson, 500);
     return () => clearTimeout(timeoutId);
   }, [documentNumber, documentId]);
