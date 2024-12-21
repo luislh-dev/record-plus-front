@@ -27,7 +27,6 @@ export const HospitalMinimalSearch: FC<{
       onSelectionChange={(item) => onHospitalSelected(parseInt(item as string))}
       variant="bordered"
       onOpenChange={setIsOpen}
-      isRequired
     >
       {(item) => (
         <AutocompleteItem key={item.id} value={item.id}>

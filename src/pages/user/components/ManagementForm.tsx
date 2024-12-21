@@ -45,7 +45,7 @@ export const ManagementForm = () => {
     reset,
   } = useForm<UserManagementCreateValues>({
     resolver: zodResolver(userManagementCreateSchema),
-    mode: "onChange",
+    mode: "onSubmit",
     defaultValues: {
       personDNI: "",
       hospitalId: 0,
@@ -208,14 +208,16 @@ export const ManagementForm = () => {
                   </Typography>
                   <SearchHospitalTooltip />
                 </div>
-                <HospitalMinimalSearch
-                  onHospitalSelected={(hospitalId) => setValue("hospitalId", hospitalId)}
-                />
-                {errors.hospitalId && (
-                  <Typography as="p" variant="error">
-                    {errors.hospitalId.message}
-                  </Typography>
-                )}
+                <div className="flex flex-col gap-2">
+                  <HospitalMinimalSearch
+                    onHospitalSelected={(hospitalId) => setValue("hospitalId", hospitalId)}
+                  />
+                  {errors.hospitalId && (
+                    <Typography as="p" variant="error" className="h-4 pl-1">
+                      {errors.hospitalId.message}
+                    </Typography>
+                  )}
+                </div>
               </div>
 
               <Divider className="my-2" />
