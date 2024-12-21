@@ -23,7 +23,7 @@ export const userManagementCreateSchema = z
     password: z
       .string()
       .min(1, "Contraseña es requerida")
-      .min(8, "Contraseña debe tener al menos 6 caracteres")
+      .min(8, "Contraseña debe tener al menos 8 caracteres")
       .max(50, "Contraseña debe tener máximo 50 caracteres")
       .regex(/[A-Z]/, "Contraseña debe tener al menos una letra mayuscula")
       .regex(/[a-z]/, "Contraseña debe tener al menos una letra minuscula")
@@ -33,20 +33,14 @@ export const userManagementCreateSchema = z
     passwordConfirmation: z
       .string()
       .min(1, "Confirmación de contraseña es requerida")
-      .min(8, "Confirmación de contraseña debe tener al menos 6 caracteres")
-      .max(50, "Confirmación de contraseña debe tener máximo 50 caracteres")
-      .regex(/[A-Z]/, "Confirmación de contraseña debe tener al menos una letra mayuscula")
-      .regex(/[a-z]/, "Confirmación de contraseña debe tener al menos una letra minuscula")
-      .regex(/[0-9]/, "Confirmación de contraseña debe tener al menos un número")
-      .regex(/[^A-Za-z0-9]/, "Confirmación de contraseña debe tener al menos un caracter especial"),
+      .min(8, "Confirmación de contraseña debe tener al menos 8 caracteres")
+      .max(50, "Confirmación de contraseña debe tener máximo 50 caracteres"),
 
-    personalInfo: z
-      .object({
-        name: z.string().optional(),
-        surnames: z.string().optional(),
-        phone: z.string().optional(),
-      })
-      .optional(),
+    personalInfo: z.object({
+      name: z.string(),
+      surnames: z.string(),
+      phone: z.string(),
+    }),
   })
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "Las contraseñas no coinciden",
