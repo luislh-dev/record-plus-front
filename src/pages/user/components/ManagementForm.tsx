@@ -5,7 +5,7 @@ import { DNI_ID } from "@/constants/documentType";
 import { useDocumentType } from "@/hooks/documenttype/useDocumentType";
 import { useStates } from "@/hooks/state/useState";
 import { TaskAlt } from "@/icons/TaskAlt";
-import { useHospitalGetByName } from "@/pages/hospital/hooks/useHospitalGetBy";
+import { HospitalMinimalSearch } from "@/pages/hospital/components/HospitalMinimalSearch";
 import { PeopleCreateModal } from "@/pages/people/components/PeopleCreateModal";
 import { usePersonSearch } from "@/pages/people/hooks/usePersonSearch";
 import { MinimalPeopleResponseDto } from "@/pages/people/types/MinimalPeopleResponseDto";
@@ -13,8 +13,6 @@ import { allowOnlyNumbers } from "@/utils/allowOnlyNumbers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Alert,
-  Autocomplete,
-  AutocompleteItem,
   Button,
   Card,
   CardBody,
@@ -26,9 +24,8 @@ import {
   Spinner,
   useDisclosure,
 } from "@nextui-org/react";
-import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useUserManagementCreate } from "../hooks/useUserCreate";
 import {
   userManagementCreateSchema,
@@ -38,9 +35,6 @@ import { SearchHospitalTooltip } from "./SearchHospitalTooltip";
 
 export const ManagementForm = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
-
-  const { hospitals, isLoading, fetchNextPage, hasNextPage, setSearchTerm } =
-    useHospitalGetByName();
 
   const {
     control,
@@ -88,13 +82,6 @@ export const ManagementForm = () => {
   });
 
   const { isLoading: isSubmitting, handleCreate } = useUserManagementCreate();
-
-  const [, scrollerRef] = useInfiniteScroll({
-    hasMore: hasNextPage,
-    isEnabled: isOpen,
-    shouldUseLoader: false,
-    onLoadMore: fetchNextPage,
-  });
 
   const { state } = useStates();
   const { documentType } = useDocumentType();
@@ -221,40 +208,14 @@ export const ManagementForm = () => {
                   </Typography>
                   <SearchHospitalTooltip />
                 </div>
-                <Controller
-                  name="hospitalId"
-                  control={control}
-                  render={({ field: { onChange } }) => {
-                    return (
-                      <div>
-                        <Autocomplete
-                          label="Hospital"
-                          items={hospitals}
-                          isLoading={isLoading}
-                          scrollRef={scrollerRef}
-                          onOpenChange={(isOpen) => {
-                            if (isOpen) {
-                              fetchNextPage();
-                            }
-                          }}
-                          variant="bordered"
-                          onInputChange={(value) => setSearchTerm(value)}
-                          onSelectionChange={(item) => {
-                            onChange(item);
-                            setValue("hospitalId", parseInt(item as string));
-                          }}
-                          isRequired
-                          isInvalid={!!errors.hospitalId}
-                        >
-                          {(item) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
-                        </Autocomplete>
-                        <Typography as="p" variant="error" className="h-4 pl-1">
-                          {errors.hospitalId?.message}
-                        </Typography>
-                      </div>
-                    );
-                  }}
+                <HospitalMinimalSearch
+                  onHospitalSelected={(hospitalId) => setValue("hospitalId", hospitalId)}
                 />
+                {errors.hospitalId && (
+                  <Typography as="p" variant="error">
+                    {errors.hospitalId.message}
+                  </Typography>
+                )}
               </div>
 
               <Divider className="my-2" />
@@ -318,7 +279,7 @@ export const ManagementForm = () => {
                   type="submit"
                   color="primary"
                   isLoading={isSubmitting}
-                  isDisabled={personData === null || !!errors}
+                  isDisabled={personData === null}
                 >
                   Guardar
                 </Button>
