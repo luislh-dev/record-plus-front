@@ -51,19 +51,20 @@ export function useHospitalGetByName() {
     return getHospitalsByName(params);
   };
 
-  const query = useInfiniteQuery({
+  const { data, isError, isLoading, fetchNextPage, hasNextPage } = useInfiniteQuery({
     queryKey: ["hospitalsName", debouncedSearchTerm],
     queryFn: fetchHospitals,
     initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages) => {
-      return lastPage.last ? undefined : allPages.length;
-    },
+    getNextPageParam: (lastPage, allPages) => (lastPage.last ? undefined : allPages.length),
   });
 
-  const hospitals = query.data?.pages.flatMap((page) => page.content) ?? [];
+  const hospitals = data?.pages.flatMap((page) => page.content) ?? [];
 
   return {
-    ...query,
+    isLoading,
+    hasNextPage,
+    fetchNextPage,
+    isError,
     hospitals,
     searchTerm,
     setSearchTerm,
