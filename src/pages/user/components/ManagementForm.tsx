@@ -51,7 +51,7 @@ export const ManagementForm = () => {
     reset,
   } = useForm<UserManagementCreateValues>({
     resolver: zodResolver(userManagementCreateSchema),
-    mode: "onSubmit",
+    mode: "onChange",
     defaultValues: {
       personDNI: "",
       hospitalId: 0,
@@ -124,16 +124,17 @@ export const ManagementForm = () => {
               </Typography>
             </header>
           </CardHeader>
-          <CardBody className="flex flex-col gap-4">
+          <CardBody className="flex flex-col">
             <form onSubmit={handleSubmit(handleCreate)} className="flex flex-col gap-4">
               {/* Sección para buscar a la persona a traves de su documento de identidad */}
               <div className="flex flex-col">
-                <div className="flex gap-4">
+                <div className="flex gap-4 mb-1">
                   <div className="w-1/3">
                     <Select
                       label="Tipo de documento"
                       variant="bordered"
                       labelPlacement="outside"
+                      isRequired
                       className="w-full"
                       selectedKeys={[documentId.toString()]}
                       onSelectionChange={(keys) => {
@@ -225,79 +226,99 @@ export const ManagementForm = () => {
                   control={control}
                   render={({ field: { onChange } }) => {
                     return (
-                      <Autocomplete
-                        label="Hospital"
-                        items={hospitals}
-                        isLoading={isLoading}
-                        scrollRef={scrollerRef}
-                        onOpenChange={(isOpen) => {
-                          if (isOpen) {
-                            fetchNextPage();
-                          }
-                        }}
-                        variant="bordered"
-                        onInputChange={(value) => setSearchTerm(value)}
-                        onSelectionChange={(item) => {
-                          onChange(item);
-                          setValue("hospitalId", parseInt(item as string));
-                        }}
-                      >
-                        {(item) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
-                      </Autocomplete>
+                      <div>
+                        <Autocomplete
+                          label="Hospital"
+                          items={hospitals}
+                          isLoading={isLoading}
+                          scrollRef={scrollerRef}
+                          onOpenChange={(isOpen) => {
+                            if (isOpen) {
+                              fetchNextPage();
+                            }
+                          }}
+                          variant="bordered"
+                          onInputChange={(value) => setSearchTerm(value)}
+                          onSelectionChange={(item) => {
+                            onChange(item);
+                            setValue("hospitalId", parseInt(item as string));
+                          }}
+                          isRequired
+                          isInvalid={!!errors.hospitalId}
+                        >
+                          {(item) => <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>}
+                        </Autocomplete>
+                        <Typography as="p" variant="error" className="h-4 pl-1">
+                          {errors.hospitalId?.message}
+                        </Typography>
+                      </div>
                     );
                   }}
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <CustomInput
-                  name="email"
-                  control={control}
-                  label="Email"
-                  placeholder="Ingrese el email"
-                  isRequired
-                />
-                <CustomInput
-                  name="name"
-                  control={control}
-                  label="Usuario"
-                  placeholder="Ingrese el nombre del usuario"
-                  isRequired
-                  error={errors.name}
-                />
-                <CustomSelect
-                  name="stateId"
-                  control={control}
-                  label="Estado"
-                  options={state}
-                  error={errors.stateId}
-                  isRequired
-                />
-                <CustomInput
-                  name="password"
-                  type="password"
-                  control={control}
-                  label="Contraseña"
-                  placeholder="Ingrese la contraseña"
-                  isRequired
-                  error={errors.password}
-                />
-                <CustomInput
-                  name="passwordConfirmation"
-                  type="password"
-                  control={control}
-                  label="Confirmar contraseña"
-                  placeholder="Confirme la contraseña"
-                  isRequired
-                  error={errors.passwordConfirmation}
-                />
+              <Divider className="my-2" />
+
+              {/* Sección para la creación de usuario */}
+              <div className="flex flex-col gap-4">
+                <Typography as="h5" variant="body-small" className="font-medium">
+                  Datos de acceso
+                </Typography>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2">
+                    <CustomInput
+                      name="email"
+                      control={control}
+                      label="Email"
+                      error={errors.email}
+                      placeholder="Ingrese el email"
+                      isRequired
+                    />
+                  </div>
+
+                  <CustomInput
+                    name="name"
+                    control={control}
+                    label="Usuario"
+                    placeholder="Ingrese el nombre del usuario"
+                    isRequired
+                    error={errors.name}
+                  />
+                  <CustomSelect
+                    name="stateId"
+                    control={control}
+                    label="Estado"
+                    options={state}
+                    error={errors.stateId}
+                    isRequired
+                  />
+                  <CustomInput
+                    name="password"
+                    type="password"
+                    control={control}
+                    label="Contraseña"
+                    placeholder="Ingrese la contraseña"
+                    isRequired
+                    error={errors.password}
+                  />
+                  <CustomInput
+                    name="passwordConfirmation"
+                    type="password"
+                    control={control}
+                    label="Confirmar contraseña"
+                    placeholder="Confirme la contraseña"
+                    isRequired
+                    error={errors.passwordConfirmation}
+                  />
+                </div>
               </div>
+
               <div className="col-span-2 flex justify-end gap-2">
                 <Button
                   type="submit"
                   color="primary"
                   isLoading={isSubmitting}
-                  isDisabled={personData === null}
+                  isDisabled={personData === null || !!errors}
                 >
                   Guardar
                 </Button>
