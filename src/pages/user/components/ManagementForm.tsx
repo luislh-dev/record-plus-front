@@ -8,7 +8,6 @@ import { TaskAlt } from "@/icons/TaskAlt";
 import { HospitalMinimalSearch } from "@/pages/hospital/components/HospitalMinimalSearch";
 import { PeopleCreateModal } from "@/pages/people/components/PeopleCreateModal";
 import { usePersonSearch } from "@/pages/people/hooks/usePersonSearch";
-import { MinimalPeopleResponseDto } from "@/pages/people/types/MinimalPeopleResponseDto";
 import { allowOnlyNumbers } from "@/utils/allowOnlyNumbers";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -100,7 +99,7 @@ export const ManagementForm = () => {
         onConfirm={handleCreatePerson}
         documentNumber={documentNumber}
         isLoading={isCreating}
-        personData={personData || ({} as MinimalPeopleResponseDto)}
+        personData={personData}
       />
       <section>
         <Card className="flex flex-col gap-5 bg-[#F9FAFB]" shadow="md">
@@ -131,9 +130,7 @@ export const ManagementForm = () => {
                       isDisabled={isSearching}
                     >
                       {documentType.map((data) => (
-                        <SelectItem key={data.id.toString()} value={data.id.toString()}>
-                          {data.name}
-                        </SelectItem>
+                        <SelectItem key={data.id}>{data.name}</SelectItem>
                       ))}
                     </Select>
                   </div>

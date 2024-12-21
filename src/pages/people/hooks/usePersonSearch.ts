@@ -18,7 +18,7 @@ interface UsePersonSearchResult {
   isSearching: boolean;
   isCreating: boolean;
   success: boolean;
-  personData: MinimalPeopleResponseDto | null;
+  personData: MinimalPeopleResponseDto;
   setDocumentNumber: (value: string) => void;
   setDocumentId: (value: number) => void;
   handleCreatePerson: (data: PeopleCreateRequiredValues) => Promise<void>;
@@ -137,7 +137,7 @@ export const usePersonSearch = ({
     documentId,
     isSearching,
     isCreating,
-    personData: person,
+    personData: person || ({} as MinimalPeopleResponseDto),
     success,
     setDocumentNumber,
     setDocumentId,
