@@ -4,7 +4,6 @@ import { Typography } from "@/components/Typography";
 import { DNI_ID } from "@/constants/documentType";
 import { useDocumentType } from "@/hooks/documenttype/useDocumentType";
 import { useStates } from "@/hooks/state/useState";
-import { Help } from "@/icons/Help";
 import { TaskAlt } from "@/icons/TaskAlt";
 import { useHospitalGetByName } from "@/pages/hospital/hooks/useHospitalGetBy";
 import { PeopleCreateModal } from "@/pages/people/components/PeopleCreateModal";
@@ -25,7 +24,6 @@ import {
   Select,
   SelectItem,
   Spinner,
-  Tooltip,
   useDisclosure,
 } from "@nextui-org/react";
 import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
@@ -36,6 +34,7 @@ import {
   userManagementCreateSchema,
   UserManagementCreateValues,
 } from "../models/userManagementCreateSchema";
+import { SearchHospitalTooltip } from "./SearchHospitalTooltip";
 
 export const ManagementForm = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -219,27 +218,8 @@ export const ManagementForm = () => {
                   <Typography as="h5" variant="body-small" className="font-medium">
                     Buscar Hospital
                   </Typography>
-                  <Tooltip
-                    content={
-                      <div className="max-w-xs">
-                        <p>
-                          Ingrese el nombre del hospital donde el usuario ejercerá sus funciones.
-                        </p>
-                        <ul className="list-disc pl-4 mt-2 text-sm">
-                          <li>Escriba el nombre completo o parcial del hospital</li>
-                          <li>Seleccione de la lista de resultados</li>
-                          <li>
-                            Asegúrese de elegir el hospital correcto si hay varios con nombres
-                            similares
-                          </li>
-                        </ul>
-                      </div>
-                    }
-                  >
-                    <Help color="black" />
-                  </Tooltip>
+                  <SearchHospitalTooltip />
                 </div>
-
                 <Controller
                   name="hospitalId"
                   control={control}
