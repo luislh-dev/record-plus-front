@@ -4,9 +4,10 @@ import { Select, SelectItem } from "@nextui-org/react";
 export interface DocumentTypeSelectProps {
   onChange: (documentType: number) => void;
   value: string;
+  isDisabled?: boolean;
 }
 
-export const DocumentTypeSelect = ({ onChange, value }: DocumentTypeSelectProps) => {
+export const DocumentTypeSelect = ({ onChange, value, isDisabled }: DocumentTypeSelectProps) => {
   const { documentType, isLoading } = useDocumentType();
   return (
     <Select
@@ -17,6 +18,7 @@ export const DocumentTypeSelect = ({ onChange, value }: DocumentTypeSelectProps)
       className="w-full"
       selectedKeys={[value]}
       isLoading={isLoading}
+      disabled={isDisabled}
       onSelectionChange={(keys) => {
         const selected = Array.from(keys)[0];
         onChange(Number(selected));
