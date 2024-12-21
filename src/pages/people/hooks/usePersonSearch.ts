@@ -86,7 +86,7 @@ export const usePersonSearch = ({
   // Efecto para buscar la persona
   useEffect(() => {
     const searchPerson = async () => {
-      if (documentNumber.length >= 8 && documentNumber.length <= 10 && documentId) {
+      if (documentNumber.length >= 8 && documentNumber.length <= 20 && documentId) {
         try {
           await getPerson(documentId, documentNumber);
         } catch (err) {
