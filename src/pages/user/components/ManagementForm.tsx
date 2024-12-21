@@ -1,8 +1,7 @@
 import { CustomInput } from "@/components/CustomInput";
 import { CustomSelect } from "@/components/CustomSelect";
+import { DocumentTypeSelect } from "@/components/DocumentTypeSelect";
 import { Typography } from "@/components/Typography";
-import { DNI_ID } from "@/constants/documentType";
-import { useDocumentType } from "@/hooks/documenttype/useDocumentType";
 import { useStates } from "@/hooks/state/useState";
 import { TaskAlt } from "@/icons/TaskAlt";
 import { HospitalMinimalSearch } from "@/pages/hospital/components/HospitalMinimalSearch";
@@ -18,8 +17,6 @@ import {
   CardHeader,
   Divider,
   Input,
-  Select,
-  SelectItem,
   Spinner,
   useDisclosure,
 } from "@nextui-org/react";
@@ -83,7 +80,6 @@ export const ManagementForm = () => {
   const { isLoading: isSubmitting, handleCreate } = useUserManagementCreate();
 
   const { state } = useStates();
-  const { documentType } = useDocumentType();
 
   useEffect(() => {
     if (state.length > 0) {
@@ -116,23 +112,7 @@ export const ManagementForm = () => {
               <div className="flex flex-col">
                 <div className="flex gap-4 mb-1">
                   <div className="w-1/3">
-                    <Select
-                      label="Tipo de documento"
-                      variant="bordered"
-                      labelPlacement="outside"
-                      isRequired
-                      className="w-full"
-                      selectedKeys={[documentId.toString()]}
-                      onSelectionChange={(keys) => {
-                        const selected = Array.from(keys)[0];
-                        setDocumentId(selected ? Number(selected) : DNI_ID);
-                      }}
-                      isDisabled={isSearching}
-                    >
-                      {documentType.map((data) => (
-                        <SelectItem key={data.id}>{data.name}</SelectItem>
-                      ))}
-                    </Select>
+                    <DocumentTypeSelect value={documentId.toString()} onChange={setDocumentId} />
                   </div>
                   <div className="w-2/3">
                     <div className="flex items-center gap-2 w-full">
