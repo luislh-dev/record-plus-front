@@ -1,3 +1,3 @@
-import { BaseEntity } from "./BaseEntity";
+import { BaseEntity } from './BaseEntity';
 
-export interface Gender extends BaseEntity {}
+export type Gender = BaseEntity;
