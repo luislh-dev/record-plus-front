@@ -23,7 +23,7 @@ export function useUserManagementCreate() {
     }
   };
 
-  const success = !isLoading && !error;
+  const isSuccess = !isLoading && !error;
 
-  return { isLoading, error, handleCreate, success };
+  return { isLoading, error, handleCreate, isSuccess };
 }
