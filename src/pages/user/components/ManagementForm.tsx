@@ -1,13 +1,12 @@
 import { CustomInput } from "@/components/CustomInput";
 import { CustomSelect } from "@/components/CustomSelect";
-import { DocumentTypeSelect } from "@/components/DocumentTypeSelect";
 import { Typography } from "@/components/Typography";
 import { useStates } from "@/hooks/state/useState";
-import { TaskAlt } from "@/icons/TaskAlt";
 import { HospitalMinimalSearch } from "@/pages/hospital/components/HospitalMinimalSearch";
 import { PeopleCreateModal } from "@/pages/people/components/PeopleCreateModal";
-import { usePersonSearch } from "@/pages/people/hooks/usePersonSearch";
-import { allowOnlyNumbers } from "@/utils/allowOnlyNumbers";
+import { PersonSearch } from "@/pages/people/components/PersonSearch";
+import { MinimalPeopleResponseDto } from "@/pages/people/types/MinimalPeopleResponseDto";
+import { PeopleCreateRequiredDto } from "@/pages/people/types/PeopleCreateRequiredDto";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Alert,
@@ -17,10 +16,9 @@ import {
   CardHeader,
   Divider,
   Input,
-  Spinner,
   useDisclosure,
 } from "@nextui-org/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useUserManagementCreate } from "../hooks/useUserCreate";
 import {
@@ -31,6 +29,19 @@ import { SearchHospitalTooltip } from "./SearchHospitalTooltip";
 
 export const ManagementForm = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [personData, setPersonData] = useState<MinimalPeopleResponseDto | null>(null);
+  const defaultValues = {
+    personDNI: "",
+    personalInfo: {
+      name: "",
+      surnames: "",
+      phone: "",
+    },
+    email: "",
+    name: "",
+    password: "",
+    passwordConfirmation: "",
+  } as Partial<UserManagementCreateValues>;
 
   const {
     control,
@@ -41,45 +52,21 @@ export const ManagementForm = () => {
     reset,
   } = useForm<UserManagementCreateValues>({
     resolver: zodResolver(userManagementCreateSchema),
-    mode: "onSubmit",
-    defaultValues: {
-      personDNI: "",
-      hospitalId: 0,
-      name: "",
-      email: "",
-      password: "",
-      passwordConfirmation: "",
-      stateId: 0,
-      personalInfo: {
-        name: "",
-        surnames: "",
-        phone: "",
-      },
-    },
-  });
-
-  const {
-    documentNumber,
-    documentId,
-    isSearching,
-    isCreating,
-    success,
-    personData,
-    setDocumentNumber,
-    setDocumentId,
-    handleCreatePerson,
-  } = usePersonSearch({
-    onSearchSuccess: (person) => {
-      if (person.hasExternalSource) {
-        onOpen();
-      }
-    },
-    reset,
+    mode: "onChange",
+    defaultValues,
   });
 
   const { isLoading: isSubmitting, handleCreate } = useUserManagementCreate();
 
   const { state } = useStates();
+
+  const onSubmit = (data: UserManagementCreateValues) => {
+    try {
+      handleCreate(data);
+    } catch (error) {
+      console.error("Error al crear usuario:", error);
+    }
+  };
 
   useEffect(() => {
     if (state.length > 0) {
@@ -87,15 +74,49 @@ export const ManagementForm = () => {
     }
   }, [state, setValue]);
 
+  const foundPerson = (person: MinimalPeopleResponseDto | null) => {
+    // Si no se encuentra a la persona, se limpian los campos
+    if (person === null && watch("personDNI")) {
+      // Solo hace reset si había datos previos
+      reset({
+        personDNI: "",
+        personalInfo: {
+          name: "",
+          surnames: "",
+          phone: "",
+        },
+      });
+      return;
+    }
+
+    if (person === null) return;
+
+    if (person.hasExternalSource) {
+      setPersonData(person);
+      onOpen();
+    } else {
+      setValue("personDNI", person.documentNumber);
+      setValue("personalInfo.name", person.name);
+      setValue("personalInfo.surnames", `${person.fatherLastName} ${person.motherLastName}`);
+      setValue("personalInfo.phone", person.phone);
+    }
+  };
+
+  const handleConfirmPerson = (data: PeopleCreateRequiredDto) => {
+    setValue("personDNI", data.documentNumber);
+    setValue("personalInfo.name", data.name);
+    setValue("personalInfo.surnames", `${data.paternalSurname} ${data.maternalSurname}`);
+    setValue("personalInfo.phone", data.phone);
+    onClose();
+  };
+
   return (
     <>
       <PeopleCreateModal
         isOpen={isOpen}
         onClose={onClose}
-        onConfirm={handleCreatePerson}
-        documentNumber={documentNumber}
-        isLoading={isCreating}
-        personData={personData}
+        onConfirm={handleConfirmPerson}
+        personData={personData || ({} as MinimalPeopleResponseDto)}
       />
       <section>
         <Card className="flex flex-col gap-5 bg-[#F9FAFB]" shadow="md">
@@ -107,39 +128,11 @@ export const ManagementForm = () => {
             </header>
           </CardHeader>
           <CardBody className="flex flex-col">
-            <form onSubmit={handleSubmit(handleCreate)} className="flex flex-col gap-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
               {/* Sección para buscar a la persona a traves de su documento de identidad */}
               <div className="flex flex-col">
-                <div className="flex gap-4 mb-1">
-                  <div className="w-1/3">
-                    <DocumentTypeSelect value={documentId.toString()} onChange={setDocumentId} />
-                  </div>
-                  <div className="w-2/3">
-                    <div className="flex items-center gap-2 w-full">
-                      <div className="flex-1">
-                        <CustomInput
-                          control={control}
-                          error={errors.personDNI}
-                          name="personDNI"
-                          type="text"
-                          label="DNI"
-                          placeholder="Ingrese DNI"
-                          onInput={allowOnlyNumbers}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            setDocumentNumber(value);
-                            setValue("personDNI", value);
-                          }}
-                        />
-                      </div>
-                      {isSearching && <Spinner size="sm" />}
-                      {success &&
-                        documentNumber.length >= 8 &&
-                        !isSearching &&
-                        isOpen &&
-                        !personData && <TaskAlt size={24} color="#4CAF50" />}
-                    </div>
-                  </div>
+                <div className="flex gap-4 mb-4">
+                  <PersonSearch onPersonFound={foundPerson} />
                 </div>
                 <Alert
                   color="warning"
@@ -255,10 +248,10 @@ export const ManagementForm = () => {
 
               <div className="col-span-2 flex justify-end gap-2">
                 <Button
+                  onPress={() => console.log(watch())} // para debuggear
                   type="submit"
                   color="primary"
                   isLoading={isSubmitting}
-                  isDisabled={personData === null}
                 >
                   Guardar
                 </Button>
