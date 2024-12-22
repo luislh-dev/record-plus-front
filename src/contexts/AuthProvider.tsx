@@ -30,8 +30,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             }
           });
         } catch {
-          throw new Error('Error al decodificar el token');
           localStorage.removeItem('token');
+          throw new Error('Error al decodificar el token');
         }
       }
       setIsLoading(false);
