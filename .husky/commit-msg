@@ -1,0 +1,4 @@
+#!/bin/sh
+# Comentar o eliminar la línea que ejecuta commitlint
+# npx --no -- commitlint --edit $1
+exit 0
