@@ -24,5 +24,7 @@ export function useCreateRequeridPerson() {
     }
   };
 
-  return { isCreating, error, handleCreate };
+  const isSuccess = !isCreating && !error;
+
+  return { isCreating, error, handleCreate, isSuccess };
 }
