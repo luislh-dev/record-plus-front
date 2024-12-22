@@ -46,6 +46,7 @@ export const useSearchPerson = (config?: UseSearchPersonConfig): UseSearchPerson
 
   // Efecto para manejar la limpieza de resultados cuando el input está vacío o incompleto
   useEffect(() => {
+    // Limpiamos los resultados si el documento está vacío o incompleto
     if (!documentNumber || isIncompleteDocument(documentNumber, documentType)) {
       setSearchResult(null);
       setError(null);
