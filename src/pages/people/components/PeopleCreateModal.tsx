@@ -40,7 +40,7 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
   const {
     control,
     handleSubmit,
-    setValue,
+    reset,
     formState: { errors, isValid }
   } = useForm<PeopleCreateRequiredValues>({
     resolver: zodResolver(peopleCreateRequiredSchema),
@@ -50,14 +50,19 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
   useEffect(() => {
     if (personData) {
       const documentID = personData.documentType === DNI_NAME ? DNI_ID : CE_ID;
-      setValue('name', personData.name);
-      setValue('paternalSurname', personData.fatherLastName);
-      setValue('maternalSurname', personData.motherLastName);
-      setValue('typeDocumentId', documentID);
-      setValue('documentNumber', personData.documentNumber);
-      setValue('birthdate', new Date(getPeruDateTime()));
+      // Reseteamos con los nuevos valores
+      reset({
+        name: personData.name,
+        paternalSurname: personData.fatherLastName,
+        maternalSurname: personData.motherLastName,
+        typeDocumentId: documentID,
+        documentNumber: personData.documentNumber,
+        birthdate: new Date(getPeruDateTime()),
+        sexTypeId: undefined, // Resetear el género
+        phone: '' // Resetear el teléfono
+      });
     }
-  }, [personData, setValue]);
+  }, [personData, reset]);
 
   const dataSource = personData.dataSource?.toUpperCase() || 'RENIEC';
 
@@ -69,11 +74,16 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
     }
   };
 
+  const onCloseModal = () => {
+    reset();
+    onClose();
+  };
+
   return (
     <>
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={onCloseModal}
         isDismissable={false}
         size="2xl"
         aria-label="Modal de creación de persona"
@@ -193,7 +203,7 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
                 </div>
               </ModalBody>
               <ModalFooter>
-                <Button type="button" color="danger" variant="flat" onPress={onClose}>
+                <Button type="button" color="danger" variant="flat" onPress={onCloseModal}>
                   Cancelar
                 </Button>
 
