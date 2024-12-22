@@ -61,11 +61,7 @@ export const ManagementForm = () => {
   const { state } = useStates();
 
   const onSubmit = (data: UserManagementCreateValues) => {
-    try {
-      handleCreate(data);
-    } catch (error) {
-      console.error('Error al crear usuario:', error);
-    }
+    handleCreate(data);
   };
 
   useEffect(() => {
@@ -247,12 +243,7 @@ export const ManagementForm = () => {
               </div>
 
               <div className="col-span-2 flex justify-end gap-2">
-                <Button
-                  onPress={() => console.log(watch())} // para debuggear
-                  type="submit"
-                  color="primary"
-                  isLoading={isSubmitting}
-                >
+                <Button type="submit" color="primary" isLoading={isSubmitting}>
                   Guardar
                 </Button>
               </div>

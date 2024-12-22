@@ -30,8 +30,8 @@ export function useHospitalDelete() {
     try {
       // Usar mutateAsync en lugar de mutate para esperar la respuesta
       await mutation.mutateAsync(modalState.hospitalId);
-    } catch (error) {
-      console.error('Error al eliminar hospital:', error);
+    } catch {
+      throw new Error('Error al eliminar el hospital');
     }
   }, [modalState.hospitalId, mutation]);
 

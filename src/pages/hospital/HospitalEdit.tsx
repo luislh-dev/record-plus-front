@@ -1,10 +1,10 @@
-import { Button } from "@nextui-org/react";
-import { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useHospitalUpdate } from "./hooks/useHospitalUpdate";
-import { useHospitalGetBy } from "./hooks/useHospitalGetBy";
-import { HospitalForm } from "./components/HospitalForm";
-import { HospitalCreateValues } from "./models/hospitalCreateSchema";
+import { Button } from '@nextui-org/react';
+import { useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { HospitalForm } from './components/HospitalForm';
+import { useHospitalGetBy } from './hooks/useHospitalGetBy';
+import { useHospitalUpdate } from './hooks/useHospitalUpdate';
+import { HospitalCreateValues } from './models/hospitalCreateSchema';
 
 const HospitalEdit = () => {
   const navigate = useNavigate();
@@ -12,16 +12,12 @@ const HospitalEdit = () => {
 
   const {
     getById,
-    getByIdState: {
-      isLoading: isLoadingHospital,
-      data: hospital,
-      error: getError,
-    },
+    getByIdState: { isLoading: isLoadingHospital, data: hospital, error: getError }
   } = useHospitalGetBy();
 
   const {
     handleUpdate,
-    updateState: { isLoading: isUpdating, error: updateError },
+    updateState: { isLoading: isUpdating, error: updateError }
   } = useHospitalUpdate();
 
   useEffect(() => {
@@ -32,12 +28,8 @@ const HospitalEdit = () => {
 
   const onSubmit = async (data: HospitalCreateValues) => {
     if (!id) return;
-    try {
-      await handleUpdate(parseInt(id), data);
-      navigate(-1);
-    } catch (error) {
-      console.error("Error updating hospital:", error);
-    }
+    await handleUpdate(parseInt(id), data);
+    navigate(-1);
   };
 
   if (isLoadingHospital) {
@@ -60,12 +52,12 @@ const HospitalEdit = () => {
         onSubmit={onSubmit}
         isSubmitting={isUpdating}
         defaultValues={{
-          name: hospital?.name || "",
-          address: hospital?.address || "",
-          phone: hospital?.phone || "",
-          email: hospital?.email || "",
-          ruc: hospital?.ruc || "",
-          stateId: hospital?.stateId || 0,
+          name: hospital?.name || '',
+          address: hospital?.address || '',
+          phone: hospital?.phone || '',
+          email: hospital?.email || '',
+          ruc: hospital?.ruc || '',
+          stateId: hospital?.stateId || 0
         }}
         apiErrors={updateError}
       />

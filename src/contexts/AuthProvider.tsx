@@ -1,19 +1,13 @@
-import React, { createContext, useReducer, ReactNode, useEffect } from "react";
-import {
-  authReducer,
-  initialState,
-  AuthState,
-  AuthAction,
-} from "../reducers/authReducer";
-import { getStoredToken, decodeToken } from "../utils/tokenUtils";
-import { useState } from "react";
+import React, { createContext, ReactNode, useEffect, useReducer, useState } from 'react';
+import { AuthAction, authReducer, AuthState, initialState } from '../reducers/authReducer';
+import { decodeToken, getStoredToken } from '../utils/tokenUtils';
 
 const AuthContext = createContext<{
   state: AuthState;
   dispatch: React.Dispatch<AuthAction>;
 }>({
   state: initialState,
-  dispatch: () => null,
+  dispatch: () => null
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -28,16 +22,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
           const decoded = decodeToken(token);
           dispatch({
-            type: "LOGIN",
+            type: 'LOGIN',
             payload: {
               token,
               username: decoded.sub,
-              authorities: decoded.authorities,
-            },
+              authorities: decoded.authorities
+            }
           });
-        } catch (error) {
-          console.error("[AuthProvider] Token initialization failed:", error);
-          localStorage.removeItem("token");
+        } catch {
+          throw new Error('Error al decodificar el token');
+          localStorage.removeItem('token');
         }
       }
       setIsLoading(false);
@@ -50,11 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return null; // or a loading spinner
   }
 
-  return (
-    <AuthContext.Provider value={{ state, dispatch }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ state, dispatch }}>{children}</AuthContext.Provider>;
 };
 
 export { AuthContext };
