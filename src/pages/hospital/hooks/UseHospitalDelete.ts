@@ -1,6 +1,6 @@
-import { useCallback, useState } from "react";
-import { deleteHospital } from "../service/hospitalService";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useCallback, useState } from 'react';
+import { deleteHospital } from '../service/hospitalService';
 
 interface ModalState {
   isOpen: boolean;
@@ -12,16 +12,16 @@ export function useHospitalDelete() {
 
   const [modalState, setModalState] = useState<ModalState>({
     isOpen: false,
-    hospitalId: null,
+    hospitalId: null
   });
 
   const mutation = useMutation({
     mutationFn: (hospitalId: number) => deleteHospital(hospitalId),
     onSuccess: async () => {
       // Esperar a que se complete la invalidación antes de cerrar el modal
-      await queryClient.invalidateQueries({ queryKey: ["hospitals"] });
+      await queryClient.invalidateQueries({ queryKey: ['hospitals'] });
       setModalState({ isOpen: false, hospitalId: null });
-    },
+    }
   });
 
   const handleDelete = useCallback(async () => {
@@ -31,7 +31,7 @@ export function useHospitalDelete() {
       // Usar mutateAsync en lugar de mutate para esperar la respuesta
       await mutation.mutateAsync(modalState.hospitalId);
     } catch (error) {
-      console.error("Error al eliminar hospital:", error);
+      console.error('Error al eliminar hospital:', error);
     }
   }, [modalState.hospitalId, mutation]);
 
@@ -43,16 +43,16 @@ export function useHospitalDelete() {
   const closeDeleteModal = useCallback(() => {
     setModalState({ isOpen: false, hospitalId: null });
     mutation.reset(); // resetear estado de la mutación
-  }, []);
+  }, [mutation]);
 
   return {
     deleteState: {
       isLoading: mutation.isPending,
-      error: mutation.error ? "Error al eliminar el hospital" : null,
+      error: mutation.error ? 'Error al eliminar el hospital' : null
     },
     isOpen: modalState.isOpen,
     handleDelete,
     openDeleteModal,
-    closeDeleteModal,
+    closeDeleteModal
   };
 }
