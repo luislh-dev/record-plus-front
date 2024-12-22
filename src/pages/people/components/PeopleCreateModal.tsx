@@ -1,8 +1,9 @@
 import { CustomInput } from "@/components/CustomInput";
 import { CustomSelect } from "@/components/CustomSelect";
 import { Typography } from "@/components/Typography";
-import { useDocumentType } from "@/hooks/documenttype/useDocumentType";
+import { CE_ID, DNI_ID, DNI_NAME } from "@/constants/documentType";
 import { useGender } from "@/hooks/gender/useGender";
+import { allowOnlyNumbers } from "@/utils/allowOnlyNumbers";
 import { getPeruDateTime, parsePeruDate } from "@/utils/peruDateTime";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { parseDate } from "@internationalized/date";
@@ -18,6 +19,7 @@ import {
 } from "@nextui-org/react";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useCreateRequeridPerson } from "../hooks/useCreatePerson";
 import {
   peopleCreateRequiredSchema,
   PeopleCreateRequiredValues,
@@ -28,27 +30,18 @@ interface Props {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: (data: PeopleCreateRequiredValues) => void;
-  documentNumber: string;
   personData: MinimalPeopleResponseDto;
-  isLoading?: boolean;
 }
 
-export const PeopleCreateModal = ({
-  isOpen,
-  onClose,
-  onConfirm,
-  documentNumber,
-  personData,
-  isLoading = false,
-}: Props) => {
-  const { documentType } = useDocumentType();
+export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Props) => {
+  const { isCreating: isLoading, handleCreate, isSuccess } = useCreateRequeridPerson();
   const { gender } = useGender();
 
   const {
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isValid },
   } = useForm<PeopleCreateRequiredValues>({
     resolver: zodResolver(peopleCreateRequiredSchema),
     mode: "onChange",
@@ -56,16 +49,25 @@ export const PeopleCreateModal = ({
 
   useEffect(() => {
     if (personData) {
+      const documentID = personData.documentType === DNI_NAME ? DNI_ID : CE_ID;
       setValue("name", personData.name);
       setValue("paternalSurname", personData.fatherLastName);
       setValue("maternalSurname", personData.motherLastName);
-      setValue("typeDocumentId", 1);
-      setValue("documentNumber", documentNumber);
+      setValue("typeDocumentId", documentID);
+      setValue("documentNumber", personData.documentNumber);
       setValue("birthdate", new Date(getPeruDateTime()));
     }
-  }, [personData, documentNumber, setValue]);
+  }, [personData, setValue]);
 
   const dataSource = personData.dataSource?.toUpperCase() || "RENIEC";
+
+  const onSubmit = async (data: PeopleCreateRequiredValues) => {
+    await handleCreate(data);
+
+    if (isSuccess) {
+      onConfirm(data);
+    }
+  };
 
   return (
     <>
@@ -78,7 +80,7 @@ export const PeopleCreateModal = ({
       >
         <ModalContent aria-label="Contenido del modal de creación de persona">
           <>
-            <form onSubmit={handleSubmit(onConfirm)}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <ModalHeader className="flex flex-col" aria-label="Cabezera de la modal de creación">
                 <Typography as="h3" variant="subsection">
                   Confirmar datos de {dataSource}
@@ -106,30 +108,28 @@ export const PeopleCreateModal = ({
                       {personData.fatherLastName} {personData.motherLastName}
                     </Typography>
                   </div>
+                  <div>
+                    <Typography variant="data-title" color="muted">
+                      Tipo de documento
+                    </Typography>
+                    <Typography variant="body-small" className="font-medium">
+                      {personData.documentType}
+                    </Typography>
+                  </div>
+                  <div>
+                    <Typography variant="data-title" color="muted">
+                      Número de documento
+                    </Typography>
+                    <Typography variant="body-small" className="font-medium">
+                      {personData.documentNumber}
+                    </Typography>
+                  </div>
                 </div>
                 <Alert
                   variant="bordered"
                   description="Utiliza los datos recuperados para completar el formulario y registrar a la persona en el sistema de manera precisa."
                 />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <CustomSelect
-                    variant="bordered"
-                    name="typeDocumentId"
-                    control={control}
-                    options={documentType}
-                    label="Tipo de documento"
-                    isRequired
-                  />
-                  <CustomInput
-                    name="documentNumber"
-                    variant="bordered"
-                    control={control}
-                    type="text"
-                    label="Número de documento"
-                    isRequired
-                    error={errors.documentNumber}
-                    placeholder="Ingese el número de documento"
-                  />
                   <Controller
                     control={control}
                     name="birthdate"
@@ -174,7 +174,8 @@ export const PeopleCreateModal = ({
                     name="phone"
                     variant="bordered"
                     control={control}
-                    type="text"
+                    type="tel"
+                    onInput={allowOnlyNumbers}
                     label="Teléfono"
                     error={errors.phone}
                     placeholder="Ingrese el teléfono"
@@ -186,7 +187,8 @@ export const PeopleCreateModal = ({
                 <Button type="button" color="danger" variant="flat" onPress={onClose}>
                   Cancelar
                 </Button>
-                <Button type="submit" color="primary" isLoading={isLoading}>
+
+                <Button type="submit" color="primary" isLoading={isLoading} isDisabled={!isValid}>
                   Confirmar
                 </Button>
               </ModalFooter>
