@@ -75,7 +75,6 @@ export const ManagementForm = () => {
   }, [state, setValue]);
 
   const foundPerson = (person: MinimalPeopleResponseDto | null) => {
-    console.log('Persona encontrada: s', person);
     // Si no se encuentra a la persona, se limpian los campos
     if (person === null && watch('personDNI')) {
       // Solo hace reset si había datos previos
