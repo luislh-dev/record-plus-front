@@ -1,28 +1,17 @@
 import { DocumentTypeSelect } from '@/components/DocumentTypeSelect';
 import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
 import { Input } from '@nextui-org/react';
-import { FC, useEffect } from 'react';
+import { FC } from 'react';
 import { useSearchPerson } from '../stores/useSearchPerson';
 import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 export const PersonSearch: FC<{
   onPersonFound: (person: MinimalPeopleResponseDto | null) => void;
 }> = ({ onPersonFound }) => {
-  const {
-    documentNumber,
-    setDocumentType,
-    isSearching,
-    searchResult,
-    setDocumentNumber,
-    documentType
-  } = useSearchPerson();
-
-  useEffect(() => {
-    // Verifica si se ha encontrado a la persona y la envía al componente padre
-    if (searchResult !== undefined) {
-      onPersonFound(searchResult);
-    }
-  }, [onPersonFound, searchResult]);
+  const { documentNumber, setDocumentType, isSearching, setDocumentNumber, documentType } =
+    useSearchPerson({
+      onPersonFound
+    });
 
   return (
     <div className="flex w-full gap-4">

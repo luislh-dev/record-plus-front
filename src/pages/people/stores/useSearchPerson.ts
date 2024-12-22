@@ -1,8 +1,8 @@
-import { CE_ID, DNI_ID } from "@/constants/documentType";
-import { ApiServiceError } from "@/services/api/ApiErrorHandler";
-import { useEffect, useState } from "react";
-import { getPersonNameByDocument } from "../services/peopleService";
-import { MinimalPeopleResponseDto } from "../types/MinimalPeopleResponseDto";
+import { CE_ID, DNI_ID } from '@/constants/documentType';
+import { ApiServiceError } from '@/services/api/ApiErrorHandler';
+import { useEffect, useState } from 'react';
+import { getPersonNameByDocument } from '../services/peopleService';
+import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 interface UseSearchPersonProps {
   documentNumber: string;
@@ -16,60 +16,117 @@ interface UseSearchPersonProps {
   clearSearch: () => void;
 }
 
-export const useSearchPerson = (): UseSearchPersonProps => {
-  const [documentNumber, setDocumentNumber] = useState("");
+interface UseSearchPersonConfig {
+  onPersonFound?: (person: MinimalPeopleResponseDto | null) => void;
+}
+
+export const useSearchPerson = (config?: UseSearchPersonConfig): UseSearchPersonProps => {
+  const [documentNumber, setDocumentNumber] = useState('');
   const [documentType, setDocumentType] = useState(DNI_ID);
   const [searchResult, setSearchResult] = useState<MinimalPeopleResponseDto | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [shouldSearch, setShouldSearch] = useState(false);
 
+  // Función para validar el documento según el tipo
+  const isValidDocument = (docNumber: string, docType: number) => {
+    if (!docNumber) return false;
+    if (docType === DNI_ID && docNumber.length === 8) return true;
+    if (docType === CE_ID && docNumber.length === 9) return true;
+    return false;
+  };
+
+  // Función para verificar si el documento está en proceso de ser completado
+  const isIncompleteDocument = (docNumber: string, docType: number) => {
+    if (!docNumber) return false;
+    if (docType === DNI_ID && docNumber.length < 8) return true;
+    if (docType === CE_ID && docNumber.length < 9) return true;
+    return false;
+  };
+
+  // Efecto para manejar la limpieza de resultados cuando el input está vacío o incompleto
   useEffect(() => {
-    // Verificar si hay un resultado
-    if (searchResult) {
-      clearSearch();
-    }
-    // Verificar si el tipo de documento es DNI
-    if (documentType === DNI_ID) {
-      // Verificar si la longitud del documento es igual a 8
-      if (documentNumber.length === 8) {
-        // Buscar a la persona por DNI
-        searchPerson(documentNumber, documentType);
-      }
-    }
-
-    // Verificar si el tipo de documento es CE
-    if (documentType === CE_ID) {
-      // Verificar si la longitud del documento es mayor o igual a 12
-      if (documentNumber.length === 9) {
-        // Buscar a la persona por CE
-        searchPerson(documentNumber, documentType);
-      }
-    }
-  }, [documentNumber, documentType]);
-
-  const searchPerson = async (documentNumber: string, documentType: number) => {
-    setIsSearching(true);
-
-    try {
-      const result = await getPersonNameByDocument(documentType, documentNumber);
-      setSearchResult(result);
-      setError(null);
-    } catch (err) {
+    if (!documentNumber || isIncompleteDocument(documentNumber, documentType)) {
       setSearchResult(null);
+      setError(null);
+      config?.onPersonFound?.(null);
+    }
+  }, [documentNumber, documentType, config]);
 
-      if (err instanceof ApiServiceError) {
-        setError(err.message);
-      } else {
-        throw err;
+  // Efecto para realizar la búsqueda
+  useEffect(() => {
+    if (!shouldSearch) return;
+
+    const handleSearch = async () => {
+      if (!isValidDocument(documentNumber, documentType)) {
+        setShouldSearch(false);
+        return;
       }
-    } finally {
-      setIsSearching(false);
+
+      setIsSearching(true);
+      try {
+        const result = await getPersonNameByDocument(documentType, documentNumber);
+        setSearchResult(result);
+        setError(null);
+        config?.onPersonFound?.(result);
+      } catch (err) {
+        setSearchResult(null);
+        if (err instanceof ApiServiceError) {
+          setError(err.message);
+        } else {
+          throw err;
+        }
+      } finally {
+        setIsSearching(false);
+        setShouldSearch(false);
+      }
+    };
+
+    handleSearch();
+  }, [documentNumber, documentType, shouldSearch, config]);
+
+  // Función para manejar cambios en el número de documento
+  const handleDocumentNumberChange = (value: string) => {
+    setDocumentNumber(value);
+
+    // Si el valor está vacío o es inválido, no activamos la búsqueda
+    if (!value || !isValidDocument(value, documentType)) {
+      setShouldSearch(false);
+      return;
+    }
+
+    // Solo activamos la búsqueda si el documento es válido
+    if (isValidDocument(value, documentType)) {
+      setShouldSearch(true);
     }
   };
 
-  const clearSearch = () => {
+  // Función para manejar cambios en el tipo de documento
+  const handleDocumentTypeChange = (value: number) => {
+    setDocumentType(value);
+    // Limpiamos los resultados cuando cambia el tipo de documento
     setSearchResult(null);
     setError(null);
+    config?.onPersonFound?.(null);
+
+    // Solo activamos la búsqueda si el documento actual es válido con el nuevo tipo
+    if (isValidDocument(documentNumber, value)) {
+      setShouldSearch(true);
+    }
+  };
+
+  const searchPerson = (docNumber: string, docType: number) => {
+    setDocumentNumber(docNumber);
+    setDocumentType(docType);
+    setShouldSearch(true);
+  };
+
+  const clearSearch = () => {
+    setDocumentNumber('');
+    setSearchResult(null);
+    setError(null);
+    setShouldSearch(false);
+    config?.onPersonFound?.(null);
   };
 
   return {
@@ -78,9 +135,9 @@ export const useSearchPerson = (): UseSearchPersonProps => {
     searchResult,
     isSearching,
     error,
-    setDocumentNumber,
-    setDocumentType,
+    setDocumentNumber: handleDocumentNumberChange,
+    setDocumentType: handleDocumentTypeChange,
     searchPerson,
-    clearSearch,
+    clearSearch
   };
 };
