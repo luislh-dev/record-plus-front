@@ -22,7 +22,7 @@ export const PersonSearch: FC<{
     if (searchResult !== undefined) {
       onPersonFound(searchResult);
     }
-  }, [searchResult]);
+  }, [onPersonFound, searchResult]);
 
   return (
     <div className="flex w-full gap-4">
