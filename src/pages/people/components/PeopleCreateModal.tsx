@@ -58,8 +58,8 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
         typeDocumentId: documentID,
         documentNumber: personData.documentNumber,
         birthdate: new Date(getPeruDateTime()),
-        sexTypeId: undefined, // Resetear el género
-        phone: '' // Resetear el teléfono
+        sexTypeId: undefined,
+        phone: ''
       });
     }
   }, [personData, reset]);
