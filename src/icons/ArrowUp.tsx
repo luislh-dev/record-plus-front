@@ -1,4 +1,4 @@
-import { iconProps } from "./iconProps";
+import { iconProps } from './iconProps';
 
 export const ArrowUp = (props: iconProps) => (
   <svg
@@ -6,7 +6,7 @@ export const ArrowUp = (props: iconProps) => (
     height={props.size || props.height || 20}
     viewBox="0 -960 960 960"
     width={props.size || props.width || 20}
-    fill={props.fill || "#64748b"}
+    fill={props.fill || '#64748b'}
     strokeWidth={props.strokeWidth || 2}
     {...props}
   >

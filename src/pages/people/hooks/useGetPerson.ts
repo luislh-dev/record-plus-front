@@ -1,8 +1,8 @@
-import { ApiServiceError } from "@/services/api/ApiErrorHandler";
-import { ApiError } from "@/types/errros/ApiError";
-import { useState } from "react";
-import { getPersonNameByDocument } from "../services/peopleService";
-import { MinimalPeopleResponseDto } from "../types/MinimalPeopleResponseDto";
+import { ApiServiceError } from '@/services/api/ApiErrorHandler';
+import { ApiError } from '@/types/errros/ApiError';
+import { useState } from 'react';
+import { getPersonNameByDocument } from '../services/peopleService';
+import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 export function useGetPersonByDni() {
   const [isLoading, setLoading] = useState(false);

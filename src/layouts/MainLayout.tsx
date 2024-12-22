@@ -1,7 +1,7 @@
-import { Link as RouterLink, Outlet, useLocation } from "react-router-dom";
-import { useAuth } from "../contexts/useAuthContext";
-import { useAuthLogin } from "../hooks/auth/useAuthLogin";
-import { menuItems } from "@/constants/menuItems";
+import { Link as RouterLink, Outlet, useLocation } from 'react-router-dom';
+import { useAuth } from '../contexts/useAuthContext';
+import { useAuthLogin } from '../hooks/auth/useAuthLogin';
+import { menuItems } from '@/constants/menuItems';
 
 export const MainLayout = () => {
   const { state } = useAuth();
@@ -9,7 +9,7 @@ export const MainLayout = () => {
   const { handleLogout } = useAuthLogin();
 
   const hasAccess = (roles: string[]) => {
-    return roles.some((role) => state.authorities.includes(role));
+    return roles.some(role => state.authorities.includes(role));
   };
 
   return (
@@ -19,15 +19,15 @@ export const MainLayout = () => {
           <div className="p-4 flex flex-col gap-2">
             <h1 className="text-xl font-bold mb-4">Record Plus</h1>
             {menuItems.map(
-              (item) =>
+              item =>
                 hasAccess(item.roles) && (
                   <RouterLink
                     key={item.path}
                     to={item.path}
                     className={`p-2 rounded ${
                       location.pathname === item.path
-                        ? "bg-primary-50 text-primary-500"
-                        : "hover:bg-gray-100"
+                        ? 'bg-primary-50 text-primary-500'
+                        : 'hover:bg-gray-100'
                     }`}
                   >
                     {item.label}

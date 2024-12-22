@@ -1,10 +1,10 @@
-import { ApiError } from "@/types/errros/ApiError";
-import { AxiosError } from "axios";
+import { ApiError } from '@/types/errros/ApiError';
+import { AxiosError } from 'axios';
 
 export class ApiServiceError extends Error {
   constructor(public error: ApiError) {
     super(error.message);
-    this.name = "ApiServiceError";
+    this.name = 'ApiServiceError';
   }
 }
 

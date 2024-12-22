@@ -1,23 +1,23 @@
-import { HospitalCreateRequest } from "@/pages/hospital/types/HospitalCreateRequest";
-import { HospitalListDTO } from "@/pages/hospital/types/HospitalListDTO";
-import { api } from "@/services/api/api";
-import { PageResponse } from "@/types/Pagination";
-import { HospitalNameListDTO } from "../types/HospitalNameListDTO";
-import { HospitalFindByNameParams, HospitalRequestParams } from "../types/HospitalRequestParams";
+import { HospitalCreateRequest } from '@/pages/hospital/types/HospitalCreateRequest';
+import { HospitalListDTO } from '@/pages/hospital/types/HospitalListDTO';
+import { api } from '@/services/api/api';
+import { PageResponse } from '@/types/Pagination';
+import { HospitalNameListDTO } from '../types/HospitalNameListDTO';
+import { HospitalFindByNameParams, HospitalRequestParams } from '../types/HospitalRequestParams';
 
 export const getHospitals = async (
-  params?: HospitalRequestParams,
+  params?: HospitalRequestParams
 ): Promise<PageResponse<HospitalListDTO>> => {
-  const response = await api.get<PageResponse<HospitalListDTO>>("/hospitals", {
-    params,
+  const response = await api.get<PageResponse<HospitalListDTO>>('/hospitals', {
+    params
   });
   return response.data;
 };
 
 export const createHospital = async (
-  hospitalData: HospitalCreateRequest,
+  hospitalData: HospitalCreateRequest
 ): Promise<HospitalCreateRequest> => {
-  const response = await api.post<HospitalCreateRequest>("/hospitals", hospitalData);
+  const response = await api.post<HospitalCreateRequest>('/hospitals', hospitalData);
   return response.data;
 };
 
@@ -36,10 +36,10 @@ export const getHospital = async (id: number): Promise<HospitalCreateRequest> =>
 };
 
 export const getHospitalsByName = async (
-  params: HospitalFindByNameParams,
+  params: HospitalFindByNameParams
 ): Promise<PageResponse<HospitalNameListDTO>> => {
-  const response = await api.get<PageResponse<HospitalNameListDTO>>("/hospitals/findByName", {
-    params,
+  const response = await api.get<PageResponse<HospitalNameListDTO>>('/hospitals/findByName', {
+    params
   });
   return response.data;
 };

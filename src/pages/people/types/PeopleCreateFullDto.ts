@@ -1,4 +1,4 @@
-import { PeopleCreateRequiredDto } from "./PeopleCreateRequiredDto";
+import { PeopleCreateRequiredDto } from './PeopleCreateRequiredDto';
 
 export interface PeopleCreateFullDto extends PeopleCreateRequiredDto {
   bloodType?: string;

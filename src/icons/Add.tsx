@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import { SVGProps } from 'react';
 
 interface AddProps extends SVGProps<SVGSVGElement> {
   size?: number;

@@ -1,6 +1,6 @@
-import { InputVariant } from "@/types/InputVariant";
-import { Select, SelectItem } from "@nextui-org/react";
-import { Control, Controller, FieldError, FieldValues, Path } from "react-hook-form";
+import { InputVariant } from '@/types/InputVariant';
+import { Select, SelectItem } from '@nextui-org/react';
+import { Control, Controller, FieldError, FieldValues, Path } from 'react-hook-form';
 
 interface Option {
   id: number;
@@ -26,7 +26,7 @@ export const CustomSelect = <T extends FieldValues>({
   error,
   isRequired = true,
   placeholder,
-  variant = "bordered",
+  variant = 'bordered'
 }: Props<T>) => {
   return (
     <div>
@@ -40,7 +40,7 @@ export const CustomSelect = <T extends FieldValues>({
               variant={variant}
               label={label}
               selectedKeys={selectedValue}
-              onSelectionChange={(keys) => {
+              onSelectionChange={keys => {
                 const selected = Array.from(keys)[0];
                 onChange(selected ? Number(selected) : null);
               }}
@@ -51,7 +51,7 @@ export const CustomSelect = <T extends FieldValues>({
               errorMessage={error?.message}
               isInvalid={!!error}
             >
-              {options.map((option) => (
+              {options.map(option => (
                 <SelectItem key={option.id.toString()} value={option.id.toString()}>
                   {option.name}
                 </SelectItem>

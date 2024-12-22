@@ -1,18 +1,12 @@
-import { FilterList } from "@/icons/FIlterList";
-import {
-  Button,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownTrigger,
-} from "@nextui-org/react";
-import { Key } from "react";
-import { ArrowUp } from "@/icons/ArrowUp";
-import { ArrowDown } from "@/icons/ArrowDown";
-import { HOSPITAL_SORTABLE_FIELDS } from "../constants/sortableFields";
-import { SortDirection } from "@/types/sorting";
-import { useSearchStore } from "../stores/searchStore";
-import { useHandleSort } from "@/hooks/useHandleSort";
+import { FilterList } from '@/icons/FIlterList';
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
+import { Key } from 'react';
+import { ArrowUp } from '@/icons/ArrowUp';
+import { ArrowDown } from '@/icons/ArrowDown';
+import { HOSPITAL_SORTABLE_FIELDS } from '../constants/sortableFields';
+import { SortDirection } from '@/types/sorting';
+import { useSearchStore } from '../stores/searchStore';
+import { useHandleSort } from '@/hooks/useHandleSort';
 
 export function DropDownSort() {
   const { sortConfig, setSortConfig } = useSearchStore();
@@ -36,7 +30,7 @@ export function DropDownSort() {
         onAction={handleAction}
         closeOnSelect={false}
       >
-        {Object.values(HOSPITAL_SORTABLE_FIELDS).map((field) => (
+        {Object.values(HOSPITAL_SORTABLE_FIELDS).map(field => (
           <DropdownItem
             key={field.field}
             textValue={field.field}

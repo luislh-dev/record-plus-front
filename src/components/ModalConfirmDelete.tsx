@@ -4,8 +4,8 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
-} from "@nextui-org/react";
+  Button
+} from '@nextui-org/react';
 
 interface ModalConfirmDeleteProps {
   isOpen: boolean;
@@ -20,9 +20,9 @@ export function ModalConfirmDelete({
   isOpen,
   onClose,
   onConfirm,
-  title = "Confirmar eliminación",
-  message = "¿Está seguro que desea eliminar este elemento?",
-  isLoading = false,
+  title = 'Confirmar eliminación',
+  message = '¿Está seguro que desea eliminar este elemento?',
+  isLoading = false
 }: ModalConfirmDeleteProps) {
   return (
     <Modal
@@ -30,11 +30,11 @@ export function ModalConfirmDelete({
       onClose={onClose}
       backdrop="blur"
       classNames={{
-        backdrop: "backdrop-opacity-20",
+        backdrop: 'backdrop-opacity-20'
       }}
     >
       <ModalContent>
-        {(onClose) => (
+        {onClose => (
           <>
             <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
             <ModalBody>

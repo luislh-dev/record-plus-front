@@ -1,8 +1,8 @@
-import { SortConfigGeneric, SortDirection } from "@/types/sorting";
-import { SortableUserFields } from "../types/UserListDTO";
-import { create } from "zustand";
-import { SEARCH_PARAMS } from "../constants/searchParams";
-import { SearchFieldKeys, UserRequestParams } from "../types/UserRequestParams";
+import { SortConfigGeneric, SortDirection } from '@/types/sorting';
+import { SortableUserFields } from '../types/UserListDTO';
+import { create } from 'zustand';
+import { SEARCH_PARAMS } from '../constants/searchParams';
+import { SearchFieldKeys, UserRequestParams } from '../types/UserRequestParams';
 
 interface SearchState {
   // Estado
@@ -27,70 +27,64 @@ interface SearchState {
 }
 
 export const useUserSearchStore = create<SearchState>((set, get) => ({
-  searchTerm: "",
-  sortConfig: { field: "username", direction: SortDirection.DESC },
+  searchTerm: '',
+  sortConfig: { field: 'username', direction: SortDirection.DESC },
   selectedState: null,
   selectedRole: null,
-  selectedSearchField: "username",
+  selectedSearchField: 'username',
   filters: { page: 0, size: 20 },
 
-  setSearchTerm: (term) =>
+  setSearchTerm: term =>
     set({
       searchTerm: term,
-      filters: { ...get().filters, page: 0 },
+      filters: { ...get().filters, page: 0 }
     }),
 
-  setSortConfig: (config) => set({ sortConfig: config }),
+  setSortConfig: config => set({ sortConfig: config }),
 
-  setSelectedState: (stateId) =>
-    set((state) => ({
+  setSelectedState: stateId =>
+    set(state => ({
       selectedState: stateId,
       filters: {
         ...state.filters,
         stateId: stateId ?? undefined,
-        page: 0,
-      },
+        page: 0
+      }
     })),
 
-  setSelectedRole: (roleId) =>
-    set((state) => ({
+  setSelectedRole: roleId =>
+    set(state => ({
       selectedRole: roleId,
       filters: {
         ...state.filters,
         roleId: roleId ?? undefined,
-        page: 0,
-      },
+        page: 0
+      }
     })),
 
-  setSelectedSearchField: (field) =>
-    set((state) => {
+  setSelectedSearchField: field =>
+    set(state => {
       // Limpiar el campo de búsqueda anterior del filtro
       const newFilters = { ...state.filters };
-      SEARCH_PARAMS.forEach((param) => {
+      SEARCH_PARAMS.forEach(param => {
         delete newFilters[param.id];
       });
 
       return {
         selectedSearchField: field,
-        filters: newFilters,
+        filters: newFilters
       };
     }),
 
-  setFilters: (filters) => set({ filters }),
+  setFilters: filters => set({ filters }),
 
-  setPage: (page) => set({ filters: { ...get().filters, page } }),
+  setPage: page => set({ filters: { ...get().filters, page } }),
 
   buildSearchParams: () => {
-    const {
-      searchTerm,
-      selectedState,
-      sortConfig,
-      selectedSearchField,
-      filters,
-    } = get();
+    const { searchTerm, selectedState, sortConfig, selectedSearchField, filters } = get();
     const params: UserRequestParams = {
       ...filters,
-      sort: `${sortConfig.field},${sortConfig.direction}`,
+      sort: `${sortConfig.field},${sortConfig.direction}`
     };
 
     if (searchTerm) {
@@ -102,5 +96,5 @@ export const useUserSearchStore = create<SearchState>((set, get) => ({
     }
 
     return params;
-  },
+  }
 }));

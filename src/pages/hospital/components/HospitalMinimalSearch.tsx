@@ -1,7 +1,7 @@
-import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
-import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
-import { FC, useState } from "react";
-import { useHospitalGetByName } from "../hooks/useHospitalGetBy";
+import { Autocomplete, AutocompleteItem } from '@nextui-org/react';
+import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
+import { FC, useState } from 'react';
+import { useHospitalGetByName } from '../hooks/useHospitalGetBy';
 
 export const HospitalMinimalSearch: FC<{
   onHospitalSelected: (hospitalId: number) => void;
@@ -14,7 +14,7 @@ export const HospitalMinimalSearch: FC<{
     hasMore: hasNextPage,
     isEnabled: isOpen,
     shouldUseLoader: false,
-    onLoadMore: fetchNextPage,
+    onLoadMore: fetchNextPage
   });
 
   return (
@@ -24,11 +24,11 @@ export const HospitalMinimalSearch: FC<{
       isLoading={isLoading}
       scrollRef={scrollerRef}
       onInputChange={setSearchTerm}
-      onSelectionChange={(item) => onHospitalSelected(parseInt(item as string))}
+      onSelectionChange={item => onHospitalSelected(parseInt(item as string))}
       variant="bordered"
       onOpenChange={setIsOpen}
     >
-      {(item) => (
+      {item => (
         <AutocompleteItem key={item.id} value={item.id}>
           {item.name}
         </AutocompleteItem>

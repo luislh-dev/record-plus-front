@@ -1,7 +1,7 @@
-import { SortConfig, SortDirection } from "@/types/sorting";
-import { HospitalRequestParams } from "../types/HospitalRequestParams";
-import { create } from "zustand";
-import { SEARCH_PARAMS } from "../constants/searchParams";
+import { SortConfig, SortDirection } from '@/types/sorting';
+import { HospitalRequestParams } from '../types/HospitalRequestParams';
+import { create } from 'zustand';
+import { SEARCH_PARAMS } from '../constants/searchParams';
 
 interface SearchState {
   // Estado
@@ -26,37 +26,37 @@ interface SearchState {
 
 export const useSearchStore = create<SearchState>((set, get) => ({
   // Estado inicial
-  searchTerm: "",
-  sortConfig: { field: "updatedAt", direction: SortDirection.DESC },
+  searchTerm: '',
+  sortConfig: { field: 'updatedAt', direction: SortDirection.DESC },
   selectedState: null,
   searchFields: [SEARCH_PARAMS[0].id],
   filters: { page: 0, size: 20 },
 
   // Acciones
-  setSearchTerm: (term) =>
+  setSearchTerm: term =>
     set({
       searchTerm: term,
-      filters: { ...get().filters, page: 0 },
+      filters: { ...get().filters, page: 0 }
     }),
 
-  setSortConfig: (config) => set({ sortConfig: config }),
+  setSortConfig: config => set({ sortConfig: config }),
 
-  setSelectedState: (stateId) =>
-    set((state) => ({
+  setSelectedState: stateId =>
+    set(state => ({
       selectedState: stateId,
       filters: {
         ...state.filters,
-        stateId: stateId ?? undefined,
-      },
+        stateId: stateId ?? undefined
+      }
     })),
 
-  setSearchFields: (fields) => set({ searchFields: fields }),
+  setSearchFields: fields => set({ searchFields: fields }),
 
-  setFilters: (filters) => set({ filters }),
+  setFilters: filters => set({ filters }),
 
-  setPage: (page) => set({ filters: { ...get().filters, page } }),
+  setPage: page => set({ filters: { ...get().filters, page } }),
 
-  setPageSize: (size) => set({ filters: { ...get().filters, size } }),
+  setPageSize: size => set({ filters: { ...get().filters, size } }),
 
   // Utilidades
   // Función para construir los parámetros de búsqueda
@@ -64,18 +64,18 @@ export const useSearchStore = create<SearchState>((set, get) => ({
     const state = get();
     const params: HospitalRequestParams = {
       ...state.filters,
-      sort: `${state.sortConfig.field},${state.sortConfig.direction}`,
+      sort: `${state.sortConfig.field},${state.sortConfig.direction}`
     };
 
     if (state.searchTerm) {
-      state.searchFields.forEach((field) => {
-        if (SEARCH_PARAMS.some((param) => param.id === field)) {
-          if (field === "id") {
+      state.searchFields.forEach(field => {
+        if (SEARCH_PARAMS.some(param => param.id === field)) {
+          if (field === 'id') {
             const numericId = parseInt(state.searchTerm);
             if (!isNaN(numericId)) {
               params.id = numericId;
             }
-          } else if (field === "ruc" || field === "name") {
+          } else if (field === 'ruc' || field === 'name') {
             params[field] = state.searchTerm;
           }
         }
@@ -83,5 +83,5 @@ export const useSearchStore = create<SearchState>((set, get) => ({
     }
 
     return params;
-  },
+  }
 }));

@@ -1,6 +1,6 @@
-import { InputVariant } from "@/types/InputVariant";
-import { Input } from "@nextui-org/react";
-import { Control, Controller, FieldError, FieldValues, Path } from "react-hook-form";
+import { InputVariant } from '@/types/InputVariant';
+import { Input } from '@nextui-org/react';
+import { Control, Controller, FieldError, FieldValues, Path } from 'react-hook-form';
 
 interface Props<T extends FieldValues> {
   name: Path<T>;
@@ -22,8 +22,8 @@ export const CustomInput = <T extends FieldValues>({
   isRequired,
   type,
   error,
-  variant = "bordered",
-  onInput,
+  variant = 'bordered',
+  onInput
 }: Props<T>) => {
   return (
     <div>
@@ -35,7 +35,7 @@ export const CustomInput = <T extends FieldValues>({
             <Input
               {...field}
               onInput={onInput}
-              value={field.value ?? ""}
+              value={field.value ?? ''}
               variant={variant}
               type={type}
               label={label}

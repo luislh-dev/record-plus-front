@@ -1,5 +1,5 @@
-import { useDocumentType } from "@/hooks/documenttype/useDocumentType";
-import { Select, SelectItem } from "@nextui-org/react";
+import { useDocumentType } from '@/hooks/documenttype/useDocumentType';
+import { Select, SelectItem } from '@nextui-org/react';
 
 export interface DocumentTypeSelectProps {
   onChange: (documentType: number) => void;
@@ -19,12 +19,12 @@ export const DocumentTypeSelect = ({ onChange, value, isDisabled }: DocumentType
       selectedKeys={[value]}
       isLoading={isLoading}
       disabled={isDisabled}
-      onSelectionChange={(keys) => {
+      onSelectionChange={keys => {
         const selected = Array.from(keys)[0];
         onChange(Number(selected));
       }}
     >
-      {documentType.map((type) => (
+      {documentType.map(type => (
         <SelectItem key={type.id} value={type.id}>
           {type.name}
         </SelectItem>

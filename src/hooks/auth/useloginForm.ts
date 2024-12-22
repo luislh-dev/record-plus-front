@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useState } from 'react';
 
 export const useLoginForm = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const resetForm = () => {
-    setUsername("");
-    setPassword("");
+    setUsername('');
+    setPassword('');
   };
 
   return {
@@ -14,6 +14,6 @@ export const useLoginForm = () => {
     password,
     setUsername,
     setPassword,
-    resetForm,
+    resetForm
   };
 };

@@ -1,15 +1,15 @@
-import { getRoles } from "@/services/rolesService";
-import { useQuery } from "@tanstack/react-query";
+import { getRoles } from '@/services/rolesService';
+import { useQuery } from '@tanstack/react-query';
 
 export const useRole = () => {
   const {
     data: roles,
     isLoading,
-    error,
+    error
   } = useQuery({
-    queryKey: ["roles"],
+    queryKey: ['roles'],
     queryFn: async () => getRoles(),
-    staleTime: 1000 * 60 * 60 * 24, // 24 horas
+    staleTime: 1000 * 60 * 60 * 24 // 24 horas
   });
 
   return { roles: roles ?? [], isLoading, error };

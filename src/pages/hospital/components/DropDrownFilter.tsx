@@ -1,5 +1,5 @@
-import { useStates } from "@/hooks/state/useState";
-import { Tune } from "@/icons/Tune";
+import { useStates } from '@/hooks/state/useState';
+import { Tune } from '@/icons/Tune';
 import {
   Button,
   Dropdown,
@@ -8,11 +8,11 @@ import {
   DropdownSection,
   DropdownTrigger,
   Radio,
-  RadioGroup,
-} from "@nextui-org/react";
-import { SEARCH_PARAMS } from "../constants/searchParams";
-import { useHospitalSearch } from "../hooks/useHospitalSearch";
-import { useSearchStore } from "../stores/searchStore";
+  RadioGroup
+} from '@nextui-org/react';
+import { SEARCH_PARAMS } from '../constants/searchParams';
+import { useHospitalSearch } from '../hooks/useHospitalSearch';
+import { useSearchStore } from '../stores/searchStore';
 
 export function DropDownFilter() {
   const { state } = useStates();
@@ -24,12 +24,12 @@ export function DropDownFilter() {
 
   const handleParamsChange = (selectedValue: string) => {
     setSearchFields([selectedValue]);
-    if (searchTerm !== "") refetch();
+    if (searchTerm !== '') refetch();
   };
 
   const handleValueChange = (selectedValue: string) => {
     // Si se selecciona "Todos", se pasa null
-    if (selectedValue === "todos") {
+    if (selectedValue === 'todos') {
       setSelectedState(null);
     }
     // Si se selecciona un estado, se pasa el ID
@@ -57,13 +57,13 @@ export function DropDownFilter() {
         closeOnSelect={false}
       >
         <DropdownSection title="Parámetro de busqueda" aria-label="Parámetros">
-          <DropdownItem textValue="Parámetros" key={"params"}>
+          <DropdownItem textValue="Parámetros" key={'params'}>
             <RadioGroup
               aria-label="Seleccionar parámetro de búsqueda"
               value={searchFields[0]}
               onValueChange={handleParamsChange}
             >
-              {SEARCH_PARAMS.map((param) => (
+              {SEARCH_PARAMS.map(param => (
                 <Radio key={param.id} value={param.id} aria-label={param.label}>
                   {param.label}
                 </Radio>
@@ -72,16 +72,16 @@ export function DropDownFilter() {
           </DropdownItem>
         </DropdownSection>
         <DropdownSection title="Estados" aria-label="Sección de estados">
-          <DropdownItem textValue="Estados" key={"estados"}>
+          <DropdownItem textValue="Estados" key={'estados'}>
             <RadioGroup
               aria-label="Seleccionar estado"
-              value={selectedState?.toString() || "todos"}
+              value={selectedState?.toString() || 'todos'}
               onValueChange={handleValueChange}
             >
               <Radio key="todos" value="todos" aria-label="Mostrar todos los estados">
                 Todos
               </Radio>
-              {state?.map((item) => (
+              {state?.map(item => (
                 <Radio key={item.id} value={item.id.toString()} aria-label={item.name}>
                   {item.name}
                 </Radio>

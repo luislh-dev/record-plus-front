@@ -1,7 +1,7 @@
 export enum SortDirection {
-  NONE = "none",
-  ASC = "asc",
-  DESC = "desc",
+  NONE = 'none',
+  ASC = 'asc',
+  DESC = 'desc'
 }
 
 export interface SortConfig {

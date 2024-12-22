@@ -1,4 +1,4 @@
-import { PageRequest } from "@/types/page/PageRequest";
+import { PageRequest } from '@/types/page/PageRequest';
 
 export interface UserRequestParams extends PageRequest {
   username?: string;
@@ -9,4 +9,4 @@ export interface UserRequestParams extends PageRequest {
 }
 
 // tipo de datos de los campos de búsqueda
-export type SearchFieldKeys = "username" | "dni" | "hospitalName";
+export type SearchFieldKeys = 'username' | 'dni' | 'hospitalName';

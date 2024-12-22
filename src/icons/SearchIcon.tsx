@@ -1,4 +1,4 @@
-import { iconProps } from "./iconProps";
+import { iconProps } from './iconProps';
 
 export const SearchIcon = ({
   size = 24,

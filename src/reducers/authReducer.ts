@@ -12,7 +12,7 @@ export const initialState: AuthState = {
   authorities: []
 };
 
-export type AuthAction = 
+export type AuthAction =
   | { type: 'LOGIN'; payload: { token: string; username: string; authorities: string[] } }
   | { type: 'LOGOUT' };
 

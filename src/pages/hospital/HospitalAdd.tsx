@@ -1,14 +1,14 @@
-import { Button } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
-import { HospitalForm } from "./components/HospitalForm";
-import { useHospitalCreate } from "./hooks/useHospitalCreate";
+import { Button } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
+import { HospitalForm } from './components/HospitalForm';
+import { useHospitalCreate } from './hooks/useHospitalCreate';
 
 const HospitalAdd = () => {
   const navigate = useNavigate();
 
   const {
     handleCreate,
-    createState: { isLoading, error },
+    createState: { isLoading, error }
   } = useHospitalCreate();
 
   return (

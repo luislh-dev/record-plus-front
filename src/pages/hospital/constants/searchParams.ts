@@ -1,6 +1,6 @@
-import { SearchParam } from "@/types/SearchParam";
+import { SearchParam } from '@/types/SearchParam';
 
 export const SEARCH_PARAMS: SearchParam[] = [
-  { id: "name", label: "Nombre" },
-  { id: "ruc", label: "RUC" },
+  { id: 'name', label: 'Nombre' },
+  { id: 'ruc', label: 'RUC' }
 ];

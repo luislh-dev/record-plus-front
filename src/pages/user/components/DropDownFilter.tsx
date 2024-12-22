@@ -1,6 +1,6 @@
-import { useRole } from "@/hooks/role/useRole";
-import { useStates } from "@/hooks/state/useState";
-import { Tune } from "@/icons/Tune";
+import { useRole } from '@/hooks/role/useRole';
+import { useStates } from '@/hooks/state/useState';
+import { Tune } from '@/icons/Tune';
 import {
   Button,
   Dropdown,
@@ -9,12 +9,12 @@ import {
   DropdownSection,
   DropdownTrigger,
   Radio,
-  RadioGroup,
-} from "@nextui-org/react";
-import { SEARCH_PARAMS } from "../constants/searchParams";
-import { useUserSearch } from "../hooks/useUserSearch";
-import { useUserSearchStore } from "../stores/searchStore";
-import { SearchFieldKeys } from "../types/UserRequestParams";
+  RadioGroup
+} from '@nextui-org/react';
+import { SEARCH_PARAMS } from '../constants/searchParams';
+import { useUserSearch } from '../hooks/useUserSearch';
+import { useUserSearchStore } from '../stores/searchStore';
+import { SearchFieldKeys } from '../types/UserRequestParams';
 
 export function DropDownFilter() {
   const { state } = useStates();
@@ -27,13 +27,13 @@ export function DropDownFilter() {
     setSelectedRole,
     selectedSearchField,
     setSelectedSearchField,
-    searchTerm,
+    searchTerm
   } = useUserSearchStore();
 
   const { refetch } = useUserSearch();
 
   const handleStateChange = (selectedValue: string) => {
-    if (selectedValue === "all") {
+    if (selectedValue === 'all') {
       setSelectedState(null);
     } else {
       setSelectedState(parseInt(selectedValue));
@@ -41,7 +41,7 @@ export function DropDownFilter() {
   };
 
   const handleRoleChange = (selectedValue: string) => {
-    if (selectedValue === "all") {
+    if (selectedValue === 'all') {
       setSelectedRole(null);
     } else {
       setSelectedRole(parseInt(selectedValue));
@@ -50,7 +50,7 @@ export function DropDownFilter() {
 
   const handleSearchParamChange = (selectedValue: string) => {
     setSelectedSearchField(selectedValue as SearchFieldKeys);
-    if (searchTerm !== "") refetch();
+    if (searchTerm !== '') refetch();
   };
 
   return (
@@ -72,13 +72,13 @@ export function DropDownFilter() {
         closeOnSelect={false}
       >
         <DropdownSection title="Parámetro de busqueda" aria-label="Parámetros">
-          <DropdownItem textValue="Parámetros" key={"Parámetros"}>
+          <DropdownItem textValue="Parámetros" key={'Parámetros'}>
             <RadioGroup
               aria-label="Seleccionar un parámetro de busqueda"
               value={selectedSearchField}
               onValueChange={handleSearchParamChange}
             >
-              {SEARCH_PARAMS.map((param) => (
+              {SEARCH_PARAMS.map(param => (
                 <Radio
                   key={param.id}
                   value={param.id}
@@ -91,16 +91,16 @@ export function DropDownFilter() {
           </DropdownItem>
         </DropdownSection>
         <DropdownSection title="Roles" aria-label="Sección de roles">
-          <DropdownItem textValue="Roles" key={"Roles"}>
+          <DropdownItem textValue="Roles" key={'Roles'}>
             <RadioGroup
               aria-label="Selecionar un rol"
-              value={selectedRole?.toString() || "all"}
+              value={selectedRole?.toString() || 'all'}
               onValueChange={handleRoleChange}
             >
               <Radio key="all" value="all" aria-label="Mostrar todos los roles">
                 Todos
               </Radio>
-              {roles.map((r) => (
+              {roles.map(r => (
                 <Radio
                   key={r.id}
                   value={r.id.toString()}
@@ -113,16 +113,16 @@ export function DropDownFilter() {
           </DropdownItem>
         </DropdownSection>
         <DropdownSection title="Estados" aria-label="Sección de estados">
-          <DropdownItem textValue="Estados" key={"Estados"}>
+          <DropdownItem textValue="Estados" key={'Estados'}>
             <RadioGroup
               aria-label="Seleccionar un estado"
-              value={selectedState?.toString() || "all"}
+              value={selectedState?.toString() || 'all'}
               onValueChange={handleStateChange}
             >
               <Radio key="all" value="all" aria-label="Mostrar todos los estados.">
                 Todos
               </Radio>
-              {state.map((s) => (
+              {state.map(s => (
                 <Radio
                   key={s.id}
                   value={s.id.toString()}

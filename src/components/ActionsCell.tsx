@@ -1,6 +1,6 @@
-import { Tooltip } from "@nextui-org/react";
-import { EditIcon } from "@/icons/EditIcon";
-import { DeleteIcon } from "@/icons/DeleteIcon";
+import { Tooltip } from '@nextui-org/react';
+import { EditIcon } from '@/icons/EditIcon';
+import { DeleteIcon } from '@/icons/DeleteIcon';
 
 interface ActionsCellProps {
   state: string;
@@ -9,12 +9,7 @@ interface ActionsCellProps {
   inactiveStates: string[];
 }
 
-export function ActionsCell({
-  state,
-  onEdit,
-  onDelete,
-  inactiveStates,
-}: ActionsCellProps) {
+export function ActionsCell({ state, onEdit, onDelete, inactiveStates }: ActionsCellProps) {
   const isInactive = inactiveStates.includes(state);
 
   return (
@@ -31,8 +26,8 @@ export function ActionsCell({
         <span
           className={`text-lg transition-all duration-200 ${
             isInactive
-              ? "text-danger/40 pointer-events-none cursor-not-allowed opacity-70"
-              : "text-danger cursor-pointer active:opacity-50 hover:opacity-80"
+              ? 'text-danger/40 pointer-events-none cursor-not-allowed opacity-70'
+              : 'text-danger cursor-pointer active:opacity-50 hover:opacity-80'
           }`}
           onClick={isInactive ? undefined : onDelete}
         >

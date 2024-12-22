@@ -1,17 +1,17 @@
-import { GenericTable } from "@/components/GenericTable";
-import { HospitalListDTO } from "../types/HospitalListDTO";
-import { Align } from "@/constants/align";
-import { statusColorMap } from "@/constants/statusColorMap";
-import { Chip } from "@nextui-org/react";
-import { useNavigate } from "react-router-dom";
-import { useSearchStore } from "../stores/searchStore";
-import { useHandleSort } from "@/hooks/useHandleSort";
-import { TableColumn } from "@/types/TableColumn";
-import { ModalConfirmDelete } from "@/components/ModalConfirmDelete";
-import { useHospitalDelete } from "../hooks/UseHospitalDelete";
-import { useHospitalSearch } from "../hooks/useHospitalSearch";
-import { ActionsCell } from "@/components/ActionsCell";
-import { State } from "@/constants/state";
+import { GenericTable } from '@/components/GenericTable';
+import { HospitalListDTO } from '../types/HospitalListDTO';
+import { Align } from '@/constants/align';
+import { statusColorMap } from '@/constants/statusColorMap';
+import { Chip } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
+import { useSearchStore } from '../stores/searchStore';
+import { useHandleSort } from '@/hooks/useHandleSort';
+import { TableColumn } from '@/types/TableColumn';
+import { ModalConfirmDelete } from '@/components/ModalConfirmDelete';
+import { useHospitalDelete } from '../hooks/UseHospitalDelete';
+import { useHospitalSearch } from '../hooks/useHospitalSearch';
+import { ActionsCell } from '@/components/ActionsCell';
+import { State } from '@/constants/state';
 
 export const HospitalList = () => {
   const navigate = useNavigate();
@@ -26,48 +26,48 @@ export const HospitalList = () => {
     isOpen,
     closeDeleteModal,
     handleDelete,
-    openDeleteModal,
+    openDeleteModal
   } = useHospitalDelete();
 
   const columns: TableColumn<HospitalListDTO>[] = [
     {
-      name: "Nombre",
-      key: "name",
-      sortable: true,
+      name: 'Nombre',
+      key: 'name',
+      sortable: true
     },
     {
-      name: "Teléfono",
-      key: "phone",
-      sortable: true,
+      name: 'Teléfono',
+      key: 'phone',
+      sortable: true
     },
     {
-      name: "Correo electrónico",
-      key: "email",
-      sortable: true,
+      name: 'Correo electrónico',
+      key: 'email',
+      sortable: true
     },
     {
-      name: "RUC",
-      key: "ruc",
-      sortable: true,
+      name: 'RUC',
+      key: 'ruc',
+      sortable: true
     },
     {
-      name: "Estado",
-      key: "state",
+      name: 'Estado',
+      key: 'state',
       align: Align.CENTER,
       render: (hospital: HospitalListDTO) => (
         <Chip
           className="capitalize"
-          color={statusColorMap[hospital.state] || "default"}
+          color={statusColorMap[hospital.state] || 'default'}
           size="sm"
           variant="flat"
         >
           {hospital.state}
         </Chip>
-      ),
+      )
     },
     {
-      name: "Acciones",
-      key: "actions",
+      name: 'Acciones',
+      key: 'actions',
       align: Align.CENTER,
       render: (hospital: HospitalListDTO) => (
         <ActionsCell
@@ -76,8 +76,8 @@ export const HospitalList = () => {
           state={hospital.state}
           inactiveStates={[State.ELIMINADO, State.INACTIVO]}
         />
-      ),
-    },
+      )
+    }
   ];
 
   const handleSort = (field: keyof HospitalListDTO) => {
@@ -97,7 +97,7 @@ export const HospitalList = () => {
         totalPages={pagination.totalPages}
         currentPage={pagination.currentPage}
         onPageChange={setPage}
-        onSort={(field) => handleSort(field as keyof HospitalListDTO)}
+        onSort={field => handleSort(field as keyof HospitalListDTO)}
         sortConfig={sortConfig}
       />
 

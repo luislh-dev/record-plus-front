@@ -1,11 +1,11 @@
-import { Align } from "@/constants/align";
-import { ArrowDown } from "@/icons/ArrowDown";
-import { ArrowUp } from "@/icons/ArrowUp";
-import { UnfoldMore } from "@/icons/UnfoldMore";
-import { SortConfig, SortDirection } from "@/types/sorting";
-import { TableColumn } from "@/types/TableColumn";
-import { Pagination } from "@nextui-org/react";
-import React, { useEffect, useRef } from "react";
+import { Align } from '@/constants/align';
+import { ArrowDown } from '@/icons/ArrowDown';
+import { ArrowUp } from '@/icons/ArrowUp';
+import { UnfoldMore } from '@/icons/UnfoldMore';
+import { SortConfig, SortDirection } from '@/types/sorting';
+import { TableColumn } from '@/types/TableColumn';
+import { Pagination } from '@nextui-org/react';
+import React, { useEffect, useRef } from 'react';
 
 interface GenericTableProps<T> {
   columns: TableColumn<T>[];
@@ -30,13 +30,13 @@ export function GenericTable<T extends { id: number | string }>({
   totalPages = 0,
   error,
   onPageChange,
-  emptyMessage = "No se encontraron resultados...",
-  errorMessage = "Ha ocurrido un error inesperado. Por favor, inténtelo de nuevo más tarde.",
+  emptyMessage = 'No se encontraron resultados...',
+  errorMessage = 'Ha ocurrido un error inesperado. Por favor, inténtelo de nuevo más tarde.',
   showPagination = true,
   isLoading = false,
-  loadingContent = "Cargando...",
+  loadingContent = 'Cargando...',
   onSort,
-  sortConfig,
+  sortConfig
 }: GenericTableProps<T>) {
   const lastValidData = useRef<T[]>([]);
 
@@ -47,8 +47,8 @@ export function GenericTable<T extends { id: number | string }>({
   }, [data]);
 
   const renderCell = React.useCallback(
-    (item: T, columnKey: keyof T | "actions") => {
-      const column = columns.find((col) => col.key === columnKey);
+    (item: T, columnKey: keyof T | 'actions') => {
+      const column = columns.find(col => col.key === columnKey);
       return column?.render
         ? column.render(item)
         : (item[columnKey as keyof T] as unknown as React.ReactNode);
@@ -68,7 +68,7 @@ export function GenericTable<T extends { id: number | string }>({
           color="primary"
           page={currentPage + 1}
           total={totalPages}
-          onChange={(page) => onPageChange?.(page - 1)}
+          onChange={page => onPageChange?.(page - 1)}
           size="lg"
         />
       </div>
@@ -81,23 +81,15 @@ export function GenericTable<T extends { id: number | string }>({
           <table className="w-full min-w-full border-collapse">
             <thead>
               <tr className="rounded-t-lg">
-                {columns.map((column) => (
+                {columns.map(column => (
                   <th
                     key={String(column.key)}
                     className={`
                     p-4 whitespace-nowrap border-b
-                    ${column.sortable ? "cursor-pointer" : ""}
-                    ${column === columns[0] ? "rounded-tl-lg" : ""}
-                    ${
-                      column === columns[columns.length - 1]
-                        ? "rounded-tr-lg"
-                        : ""
-                    }
-                    ${
-                      column.align === Align.CENTER
-                        ? "text-center"
-                        : "text-left"
-                    }
+                    ${column.sortable ? 'cursor-pointer' : ''}
+                    ${column === columns[0] ? 'rounded-tl-lg' : ''}
+                    ${column === columns[columns.length - 1] ? 'rounded-tr-lg' : ''}
+                    ${column.align === Align.CENTER ? 'text-center' : 'text-left'}
                   `}
                     onClick={() => {
                       if (column.sortable && onSort) {
@@ -108,10 +100,10 @@ export function GenericTable<T extends { id: number | string }>({
                     <div
                       className={`flex items-center ${
                         column.align === Align.CENTER
-                          ? "justify-center"
+                          ? 'justify-center'
                           : sortConfig
-                          ? "justify-between"
-                          : "justify-start"
+                            ? 'justify-between'
+                            : 'justify-start'
                       }`}
                     >
                       {column.name}
@@ -143,24 +135,22 @@ export function GenericTable<T extends { id: number | string }>({
                     {errorMessage}
                   </td>
                 </tr>
-              ) : isLoading &&
-                !data.length &&
-                lastValidData.current.length > 0 ? (
+              ) : isLoading && !data.length && lastValidData.current.length > 0 ? (
                 // Usar datos en caché durante la carga si existen
-                lastValidData.current.map((item) => (
+                lastValidData.current.map(item => (
                   <tr
                     key={item.id}
                     className="hover:bg-gray-50 last:border-b-0 transition-opacity duration-200 opacity-50"
                   >
-                    {columns.map((column) => (
+                    {columns.map(column => (
                       <td
                         key={String(column.key)}
                         className={`p-4 whitespace-nowrap ${
                           column.align === Align.CENTER
-                            ? "text-center"
+                            ? 'text-center'
                             : column.align === Align.END
-                            ? "text-right"
-                            : "text-left"
+                              ? 'text-right'
+                              : 'text-left'
                         }`}
                       >
                         {renderCell(item, column.key)}
@@ -170,22 +160,22 @@ export function GenericTable<T extends { id: number | string }>({
                 ))
               ) : data.length > 0 ? (
                 // Mostrar datos actuales
-                data.map((item) => (
+                data.map(item => (
                   <tr
                     key={item.id}
                     className={`hover:bg-gray-50 last:border-b-0 transition-opacity duration-200 ${
-                      isLoading ? "opacity-50" : ""
+                      isLoading ? 'opacity-50' : ''
                     }`}
                   >
-                    {columns.map((column) => (
+                    {columns.map(column => (
                       <td
                         key={String(column.key)}
                         className={`p-4 whitespace-nowrap ${
                           column.align === Align.CENTER
-                            ? "text-center"
+                            ? 'text-center'
                             : column.align === Align.END
-                            ? "text-right"
-                            : "text-left"
+                              ? 'text-right'
+                              : 'text-left'
                         }`}
                       >
                         {renderCell(item, column.key)}
@@ -205,10 +195,7 @@ export function GenericTable<T extends { id: number | string }>({
                 </tr>
               ) : (
                 <tr>
-                  <td
-                    colSpan={columns.length}
-                    className="text-center p-20 text-gray-500"
-                  >
+                  <td colSpan={columns.length} className="text-center p-20 text-gray-500">
                     {emptyMessage}
                   </td>
                 </tr>

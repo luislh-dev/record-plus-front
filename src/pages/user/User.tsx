@@ -1,7 +1,7 @@
-import { DropDownFilter } from "./components/DropDownFilter";
-import { Header } from "./components/Header";
-import { Search } from "./components/Search";
-import { UserList } from "./components/UserList";
+import { DropDownFilter } from './components/DropDownFilter';
+import { Header } from './components/Header';
+import { Search } from './components/Search';
+import { UserList } from './components/UserList';
 
 const User = () => {
   return (

@@ -1,9 +1,8 @@
-import { useLoginForm } from "../hooks/auth/useloginForm";
-import { useAuthLogin } from "../hooks/auth/useAuthLogin";
+import { useLoginForm } from '../hooks/auth/useloginForm';
+import { useAuthLogin } from '../hooks/auth/useAuthLogin';
 
 export function Login() {
-  const { username, password, setUsername, setPassword, resetForm } =
-    useLoginForm();
+  const { username, password, setUsername, setPassword, resetForm } = useLoginForm();
   const { handleLogin } = useAuthLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,19 +17,11 @@ export function Login() {
     <form onSubmit={handleSubmit}>
       <div>
         <label>Username:</label>
-        <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
+        <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
       </div>
       <div>
         <label>Password:</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
       </div>
       <button type="submit">Login</button>
     </form>

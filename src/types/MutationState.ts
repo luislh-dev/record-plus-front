@@ -1,4 +1,4 @@
-import { ApiError } from "./errros/ApiError";
+import { ApiError } from './errros/ApiError';
 
 export interface MutationState {
   isLoading: boolean;

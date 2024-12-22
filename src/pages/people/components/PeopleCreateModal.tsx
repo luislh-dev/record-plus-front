@@ -1,12 +1,12 @@
-import { CustomInput } from "@/components/CustomInput";
-import { CustomSelect } from "@/components/CustomSelect";
-import { Typography } from "@/components/Typography";
-import { CE_ID, DNI_ID, DNI_NAME } from "@/constants/documentType";
-import { useGender } from "@/hooks/gender/useGender";
-import { allowOnlyNumbers } from "@/utils/allowOnlyNumbers";
-import { getPeruDateTime } from "@/utils/peruDateTime";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { parseDate } from "@internationalized/date";
+import { CustomInput } from '@/components/CustomInput';
+import { CustomSelect } from '@/components/CustomSelect';
+import { Typography } from '@/components/Typography';
+import { CE_ID, DNI_ID, DNI_NAME } from '@/constants/documentType';
+import { useGender } from '@/hooks/gender/useGender';
+import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
+import { getPeruDateTime } from '@/utils/peruDateTime';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { parseDate } from '@internationalized/date';
 import {
   Alert,
   Button,
@@ -15,16 +15,16 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
-  ModalHeader,
-} from "@nextui-org/react";
-import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { useCreateRequeridPerson } from "../hooks/useCreatePerson";
+  ModalHeader
+} from '@nextui-org/react';
+import { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useCreateRequeridPerson } from '../hooks/useCreatePerson';
 import {
   peopleCreateRequiredSchema,
-  PeopleCreateRequiredValues,
-} from "../models/peopleCreateRequiredSchema";
-import { MinimalPeopleResponseDto } from "../types/MinimalPeopleResponseDto";
+  PeopleCreateRequiredValues
+} from '../models/peopleCreateRequiredSchema';
+import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 interface Props {
   isOpen: boolean;
@@ -41,25 +41,25 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
     control,
     handleSubmit,
     setValue,
-    formState: { errors, isValid },
+    formState: { errors, isValid }
   } = useForm<PeopleCreateRequiredValues>({
     resolver: zodResolver(peopleCreateRequiredSchema),
-    mode: "onChange",
+    mode: 'onChange'
   });
 
   useEffect(() => {
     if (personData) {
       const documentID = personData.documentType === DNI_NAME ? DNI_ID : CE_ID;
-      setValue("name", personData.name);
-      setValue("paternalSurname", personData.fatherLastName);
-      setValue("maternalSurname", personData.motherLastName);
-      setValue("typeDocumentId", documentID);
-      setValue("documentNumber", personData.documentNumber);
-      setValue("birthdate", new Date(getPeruDateTime()));
+      setValue('name', personData.name);
+      setValue('paternalSurname', personData.fatherLastName);
+      setValue('maternalSurname', personData.motherLastName);
+      setValue('typeDocumentId', documentID);
+      setValue('documentNumber', personData.documentNumber);
+      setValue('birthdate', new Date(getPeruDateTime()));
     }
   }, [personData, setValue]);
 
-  const dataSource = personData.dataSource?.toUpperCase() || "RENIEC";
+  const dataSource = personData.dataSource?.toUpperCase() || 'RENIEC';
 
   const onSubmit = async (data: PeopleCreateRequiredValues) => {
     await handleCreate(data);
@@ -138,7 +138,7 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
                       const formattedDate = value instanceof Date ? value : today;
 
                       // Asegurarse que la fecha esté en formato YYYY-MM-DD
-                      const isoDate = formattedDate.toISOString().split("T")[0];
+                      const isoDate = formattedDate.toISOString().split('T')[0];
                       const selectedDate = parseDate(isoDate);
 
                       return (
@@ -150,14 +150,14 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
                             labelPlacement="outside"
                             isRequired
                             value={selectedDate}
-                            onChange={(date) => {
+                            onChange={date => {
                               if (date) {
                                 // Convertir la fecha seleccionada a Date
-                                const [year, month, day] = date.toString().split("-");
+                                const [year, month, day] = date.toString().split('-');
                                 const newDate = new Date(
                                   parseInt(year),
                                   parseInt(month) - 1, // Los meses en JavaScript son 0-indexed
-                                  parseInt(day),
+                                  parseInt(day)
                                 );
                                 onChange(newDate);
                               }
