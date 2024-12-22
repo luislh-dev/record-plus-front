@@ -1,13 +1,13 @@
-import { CustomInput } from "@/components/CustomInput";
-import { CustomSelect } from "@/components/CustomSelect";
-import { Typography } from "@/components/Typography";
-import { useStates } from "@/hooks/state/useState";
-import { HospitalMinimalSearch } from "@/pages/hospital/components/HospitalMinimalSearch";
-import { PeopleCreateModal } from "@/pages/people/components/PeopleCreateModal";
-import { PersonSearch } from "@/pages/people/components/PersonSearch";
-import { MinimalPeopleResponseDto } from "@/pages/people/types/MinimalPeopleResponseDto";
-import { PeopleCreateRequiredDto } from "@/pages/people/types/PeopleCreateRequiredDto";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { CustomInput } from '@/components/CustomInput';
+import { CustomSelect } from '@/components/CustomSelect';
+import { Typography } from '@/components/Typography';
+import { useStates } from '@/hooks/state/useState';
+import { HospitalMinimalSearch } from '@/pages/hospital/components/HospitalMinimalSearch';
+import { PeopleCreateModal } from '@/pages/people/components/PeopleCreateModal';
+import { PersonSearch } from '@/pages/people/components/PersonSearch';
+import { MinimalPeopleResponseDto } from '@/pages/people/types/MinimalPeopleResponseDto';
+import { PeopleCreateRequiredDto } from '@/pages/people/types/PeopleCreateRequiredDto';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Alert,
   Button,
@@ -16,31 +16,31 @@ import {
   CardHeader,
   Divider,
   Input,
-  useDisclosure,
-} from "@nextui-org/react";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { useUserManagementCreate } from "../hooks/useUserCreate";
+  useDisclosure
+} from '@nextui-org/react';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useUserManagementCreate } from '../hooks/useUserCreate';
 import {
   userManagementCreateSchema,
-  UserManagementCreateValues,
-} from "../models/userManagementCreateSchema";
-import { SearchHospitalTooltip } from "./SearchHospitalTooltip";
+  UserManagementCreateValues
+} from '../models/userManagementCreateSchema';
+import { SearchHospitalTooltip } from './SearchHospitalTooltip';
 
 export const ManagementForm = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const [personData, setPersonData] = useState<MinimalPeopleResponseDto | null>(null);
   const defaultValues = {
-    personDNI: "",
+    personDNI: '',
     personalInfo: {
-      name: "",
-      surnames: "",
-      phone: "",
+      name: '',
+      surnames: '',
+      phone: ''
     },
-    email: "",
-    name: "",
-    password: "",
-    passwordConfirmation: "",
+    email: '',
+    name: '',
+    password: '',
+    passwordConfirmation: ''
   } as Partial<UserManagementCreateValues>;
 
   const {
@@ -49,11 +49,11 @@ export const ManagementForm = () => {
     setValue,
     watch,
     formState: { errors },
-    reset,
+    reset
   } = useForm<UserManagementCreateValues>({
     resolver: zodResolver(userManagementCreateSchema),
-    mode: "onChange",
-    defaultValues,
+    mode: 'onChange',
+    defaultValues
   });
 
   const { isLoading: isSubmitting, handleCreate } = useUserManagementCreate();
@@ -64,27 +64,28 @@ export const ManagementForm = () => {
     try {
       handleCreate(data);
     } catch (error) {
-      console.error("Error al crear usuario:", error);
+      console.error('Error al crear usuario:', error);
     }
   };
 
   useEffect(() => {
     if (state.length > 0) {
-      setValue("stateId", state[0].id);
+      setValue('stateId', state[0].id);
     }
   }, [state, setValue]);
 
   const foundPerson = (person: MinimalPeopleResponseDto | null) => {
+    console.log('Persona encontrada:', person);
     // Si no se encuentra a la persona, se limpian los campos
-    if (person === null && watch("personDNI")) {
+    if (person === null && watch('personDNI')) {
       // Solo hace reset si había datos previos
       reset({
-        personDNI: "",
+        personDNI: '',
         personalInfo: {
-          name: "",
-          surnames: "",
-          phone: "",
-        },
+          name: '',
+          surnames: '',
+          phone: ''
+        }
       });
       return;
     }
@@ -95,18 +96,18 @@ export const ManagementForm = () => {
       setPersonData(person);
       onOpen();
     } else {
-      setValue("personDNI", person.documentNumber);
-      setValue("personalInfo.name", person.name);
-      setValue("personalInfo.surnames", `${person.fatherLastName} ${person.motherLastName}`);
-      setValue("personalInfo.phone", person.phone);
+      setValue('personDNI', person.documentNumber);
+      setValue('personalInfo.name', person.name);
+      setValue('personalInfo.surnames', `${person.fatherLastName} ${person.motherLastName}`);
+      setValue('personalInfo.phone', person.phone);
     }
   };
 
   const handleConfirmPerson = (data: PeopleCreateRequiredDto) => {
-    setValue("personDNI", data.documentNumber);
-    setValue("personalInfo.name", data.name);
-    setValue("personalInfo.surnames", `${data.paternalSurname} ${data.maternalSurname}`);
-    setValue("personalInfo.phone", data.phone);
+    setValue('personDNI', data.documentNumber);
+    setValue('personalInfo.name', data.name);
+    setValue('personalInfo.surnames', `${data.paternalSurname} ${data.maternalSurname}`);
+    setValue('personalInfo.phone', data.phone);
     onClose();
   };
 
@@ -148,20 +149,20 @@ export const ManagementForm = () => {
                     <Input
                       type="text"
                       label="Nombre"
-                      value={watch("personalInfo.name") || ""}
+                      value={watch('personalInfo.name') || ''}
                       isDisabled
                     />
 
                     <Input
                       type="text"
                       label="Apellidos"
-                      value={watch("personalInfo.surnames") || ""}
+                      value={watch('personalInfo.surnames') || ''}
                       isDisabled
                     />
                     <Input
                       type="phone"
                       label="Teléfono"
-                      value={watch("personalInfo.phone") || ""}
+                      value={watch('personalInfo.phone') || ''}
                       isDisabled
                     />
                   </div>
@@ -180,7 +181,7 @@ export const ManagementForm = () => {
                 </div>
                 <div className="flex flex-col gap-2">
                   <HospitalMinimalSearch
-                    onHospitalSelected={(hospitalId) => setValue("hospitalId", hospitalId)}
+                    onHospitalSelected={hospitalId => setValue('hospitalId', hospitalId)}
                   />
                   {errors.hospitalId && (
                     <Typography as="p" variant="error" className="h-4 pl-1">
