@@ -10,7 +10,7 @@ export function useUserManagementCreate() {
 
   const handleCreate = async (data: UserManagementCreateValues) => {
     setLoading(true);
-    // llamar al servicio de creación de usuario
+    setError(null);
     try {
       await createManagementUser(toManagementCreationDto(data));
     } catch (error) {
@@ -23,5 +23,7 @@ export function useUserManagementCreate() {
     }
   };
 
-  return { isLoading, error, handleCreate };
+  const success = !isLoading && !error;
+
+  return { isLoading, error, handleCreate, success };
 }
