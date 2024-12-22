@@ -1,15 +1,21 @@
 {
-  "editor.tabSize": 2,
+  "files.encoding": "utf8",
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.eol": "\n",
   "editor.formatOnSave": true,
-  "notebook.formatOnSave.enabled": true,
-  "editor.wordWrapColumn": 100,
-  "editor.wordWrap": "wordWrapColumn",
-  "editor.rulers": [100],
-  "prettier.printWidth": 100,
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
   },
-  "prettier.requireConfig": true,
-  "prettier.singleQuote": false,
-  "prettier.tabWidth": 2
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "files.encoding": "utf8"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "files.encoding": "utf8"
+  },
+  "prettier.configPath": ".prettierrc",
+  "prettier.requireConfig": true
 }
