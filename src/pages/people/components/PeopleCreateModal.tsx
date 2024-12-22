@@ -4,7 +4,7 @@ import { Typography } from "@/components/Typography";
 import { CE_ID, DNI_ID, DNI_NAME } from "@/constants/documentType";
 import { useGender } from "@/hooks/gender/useGender";
 import { allowOnlyNumbers } from "@/utils/allowOnlyNumbers";
-import { getPeruDateTime, parsePeruDate } from "@/utils/peruDateTime";
+import { getPeruDateTime } from "@/utils/peruDateTime";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { parseDate } from "@internationalized/date";
 import {
@@ -136,7 +136,10 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
                     render={({ field: { onChange, value } }) => {
                       const today = getPeruDateTime();
                       const formattedDate = value instanceof Date ? value : today;
-                      const selectedDate = parseDate(parsePeruDate(formattedDate));
+
+                      // Asegurarse que la fecha esté en formato YYYY-MM-DD
+                      const isoDate = formattedDate.toISOString().split("T")[0];
+                      const selectedDate = parseDate(isoDate);
 
                       return (
                         <div className="flex flex-col gap-1">
@@ -149,7 +152,13 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
                             value={selectedDate}
                             onChange={(date) => {
                               if (date) {
-                                const newDate = new Date(date.toString());
+                                // Convertir la fecha seleccionada a Date
+                                const [year, month, day] = date.toString().split("-");
+                                const newDate = new Date(
+                                  parseInt(year),
+                                  parseInt(month) - 1, // Los meses en JavaScript son 0-indexed
+                                  parseInt(day),
+                                );
                                 onChange(newDate);
                               }
                             }}
