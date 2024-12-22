@@ -18,7 +18,10 @@ export const PersonSearch: FC<{
   } = useSearchPerson();
 
   useEffect(() => {
-    onPersonFound(searchResult);
+    // Verifica si se ha encontrado a la persona y la envía al componente padre
+    if (searchResult !== undefined) {
+      onPersonFound(searchResult);
+    }
   }, [searchResult]);
 
   return (
