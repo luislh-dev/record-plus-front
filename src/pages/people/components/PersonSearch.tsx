@@ -1,9 +1,9 @@
-import { DocumentTypeSelect } from "@/components/DocumentTypeSelect";
-import { allowOnlyNumbers } from "@/utils/allowOnlyNumbers";
-import { Input } from "@nextui-org/react";
-import { FC, useEffect } from "react";
-import { useSearchPerson } from "../stores/useSearchPerson";
-import { MinimalPeopleResponseDto } from "../types/MinimalPeopleResponseDto";
+import { DocumentTypeSelect } from '@/components/DocumentTypeSelect';
+import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
+import { Input } from '@nextui-org/react';
+import { FC, useEffect } from 'react';
+import { useSearchPerson } from '../stores/useSearchPerson';
+import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 export const PersonSearch: FC<{
   onPersonFound: (person: MinimalPeopleResponseDto | null) => void;
@@ -14,7 +14,7 @@ export const PersonSearch: FC<{
     isSearching,
     searchResult,
     setDocumentNumber,
-    documentType,
+    documentType
   } = useSearchPerson();
 
   useEffect(() => {
@@ -37,7 +37,7 @@ export const PersonSearch: FC<{
       <Input
         className="w-2/3"
         value={documentNumber}
-        onChange={(e) => setDocumentNumber(e.target.value)}
+        onChange={e => setDocumentNumber(e.target.value)}
         isDisabled={isSearching}
         labelPlacement="outside"
         onInput={allowOnlyNumbers}
