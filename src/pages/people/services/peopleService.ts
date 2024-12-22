@@ -1,22 +1,17 @@
-import { api } from "@/services/api/api";
-import { MinimalPeopleResponseDto } from "../types/MinimalPeopleResponseDto";
-import { PeopleCreateFullDto } from "../types/PeopleCreateFullDto";
+import { api } from '@/services/api/api';
+import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
+import { PeopleCreateFullDto } from '../types/PeopleCreateFullDto';
 
 export const getPersonNameByDocument = async (
   id: number,
-  documentNumber: string,
+  documentNumber: string
 ): Promise<MinimalPeopleResponseDto> => {
-  try {
-    const response = await api.get<MinimalPeopleResponseDto>(
-      `/people/getPersonNameByDocument/${id}/${documentNumber}`,
-    );
-    return response.data;
-  } catch (error: any) {
-    // El interceptor ya maneja la transformación a ApiServiceError
-    throw error;
-  }
+  const response = await api.get<MinimalPeopleResponseDto>(
+    `/people/getPersonNameByDocument/${id}/${documentNumber}`
+  );
+  return response.data;
 };
 
 export const createPerson = async (data: PeopleCreateFullDto): Promise<void> => {
-  await api.post("/people", data);
+  await api.post('/people', data);
 };
