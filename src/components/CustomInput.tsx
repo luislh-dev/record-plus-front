@@ -12,7 +12,6 @@ interface Props<T extends FieldValues> {
   error?: FieldError;
   variant?: InputVariant;
   onInput?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const CustomInput = <T extends FieldValues>({
@@ -20,12 +19,11 @@ export const CustomInput = <T extends FieldValues>({
   control,
   label,
   placeholder,
-  isRequired = false,
+  isRequired,
   type,
   error,
   variant = "bordered",
   onInput,
-  onChange,
 }: Props<T>) => {
   return (
     <div>
@@ -37,11 +35,7 @@ export const CustomInput = <T extends FieldValues>({
             <Input
               {...field}
               onInput={onInput}
-              onChange={(e) => {
-                field.onChange(e);
-                onChange?.(e);
-              }}
-              value={field.value?.toString()}
+              value={field.value ?? ""}
               variant={variant}
               type={type}
               label={label}
