@@ -19,7 +19,7 @@ import {
   useDisclosure
 } from '@nextui-org/react';
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useUserManagementCreate } from '../hooks/useUserCreate';
 import {
   userManagementCreateSchema,
@@ -32,6 +32,7 @@ export const ManagementForm = () => {
   const [personData, setPersonData] = useState<MinimalPeopleResponseDto | null>(null);
   const defaultValues = {
     personDNI: '',
+    hospitalId: 0,
     personalInfo: {
       name: '',
       surnames: '',
@@ -52,7 +53,7 @@ export const ManagementForm = () => {
     reset
   } = useForm<UserManagementCreateValues>({
     resolver: zodResolver(userManagementCreateSchema),
-    mode: 'onChange',
+    mode: 'onSubmit',
     defaultValues
   });
 
@@ -128,7 +129,14 @@ export const ManagementForm = () => {
               {/* Sección para buscar a la persona a traves de su documento de identidad */}
               <div className="flex flex-col">
                 <div className="flex gap-4 mb-4">
-                  <PersonSearch onPersonFound={foundPerson} />
+                  <div className="flex flex-col gap-2 w-full">
+                    <PersonSearch onPersonFound={foundPerson} />
+                    {errors.personDNI && (
+                      <Typography as="p" variant="error" className="h-4 pl-1">
+                        {errors.personDNI.message}
+                      </Typography>
+                    )}
+                  </div>
                 </div>
                 <Alert
                   color="warning"
@@ -175,14 +183,20 @@ export const ManagementForm = () => {
                   <SearchHospitalTooltip />
                 </div>
                 <div className="flex flex-col gap-2">
-                  <HospitalMinimalSearch
-                    onHospitalSelected={hospitalId => setValue('hospitalId', hospitalId)}
+                  <Controller
+                    name="hospitalId"
+                    control={control}
+                    render={({ field: { onChange } }) => (
+                      <>
+                        <HospitalMinimalSearch onHospitalSelected={onChange} />
+                        {errors.hospitalId && (
+                          <Typography as="p" variant="error" className="h-4 pl-1">
+                            {errors.hospitalId.message}
+                          </Typography>
+                        )}
+                      </>
+                    )}
                   />
-                  {errors.hospitalId && (
-                    <Typography as="p" variant="error" className="h-4 pl-1">
-                      {errors.hospitalId.message}
-                    </Typography>
-                  )}
                 </div>
               </div>
 

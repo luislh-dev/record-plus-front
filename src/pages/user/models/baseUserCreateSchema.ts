@@ -19,8 +19,7 @@ export const baseUserCreateSchema = z.object({
 
   password: z
     .string()
-    .min(1, 'Contraseña es requerida')
-    .min(8, 'Contraseña debe tener al menos 8 caracteres')
+    .min(8, { message: 'Contraseña debe tener al menos 8 caracteres' })
     .max(50, 'Contraseña debe tener máximo 50 caracteres')
     .regex(/[A-Z]/, 'Contraseña debe tener al menos una letra mayuscula')
     .regex(/[a-z]/, 'Contraseña debe tener al menos una letra minuscula')
@@ -29,9 +28,7 @@ export const baseUserCreateSchema = z.object({
 
   passwordConfirmation: z
     .string()
-    .min(1, 'Confirmación de contraseña es requerida')
-    .min(8, 'Confirmación de contraseña debe tener al menos 8 caracteres')
-    .max(50, 'Confirmación de contraseña debe tener máximo 50 caracteres'),
+    .min(8, { message: 'Contraseña debe tener al menos 8 caracteres' }),
 
   personalInfo: z.object({
     name: z.string(),
