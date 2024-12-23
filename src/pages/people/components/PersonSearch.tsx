@@ -25,6 +25,7 @@ export const PersonSearch: FC<{
 
       <Input
         className="w-2/3"
+        variant="bordered"
         value={documentNumber}
         onChange={e => setDocumentNumber(e.target.value)}
         isDisabled={isSearching}
