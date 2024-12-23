@@ -22,7 +22,7 @@ export const DoctorForm = () => {
     email: '',
     name: '',
     password: '',
-    passwordConfirmation: 's'
+    passwordConfirmation: ''
   } as Partial<UserDoctorCreateValues>;
 
   const {
