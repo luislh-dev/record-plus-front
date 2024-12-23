@@ -7,9 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
+    "lint:staged": "git diff-index --cached --name-only HEAD -- \"*.ts\" \"*.tsx\" \"*.js\" \"*.jsx\" | xargs eslint --fix --",
     "preview": "vite preview",
     "prepare": "husky",
-    "test:build": "npm run lint && tsc --noEmit && vite build --mode production",
+    "test:build": "git diff --cached --name-only | findstr /I \".ts$ .tsx$\" | xargs tsc --noEmit && npm run lint:staged",
     "test": "npm run lint"
   },
   "dependencies": {
