@@ -4,5 +4,5 @@ export interface HospitalListDTO {
   phone: string;
   email: string;
   ruc: string;
-  state: string;
+  stateName: string;
 }

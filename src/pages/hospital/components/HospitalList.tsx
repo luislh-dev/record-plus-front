@@ -1,17 +1,17 @@
+import { ActionsCell } from '@/components/ActionsCell';
 import { GenericTable } from '@/components/GenericTable';
-import { HospitalListDTO } from '../types/HospitalListDTO';
+import { ModalConfirmDelete } from '@/components/ModalConfirmDelete';
 import { Align } from '@/constants/align';
+import { State } from '@/constants/state';
 import { statusColorMap } from '@/constants/statusColorMap';
-import { Chip } from '@nextui-org/react';
-import { useNavigate } from 'react-router-dom';
-import { useSearchStore } from '../stores/searchStore';
 import { useHandleSort } from '@/hooks/useHandleSort';
 import { TableColumn } from '@/types/TableColumn';
-import { ModalConfirmDelete } from '@/components/ModalConfirmDelete';
+import { Chip } from '@nextui-org/react';
+import { useNavigate } from 'react-router-dom';
 import { useHospitalDelete } from '../hooks/UseHospitalDelete';
 import { useHospitalSearch } from '../hooks/useHospitalSearch';
-import { ActionsCell } from '@/components/ActionsCell';
-import { State } from '@/constants/state';
+import { useSearchStore } from '../stores/searchStore';
+import { HospitalListDTO } from '../types/HospitalListDTO';
 
 export const HospitalList = () => {
   const navigate = useNavigate();
@@ -57,11 +57,11 @@ export const HospitalList = () => {
       render: (hospital: HospitalListDTO) => (
         <Chip
           className="capitalize"
-          color={statusColorMap[hospital.state] || 'default'}
+          color={statusColorMap[hospital.stateName] || 'default'}
           size="sm"
           variant="flat"
         >
-          {hospital.state}
+          {hospital.stateName}
         </Chip>
       )
     },
@@ -73,7 +73,7 @@ export const HospitalList = () => {
         <ActionsCell
           onEdit={() => navigate(`/hospitals/${hospital.id}/edit`)}
           onDelete={() => openDeleteModal(hospital.id)}
-          state={hospital.state}
+          state={hospital.stateName}
           inactiveStates={[State.ELIMINADO, State.INACTIVO]}
         />
       )
