@@ -116,7 +116,7 @@ export const ManagementForm = () => {
         personData={personData || ({} as MinimalPeopleResponseDto)}
       />
       <section>
-        <Card className="flex flex-col gap-5 bg-[#F9FAFB]" shadow="md">
+        <Card className="flex flex-col gap-5" shadow="md">
           <CardHeader>
             <header>
               <Typography as="h3" variant="section-title">
