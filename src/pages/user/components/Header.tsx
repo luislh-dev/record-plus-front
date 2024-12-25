@@ -7,7 +7,7 @@ export const Header = () => {
   return (
     <div className="flex max-w-full justify-between px-3">
       <h1 className="text-2xl font-bold">Lista de Usuarios</h1>
-      <Button color="primary" onClick={() => navigate('/user/add')} endContent={<Add size={18} />}>
+      <Button color="primary" onPress={() => navigate('/user/add')} endContent={<Add size={18} />}>
         Agregar Usuario
       </Button>
     </div>
