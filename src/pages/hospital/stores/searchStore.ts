@@ -1,7 +1,7 @@
 import { SortConfig, SortDirection } from '@/types/sorting';
-import { HospitalRequestParams } from '../types/HospitalRequestParams';
 import { create } from 'zustand';
 import { SEARCH_PARAMS } from '../constants/searchParams';
+import { HospitalRequestParams } from '../types/HospitalRequestParams';
 
 interface SearchState {
   // Estado
