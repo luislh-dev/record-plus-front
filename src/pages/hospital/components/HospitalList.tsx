@@ -52,7 +52,7 @@ export const HospitalList = () => {
     },
     {
       name: 'Estado',
-      key: 'state',
+      key: 'stateName',
       align: Align.CENTER,
       render: (hospital: HospitalListDTO) => (
         <Chip
