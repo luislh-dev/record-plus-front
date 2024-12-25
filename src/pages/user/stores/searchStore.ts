@@ -1,7 +1,7 @@
 import { SortConfigGeneric, SortDirection } from '@/types/sorting';
-import { SortableUserFields } from '../types/UserListDTO';
 import { create } from 'zustand';
 import { SEARCH_PARAMS } from '../constants/searchParams';
+import { SortableUserFields } from '../types/UserListDTO';
 import { SearchFieldKeys, UserRequestParams } from '../types/UserRequestParams';
 
 interface SearchState {
