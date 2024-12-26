@@ -1,21 +1,76 @@
-export const PERU_TIMEZONE = 'America/Lima';
-export const PERU_LOCALE = 'es-PE';
+// Constantes
+const CONSTANTS = {
+  TIMEZONE: 'America/Lima',
+  LOCALE: 'es-PE'
+} as const;
 
-export const getPeruDateTime = () => {
-  // Obtener fecha actual en UTC
-  const date = new Date();
+// Tipos
+type DateInput = Date | string | null;
+type DateFormat = 'short-date' | 'long-date' | 'short-datetime' | 'long-datetime';
 
-  // Convertir a string en zona horaria de Perú
-  const peruDateString = date.toLocaleString(PERU_LOCALE, {
-    timeZone: PERU_TIMEZONE
+interface DateTimeParts {
+  year: number;
+  month: number;
+  day: number;
+  hour: number;
+  minute: number;
+  second: number;
+}
+
+// Utilidades base
+const createDateFormatter = (options: Intl.DateTimeFormatOptions) => {
+  return new Intl.DateTimeFormat(CONSTANTS.LOCALE, {
+    timeZone: CONSTANTS.TIMEZONE,
+    ...options
   });
+};
 
-  // Crear nueva fecha desde string de Perú
-  const [datePart, timePart] = peruDateString.split(', ');
+const parseToDate = (date: DateInput): Date => {
+  if (!date) return new Date();
+  return typeof date === 'string' ? new Date(date) : date;
+};
+
+// Configuraciones de formato
+const DATE_FORMAT_OPTIONS: Record<DateFormat, Intl.DateTimeFormatOptions> = {
+  'short-date': {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  },
+  'long-date': {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  },
+  'short-datetime': {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  },
+  'long-datetime': {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true
+  }
+};
+
+// Funciones exportadas
+export const getPeruDateTime = (): Date => {
+  const date = new Date();
+  const formatter = createDateFormatter({});
+  const [datePart, timePart] = formatter.format(date).split(', ');
   const [day, month, year] = datePart.split('/');
   const [hours, minutes, seconds] = timePart.split(':');
 
-  // Construir fecha en zona horaria de Perú
   return new Date(
     parseInt(year),
     parseInt(month) - 1,
@@ -26,58 +81,80 @@ export const getPeruDateTime = () => {
   );
 };
 
-export const parsePeruDate = (date: Date | string | null): string => {
-  if (!date) return new Date().toISOString().split('T')[0];
-
+export const parsePeruDate = (date: DateInput): string => {
   try {
-    const dateObj = typeof date === 'string' ? new Date(date) : date;
-    const peruDate = dateObj.toLocaleString(PERU_LOCALE, {
-      timeZone: PERU_TIMEZONE,
+    const dateObj = parseToDate(date);
+    const formatter = createDateFormatter({
       year: 'numeric',
       month: '2-digit',
       day: '2-digit'
     });
 
-    const [day, month, year] = peruDate.split('/');
+    const [day, month, year] = formatter.format(dateObj).split('/');
     return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
   } catch {
     return new Date().toISOString().split('T')[0];
   }
 };
 
-export const getPeruDateTimeParts = () => {
-  const peruDate = new Date().toLocaleString(PERU_LOCALE, {
-    timeZone: PERU_TIMEZONE,
-    hour12: false
-  });
-
-  const date = new Date(peruDate);
+export const getPeruDateTimeParts = (): DateTimeParts => {
+  const peruDate = getPeruDateTime();
 
   return {
-    year: date.getFullYear(),
-    month: date.getMonth() + 1, // Enero es 0
-    day: date.getDate(),
-    hour: date.getHours(),
-    minute: date.getMinutes(),
-    second: date.getSeconds()
+    year: peruDate.getFullYear(),
+    month: peruDate.getMonth() + 1,
+    day: peruDate.getDate(),
+    hour: peruDate.getHours(),
+    minute: peruDate.getMinutes(),
+    second: peruDate.getSeconds()
   };
 };
 
-export const formatPeruDateTime = (format: 'short' | 'long' = 'short') => {
-  const optios: Intl.DateTimeFormatOptions = {
-    timeZone: PERU_TIMEZONE,
-    hour12: true
+export const formatPeruDateTime = (format: 'short' | 'long' = 'short'): string => {
+  const options: Intl.DateTimeFormatOptions = {
+    timeZone: CONSTANTS.TIMEZONE,
+    hour12: true,
+    ...(format === 'long' && {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    })
   };
 
-  if (format === 'long') {
-    optios.weekday = 'long';
-    optios.year = 'numeric';
-    optios.month = 'long';
-    optios.day = 'numeric';
-    optios.hour = '2-digit';
-    optios.minute = '2-digit';
-    optios.second = '2-digit';
-  }
+  return createDateFormatter(options).format(new Date());
+};
 
-  return new Date().toLocaleString(PERU_LOCALE, optios);
+export const calculateAge = (birthDate: DateInput): number => {
+  if (!birthDate) return 0;
+
+  try {
+    const birth = parseToDate(birthDate);
+    const today = getPeruDateTime();
+    let age = today.getFullYear() - birth.getFullYear();
+    const monthDiff = today.getMonth() - birth.getMonth();
+
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+
+    return age;
+  } catch {
+    return 0;
+  }
+};
+
+export const formatDateToString = (date: DateInput, format: DateFormat = 'short-date'): string => {
+  if (!date) return '';
+
+  try {
+    const dateObj = parseToDate(date);
+    const formatter = createDateFormatter(DATE_FORMAT_OPTIONS[format]);
+    return formatter.format(dateObj);
+  } catch {
+    return '';
+  }
 };
