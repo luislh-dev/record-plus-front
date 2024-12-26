@@ -4,6 +4,7 @@ import { PageResponse } from '@/types/Pagination';
 import { MainPeopleListDto } from '../types/MainPeopleListDto';
 import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 import { PeopleCreateFullDto } from '../types/PeopleCreateFullDto';
+import { PeopleDetailDTO } from '../types/PeopleDetailDTO';
 
 export const getPersonList = async (
   params?: PeopleRequestParams
@@ -29,4 +30,9 @@ export const getPersonNameByDocument = async (
 
 export const createPerson = async (data: PeopleCreateFullDto): Promise<void> => {
   await api.post('/people', data);
+};
+
+export const getPeopleDetail = async (id: string): Promise<PeopleDetailDTO> => {
+  const response = await api.get<PeopleDetailDTO>(`/records/${id}/getPeople`);
+  return response.data;
 };
