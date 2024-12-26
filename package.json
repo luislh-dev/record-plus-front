@@ -3,11 +3,16 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "lint-staged": {
+    "*.{ts,tsx,js,jsx}": [
+      "eslint --fix"
+    ]
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "lint:staged": "git diff-index --cached --name-only HEAD -- \"*.ts\" \"*.tsx\" \"*.js\" \"*.jsx\" | xargs eslint --fix --",
+    "lint:staged": "lint-staged",
     "preview": "vite preview",
     "prepare": "husky",
     "test:build": "git diff --cached --name-only | findstr /I \".ts$ .tsx$\" | xargs tsc --noEmit && npm run lint:staged",
@@ -51,6 +56,7 @@
     "eslint-plugin-react-refresh": "0.4.14",
     "globals": "15.11.0",
     "husky": "^9.1.7",
+    "lint-staged": "^15.2.11",
     "prettier": "^3.4.2",
     "typescript": "~5.6.3",
     "typescript-eslint": "8.12.2",
