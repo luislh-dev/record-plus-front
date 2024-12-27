@@ -1,9 +1,9 @@
-import { PeopleDetailForm } from './components/PeopleDetailForm';
+import { PeopleDetailHeader } from './components/PeopleDetailHeader';
 
 export const PeopleDetail = () => {
   return (
     <section>
-      <PeopleDetailForm />
+      <PeopleDetailHeader />
     </section>
   );
 };
