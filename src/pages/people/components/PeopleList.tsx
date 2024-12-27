@@ -1,12 +1,15 @@
+import { ActionsCell } from '@/components/ActionsCell';
 import { GenericTable } from '@/components/GenericTable';
 import { Align } from '@/constants/align';
 import { useHandleSortGeneric } from '@/hooks/useHandleSort';
 import { TableColumn } from '@/types/TableColumn';
+import { useNavigate } from 'react-router-dom';
 import { usePersonSearch } from '../hooks/usePersonSearch';
 import { useSearchPeopleStore } from '../stores/useSearchStore';
 import { MainPeopleListDto } from '../types/MainPeopleListDto';
 
 export const PeopleList = () => {
+  const navigate = useNavigate();
   const { setPage, sortConfig, setSortConfig } = useSearchPeopleStore();
   const { getNewSortConfig } = useHandleSortGeneric(sortConfig);
   const { peoples, isLoading, error, pagination } = usePersonSearch();
@@ -34,6 +37,14 @@ export const PeopleList = () => {
     {
       name: 'Hospital',
       key: 'lastVisitHospitalName'
+    },
+    {
+      name: 'Acciones',
+      key: 'actions',
+      align: Align.CENTER,
+      render: (people: MainPeopleListDto) => (
+        <ActionsCell onDetail={() => navigate(`/people/${people.id}/detail`)} />
+      )
     }
   ];
 
