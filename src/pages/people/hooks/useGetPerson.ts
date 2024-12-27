@@ -1,7 +1,8 @@
 import { ApiServiceError } from '@/services/api/ApiErrorHandler';
 import { ApiError } from '@/types/errros/ApiError';
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { getPersonNameByDocument } from '../services/peopleService';
+import { getPeopleDetail, getPersonNameByDocument } from '../services/peopleService';
 import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 export function useGetPersonByDni() {
@@ -35,4 +36,22 @@ export function useGetPersonByDni() {
   };
 
   return { isLoading, error, getPerson, person, clearPerson, success };
+}
+
+export function useGetPersonDetailById() {
+  const [id, setId] = useState<string | null>(null);
+
+  const { isLoading, error, data, refetch } = useQuery({
+    queryKey: ['personDetail', id],
+    queryFn: async ({ queryKey }) => {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [_, personId] = queryKey;
+      if (!personId) throw new Error('ID no proporcionado');
+      return getPeopleDetail(personId);
+    },
+    enabled: !!id,
+    retry: false
+  });
+
+  return { isLoading, error, data, setId, refetch };
 }

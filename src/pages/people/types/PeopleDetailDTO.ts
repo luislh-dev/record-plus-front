@@ -8,9 +8,6 @@ export interface PeopleDetailDTO {
   maternalSurname: string;
   documentNumber: string;
   birthdate: string;
-  phone: string;
-  address: string | null;
-  bloodType: string | null;
   nationality: string | null;
   sexType: Gender;
   typeDocument: DocumentType;
