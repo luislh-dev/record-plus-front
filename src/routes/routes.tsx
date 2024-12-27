@@ -2,17 +2,18 @@ import { Roles } from '@/constants/roles';
 import { AuthLayout } from '@/layouts/AuthLayout';
 import { MainLayout } from '@/layouts/MainLayout';
 import { Home } from '@/pages/home/Home';
+import Hospital from '@/pages/hospital/Hospital';
+import HospitalAdd from '@/pages/hospital/HospitalAdd';
+import HospitalEdit from '@/pages/hospital/HospitalEdit';
 import { Login } from '@/pages/Login';
+import People from '@/pages/people/People';
+import { PeopleDetail } from '@/pages/people/PeopleDetail';
+import User from '@/pages/user/User';
+import { UserAdd } from '@/pages/user/UserAdd';
 import { PrivateRoute } from '@/routes/PrivateRoute';
 import { PublicRoute } from '@/routes/PublicRoute';
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { RoleBasedRoute } from './RoleBasedRoute';
-import HospitalAdd from '@/pages/hospital/HospitalAdd';
-import HospitalEdit from '@/pages/hospital/HospitalEdit';
-import People from '@/pages/people/People';
-import User from '@/pages/user/User';
-import Hospital from '@/pages/hospital/Hospital';
-import { UserAdd } from '@/pages/user/UserAdd';
 
 export const router = createBrowserRouter([
   {
@@ -43,14 +44,6 @@ export const router = createBrowserRouter([
       {
         path: 'dashboard',
         element: <Home />
-      },
-      {
-        path: 'people',
-        element: (
-          <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
-            <People />
-          </RoleBasedRoute>
-        )
       }
     ]
   },
@@ -106,6 +99,27 @@ export const router = createBrowserRouter([
             element: (
               <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
                 <UserAdd />
+              </RoleBasedRoute>
+            )
+          }
+        ]
+      },
+      {
+        path: 'people',
+        children: [
+          {
+            index: true,
+            element: (
+              <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
+                <People />
+              </RoleBasedRoute>
+            )
+          },
+          {
+            path: ':id/detail',
+            element: (
+              <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
+                <PeopleDetail />
               </RoleBasedRoute>
             )
           }
