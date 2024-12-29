@@ -1,7 +1,11 @@
 import { api } from '@/services/api/api';
-import { RecordDetailCreateRequest } from '../types/RecordDetailCreateRequest ';
 
-export const createRecordDetail = async (data: RecordDetailCreateRequest) => {
-  const response = await api.post<RecordDetailCreateRequest>('/records/createRecordDetail', data);
+export const createRecordDetail = async (data: FormData) => {
+  const response = await api.post('/record-details', data, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
+
   return response.data;
 };
