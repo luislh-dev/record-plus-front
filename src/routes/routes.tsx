@@ -8,6 +8,7 @@ import HospitalEdit from '@/pages/hospital/HospitalEdit';
 import { Login } from '@/pages/Login';
 import People from '@/pages/people/People';
 import { PeopleDetail } from '@/pages/people/PeopleDetail';
+import { CreateRecordDetail } from '@/pages/record/pages/CreateRecordDetail';
 import User from '@/pages/user/User';
 import { UserAdd } from '@/pages/user/UserAdd';
 import { PrivateRoute } from '@/routes/PrivateRoute';
@@ -117,11 +118,24 @@ export const router = createBrowserRouter([
           },
           {
             path: ':id/detail',
-            element: (
-              <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
-                <PeopleDetail />
-              </RoleBasedRoute>
-            )
+            children: [
+              {
+                index: true,
+                element: (
+                  <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
+                    <PeopleDetail />
+                  </RoleBasedRoute>
+                )
+              },
+              {
+                path: 'record/add',
+                element: (
+                  <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
+                    <CreateRecordDetail />
+                  </RoleBasedRoute>
+                )
+              }
+            ]
           }
         ]
       }
