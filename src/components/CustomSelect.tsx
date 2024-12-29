@@ -27,15 +27,16 @@ export const CustomSelect = <T extends FieldValues>({
   isRequired = true,
   placeholder,
   variant = 'bordered'
-}: Props<T>) => {
-  return (
-    <div>
-      <Controller
-        name={name}
-        control={control}
-        render={({ field: { onChange, value } }) => {
-          const selectedValue = value ? new Set([value.toString()]) : new Set([]);
-          return (
+}: Props<T>) => (
+  <>
+    <Controller
+      name={name}
+      control={control}
+      render={({ field: { onChange, value } }) => {
+        // si value es null, usa el primer elemento del array, si no, usa el valor de value
+        const selectedValue = value ? [value.toString()] : [options[0].id.toString()];
+        return (
+          <div className="flex flex-col gap-1 w-full">
             <Select
               variant={variant}
               label={label}
@@ -51,15 +52,16 @@ export const CustomSelect = <T extends FieldValues>({
               errorMessage={error?.message}
               isInvalid={!!error}
             >
-              {options.map(option => (
+              {options?.map(option => (
                 <SelectItem key={option.id.toString()} value={option.id.toString()}>
                   {option.name}
                 </SelectItem>
               ))}
             </Select>
-          );
-        }}
-      />
-    </div>
-  );
-};
+            <p className="h-4 text-xs text-danger pl-1">{error?.message}</p>
+          </div>
+        );
+      }}
+    />
+  </>
+);
