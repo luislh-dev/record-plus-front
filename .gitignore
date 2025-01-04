@@ -33,3 +33,6 @@ pnpm-lock.yaml
 # Environment
 .env
 .env.local
+
+# Jest
+coverage
