@@ -192,8 +192,8 @@ export const CreateRecordDetailForm = ({ personId }: Props) => {
           </div>
         )}
 
-        {error && <Alert variant="danger">{error}</Alert>}
-        {isSuccess && <Alert variant="success">Registro guardado exitosamente</Alert>}
+        {error && <Alert color="danger" description={error} />}
+        {isSuccess && <Alert color="success" description="Registro guardado exitosamente" />}
 
         <Button type="submit" color="primary" className="w-full" isDisabled={isLoading}>
           {isLoading ? 'Guardando...' : 'Guardar Registro'}
