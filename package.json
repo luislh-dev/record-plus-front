@@ -24,7 +24,7 @@
     "@nextui-org/react": "^2.6.8",
     "@nextui-org/use-infinite-scroll": "^2.2.1",
     "@tanstack/query-sync-storage-persister": "5.62.8",
-    "@tanstack/react-query": "5.62.8",
+    "@tanstack/react-query": "^5.62.15",
     "@tanstack/react-query-persist-client": "5.62.8",
     "autoprefixer": "10.4.20",
     "axios": "1.7.7",
