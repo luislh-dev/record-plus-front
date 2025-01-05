@@ -128,7 +128,7 @@ export const CreateRecordDetailForm = ({ personId }: Props) => {
           <DatePickerForm
             name="visitDate"
             control={control}
-            label="Fecha de visita"
+            label="Fecha de la visita"
             isRequired
             variant="bordered"
           />
@@ -145,6 +145,8 @@ export const CreateRecordDetailForm = ({ personId }: Props) => {
 
         <div className="space-y-2">
           <FilePicker
+            label="Seleccionar archivo"
+            required
             onChange={handleFileAdd}
             className="disabled:opacity-50 disabled:cursor-not-allowed"
           />
