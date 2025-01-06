@@ -33,6 +33,6 @@ export const createPerson = async (data: PeopleCreateFullDto): Promise<void> => 
 };
 
 export const getPeopleDetail = async (id: string): Promise<PeopleDetailDTO> => {
-  const response = await api.get<PeopleDetailDTO>(`/records/${id}/getPeople`);
+  const response = await api.get<PeopleDetailDTO>(`/people/findBasicById/${id}`);
   return response.data;
 };
