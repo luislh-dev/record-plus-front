@@ -13,7 +13,8 @@
       "@/components/*": ["src/components/*"],
       "@/hooks/*": ["src/hooks/*"],
       "@/services/*": ["src/services/*"],
-      "@/types/*": ["src/types/*"]
+      "@/types/*": ["src/types/*"],
+      "@/test/*": ["src/test/*"]
     },
 
     /* Bundler mode */
