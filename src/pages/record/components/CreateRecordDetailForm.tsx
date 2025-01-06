@@ -77,6 +77,9 @@ export const CreateRecordDetailForm = ({ personId }: Props) => {
   const handleFileAdd = (file: File | null) => {
     if (!file) return;
 
+    // Si ya hay mas de 5 archivos seleccionados, no permitir agregar más
+    if (filesWithTypes.length >= 5) return;
+
     const newFile: FileWithType = {
       file,
       typeId: 1
