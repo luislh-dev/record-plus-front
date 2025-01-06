@@ -111,7 +111,7 @@ export const router = createBrowserRouter([
           {
             index: true,
             element: (
-              <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
+              <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
                 <People />
               </RoleBasedRoute>
             )
