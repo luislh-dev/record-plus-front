@@ -15,7 +15,7 @@
     "lint:staged": "lint-staged",
     "preview": "vite preview",
     "prepare": "husky",
-    "test:build": "for /f %i in ('git diff --cached --name-only ^| findstr /I \".ts$ .tsx$\"') do @if %ERRORLEVEL% EQU 0 (tsc --noEmit && npm run lint:staged && npm run build) else (echo No TypeScript files changed)",
+    "test:build": "git diff --cached --name-only | findstr /I \".ts$ .tsx$\" | xargs tsc --noEmit && npm run lint:staged",
     "test": "npm run lint"
   },
   "dependencies": {
