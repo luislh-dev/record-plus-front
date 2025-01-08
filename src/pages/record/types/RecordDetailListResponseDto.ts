@@ -7,7 +7,7 @@ export interface RecordDetailListResponseDto {
   files: FileDetailDto[];
 }
 
-interface FileDetailDto {
+export interface FileDetailDto {
   name: string;
   type_name: string;
   url: string;
