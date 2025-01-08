@@ -64,7 +64,7 @@ const DocumentFileList = ({ files, maxVisible = 2 }: FilePreviewProps) => {
 };
 
 export default function RecordDetailList({ personId }: RecordDetailListProps) {
-  const { recordDetails, setPersonId, fetchNextPage, hasNextPage, isLoading } =
+  const { recordDetails, setPersonId, fetchNextPage, hasNextPage, isLoading, isError } =
     useRecordDetailSearch();
 
   useEffect(() => {
@@ -84,49 +84,64 @@ export default function RecordDetailList({ personId }: RecordDetailListProps) {
         </div>
       </div>
 
-      {/* Record Detail List */}
-      <div className="space-y-4">
-        <div className="divide-y divide-gray-300 border border-gray-300 rounded-lg">
-          {recordDetails.map(recordDetail => (
-            <div
-              key={recordDetail.id}
-              className="p-4 flex flex-col sm:flex-row sm:justify-between gap-4 hover:bg-gray-50 transition-colors cursor-pointer group"
-            >
-              {/* Hospital Info */}
-              <div className="flex-1 w-3/5">
-                <div className="flex items-center gap-2 ">
-                  <Hospital size={20} />
-                  <Typography variant="data-title">{recordDetail.hospital_name}</Typography>
-                </div>
-                <div className="flex items-center gap-2 mt-1">
-                  <Reloj size={20} fill="gray" />
-                  <Typography variant="body-small">{recordDetail.visit_date}</Typography>
-                </div>
-                <p className="font-medium mt-2">{recordDetail.reason}</p>
-                <p className="text-gray-600">{recordDetail.doctor_name}</p>
-              </div>
-
-              {/* Files List */}
-              <div className="flex flex-col sm:items-end 2xl:items-end justify-center space-y-2 w-full sm:w-2/5">
-                {recordDetail.files.length > 0 && (
-                  <DocumentFileList
-                    files={recordDetail.files}
-                    maxVisible={window.innerWidth < 640 ? 2 : 3}
-                  />
-                )}
-              </div>
-            </div>
-          ))}
+      {isLoading && (
+        <div>
+          <p className="text-lg font-medium text-center p-40">Cargando registros...</p>
         </div>
+      )}
 
-        {hasNextPage && (
-          <div className="flex justify-center py-4">
-            <Button onPress={() => fetchNextPage()} disabled={isLoading}>
-              {isLoading ? 'Cargando...' : 'Cargar más registros'}
-            </Button>
+      {isError && (
+        <div>
+          <p className="text-lg font-medium text-center p-40 text-red-500">
+            Ocurrió un error al cargar los registros
+          </p>
+        </div>
+      )}
+
+      {!isLoading && !isError && (
+        <div className="space-y-4">
+          <div className="divide-y divide-gray-300 border border-gray-300 rounded-lg">
+            {recordDetails.map(recordDetail => (
+              <div
+                key={recordDetail.id}
+                className="p-4 flex flex-col sm:flex-row sm:justify-between gap-4 hover:bg-gray-50 transition-colors cursor-pointer group"
+              >
+                {/* Hospital Info */}
+                <div className="flex-1 w-3/5">
+                  <div className="flex items-center gap-2 ">
+                    <Hospital size={20} />
+                    <Typography variant="data-title">{recordDetail.hospital_name}</Typography>
+                  </div>
+                  <div className="flex items-center gap-2 mt-1">
+                    <Reloj size={20} fill="gray" />
+                    <Typography variant="body-small">{recordDetail.visit_date}</Typography>
+                  </div>
+                  <p className="font-medium mt-2">{recordDetail.reason}</p>
+                  <p className="text-gray-600">{recordDetail.doctor_name}</p>
+                </div>
+
+                {/* Files List */}
+                <div className="flex flex-col sm:items-end 2xl:items-end justify-center space-y-2 w-full sm:w-2/5">
+                  {recordDetail.files.length > 0 && (
+                    <DocumentFileList
+                      files={recordDetail.files}
+                      maxVisible={window.innerWidth < 640 ? 2 : 3}
+                    />
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
-        )}
-      </div>
+
+          {hasNextPage && (
+            <div className="flex justify-center py-4">
+              <Button onPress={() => fetchNextPage()} disabled={isLoading}>
+                {isLoading ? 'Cargando...' : 'Cargar más registros'}
+              </Button>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }
