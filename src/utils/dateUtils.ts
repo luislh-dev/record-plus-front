@@ -1,4 +1,4 @@
-import { CalendarDate, getLocalTimeZone } from '@internationalized/date';
+import { CalendarDate } from '@internationalized/date';
 
 // Constantes para configuración
 export const DEFAULT_DATE_RANGE_DAYS = 7;
@@ -17,11 +17,14 @@ export const dateUtils = {
     return new CalendarDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
   },
 
-  formatDateForAPI: (calendarDate: CalendarDate, isEndDate = false): string => {
-    const date = calendarDate.toDate(getLocalTimeZone());
+  formatDateForAPI: (date: CalendarDate, isEndDate: boolean = false): string => {
+    const year = date.year;
+    const month = String(date.month).padStart(2, '0');
+    const day = String(date.day).padStart(2, '0');
+
     if (isEndDate) {
-      date.setHours(23, 59, 59, 999);
+      return `${year}-${month}-${day}T23:59:59`;
     }
-    return date.toISOString().split('.')[0];
+    return `${year}-${month}-${day}T00:00:00`;
   }
 };
