@@ -122,7 +122,9 @@ export default function RecordDetailList({ personId }: RecordDetailListProps) {
                     <Reloj size={20} fill="gray" />
                     <Typography variant="body-small">{recordDetail.visit_date}</Typography>
                   </div>
-                  <p className="font-medium mt-2">{recordDetail.reason}</p>
+                  <p className="font-medium mt-2 line-clamp-1 overflow-hidden">
+                    {recordDetail.reason}
+                  </p>
                   <p className="text-gray-600">{recordDetail.doctor_name}</p>
                 </div>
 
