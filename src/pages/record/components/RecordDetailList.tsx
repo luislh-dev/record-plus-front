@@ -98,6 +98,12 @@ export default function RecordDetailList({ personId }: RecordDetailListProps) {
         </div>
       )}
 
+      {recordDetails.length === 0 && !isLoading && !isError && (
+        <div>
+          <p className="text-lg font-medium text-center p-40">No se encontraron registros</p>
+        </div>
+      )}
+
       {!isLoading && !isError && (
         <div className="space-y-4">
           <div className="divide-y divide-gray-300 border border-gray-300 rounded-lg">
