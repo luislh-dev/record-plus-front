@@ -1,5 +1,6 @@
 import { api } from '@/services/api/api';
 import { PageResponse } from '@/types/Pagination';
+import { RecordDetailExtenseViewModel } from '../types/RecordDetailExtenseViewModel';
 import { RecordDetailListResponseDto } from '../types/RecordDetailListResponseDto';
 import { RecordDetailRequestParams } from '../types/RecordDetailRequestParams';
 
@@ -23,6 +24,12 @@ export const getRecordDetailList = async (
       params
     }
   );
+
+  return response.data;
+};
+
+export const gerRecordDetailById = async (id: string) => {
+  const response = await api.get<RecordDetailExtenseViewModel>(`/record-details/FindById/${id}`);
 
   return response.data;
 };
