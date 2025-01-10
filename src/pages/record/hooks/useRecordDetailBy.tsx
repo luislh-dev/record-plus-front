@@ -3,7 +3,7 @@ import { gerRecordDetailById } from '../service/recordService';
 
 export function useRecordDetailById(id: string) {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ['recordDetail', id],
+    queryKey: ['recordDetailById', id],
     queryFn: () => gerRecordDetailById(id),
     enabled: !!id
   });
