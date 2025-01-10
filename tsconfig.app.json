@@ -14,7 +14,9 @@
       "@/hooks/*": ["src/hooks/*"],
       "@/services/*": ["src/services/*"],
       "@/types/*": ["src/types/*"],
-      "@/test/*": ["src/test/*"]
+      "@/test/*": ["src/test/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/icons/": ["src/icons/"]
     },
 
     /* Bundler mode */
