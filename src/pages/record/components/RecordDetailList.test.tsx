@@ -1,4 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useRecordDetailSearch } from '../hooks/useRecordDetailSearch';
 import { RecordDetailListResponseDto } from '../types/RecordDetailListResponseDto';
@@ -46,7 +47,11 @@ describe('RecordDetailList', () => {
       hasNextPage: false
     });
 
-    render(<RecordDetailList personId="123" />);
+    render(
+      <BrowserRouter>
+        <RecordDetailList personId="123" />
+      </BrowserRouter>
+    );
 
     await waitFor(() => {
       // Verificar que se muestra la información del registro
