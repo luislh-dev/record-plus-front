@@ -4,7 +4,7 @@ const variantClasses = {
   // Títulos principales del sistema
   hero: 'text-4xl sm:text-5xl md:text-7xl font-bold uppercase tracking-tight',
   'page-title': 'text-5xl font-bold tracking-tight',
-  'section-title': 'text-3xl font-semibold',
+  'section-title': 'text-3xl font-bold',
   subsection: 'text-2xl font-medium',
   'group-title': 'text-xl font-medium',
   'record-title': 'text-lg font-medium',
@@ -17,7 +17,8 @@ const variantClasses = {
 
   // Variantes especiales
   button: 'text-sm font-semibold tracking-wide',
-  label: 'text-sm font-medium uppercase tracking-wide',
+  label: 'text-sm font-semibold tracking-wide',
+  'label-content': 'text-sm font-normal',
   metric: 'text-4xl font-bold',
   status: 'text-sm font-semibold uppercase',
   error: 'text-xs'
