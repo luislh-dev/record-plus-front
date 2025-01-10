@@ -21,6 +21,33 @@ export const usePDFRenderer = (src: string) => {
   const renderTaskRef = useRef<pdfjs.RenderTask | null>(null);
   const initialRenderDone = useRef(false);
 
+  const [renderedPages, setRenderedPages] = useState<number[]>([]);
+
+  // Función para renderizar una página específica
+  const renderPage = async (pageNumber: number, canvas: HTMLCanvasElement) => {
+    if (!pdfDoc) return;
+
+    try {
+      const page = await pdfDoc.getPage(pageNumber);
+      const viewport = page.getViewport({ scale });
+
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      const renderContext: RenderParameters = {
+        canvasContext: canvas.getContext('2d')!,
+        viewport
+      };
+
+      await page.render(renderContext).promise;
+      if (!renderedPages.includes(pageNumber)) {
+        setRenderedPages(prev => [...prev, pageNumber]);
+      }
+    } catch (error) {
+      console.error(`Error rendering page ${pageNumber}:`, error);
+    }
+  };
+
   // Función para encontrar el scale más cercano
   const findNearestScale = (currentScale: number): number => {
     return ALLOWED_SCALES.reduce((prev, curr) =>
@@ -156,6 +183,7 @@ export const usePDFRenderer = (src: string) => {
   }, [pdfDoc]);
 
   const nextPage = () => pdfDoc && currentPage < pdfDoc.numPages && setCurrentPage(currentPage + 1);
+
   const prevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
 
   const downloadPDF = async () => downloadFile(src);
@@ -172,6 +200,10 @@ export const usePDFRenderer = (src: string) => {
     prevPage,
     zoomIn,
     zoomOut,
-    downloadPDF
+    downloadPDF,
+
+    // Funciones de renderizado de páginas
+    renderPage,
+    renderedPages
   };
 };

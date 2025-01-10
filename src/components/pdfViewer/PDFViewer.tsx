@@ -16,7 +16,8 @@ export const PDFViewer = ({ src }: PDFViewerProps) => {
     prevPage,
     zoomIn,
     zoomOut,
-    downloadPDF
+    downloadPDF,
+    renderPage
   } = usePDFRenderer(src);
 
   return (
@@ -49,7 +50,13 @@ export const PDFViewer = ({ src }: PDFViewerProps) => {
               downloadPdf={downloadPDF}
             />
             <div className="flex-1 w-full h-[calc(100%-48px)] ">
-              <PDFCanvas canvasRef={canvasRef} />
+              <PDFCanvas
+                currentPage={currentPage}
+                canvasRef={canvasRef}
+                renderPage={renderPage}
+                totalPages={pdfDoc?.numPages}
+                onPageChange={setCurrentPage}
+              />
             </div>
           </div>
         )}
