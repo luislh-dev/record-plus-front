@@ -9,6 +9,7 @@ import { Login } from '@/pages/Login';
 import People from '@/pages/people/People';
 import { PeopleDetail } from '@/pages/people/PeopleDetail';
 import { CreateRecordDetail } from '@/pages/record/pages/CreateRecordDetail';
+import { RecordDetail } from '@/pages/record/RecordDetail';
 import User from '@/pages/user/User';
 import { UserAdd } from '@/pages/user/UserAdd';
 import { PrivateRoute } from '@/routes/PrivateRoute';
@@ -134,6 +135,19 @@ export const router = createBrowserRouter([
                     <CreateRecordDetail />
                   </RoleBasedRoute>
                 )
+              },
+              {
+                path: 'record',
+                children: [
+                  {
+                    path: ':recordId',
+                    element: (
+                      <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
+                        <RecordDetail />
+                      </RoleBasedRoute>
+                    )
+                  }
+                ]
               }
             ]
           }

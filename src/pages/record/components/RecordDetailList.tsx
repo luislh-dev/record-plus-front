@@ -6,6 +6,7 @@ import { Image } from '@/icons/Image';
 import { Reloj } from '@/icons/Reloj';
 import { Button, Chip } from '@nextui-org/react';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecordDetailSearch } from '../hooks/useRecordDetailSearch';
 import { FileDetailDto } from '../types/RecordDetailListResponseDto';
 import { DateRangeFilter } from './DateRangeFilter';
@@ -71,8 +72,10 @@ export default function RecordDetailList({ personId }: RecordDetailListProps) {
     setPersonId(personId || null);
   }, [personId, setPersonId]);
 
+  const navigate = useNavigate();
+
   return (
-    <div>
+    <>
       <div className="flex flex-wrap items-center p-4 gap-4">
         {/* Search */}
         <div className="w-80 ">
@@ -110,6 +113,7 @@ export default function RecordDetailList({ personId }: RecordDetailListProps) {
             {recordDetails.map(recordDetail => (
               <div
                 key={recordDetail.id}
+                onClick={() => navigate(`/people/${personId}/detail/record/${recordDetail.id}`)}
                 className="p-4 flex flex-col sm:flex-row sm:justify-between gap-4 hover:bg-gray-50 transition-colors cursor-pointer group"
               >
                 {/* Hospital Info */}
@@ -150,6 +154,6 @@ export default function RecordDetailList({ personId }: RecordDetailListProps) {
           )}
         </div>
       )}
-    </div>
+    </>
   );
 }
