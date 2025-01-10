@@ -4,26 +4,23 @@ import { Download } from '@/icons/Download';
 import { ZoomIn } from '@/icons/ZoomIn';
 import { ZoomOut } from '@/icons/ZoomOut';
 import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
-import { PDFControlsProps } from '../types/PDFControlsProps';
+import { usePDFStore } from '../store/usePDFStore';
 
-export const PDFControls = ({
-  currentPage,
-  totalPages,
-  scale,
-  onChangePage,
-  onPrevPage,
-  onNextPage,
-  onZoomIn,
-  onZoomOut,
-  downloadPdf
-}: PDFControlsProps) => {
+export const PDFControls = () => {
+  const { currentPage, pdfDoc, scale, handlePageChange, zoomIn, zoomOut, downloadPDF } =
+    usePDFStore();
+
+  const totalPages = pdfDoc?.numPages;
+
   return (
     <div className="flex items-center justify-between mb-2">
       <div className="flex  justify-between w-full items-center gap-4">
         {/* Navigation */}
         <div className="flex items-center gap-2">
           <button
-            onClick={onPrevPage}
+            onClick={() => {
+              handlePageChange(currentPage - 1, 'control');
+            }}
             disabled={currentPage <= 1}
             className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300"
           >
@@ -37,7 +34,7 @@ export const PDFControls = ({
               onChange={e => {
                 const value = parseInt(e.target.value);
                 if (value > 0 && value <= (totalPages ?? 1)) {
-                  onChangePage(value);
+                  handlePageChange(value, 'input');
                 }
               }}
             />
@@ -45,7 +42,9 @@ export const PDFControls = ({
             <span>{totalPages || '-'}</span>
           </div>
           <button
-            onClick={onNextPage}
+            onClick={() => {
+              handlePageChange(currentPage + 1, 'control');
+            }}
             disabled={currentPage >= (totalPages ?? -1)}
             className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300"
           >
@@ -55,26 +54,20 @@ export const PDFControls = ({
 
         {/* Zoom */}
         <div className="flex items-center gap-2">
-          <button
-            onClick={onZoomOut}
-            className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300"
-          >
+          <button onClick={zoomOut} className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300">
             <ZoomOut className="w-5 h-5" />
           </button>
           <span className="text-sm min-w-16 text-center hidden md:block">
             {Math.round(scale * 100)}%
           </span>
-          <button
-            onClick={onZoomIn}
-            className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300"
-          >
+          <button onClick={zoomIn} className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300">
             <ZoomIn className="w-5 h-5" />
           </button>
         </div>
 
         {/* Download */}
         <button
-          onClick={downloadPdf}
+          onClick={downloadPDF}
           className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300"
         >
           <Download className="w-5 h-5" />

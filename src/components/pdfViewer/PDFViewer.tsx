@@ -1,29 +1,26 @@
+import { useEffect } from 'react';
 import { PDFCanvas } from './components/PDFCanvas';
 import { PDFControls } from './components/PDFControls';
-import { usePDFRenderer } from './hooks/usePDFRenderer';
+import { configurePDFJS } from './config/pdfConfig';
+import { usePDFStore } from './store/usePDFStore';
 import type { PDFViewerProps } from './types/PDFViewerProps';
 
 export const PDFViewer = ({ src }: PDFViewerProps) => {
-  const {
-    canvasRef,
-    containerRef,
-    pdfDoc,
-    currentPage,
-    scale,
-    isLoading,
-    setCurrentPage,
-    nextPage,
-    prevPage,
-    zoomIn,
-    zoomOut,
-    downloadPDF,
-    renderPage
-  } = usePDFRenderer(src);
+  const { isLoading, initialize } = usePDFStore();
+
+  // Configurar PDF.js una vez al montar el componente
+  useEffect(() => {
+    configurePDFJS();
+  }, []);
+
+  // Inicializar el PDF cuando cambia la fuente
+  useEffect(() => {
+    initialize(src);
+  }, [src, initialize]);
 
   return (
     <div className="w-full max-w-5xl mx-auto px-4">
       <div
-        ref={containerRef}
         className="w-full bg-gray-200 rounded-lg shadow-2xl p-4"
         style={
           {
@@ -38,25 +35,9 @@ export const PDFViewer = ({ src }: PDFViewerProps) => {
           </div>
         ) : (
           <div className="flex flex-col h-full">
-            <PDFControls
-              currentPage={currentPage}
-              totalPages={pdfDoc?.numPages}
-              scale={scale}
-              onChangePage={setCurrentPage}
-              onPrevPage={prevPage}
-              onNextPage={nextPage}
-              onZoomIn={zoomIn}
-              onZoomOut={zoomOut}
-              downloadPdf={downloadPDF}
-            />
+            <PDFControls />
             <div className="flex-1 w-full h-[calc(100%-48px)] ">
-              <PDFCanvas
-                currentPage={currentPage}
-                canvasRef={canvasRef}
-                renderPage={renderPage}
-                totalPages={pdfDoc?.numPages}
-                onPageChange={setCurrentPage}
-              />
+              <PDFCanvas />
             </div>
           </div>
         )}

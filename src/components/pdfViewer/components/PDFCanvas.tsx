@@ -1,102 +1,117 @@
-import { RefObject, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { usePDFStore } from '../store/usePDFStore';
 
-interface PDFCanvasProps {
-  canvasRef: RefObject<HTMLCanvasElement>;
-  renderPage: (pageNumber: number, canvas: HTMLCanvasElement) => Promise<void>;
-  currentPage: number;
-  onPageChange: (pageNumber: number) => void;
-  totalPages?: number;
-}
+export const PDFCanvas = () => {
+  const {
+    pdfDoc,
+    currentPage,
+    isControlChange,
+    handlePageChange,
+    renderPage,
+    scale,
+    initialPagesLoaded
+  } = usePDFStore();
 
-export const PDFCanvas = ({
-  canvasRef,
-  renderPage,
-  totalPages = 1,
-  currentPage,
-  onPageChange
-}: PDFCanvasProps) => {
   const [shouldCenter, setShouldCenter] = useState(true);
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Pre-inicializar el array de refs
   useEffect(() => {
-    // Pre-inicializar el array de refs
-    canvasRefs.current = Array(totalPages).fill(null);
-  }, [totalPages]);
+    canvasRefs.current = Array(pdfDoc?.numPages || 0).fill(null);
+  }, [pdfDoc?.numPages]);
 
-  // Renderizar cada página cuando el canvas está disponible
+  // Renderizar páginas cuando están disponibles
   useEffect(() => {
-    canvasRefs.current.forEach((canvas, index) => {
-      if (canvas) {
-        renderPage(index + 1, canvas);
-      }
-    });
-  }, [renderPage, totalPages]);
+    if (!pdfDoc) return;
 
-  // Efecto para manejar el scroll cuando cambia la página
-  useEffect(() => {
-    const scrollToCurrentPage = () => {
-      const container = containerRef.current;
-      const currentCanvas = canvasRefs.current[currentPage - 1];
-
-      if (container && currentCanvas) {
-        currentCanvas.scrollIntoView({
-          behavior: 'smooth',
-          block: 'start'
-        });
+    // Priorizar renderizado de las primeras páginas
+    const renderInitialPages = async () => {
+      const initialPages = [1, 2];
+      for (const pageNum of initialPages) {
+        const canvas = canvasRefs.current[pageNum - 1];
+        if (canvas) {
+          await renderPage(pageNum, canvas);
+        }
       }
     };
 
-    scrollToCurrentPage();
-  }, [currentPage]);
+    // Renderizar el resto de páginas
+    const renderRemainingPages = async () => {
+      for (let i = 2; i < pdfDoc.numPages; i++) {
+        const canvas = canvasRefs.current[i];
+        if (canvas) {
+          await renderPage(i + 1, canvas);
+        }
+      }
+    };
 
-  // Centrar el canvas si es más pequeño que el contenedor
+    renderInitialPages().then(() => {
+      if (initialPagesLoaded) {
+        renderRemainingPages();
+      }
+    });
+  }, [pdfDoc, renderPage, scale, initialPagesLoaded]);
+
+  // Scroll a la página actual cuando cambia por control
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!isControlChange || !initialPagesLoaded) return;
+
+    const currentCanvas = canvasRefs.current[currentPage - 1];
+    if (currentCanvas) {
+      currentCanvas.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  }, [currentPage, isControlChange, initialPagesLoaded]);
+
+  // Observer para centrar el canvas
+  useEffect(() => {
+    const canvas = canvasRefs.current[0];
+    if (!canvas) return;
 
     const observer = new ResizeObserver(() => {
-      const canvas = canvasRef.current;
-      const container = canvas?.parentElement?.parentElement;
-
-      if (canvas && container) {
+      const container = canvas.parentElement?.parentElement;
+      if (container) {
         setShouldCenter(canvas.width < container.clientWidth);
       }
     });
 
-    if (canvasRef.current) {
-      observer.observe(canvasRef.current);
-    }
-
+    observer.observe(canvas);
     return () => observer.disconnect();
-  }, [canvasRef]);
+  }, []);
 
+  // Observer para cambio de página al hacer scroll
   useEffect(() => {
-    const options = {
-      root: containerRef.current,
-      threshold: 0.5 // 50% de visibilidad
-    };
+    if (!initialPagesLoaded) return;
 
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const pageDiv = entry.target as HTMLDivElement;
-          const pageNumber = parseInt(pageDiv.getAttribute('data-page') || '1');
-          onPageChange(pageNumber);
-        }
-      });
-    }, options);
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !isControlChange) {
+            const pageDiv = entry.target as HTMLDivElement;
+            const pageNumber = parseInt(pageDiv.getAttribute('data-page') || '1');
+            handlePageChange(pageNumber, 'scroll');
+          }
+        });
+      },
+      {
+        root: containerRef.current,
+        threshold: 0.6
+      }
+    );
 
-    // Observar cada div de página
     const pageElements = document.querySelectorAll('[data-page]');
     pageElements.forEach(element => observer.observe(element));
 
     return () => observer.disconnect();
-  }, [onPageChange]);
+  }, [handlePageChange, isControlChange, initialPagesLoaded]);
 
   return (
     <div ref={containerRef} className="w-full h-full overflow-auto bg-gray-100 rounded-md">
       <div className="flex flex-col items-center gap-4 p-4">
-        {Array.from({ length: totalPages }, (_, index) => (
+        {Array.from({ length: pdfDoc?.numPages || 0 }, (_, index) => (
           <div
             key={`page-${index + 1}`}
             data-page={index + 1}
