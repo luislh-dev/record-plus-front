@@ -86,13 +86,9 @@ export const usePDFStore = create<PDFStore>((set, get) => ({
 
       await page.render(renderContext).promise;
 
-      // Marcar las páginas iniciales como cargadas cuando se renderizan las primeras 2
-      if (!initialPagesLoaded && pageNumber <= 2) {
-        const otherInitialPage = pageNumber === 1 ? 2 : 1;
-        const otherCanvas = document.querySelector(`[data-page="${otherInitialPage}"] canvas`);
-        if (otherCanvas) {
-          setInitialPagesLoaded(true);
-        }
+      // Marcar las páginas iniciales como cargadas cuando se renderizan las primeras dos páginas
+      if (!initialPagesLoaded && pageNumber === 2) {
+        setInitialPagesLoaded(true);
       }
     } catch (error) {
       console.error(`Error rendering page ${pageNumber}:`, error);
