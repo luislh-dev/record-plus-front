@@ -86,6 +86,11 @@ export const PDFCanvas = () => {
   useEffect(() => {
     if (!initialPagesLoaded) return;
 
+    // Si la pantalla es pequeña, el threshold debe ser 1
+    // en lugar de 0.5 para evitar que inicie en la página incorrecta
+    // o que se salte una página al hacer scroll
+    const threshold = window.innerWidth < 768 ? 1 : 0.5;
+
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
@@ -98,7 +103,7 @@ export const PDFCanvas = () => {
       },
       {
         root: containerRef.current,
-        threshold: 0.6
+        threshold: threshold
       }
     );
 
@@ -106,7 +111,7 @@ export const PDFCanvas = () => {
     pageElements.forEach(element => observer.observe(element));
 
     return () => observer.disconnect();
-  }, [handlePageChange, isControlChange, initialPagesLoaded]);
+  }, [handlePageChange, isControlChange, initialPagesLoaded, scale]);
 
   return (
     <div ref={containerRef} className="w-full h-full overflow-auto bg-gray-100 rounded-md">
