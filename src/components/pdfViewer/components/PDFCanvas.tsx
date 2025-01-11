@@ -2,16 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { usePDFStore } from '../store/usePDFStore';
 
 export const PDFCanvas = () => {
-  const {
-    pdfDoc,
-    currentPage,
-    isControlChange,
-    handlePageChange,
-    renderPage,
-    scale,
-    initialPagesLoaded
-  } = usePDFStore();
-
+  const { pdfDoc, currentPage, isControlChange, renderPage, scale } = usePDFStore();
   const [shouldCenter, setShouldCenter] = useState(true);
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -47,15 +38,13 @@ export const PDFCanvas = () => {
     };
 
     renderInitialPages().then(() => {
-      if (initialPagesLoaded) {
-        renderRemainingPages();
-      }
+      renderRemainingPages();
     });
-  }, [pdfDoc, renderPage, scale, initialPagesLoaded]);
+  }, [pdfDoc, renderPage, scale]);
 
   // Scroll a la página actual cuando cambia por control
   useEffect(() => {
-    if (!isControlChange || !initialPagesLoaded) return;
+    if (!isControlChange) return;
 
     const currentCanvas = canvasRefs.current[currentPage - 1];
     if (currentCanvas) {
@@ -64,7 +53,7 @@ export const PDFCanvas = () => {
         block: 'start'
       });
     }
-  }, [currentPage, isControlChange, initialPagesLoaded]);
+  }, [currentPage, isControlChange]);
 
   // Observer para centrar el canvas
   useEffect(() => {
@@ -81,37 +70,6 @@ export const PDFCanvas = () => {
     observer.observe(canvas);
     return () => observer.disconnect();
   }, []);
-
-  // Observer para cambio de página al hacer scroll
-  useEffect(() => {
-    if (!initialPagesLoaded) return;
-
-    // Si la pantalla es pequeña, el threshold debe ser 1
-    // en lugar de 0.5 para evitar que inicie en la página incorrecta
-    // o que se salte una página al hacer scroll
-    const threshold = window.innerWidth < 768 ? 1 : 0.5;
-
-    const observer = new IntersectionObserver(
-      entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting && !isControlChange) {
-            const pageDiv = entry.target as HTMLDivElement;
-            const pageNumber = parseInt(pageDiv.getAttribute('data-page') || '1');
-            handlePageChange(pageNumber, 'scroll');
-          }
-        });
-      },
-      {
-        root: containerRef.current,
-        threshold: threshold
-      }
-    );
-
-    const pageElements = document.querySelectorAll('[data-page]');
-    pageElements.forEach(element => observer.observe(element));
-
-    return () => observer.disconnect();
-  }, [handlePageChange, isControlChange, initialPagesLoaded, scale]);
 
   return (
     <div ref={containerRef} className="w-full h-full overflow-auto bg-gray-100 rounded-md">

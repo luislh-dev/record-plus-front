@@ -2,17 +2,11 @@ import { ThumbnailBard } from '@/icons/ThumbnailBard';
 import { useEffect } from 'react';
 import { PDFCanvas } from './components/PDFCanvas';
 import { PDFControls } from './components/PDFControls';
-import { configurePDFJS } from './config/pdfConfig';
 import { usePDFStore } from './store/usePDFStore';
 import type { PDFViewerProps } from './types/PDFViewerProps';
 
 export const PDFViewer = ({ src }: PDFViewerProps) => {
   const { isLoading, initialize } = usePDFStore();
-
-  // Configurar PDF.js una vez al montar el componente
-  useEffect(() => {
-    configurePDFJS();
-  }, []);
 
   // Inicializar el PDF cuando cambia la fuente
   useEffect(() => {

@@ -3,6 +3,7 @@ import { PDFDocumentProxy } from 'pdfjs-dist/types/src/display/api';
 
 import * as pdfjs from 'pdfjs-dist';
 import { create } from 'zustand';
+import { configurePDFJS } from '../config/pdfConfig';
 import { ALLOWED_SCALES, DEFAULT_SCALE } from '../config/Zoom';
 import { PageChangeSource } from '../types/PageChangeSource';
 import { downloadFile } from '../utils/DownloadFIles';
@@ -13,7 +14,6 @@ interface PDFStore {
   scale: number;
   isLoading: boolean;
   isControlChange: boolean;
-  initialPagesLoaded: boolean;
   src: string | null;
 
   // Acciones básicas
@@ -21,7 +21,6 @@ interface PDFStore {
   setPdfDoc: (doc: PDFDocumentProxy) => void;
   setCurrentPage: (page: number, source: PageChangeSource) => void;
   setScale: (scale: number) => void;
-  setInitialPagesLoaded: (loaded: boolean) => void;
   setIsControlChange: (isControl: boolean) => void;
 
   // Acciones compuestas
@@ -33,120 +32,115 @@ interface PDFStore {
   zoomOut: () => void;
 }
 
-export const usePDFStore = create<PDFStore>((set, get) => ({
-  pdfDoc: null,
-  currentPage: 1,
-  scale: DEFAULT_SCALE,
-  isLoading: true,
-  isControlChange: false,
-  initialPagesLoaded: false,
-  src: null,
+export const usePDFStore = create<PDFStore>((set, get) => {
+  configurePDFJS();
 
-  // Acciones básicas
-  setSrc: src => set({ src }),
-  setPdfDoc: doc => set({ pdfDoc: doc }),
-  setScale: scale => set({ scale }),
-  setInitialPagesLoaded: loaded => set({ initialPagesLoaded: loaded }),
+  return {
+    pdfDoc: null,
+    currentPage: 1,
+    scale: DEFAULT_SCALE,
+    isLoading: true,
+    isControlChange: false,
+    src: null,
 
-  setIsControlChange: isControl => set({ isControlChange: isControl }),
+    // Acciones básicas
+    setSrc: src => set({ src }),
+    setPdfDoc: doc => set({ pdfDoc: doc }),
+    setScale: scale => set({ scale }),
 
-  setCurrentPage: (page, source) => {
-    const { pdfDoc } = get();
-    if (!pdfDoc || page < 1 || page > pdfDoc.numPages) return;
+    setIsControlChange: isControl => set({ isControlChange: isControl }),
 
-    set({
-      currentPage: page,
-      isControlChange: source === 'control' || source === 'input'
-    });
+    setCurrentPage: (page, source) => {
+      const { pdfDoc } = get();
+      if (!pdfDoc || page < 1 || page > pdfDoc.numPages) return;
 
-    // Resetear isControlChange después de un breve delay
-    if (source === 'control' || source === 'input') {
-      setTimeout(() => {
-        set({ isControlChange: false });
-      }, 1000); // Tiempo de espera para evitar cambios de página duplicados
-    }
-  },
-
-  // Renderizado optimizado de página
-  renderPage: async (pageNumber, canvas) => {
-    const { pdfDoc, scale, initialPagesLoaded, setInitialPagesLoaded } = get();
-    if (!pdfDoc) return;
-
-    try {
-      const page = await pdfDoc.getPage(pageNumber);
-      const viewport = page.getViewport({ scale });
-
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-
-      const renderContext = {
-        canvasContext: canvas.getContext('2d')!,
-        viewport
-      };
-
-      await page.render(renderContext).promise;
-
-      // Marcar las páginas iniciales como cargadas cuando se renderizan las primeras dos páginas
-      if (!initialPagesLoaded && pageNumber === 2) {
-        setInitialPagesLoaded(true);
-      }
-    } catch (error) {
-      console.error(`Error rendering page ${pageNumber}:`, error);
-    }
-  },
-
-  handlePageChange: (page, source) => {
-    const { setCurrentPage, initialPagesLoaded } = get();
-    if (!initialPagesLoaded) return;
-    setCurrentPage(page, source);
-  },
-
-  // Inicialización del PDF
-  initialize: async (src: string, scale?: number) => {
-    const { setPdfDoc, setSrc } = get();
-
-    set({
-      isLoading: true,
-      currentPage: 1,
-      initialPagesLoaded: false
-    });
-    setSrc(src);
-
-    try {
-      const loadingTask = pdfjs.getDocument({
-        url: src,
-        useSystemFonts: true
-      });
-
-      const loadedDoc = await loadingTask.promise;
-      setPdfDoc(loadedDoc);
       set({
-        scale: scale ?? DEFAULT_SCALE,
-        isLoading: false
+        currentPage: page,
+        isControlChange: source === 'control' || source === 'input'
       });
-    } catch (error) {
-      console.error('Error loading PDF:', error);
-      set({ isLoading: false });
+
+      // Resetear isControlChange después de un breve delay
+      if (source === 'control' || source === 'input') {
+        setTimeout(() => {
+          set({ isControlChange: false });
+        }, 1000); // Tiempo de espera para evitar cambios de página duplicados
+      }
+    },
+
+    // Renderizado optimizado de página
+    renderPage: async (pageNumber, canvas) => {
+      const { pdfDoc, scale } = get();
+      if (!pdfDoc) return;
+
+      try {
+        const page = await pdfDoc.getPage(pageNumber);
+        const viewport = page.getViewport({ scale });
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        const renderContext = {
+          canvasContext: canvas.getContext('2d')!,
+          viewport
+        };
+
+        await page.render(renderContext).promise;
+      } catch (error) {
+        console.error(`Error rendering page ${pageNumber}:`, error);
+      }
+    },
+
+    handlePageChange: (page, source) => {
+      const { setCurrentPage } = get();
+      setCurrentPage(page, source);
+    },
+
+    // Inicialización del PDF
+    initialize: async (src: string, scale?: number) => {
+      const { setPdfDoc, setSrc } = get();
+
+      set({
+        isLoading: true,
+        currentPage: 1
+      });
+      setSrc(src);
+
+      try {
+        const loadingTask = pdfjs.getDocument({
+          url: src,
+          useSystemFonts: true
+        });
+
+        const loadedDoc = await loadingTask.promise;
+        setPdfDoc(loadedDoc);
+        set({
+          scale: scale ?? DEFAULT_SCALE,
+          isLoading: false
+        });
+      } catch (error) {
+        console.error('Error loading PDF:', error);
+        set({ isLoading: false });
+      }
+    },
+
+    // Zoom y descarga
+    zoomIn: () =>
+      set(state => {
+        const currentIndex = ALLOWED_SCALES.findIndex(s => s >= state.scale);
+        return currentIndex < ALLOWED_SCALES.length - 1
+          ? { scale: ALLOWED_SCALES[currentIndex + 1] }
+          : state;
+      }),
+
+    zoomOut: () =>
+      set(state => {
+        const currentIndex = ALLOWED_SCALES.findIndex(s => s >= state.scale);
+        return currentIndex > 0 ? { scale: ALLOWED_SCALES[currentIndex - 1] } : state;
+      }),
+
+    downloadPDF: () => {
+      const { src } = get();
+      if (src) downloadFile(src);
     }
-  },
-
-  // Zoom y descarga
-  zoomIn: () =>
-    set(state => {
-      const currentIndex = ALLOWED_SCALES.findIndex(s => s >= state.scale);
-      return currentIndex < ALLOWED_SCALES.length - 1
-        ? { scale: ALLOWED_SCALES[currentIndex + 1] }
-        : state;
-    }),
-
-  zoomOut: () =>
-    set(state => {
-      const currentIndex = ALLOWED_SCALES.findIndex(s => s >= state.scale);
-      return currentIndex > 0 ? { scale: ALLOWED_SCALES[currentIndex - 1] } : state;
-    }),
-
-  downloadPDF: () => {
-    const { src } = get();
-    if (src) downloadFile(src);
-  }
-}));
+  };
+});
