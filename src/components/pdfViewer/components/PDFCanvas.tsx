@@ -35,8 +35,8 @@ export const PDFCanvas = () => {
     if (!canvas) return;
 
     const observer = new ResizeObserver(() => {
-      const container = canvas.parentElement?.parentElement;
-      if (container) {
+      const container = containerRef.current;
+      if (container && canvas) {
         setShouldCenter(canvas.width < container.clientWidth);
       }
     });
