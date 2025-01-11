@@ -22,6 +22,7 @@ interface PDFStore {
   setCurrentPage: (page: number, source: PageChangeSource) => void;
   setScale: (scale: number) => void;
   setInitialPagesLoaded: (loaded: boolean) => void;
+  setIsControlChange: (isControl: boolean) => void;
 
   // Acciones compuestas
   renderPage: (pageNumber: number, canvas: HTMLCanvasElement) => Promise<void>;
@@ -47,6 +48,8 @@ export const usePDFStore = create<PDFStore>((set, get) => ({
   setScale: scale => set({ scale }),
   setInitialPagesLoaded: loaded => set({ initialPagesLoaded: loaded }),
 
+  setIsControlChange: isControl => set({ isControlChange: isControl }),
+
   setCurrentPage: (page, source) => {
     const { pdfDoc } = get();
     if (!pdfDoc || page < 1 || page > pdfDoc.numPages) return;
@@ -55,6 +58,13 @@ export const usePDFStore = create<PDFStore>((set, get) => ({
       currentPage: page,
       isControlChange: source === 'control' || source === 'input'
     });
+
+    // Resetear isControlChange después de un breve delay
+    if (source === 'control' || source === 'input') {
+      setTimeout(() => {
+        set({ isControlChange: false });
+      }, 1000); // Tiempo de espera para evitar cambios de página duplicados
+    }
   },
 
   // Renderizado optimizado de página
