@@ -27,7 +27,7 @@ interface PDFStore {
   // Acciones compuestas
   renderPage: (pageNumber: number, canvas: HTMLCanvasElement) => Promise<void>;
   handlePageChange: (page: number, source: PageChangeSource) => void;
-  initialize: (src: string) => Promise<void>;
+  initialize: (src: string, scaleInitial?: number) => Promise<void>;
   downloadPDF: () => void;
   zoomIn: () => void;
   zoomOut: () => void;
@@ -102,7 +102,7 @@ export const usePDFStore = create<PDFStore>((set, get) => ({
   },
 
   // Inicialización del PDF
-  initialize: async (src: string) => {
+  initialize: async (src: string, scale?: number) => {
     const { setPdfDoc, setSrc } = get();
 
     set({
@@ -121,7 +121,7 @@ export const usePDFStore = create<PDFStore>((set, get) => ({
       const loadedDoc = await loadingTask.promise;
       setPdfDoc(loadedDoc);
       set({
-        scale: DEFAULT_SCALE,
+        scale: scale ?? DEFAULT_SCALE,
         isLoading: false
       });
     } catch (error) {
