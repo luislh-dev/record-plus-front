@@ -7,40 +7,14 @@ export const PDFCanvas = () => {
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Pre-inicializar el array de refs
-  useEffect(() => {
-    canvasRefs.current = Array(pdfDoc?.numPages || 0).fill(null);
-  }, [pdfDoc?.numPages]);
-
   // Renderizar páginas cuando están disponibles
   useEffect(() => {
-    if (!pdfDoc) return;
-
-    // Priorizar renderizado de las primeras páginas
-    const renderInitialPages = async () => {
-      const initialPages = [1, 2];
-      for (const pageNum of initialPages) {
-        const canvas = canvasRefs.current[pageNum - 1];
-        if (canvas) {
-          await renderPage(pageNum, canvas);
-        }
+    canvasRefs.current.forEach((canvas, index) => {
+      if (canvas) {
+        renderPage(index + 1, canvas);
       }
-    };
-
-    // Renderizar el resto de páginas
-    const renderRemainingPages = async () => {
-      for (let i = 2; i < pdfDoc.numPages; i++) {
-        const canvas = canvasRefs.current[i];
-        if (canvas) {
-          await renderPage(i + 1, canvas);
-        }
-      }
-    };
-
-    renderInitialPages().then(() => {
-      renderRemainingPages();
     });
-  }, [pdfDoc, renderPage, scale]);
+  }, [renderPage, pdfDoc, scale]);
 
   // Scroll a la página actual cuando cambia por control
   useEffect(() => {
@@ -69,20 +43,25 @@ export const PDFCanvas = () => {
 
     observer.observe(canvas);
     return () => observer.disconnect();
-  }, []);
+  }, [scale]);
 
   return (
-    <div ref={containerRef} className="w-full h-full overflow-auto bg-gray-100 rounded-md">
-      <div className="flex flex-col items-center gap-4 p-4">
+    <div ref={containerRef} className="absolute inset-0 overflow-auto bg-gray-100 rounded-md">
+      <div className={`flex flex-col gap-4 p-4 min-h-full ${shouldCenter ? 'items-center' : ''}`}>
         {Array.from({ length: pdfDoc?.numPages || 0 }, (_, index) => (
           <div
             key={`page-${index + 1}`}
             data-page={index + 1}
-            className={`inline-block p-2 ${shouldCenter ? 'w-full text-center' : ''}`}
+            className={`inline-block ${shouldCenter ? 'flex justify-center' : ''}`}
           >
             <canvas
               ref={el => (canvasRefs.current[index] = el)}
-              className="shadow-2xl inline-block"
+              className="shadow-2xl"
+              style={{
+                maxWidth: 'none',
+                width: 'auto',
+                height: 'auto'
+              }}
             />
           </div>
         ))}
