@@ -109,7 +109,11 @@ export const usePDFStore = create<PDFStore>((set, get) => ({
   initialize: async (src: string) => {
     const { setPdfDoc, setSrc } = get();
 
-    set({ isLoading: true });
+    set({
+      isLoading: true,
+      currentPage: 1,
+      initialPagesLoaded: false
+    });
     setSrc(src);
 
     try {
