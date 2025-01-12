@@ -61,7 +61,7 @@ export const PDFControls = () => {
   }, [goToNextPage, goToPreviousPage, zoomIn, zoomOut]);
 
   return (
-    <div className="flex items-center justify-between mb-2">
+    <div className="flex items-center justify-between">
       <div className="flex  justify-between w-full items-center gap-4">
         {/* Navigation */}
         <div className="flex items-center gap-2">
