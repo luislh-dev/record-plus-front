@@ -2,10 +2,47 @@ import { useEffect, useRef, useState } from 'react';
 import { usePDFStore } from '../store/usePDFStore';
 
 export const PDFCanvas = () => {
-  const { pdfDoc, currentPage, isControlChange, renderPage, scale } = usePDFStore();
+  const {
+    pdfDoc,
+    currentPage,
+    setCurrentPage,
+    setIsControlChange,
+    isControlChange,
+    renderPage,
+    scale,
+    lastControlChange
+  } = usePDFStore();
   const [shouldCenter, setShouldCenter] = useState(true);
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isScrollBlocked, setIsScrollBlocked] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout>(); // Referencia para el timer
+
+  // Efecto para manejar el bloqueo cuando hay cambios por control
+  useEffect(() => {
+    // Solo activamos el bloqueo si el cambio viene de control/input
+    if (isControlChange) {
+      setIsScrollBlocked(true);
+
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+
+      // Configuramos un nuevo timer para desbloquear
+      timerRef.current = setTimeout(() => {
+        setIsScrollBlocked(false); // Desactivamos el bloqueo
+        setIsControlChange(false); // Reseteamos el estado de control
+      }, 1500); // Tiempo de bloqueo en ms
+
+      // Cleanup: aseguramos limpiar el timer si el componente se desmonta
+      // o si hay un nuevo cambio antes de que termine el timer
+      return () => {
+        if (timerRef.current) {
+          clearTimeout(timerRef.current);
+        }
+      };
+    }
+  }, [isControlChange, lastControlChange, setIsControlChange]);
 
   // Renderizar páginas cuando están disponibles
   useEffect(() => {
@@ -28,6 +65,34 @@ export const PDFCanvas = () => {
       });
     }
   }, [currentPage, isControlChange]);
+
+  // Observador para cambiar de pagina cuando se cambia el scroll
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          // Solo procesamos el cambio si no hay bloqueo activo
+          if (entry.isIntersecting && !isScrollBlocked) {
+            // verificación de bloqueo
+            const container = entry.target.closest('[data-page]');
+            const pageNumber = container ? Number(container.getAttribute('data-page')) : null;
+
+            if (pageNumber) {
+              setCurrentPage(pageNumber, 'scroll');
+            }
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+
+    const pageContainers = document.querySelectorAll('[data-page]');
+    pageContainers.forEach(container => {
+      observer.observe(container);
+    });
+
+    return () => observer.disconnect();
+  }, [setCurrentPage, isScrollBlocked]);
 
   // Observer para centrar el canvas
   useEffect(() => {

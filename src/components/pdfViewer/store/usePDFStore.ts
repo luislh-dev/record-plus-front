@@ -15,6 +15,7 @@ interface PDFStore {
   isLoading: boolean;
   isControlChange: boolean;
   src: string | null;
+  lastControlChange: number;
 
   // Acciones básicas
   setSrc: (src: string) => void;
@@ -42,6 +43,7 @@ export const usePDFStore = create<PDFStore>((set, get) => {
     isLoading: true,
     isControlChange: false,
     src: null,
+    lastControlChange: 0,
 
     // Acciones básicas
     setSrc: src => set({ src }),
@@ -56,15 +58,12 @@ export const usePDFStore = create<PDFStore>((set, get) => {
 
       set({
         currentPage: page,
-        isControlChange: source === 'control' || source === 'input'
-      });
+        isControlChange: source === 'control' || source === 'input',
 
-      // Resetear isControlChange después de un breve delay
-      if (source === 'control' || source === 'input') {
-        setTimeout(() => {
-          set({ isControlChange: false });
-        }, 1000); // Tiempo de espera para evitar cambios de página duplicados
-      }
+        // Actualizamos el timestamp solo si el cambio viene de control o input
+        lastControlChange:
+          source === 'control' || source === 'input' ? Date.now() : get().lastControlChange
+      });
     },
 
     // Renderizado optimizado de página
