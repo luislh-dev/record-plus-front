@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useCenterCanvas } from '../hooks/useCenterCanvas';
 import { usePDFStore } from '../store/usePDFStore';
 
 export const PDFCanvas = () => {
@@ -13,15 +14,20 @@ export const PDFCanvas = () => {
     lastControlChange,
     initialLoad
   } = usePDFStore();
-  const [shouldCenter, setShouldCenter] = useState(true);
+
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isScrollBlocked, setIsScrollBlocked] = useState(false);
   const timerRef = useRef<NodeJS.Timeout>(); // Referencia para el timer
 
-  // Efecto para manejar el bloqueo cuando hay cambios por control
+  const shouldCenter = useCenterCanvas({ containerRef, canvasRefs, scale });
+
+  /**
+   * Efecto para manejar el bloqueo temporal del scroll después de cambios por control
+   * Previene que el observer de intersección detecte cambios durante la navegación controlada
+   * El bloqueo se libera después de 1.5 segundos
+   */
   useEffect(() => {
-    // Solo activamos el bloqueo si el cambio viene de control/input
     if (isControlChange) {
       setIsScrollBlocked(true);
 
@@ -29,14 +35,11 @@ export const PDFCanvas = () => {
         clearTimeout(timerRef.current);
       }
 
-      // Configuramos un nuevo timer para desbloquear
       timerRef.current = setTimeout(() => {
-        setIsScrollBlocked(false); // Desactivamos el bloqueo
-        setIsControlChange(false); // Reseteamos el estado de control
-      }, 1500); // Tiempo de bloqueo en ms
+        setIsScrollBlocked(false);
+        setIsControlChange(false);
+      }, 1500);
 
-      // Cleanup: aseguramos limpiar el timer si el componente se desmonta
-      // o si hay un nuevo cambio antes de que termine el timer
       return () => {
         if (timerRef.current) {
           clearTimeout(timerRef.current);
@@ -45,7 +48,10 @@ export const PDFCanvas = () => {
     }
   }, [isControlChange, lastControlChange, setIsControlChange]);
 
-  // Renderizar páginas cuando están disponibles
+  /**
+   * Efecto para renderizar todas las páginas del PDF
+   * Se ejecuta cuando cambia el documento, la escala o la función de renderizado
+   */
   useEffect(() => {
     canvasRefs.current.forEach((canvas, index) => {
       if (canvas) {
@@ -54,7 +60,10 @@ export const PDFCanvas = () => {
     });
   }, [renderPage, pdfDoc, scale]);
 
-  // Scroll a la página actual cuando cambia por control
+  /**
+   * Efecto para scrollear automáticamente a la página seleccionada
+   * Solo se activa cuando el cambio viene desde los controles (no por scroll)
+   */
   useEffect(() => {
     if (!isControlChange) return;
 
@@ -67,7 +76,28 @@ export const PDFCanvas = () => {
     }
   }, [currentPage, isControlChange]);
 
-  // Observador para cambiar de pagina cuando se cambia el scroll
+  /**
+   * Efecto para manejar la carga inicial del PDF
+   * Fuerza el scroll a la primera página y establece el estado inicial
+   */
+  useEffect(() => {
+    if (initialLoad && pdfDoc) {
+      const firstCanvas = canvasRefs.current[0];
+      if (firstCanvas) {
+        firstCanvas.scrollIntoView({ behavior: 'auto', block: 'start' });
+        setCurrentPage(1, 'control');
+      }
+      setTimeout(() => {
+        usePDFStore.getState().setInitialLoad(false);
+      }, 100);
+    }
+  }, [initialLoad, pdfDoc, setCurrentPage]);
+
+  /**
+   * Efecto para detectar la página visible actual mediante Intersection Observer
+   * Actualiza el estado de la página actual basado en el scroll
+   * No se activa durante el bloqueo temporal o la carga inicial
+   */
   useEffect(() => {
     if (initialLoad) return;
 
@@ -75,7 +105,6 @@ export const PDFCanvas = () => {
       entries => {
         entries.forEach(entry => {
           if (entry.isIntersecting && !isScrollBlocked) {
-            // verificación de bloqueo
             const container = entry.target.closest('[data-page]');
             const pageNumber = container ? Number(container.getAttribute('data-page')) : null;
 
@@ -95,22 +124,6 @@ export const PDFCanvas = () => {
 
     return () => observer.disconnect();
   }, [setCurrentPage, isScrollBlocked, initialLoad]);
-
-  // Observer para centrar el canvas
-  useEffect(() => {
-    const canvas = canvasRefs.current[0];
-    if (!canvas) return;
-
-    const observer = new ResizeObserver(() => {
-      const container = containerRef.current;
-      if (container && canvas) {
-        setShouldCenter(canvas.width < container.clientWidth);
-      }
-    });
-
-    observer.observe(canvas);
-    return () => observer.disconnect();
-  }, [scale]);
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-auto bg-gray-100 rounded-md">
