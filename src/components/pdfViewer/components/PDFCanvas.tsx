@@ -67,21 +67,6 @@ export const PDFCanvas = () => {
     }
   }, [currentPage, isControlChange]);
 
-  useEffect(() => {
-    if (initialLoad && pdfDoc) {
-      // Force scroll to page 1 on initial load
-      const firstCanvas = canvasRefs.current[0];
-      if (firstCanvas) {
-        firstCanvas.scrollIntoView({ behavior: 'auto', block: 'start' });
-        setCurrentPage(1, 'control');
-      }
-      // Clear initial load flag after setup
-      setTimeout(() => {
-        usePDFStore.getState().setInitialLoad(false);
-      }, 100);
-    }
-  }, [initialLoad, pdfDoc, setCurrentPage]);
-
   // Observador para cambiar de pagina cuando se cambia el scroll
   useEffect(() => {
     if (initialLoad) return;
