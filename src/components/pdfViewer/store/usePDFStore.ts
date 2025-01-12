@@ -31,6 +31,9 @@ interface PDFStore {
   downloadPDF: () => void;
   zoomIn: () => void;
   zoomOut: () => void;
+
+  initialLoad: boolean;
+  setInitialLoad: (value: boolean) => void;
 }
 
 export const usePDFStore = create<PDFStore>((set, get) => {
@@ -44,6 +47,9 @@ export const usePDFStore = create<PDFStore>((set, get) => {
     isControlChange: false,
     src: null,
     lastControlChange: 0,
+    initialLoad: true,
+
+    setInitialLoad: value => set({ initialLoad: value }),
 
     // Acciones básicas
     setSrc: src => set({ src }),
@@ -100,7 +106,8 @@ export const usePDFStore = create<PDFStore>((set, get) => {
 
       set({
         isLoading: true,
-        currentPage: 1
+        currentPage: 1,
+        initialLoad: true
       });
       setSrc(src);
 

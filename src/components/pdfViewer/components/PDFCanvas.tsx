@@ -10,7 +10,8 @@ export const PDFCanvas = () => {
     isControlChange,
     renderPage,
     scale,
-    lastControlChange
+    lastControlChange,
+    initialLoad
   } = usePDFStore();
   const [shouldCenter, setShouldCenter] = useState(true);
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
@@ -66,12 +67,28 @@ export const PDFCanvas = () => {
     }
   }, [currentPage, isControlChange]);
 
+  useEffect(() => {
+    if (initialLoad && pdfDoc) {
+      // Force scroll to page 1 on initial load
+      const firstCanvas = canvasRefs.current[0];
+      if (firstCanvas) {
+        firstCanvas.scrollIntoView({ behavior: 'auto', block: 'start' });
+        setCurrentPage(1, 'control');
+      }
+      // Clear initial load flag after setup
+      setTimeout(() => {
+        usePDFStore.getState().setInitialLoad(false);
+      }, 100);
+    }
+  }, [initialLoad, pdfDoc, setCurrentPage]);
+
   // Observador para cambiar de pagina cuando se cambia el scroll
   useEffect(() => {
+    if (initialLoad) return;
+
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          // Solo procesamos el cambio si no hay bloqueo activo
           if (entry.isIntersecting && !isScrollBlocked) {
             // verificación de bloqueo
             const container = entry.target.closest('[data-page]');
@@ -92,7 +109,7 @@ export const PDFCanvas = () => {
     });
 
     return () => observer.disconnect();
-  }, [setCurrentPage, isScrollBlocked]);
+  }, [setCurrentPage, isScrollBlocked, initialLoad]);
 
   // Observer para centrar el canvas
   useEffect(() => {
@@ -112,7 +129,7 @@ export const PDFCanvas = () => {
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-auto bg-gray-100 rounded-md">
-      <div className={`flex flex-col gap-4 p-4 min-h-full ${shouldCenter ? 'items-center' : ''}`}>
+      <div className={`flex flex-col gap-2 min-h-full ${shouldCenter ? 'items-center' : ''}`}>
         {Array.from({ length: pdfDoc?.numPages || 0 }, (_, index) => (
           <div
             key={`page-${index + 1}`}
