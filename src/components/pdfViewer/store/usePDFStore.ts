@@ -59,7 +59,8 @@ export const usePDFStore = create<PDFStore>((set, get) => {
     setIsControlChange: isControl => set({ isControlChange: isControl }),
 
     setCurrentPage: (page, source) => {
-      const { pdfDoc } = get();
+      const { pdfDoc, currentPage, lastControlChange } = get();
+      if (page === currentPage) return;
       if (!pdfDoc || page < 1 || page > pdfDoc.numPages) return;
 
       set({
@@ -68,7 +69,7 @@ export const usePDFStore = create<PDFStore>((set, get) => {
 
         // Actualizamos el timestamp solo si el cambio viene de control o input
         lastControlChange:
-          source === 'control' || source === 'input' ? Date.now() : get().lastControlChange
+          source === 'control' || source === 'input' ? Date.now() : lastControlChange
       });
     },
 
@@ -114,7 +115,8 @@ export const usePDFStore = create<PDFStore>((set, get) => {
       try {
         const loadingTask = pdfjs.getDocument({
           url: src,
-          useSystemFonts: true
+          useSystemFonts: true,
+          verbosity: 0
         });
 
         const loadedDoc = await loadingTask.promise;
