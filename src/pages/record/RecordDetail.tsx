@@ -1,10 +1,14 @@
+import { DrawerFileViewer } from '@/components/DrawerFileViewer';
+import { downloadFile } from '@/components/pdfViewer/utils/DownloadFIles';
 import { Calendar } from '@/icons/Calendar';
 import { Document } from '@/icons/Document';
+import { Download } from '@/icons/Download';
 import { Hospital } from '@/icons/Hospital';
 import { Image } from '@/icons/Image';
 import { Person } from '@/icons/Person';
 import { groupBy } from '@/utils/groupBy';
-import { Button, Card, CardBody, CardHeader, Chip } from '@nextui-org/react';
+import { Button, Card, CardBody, CardHeader, Chip, useDisclosure } from '@nextui-org/react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecordDetailById } from './hooks/useRecordDetailBy';
 
@@ -26,8 +30,26 @@ export const RecordDetail = () => {
   // agrupar archivos por tipo
   const groupedFiles = groupBy(recordDetail?.files ?? [], file => file.type_name);
 
+  const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const [fileViewerData, setFileViewerData] = useState<{ url: string; mineType: string } | null>(
+    null
+  );
+
+  const handleOpenFileViewer = (file: { url: string; mineType: string }) => {
+    setFileViewerData({ url: file.url, mineType: file.mineType });
+    onOpen();
+  };
+
   return (
     <>
+      <DrawerFileViewer
+        isOpen={isOpen}
+        onClose={onClose}
+        url={fileViewerData?.url ?? ''}
+        mineType={fileViewerData?.mineType ?? ''}
+      />
+
       <div className="flex items-center justify-between px-4">
         <div className="flex items-center gap-2">
           <h2 className="text-xl font-semibold">Detalle de registro</h2>
@@ -130,9 +152,18 @@ export const RecordDetail = () => {
                         </div>
                         <div className="flex items-center gap-2">
                           <span className="text-xs text-muted-foreground">{file.size}</span>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <Document className="h-4 w-4" />
-                            <span className="sr-only">Ver archivo</span>
+                          <Button
+                            onPress={() => {
+                              handleOpenFileViewer({ url: file.url, mineType: file.mime_type });
+                            }}
+                            variant="ghost"
+                            size="sm"
+                            className="h-8 w-8 p-0"
+                          >
+                            Ver
+                          </Button>
+                          <Button onPress={() => downloadFile(file.url)}>
+                            <Download className="h-4 w-4" />
                           </Button>
                         </div>
                       </div>
