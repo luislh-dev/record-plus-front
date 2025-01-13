@@ -18,7 +18,7 @@ export const PDFViewer = ({ src }: PDFViewerProps) => {
 
   return (
     <div className="w-full max-w-5xl mx-auto">
-      <div className="w-full bg-gray-200 rounded-lg shadow-2xl h-[calc(100vh-64px)]">
+      <div className="w-full bg-gray-200 rounded-lg shadow-2xl h-[calc(100vh-64px)] max-h-[1600px]">
         {isLoading ? (
           <div className="w-full h-64 flex items-center justify-center">
             <span className="text-gray-500">Cargando PDF...</span>
