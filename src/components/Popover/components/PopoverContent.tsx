@@ -1,5 +1,7 @@
-import { CSSProperties, FC, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef, useState } from 'react';
 import { usePopover } from '../context/PopoverContext';
+import { Position } from '../types/Position';
+import { calculatePosition } from '../utils/CalculatePosition';
 
 interface PopoverContentProps {
   children: React.ReactNode;
@@ -9,6 +11,30 @@ interface PopoverContentProps {
 export const PopoverContent: FC<PopoverContentProps> = ({ children, className = '' }) => {
   const { open, setOpen, triggerRef, placement, isDismissable } = usePopover();
   const contentRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState<Position>({ top: 0, left: 0 });
+
+  useEffect(() => {
+    if (!open || !triggerRef.current || !contentRef.current) return;
+
+    const updatePosition = () => {
+      const triggerRect = triggerRef.current?.getBoundingClientRect();
+      const contentRect = contentRef.current?.getBoundingClientRect();
+
+      if (triggerRect && contentRect) {
+        const newPosition = calculatePosition(triggerRect, contentRect, placement);
+        setPosition(newPosition);
+      }
+    };
+
+    updatePosition();
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+
+    return () => {
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
+  }, [open, placement, triggerRef]);
 
   useEffect(() => {
     if (!isDismissable) return;
@@ -30,44 +56,6 @@ export const PopoverContent: FC<PopoverContentProps> = ({ children, className = 
 
   if (!open) return null;
 
-  const getPlacementStyles = (): CSSProperties => {
-    const baseStyles: CSSProperties = {
-      position: 'fixed', // Cambiamos a fixed para evitar problemas de overflow
-      maxHeight: '80vh' // Limitamos la altura máxima al 80% del viewport
-    };
-
-    switch (placement) {
-      case 'top':
-        return {
-          ...baseStyles,
-          bottom: `calc(100% - ${triggerRef.current?.getBoundingClientRect().top}px)`,
-          left: triggerRef.current?.getBoundingClientRect().left,
-          marginBottom: '0.5rem'
-        };
-      case 'right':
-        return {
-          ...baseStyles,
-          left: triggerRef.current?.getBoundingClientRect().right,
-          top: triggerRef.current?.getBoundingClientRect().top,
-          marginLeft: '0.5rem'
-        };
-      case 'left':
-        return {
-          ...baseStyles,
-          right: `calc(100% - ${triggerRef.current?.getBoundingClientRect().left}px)`,
-          top: triggerRef.current?.getBoundingClientRect().top,
-          marginRight: '0.5rem'
-        };
-      default: // bottom
-        return {
-          ...baseStyles,
-          top: triggerRef.current?.getBoundingClientRect().bottom,
-          left: triggerRef.current?.getBoundingClientRect().left,
-          marginTop: '0.5rem'
-        };
-    }
-  };
-
   return (
     <div
       ref={contentRef}
@@ -80,7 +68,13 @@ export const PopoverContent: FC<PopoverContentProps> = ({ children, className = 
         max-w-[90vw]
         ${className}
       `}
-      style={getPlacementStyles()}
+      style={{
+        position: 'fixed',
+        maxHeight: '80vh',
+        top: `${position.top}px`,
+        left: `${position.left}px`,
+        transform: 'translate3d(0, 0, 0)'
+      }}
     >
       <div className="w-full h-full">{children}</div>
     </div>
