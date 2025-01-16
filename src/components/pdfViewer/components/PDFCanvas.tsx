@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { usePageDetection } from '../hooks/determineCurrentPage';
 import { useCenterCanvas } from '../hooks/useCenterCanvas';
+import { usePDFSearchStore } from '../store/usePDFSearchStore';
 import { usePDFStore } from '../store/usePDFStore';
 
 export const PDFCanvas = () => {
@@ -15,6 +16,9 @@ export const PDFCanvas = () => {
     lastControlChange,
     initialLoad
   } = usePDFStore();
+
+  const { allMatches, currentMatchIndex } = usePDFSearchStore();
+
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
   const isScrollBlocked = useRef(false);
@@ -150,7 +154,7 @@ export const PDFCanvas = () => {
           <div
             key={`page-${index + 1}`}
             data-page={index + 1}
-            className={`inline-block ${shouldCenter ? 'flex justify-center' : ''}`}
+            className={`relative inline-block ${shouldCenter ? 'flex justify-center' : ''}`}
           >
             <canvas
               ref={el => (canvasRefs.current[index] = el)}
@@ -161,6 +165,30 @@ export const PDFCanvas = () => {
                 height: 'auto'
               }}
             />
+
+            {/* Capa de highlights */}
+            <div className="absolute inset-0">
+              {allMatches
+                .filter(match => match.pageIndex === index)
+                .map((match, matchIndex) => (
+                  <div
+                    key={`highlight-${matchIndex}`}
+                    className={`absolute transition-all duration-200 ${
+                      currentMatchIndex === matchIndex
+                        ? 'bg-blue-300 opacity-60'
+                        : 'bg-yellow-200 opacity-80'
+                    }`}
+                    style={{
+                      left: `${match.position.x}px`,
+                      top: `${match.position.y}px`,
+                      width: `${match.position.width}px`,
+                      height: `${match.position.height}px`,
+                      transform: 'scale(1.05)',
+                      borderRadius: '2px'
+                    }}
+                  />
+                ))}
+            </div>
           </div>
         ))}
       </div>
