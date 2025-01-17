@@ -1,37 +1,14 @@
-import { ArrowDown } from '@/icons/ArrowDown';
-import { ArrowUp } from '@/icons/ArrowUp';
 import { Download } from '@/icons/Download';
 import { ZoomIn } from '@/icons/ZoomIn';
 import { ZoomOut } from '@/icons/ZoomOut';
-import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { usePDFStore } from '../store/usePDFStore';
 import { ControlButton } from './common/ControlButton';
+import { NavigationControls } from './NavigationControls';
 import { PropoverSearch } from './PopoverSearch';
 
 export const PDFControls = () => {
-  const { currentPage, pdfDoc, scale, handlePageChange, zoomIn, zoomOut, downloadPDF } =
-    usePDFStore();
-
-  const totalPages = pdfDoc?.numPages;
-
-  const changePage = (page: number) => {
-    if (page > 0 && page <= (totalPages ?? 1)) {
-      handlePageChange(page, 'input');
-    }
-  };
-
-  const goToNextPage = useCallback(() => {
-    if (currentPage < (totalPages ?? 1)) {
-      handlePageChange(currentPage + 1, 'control');
-    }
-  }, [currentPage, totalPages, handlePageChange]);
-
-  const goToPreviousPage = useCallback(() => {
-    if (currentPage > 1) {
-      handlePageChange(currentPage - 1, 'control');
-    }
-  }, [currentPage, handlePageChange]);
+  const { scale, zoomIn, zoomOut, downloadPDF } = usePDFStore();
 
   useEffect(() => {
     const handleKeyPress = (e: KeyboardEvent) => {
@@ -47,20 +24,12 @@ export const PDFControls = () => {
           e.preventDefault();
           zoomOut();
           break;
-        case 'ArrowUp':
-          e.preventDefault();
-          goToPreviousPage();
-          break;
-        case 'ArrowDown':
-          e.preventDefault();
-          goToNextPage();
-          break;
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [goToNextPage, goToPreviousPage, zoomIn, zoomOut]);
+  }, [zoomIn, zoomOut]);
 
   return (
     <div className="flex items-center justify-between">
@@ -68,30 +37,7 @@ export const PDFControls = () => {
         {/* Navigation */}
         <div className="flex items-center gap-2">
           <PropoverSearch />
-          <ControlButton
-            onClick={goToPreviousPage}
-            aria-label="Pagina anterior"
-            disabled={currentPage <= 1}
-          >
-            <ArrowUp size={20} />
-          </ControlButton>
-          <div>
-            <input
-              value={currentPage}
-              onInput={allowOnlyNumbers}
-              className="w-8 px-1.5 rounded-md focus:outline-none"
-              onChange={e => changePage(parseInt(e.target.value))}
-            />
-            <span className="mx-2">/</span>
-            <span>{totalPages || '-'}</span>
-          </div>
-          <ControlButton
-            onClick={goToNextPage}
-            aria-label="Pagina siguiente"
-            disabled={currentPage >= (totalPages ?? -1)}
-          >
-            <ArrowDown size={20} />
-          </ControlButton>
+          <NavigationControls />
         </div>
 
         {/* Zoom */}
