@@ -19,7 +19,8 @@ const mockRecords: RecordDetailListResponseDto[] = [
         type_name: 'Receta',
         url: 'http://example.com/radiografia.pdf',
         mime_type: 'application/pdf',
-        size: '50.00 KB'
+        size: '50.00 KB',
+        object_key: 'radiografia.pdf'
       }
     ]
   }
