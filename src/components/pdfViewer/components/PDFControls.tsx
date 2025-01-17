@@ -6,6 +6,7 @@ import { ZoomOut } from '@/icons/ZoomOut';
 import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
 import { useCallback, useEffect } from 'react';
 import { usePDFStore } from '../store/usePDFStore';
+import { ControlButton } from './ControlButton';
 import { PropoverSearch } from './PopoverSearch';
 
 export const PDFControls = () => {
@@ -67,14 +68,13 @@ export const PDFControls = () => {
         {/* Navigation */}
         <div className="flex items-center gap-2">
           <PropoverSearch />
-          <button
+          <ControlButton
             onClick={goToPreviousPage}
             aria-label="Pagina anterior"
             disabled={currentPage <= 1}
-            className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300"
           >
             <ArrowUp size={20} />
-          </button>
+          </ControlButton>
           <div>
             <input
               value={currentPage}
@@ -85,36 +85,32 @@ export const PDFControls = () => {
             <span className="mx-2">/</span>
             <span>{totalPages || '-'}</span>
           </div>
-          <button
+          <ControlButton
             onClick={goToNextPage}
             aria-label="Pagina siguiente"
             disabled={currentPage >= (totalPages ?? -1)}
-            className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300"
           >
             <ArrowDown size={20} />
-          </button>
+          </ControlButton>
         </div>
 
         {/* Zoom */}
         <div className="flex items-center gap-2">
-          <button onClick={zoomOut} className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300">
+          <ControlButton onClick={zoomOut}>
             <ZoomOut className="w-5 h-5" />
-          </button>
+          </ControlButton>
           <span className="text-sm min-w-16 text-center hidden md:block">
             {Math.round(scale * 100)}%
           </span>
-          <button onClick={zoomIn} className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300">
+          <ControlButton onClick={zoomIn}>
             <ZoomIn className="w-5 h-5" />
-          </button>
+          </ControlButton>
         </div>
 
         {/* Download */}
-        <button
-          onClick={downloadPDF}
-          className="p-1 bg-inherit rounded-md hover:enabled:bg-gray-300"
-        >
+        <ControlButton onClick={downloadPDF}>
           <Download className="w-5 h-5" />
-        </button>
+        </ControlButton>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { ArrowUp } from '@/icons/ArrowUp';
 import { useEffect } from 'react';
 import { usePDFSearchStore } from '../store/usePDFSearchStore';
 import { usePDFStore } from '../store/usePDFStore';
+import { ControlButton } from './ControlButton';
 
 export const SearchNavigationControls = () => {
   const handlePageChange = usePDFStore(state => state.handlePageChange);
@@ -39,20 +40,20 @@ export const SearchNavigationControls = () => {
         </div>
       </div>
       <div className="flex">
-        <button
+        <ControlButton
           onClick={() => handleResultNavigation('previous')}
-          className="p-1 hover:bg-gray-200 rounded-md disabled:text-gray-400 disabled:hover:bg-inherit"
           disabled={!allMatches.length}
+          className="enabled:hover:bg-gray-200"
         >
           <ArrowUp />
-        </button>
-        <button
+        </ControlButton>
+        <ControlButton
           onClick={() => handleResultNavigation('next')}
-          className="p-1 hover:bg-gray-200 rounded-md disabled:text-gray-400 disabled:hover:bg-inherit"
+          className="enabled:hover:bg-gray-200"
           disabled={!allMatches.length}
         >
           <ArrowDown />
-        </button>
+        </ControlButton>
       </div>
     </div>
   );
