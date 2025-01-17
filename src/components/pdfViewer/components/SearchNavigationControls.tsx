@@ -1,14 +1,17 @@
 import { ArrowDown } from '@/icons/ArrowDown';
 import { ArrowUp } from '@/icons/ArrowUp';
 import { useEffect } from 'react';
-import { usePDFSearchStore } from '../store/usePDFSearchStore';
+
 import { usePDFStore } from '../store/usePDFStore';
 import { ControlButton } from './common/ControlButton';
 
 export const SearchNavigationControls = () => {
   const handlePageChange = usePDFStore(state => state.handlePageChange);
-  const { currentMatchIndex, nextMatch, previousMatch, totalMatches, allMatches } =
-    usePDFSearchStore();
+  const currentMatchIndex = usePDFStore(state => state.currentMatchIndex);
+  const nextMatch = usePDFStore(state => state.nextMatch);
+  const previousMatch = usePDFStore(state => state.previousMatch);
+  const allMatches = usePDFStore(state => state.allMatches);
+  const totalMatches = usePDFStore(state => state.totalMatches);
 
   const maxDigits = totalMatches.toString().length + 'ch';
 

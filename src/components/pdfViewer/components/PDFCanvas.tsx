@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { usePageDetection } from '../hooks/determineCurrentPage';
 import { useCenterCanvas } from '../hooks/useCenterCanvas';
-import { usePDFSearchStore } from '../store/usePDFSearchStore';
 import { usePDFStore } from '../store/usePDFStore';
 
 export const PDFCanvas = () => {
@@ -14,10 +13,10 @@ export const PDFCanvas = () => {
     renderPage,
     scale,
     lastControlChange,
-    initialLoad
+    initialLoad,
+    allMatches,
+    currentMatchIndex
   } = usePDFStore();
-
-  const { allMatches, currentMatchIndex } = usePDFSearchStore();
 
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);

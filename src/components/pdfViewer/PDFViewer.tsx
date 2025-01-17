@@ -2,14 +2,14 @@ import { ThumbnailBard } from '@/icons/ThumbnailBard';
 import { useEffect } from 'react';
 import { PDFCanvas } from './components/PDFCanvas';
 import { PDFControls } from './components/PDFControls';
-import { usePDFSearchStore } from './store/usePDFSearchStore';
+
 import { usePDFStore } from './store/usePDFStore';
 import type { PDFViewerProps } from './types/PDFViewerProps';
 
 export const PDFViewer = ({ src }: PDFViewerProps) => {
   const isLoading = usePDFStore(state => state.isLoading);
   const initialize = usePDFStore(state => state.initialize);
-  const clearSearch = usePDFSearchStore(state => state.clearSearch);
+  const clearSearch = usePDFStore(state => state.clearSearch);
 
   // Inicializar el PDF cuando cambia la fuente
   useEffect(() => {

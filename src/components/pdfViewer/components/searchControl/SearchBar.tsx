@@ -1,16 +1,15 @@
 import { Search } from '@/icons/Search';
 import { Input } from '@nextui-org/react';
-import { usePDFSearchStore } from '../../store/usePDFSearchStore';
+
 import { usePDFStore } from '../../store/usePDFStore';
 
 export const SearchBar = () => {
   const pdfDoc = usePDFStore(state => state.pdfDoc);
   const scale = usePDFStore(state => state.scale);
-
-  const searchText = usePDFSearchStore(state => state.searchText);
-  const setSearchText = usePDFSearchStore(state => state.setSearchText);
-  const searchInDocument = usePDFSearchStore(state => state.searchInDocument);
-  const clearSearch = usePDFSearchStore(state => state.clearSearch);
+  const searchText = usePDFStore(state => state.searchText);
+  const setSearchText = usePDFStore(state => state.setSearchText);
+  const searchInDocument = usePDFStore(state => state.searchInDocument);
+  const clearSearch = usePDFStore(state => state.clearSearch);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
