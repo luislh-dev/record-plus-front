@@ -15,7 +15,7 @@
     "lint:staged": "lint-staged",
     "preview": "vite preview",
     "prepare": "husky",
-    "test:build": "git diff --cached --name-only | findstr /I \".ts$ .tsx$\" | xargs tsc --noEmit && npm run lint:staged",
+    "test:build": "node --experimental-vm-modules scripts/test-staged-build.js",
     "test": "npm run lint"
   },
   "dependencies": {
