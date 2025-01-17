@@ -2,11 +2,14 @@ import { ThumbnailBard } from '@/icons/ThumbnailBard';
 import { useEffect } from 'react';
 import { PDFCanvas } from './components/PDFCanvas';
 import { PDFControls } from './components/PDFControls';
+import { usePDFSearchStore } from './store/usePDFSearchStore';
 import { usePDFStore } from './store/usePDFStore';
 import type { PDFViewerProps } from './types/PDFViewerProps';
 
 export const PDFViewer = ({ src }: PDFViewerProps) => {
-  const { isLoading, initialize } = usePDFStore();
+  const isLoading = usePDFStore(state => state.isLoading);
+  const initialize = usePDFStore(state => state.initialize);
+  const clearSearch = usePDFSearchStore(state => state.clearSearch);
 
   // Inicializar el PDF cuando cambia la fuente
   useEffect(() => {
@@ -14,7 +17,12 @@ export const PDFViewer = ({ src }: PDFViewerProps) => {
     const scaleInitial = window.innerWidth < 768 ? 0.5 : undefined;
 
     initialize(src, scaleInitial);
-  }, [src, initialize]);
+
+    // Limpiar la búsqueda al cambiar de documento
+    return () => {
+      clearSearch();
+    };
+  }, [src, initialize, clearSearch]);
 
   return (
     <div className="w-full max-w-5xl mx-auto">
