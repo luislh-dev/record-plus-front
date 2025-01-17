@@ -1,6 +1,5 @@
 import { ArrowDown } from '@/icons/ArrowDown';
 import { ArrowUp } from '@/icons/ArrowUp';
-import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
 import { useCallback } from 'react';
 import { usePDFStore } from '../store/usePDFStore';
 import { ControlButton } from './common/ControlButton';
@@ -40,7 +39,7 @@ export const NavigationControls = () => {
       <div>
         <input
           value={currentPage}
-          onInput={allowOnlyNumbers}
+          type="number"
           className="w-8 px-1.5 rounded-md focus:outline-none"
           onChange={e => changePage(parseInt(e.target.value))}
         />
