@@ -13,4 +13,5 @@ export interface FileDetailDto {
   url: string;
   mime_type: string;
   size: string;
+  object_key: string;
 }

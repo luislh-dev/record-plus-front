@@ -6,6 +6,7 @@ import { Download } from '@/icons/Download';
 import { Hospital } from '@/icons/Hospital';
 import { Image } from '@/icons/Image';
 import { Person } from '@/icons/Person';
+import { getPresignedUrlByObjectKey } from '@/services/FileService';
 import { groupBy } from '@/utils/groupBy';
 import { Button, Card, CardBody, CardHeader, Chip, useDisclosure } from '@nextui-org/react';
 import { useState } from 'react';
@@ -23,7 +24,6 @@ export const RecordDetail = () => {
   const navigate = useNavigate();
 
   const { recordDetail } = useRecordDetailById(recordId ?? '');
-
   // dividir tratamiento por saltos de línea
   const treatmentList = recordDetail?.treatment.split('\\n');
 
@@ -36,9 +36,25 @@ export const RecordDetail = () => {
     null
   );
 
-  const handleOpenFileViewer = (file: { url: string; mineType: string }) => {
-    setFileViewerData({ url: file.url, mineType: file.mineType });
+  const handleOpenFileViewer = async (file: { object_key: string; mineType: string }) => {
+    const url = await getPresignedUrlByObjectKey(file.object_key);
+
+    if (!url) {
+      return;
+    }
+
+    setFileViewerData({ url, mineType: file.mineType });
     onOpen();
+  };
+
+  const onDownloadFile = async (object_key: string) => {
+    const url = await getPresignedUrlByObjectKey(object_key);
+
+    if (!url) {
+      return;
+    }
+
+    downloadFile(url);
   };
 
   return (
@@ -154,7 +170,10 @@ export const RecordDetail = () => {
                           <span className="text-xs text-muted-foreground">{file.size}</span>
                           <Button
                             onPress={() => {
-                              handleOpenFileViewer({ url: file.url, mineType: file.mime_type });
+                              handleOpenFileViewer({
+                                object_key: file.object_key,
+                                mineType: file.mime_type
+                              });
                             }}
                             variant="ghost"
                             size="sm"
@@ -162,7 +181,7 @@ export const RecordDetail = () => {
                           >
                             Ver
                           </Button>
-                          <Button onPress={() => downloadFile(file.url)}>
+                          <Button onPress={() => onDownloadFile(file.object_key)}>
                             <Download className="h-4 w-4" />
                           </Button>
                         </div>
