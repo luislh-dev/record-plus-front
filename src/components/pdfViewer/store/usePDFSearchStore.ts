@@ -168,7 +168,8 @@ export const usePDFSearchStore = create<PDFSearchStore>((set, get) => ({
       searchResults: [],
       allMatches: [],
       currentMatchIndex: -1,
-      totalMatches: 0
+      totalMatches: 0,
+      isSearching: false
     });
   }
 }));
