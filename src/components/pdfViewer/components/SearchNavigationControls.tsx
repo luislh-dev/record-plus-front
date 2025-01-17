@@ -38,17 +38,17 @@ export const SearchNavigationControls = () => {
           {totalMatches}
         </div>
       </div>
-      <div>
+      <div className="flex">
         <button
           onClick={() => handleResultNavigation('previous')}
-          className="p-1 hover:bg-gray-200 rounded-md"
+          className="p-1 hover:bg-gray-200 rounded-md disabled:text-gray-400 disabled:hover:bg-inherit"
           disabled={!allMatches.length}
         >
           <ArrowUp />
         </button>
         <button
           onClick={() => handleResultNavigation('next')}
-          className="p-1 hover:bg-gray-200 rounded-md"
+          className="p-1 hover:bg-gray-200 rounded-md disabled:text-gray-400 disabled:hover:bg-inherit"
           disabled={!allMatches.length}
         >
           <ArrowDown />
