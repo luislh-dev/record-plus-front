@@ -6,6 +6,7 @@ import { ZoomOut } from '@/icons/ZoomOut';
 import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
 import { useCallback, useEffect } from 'react';
 import { usePDFStore } from '../store/usePDFStore';
+import { PropoverSearch } from './PopoverSearch';
 
 export const PDFControls = () => {
   const { currentPage, pdfDoc, scale, handlePageChange, zoomIn, zoomOut, downloadPDF } =
@@ -65,6 +66,7 @@ export const PDFControls = () => {
       <div className="flex  justify-between w-full items-center gap-4">
         {/* Navigation */}
         <div className="flex items-center gap-2">
+          <PropoverSearch />
           <button
             onClick={goToPreviousPage}
             aria-label="Pagina anterior"
