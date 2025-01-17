@@ -3,7 +3,7 @@ import { ArrowUp } from '@/icons/ArrowUp';
 import { useEffect } from 'react';
 import { usePDFSearchStore } from '../store/usePDFSearchStore';
 import { usePDFStore } from '../store/usePDFStore';
-import { ControlButton } from './ControlButton';
+import { ControlButton } from './common/ControlButton';
 
 export const SearchNavigationControls = () => {
   const handlePageChange = usePDFStore(state => state.handlePageChange);

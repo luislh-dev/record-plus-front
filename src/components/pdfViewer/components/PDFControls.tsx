@@ -6,7 +6,7 @@ import { ZoomOut } from '@/icons/ZoomOut';
 import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
 import { useCallback, useEffect } from 'react';
 import { usePDFStore } from '../store/usePDFStore';
-import { ControlButton } from './ControlButton';
+import { ControlButton } from './common/ControlButton';
 import { PropoverSearch } from './PopoverSearch';
 
 export const PDFControls = () => {

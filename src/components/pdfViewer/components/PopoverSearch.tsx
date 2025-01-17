@@ -2,7 +2,7 @@ import { Popover } from '@/components/Popover/components/Popover';
 import { PopoverContent } from '@/components/Popover/components/PopoverContent';
 import { PopoverTrigger } from '@/components/Popover/components/PopoverTrigger';
 import { Search } from '@/icons/Search';
-import { ControlButton } from './ControlButton';
+import { ControlButton } from './common/ControlButton';
 import { PDFSearchControls } from './PDFSearchControls';
 
 export const PropoverSearch = () => {
