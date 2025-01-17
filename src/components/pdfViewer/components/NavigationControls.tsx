@@ -33,6 +33,7 @@ export const NavigationControls = () => {
         onClick={goToPreviousPage}
         aria-label="Pagina anterior"
         disabled={currentPage <= 1}
+        className="hidden md:block"
       >
         <ArrowUp size={20} />
       </ControlButton>
@@ -50,6 +51,7 @@ export const NavigationControls = () => {
         onClick={goToNextPage}
         aria-label="Pagina siguiente"
         disabled={currentPage >= (totalPages ?? -1)}
+        className="hidden md:block"
       >
         <ArrowDown size={20} />
       </ControlButton>
