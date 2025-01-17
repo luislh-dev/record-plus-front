@@ -29,7 +29,7 @@ export const NavigationControls = () => {
   }, [currentPage, handlePageChange]);
 
   return (
-    <div className="flex">
+    <div className="flex items-center gap-1.5">
       <ControlButton
         onClick={goToPreviousPage}
         aria-label="Pagina anterior"
