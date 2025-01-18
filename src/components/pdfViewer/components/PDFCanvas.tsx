@@ -180,24 +180,28 @@ export const PDFCanvas = () => {
               {!isCalculatingHighlights &&
                 allMatches
                   .filter(match => match.pageIndex === index)
-                  .map((match, matchIndex) => (
-                    <div
-                      key={`highlight-${matchIndex}`}
-                      className={`absolute transition-all duration-200 ${
-                        currentMatchIndex === matchIndex
-                          ? 'bg-blue-300 opacity-60'
-                          : 'bg-yellow-200 opacity-80'
-                      }`}
-                      style={{
-                        left: `${match.position.x}px`,
-                        top: `${match.position.y}px`,
-                        width: `${match.position.width}px`,
-                        height: `${match.position.height}px`,
-                        transform: 'scale(1.05)',
-                        borderRadius: '2px'
-                      }}
-                    />
-                  ))}
+                  .map((match, matchIndex) => {
+                    const isCurrentMatch =
+                      matchIndex + allMatches.filter(m => m.pageIndex < index).length ===
+                      currentMatchIndex;
+
+                    return (
+                      <div
+                        key={`highlight-${match.pageIndex}-${matchIndex}`}
+                        className={`absolute transition-all duration-200 ${
+                          isCurrentMatch ? 'bg-blue-300 opacity-60' : 'bg-yellow-200 opacity-80'
+                        }`}
+                        style={{
+                          left: `${match.position.x}px`,
+                          top: `${match.position.y}px`,
+                          width: `${match.position.width}px`,
+                          height: `${match.position.height}px`,
+                          transform: 'scale(1.05)',
+                          borderRadius: '2px'
+                        }}
+                      />
+                    );
+                  })}
             </div>
           </div>
         ))}

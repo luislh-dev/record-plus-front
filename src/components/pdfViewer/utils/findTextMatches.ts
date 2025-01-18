@@ -34,26 +34,23 @@ export const findTextMatches = async (
       let index = 0;
 
       while ((index = normalizedText.indexOf(normalizedSearchTerm, index)) !== -1) {
-        // Obtener posición base
         const [baseX, baseY] = viewport.convertToViewportPoint(
           textItem.transform[4],
           textItem.transform[5]
         );
 
-        // Calcular dimensiones
         const fontSize = Math.abs(textItem.transform[3]) * scale;
         const height = fontSize;
 
-        // Calcular ancho aproximado
-        const charWidth = (textItem.width * scale) / textItem.str.length;
-        const width = charWidth * searchTerm.length;
+        // Ajustar ancho basado en texto coincidido
+        const matchedText = textItem.str.substring(index, index + searchTerm.length);
+        const width = (textItem.width * scale * matchedText.length) / textItem.str.length;
 
-        // Calcular desplazamiento X basado en el índice
-        const xOffset = index * charWidth;
+        const xOffset = (index * (textItem.width * scale)) / textItem.str.length;
 
         matches.push({
           pageIndex: pageNum - 1,
-          text: textItem.str.substr(index, searchTerm.length),
+          text: matchedText,
           position: {
             x: baseX + xOffset,
             y: baseY - height,
@@ -74,7 +71,7 @@ export const findTextMatches = async (
 
   return matches.sort((a, b) => {
     if (a.pageIndex !== b.pageIndex) return a.pageIndex - b.pageIndex;
-    if (Math.abs(a.position.y - b.position.y) > 10) return b.position.y - a.position.y;
+    if (Math.abs(a.position.y - b.position.y) > 10) return a.position.y - b.position.y; // Cambiado el orden
     return a.position.x - b.position.x;
   });
 };
