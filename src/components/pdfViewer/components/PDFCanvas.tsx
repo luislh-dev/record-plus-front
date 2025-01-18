@@ -15,7 +15,9 @@ export const PDFCanvas = () => {
     lastControlChange,
     initialLoad,
     allMatches,
-    currentMatchIndex
+    currentMatchIndex,
+    searchInDocument,
+    isCalculatingHighlights
   } = usePDFStore();
 
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
@@ -25,6 +27,14 @@ export const PDFCanvas = () => {
   const shouldCenter = useCenterCanvas({ containerRef, canvasRefs, scale });
 
   const determineCurrentPage = usePageDetection({ containerRef, isScrollBlocked });
+
+  // Efecto para manejar el recálculo de highlights con transición suave
+  useEffect(() => {
+    if (pdfDoc) {
+      // Espera a que las nuevas posiciones se calculen
+      searchInDocument(pdfDoc, scale);
+    }
+  }, [pdfDoc, scale, searchInDocument]);
 
   /**
    * Efecto para manejar el bloqueo temporal del scroll después de cambios por control
@@ -167,26 +177,27 @@ export const PDFCanvas = () => {
 
             {/* Capa de highlights */}
             <div className="absolute inset-0">
-              {allMatches
-                .filter(match => match.pageIndex === index)
-                .map((match, matchIndex) => (
-                  <div
-                    key={`highlight-${matchIndex}`}
-                    className={`absolute transition-all duration-200 ${
-                      currentMatchIndex === matchIndex
-                        ? 'bg-blue-300 opacity-60'
-                        : 'bg-yellow-200 opacity-80'
-                    }`}
-                    style={{
-                      left: `${match.position.x}px`,
-                      top: `${match.position.y}px`,
-                      width: `${match.position.width}px`,
-                      height: `${match.position.height}px`,
-                      transform: 'scale(1.05)',
-                      borderRadius: '2px'
-                    }}
-                  />
-                ))}
+              {!isCalculatingHighlights &&
+                allMatches
+                  .filter(match => match.pageIndex === index)
+                  .map((match, matchIndex) => (
+                    <div
+                      key={`highlight-${matchIndex}`}
+                      className={`absolute transition-all duration-200 ${
+                        currentMatchIndex === matchIndex
+                          ? 'bg-blue-300 opacity-60'
+                          : 'bg-yellow-200 opacity-80'
+                      }`}
+                      style={{
+                        left: `${match.position.x}px`,
+                        top: `${match.position.y}px`,
+                        width: `${match.position.width}px`,
+                        height: `${match.position.height}px`,
+                        transform: 'scale(1.05)',
+                        borderRadius: '2px'
+                      }}
+                    />
+                  ))}
             </div>
           </div>
         ))}

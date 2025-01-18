@@ -41,6 +41,7 @@ export interface SearchSlice {
   currentMatchIndex: number;
   isSearching: boolean;
   totalMatches: number;
+  isCalculatingHighlights: boolean;
   setSearchText: (text: string) => void;
   searchInDocument: (pdfDoc: PDFDocumentProxy, scale: number) => Promise<void>;
   nextMatch: () => void;

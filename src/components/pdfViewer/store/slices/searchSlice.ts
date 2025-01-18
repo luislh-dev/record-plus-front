@@ -11,6 +11,7 @@ export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (s
   currentMatchIndex: -1,
   isSearching: false,
   totalMatches: 0,
+  isCalculatingHighlights: false,
 
   setSearchText: text => set({ searchText: text }),
 
@@ -21,33 +22,32 @@ export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (s
         searchResults: [],
         allMatches: [],
         currentMatchIndex: -1,
-        totalMatches: 0
+        totalMatches: 0,
+        isCalculatingHighlights: false // Asegurar que termine
       });
       return;
     }
 
-    set({ isSearching: true });
+    set({ isCalculatingHighlights: true }); // Indicar que está procesando
 
     try {
       const matches = await findTextMatches(pdfDoc, searchText, scale);
-
       set({
         allMatches: matches,
         totalMatches: matches.length,
         currentMatchIndex: matches.length > 0 ? 0 : -1,
-        isSearching: false
+        isCalculatingHighlights: false // Finalizar
       });
     } catch (error) {
       console.error('Error en la búsqueda:', error);
       set({
-        isSearching: false,
+        isCalculatingHighlights: false, // Finalizar
         allMatches: [],
         currentMatchIndex: -1,
         totalMatches: 0
       });
     }
   },
-
   nextMatch: () => {
     set(state => ({
       currentMatchIndex:
