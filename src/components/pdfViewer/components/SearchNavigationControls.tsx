@@ -1,12 +1,9 @@
 import { ArrowDown } from '@/icons/ArrowDown';
 import { ArrowUp } from '@/icons/ArrowUp';
-import { useEffect } from 'react';
-
 import { usePDFStore } from '../store/usePDFStore';
 import { ControlButton } from './common/ControlButton';
 
 export const SearchNavigationControls = () => {
-  const handlePageChange = usePDFStore(state => state.handlePageChange);
   const currentMatchIndex = usePDFStore(state => state.currentMatchIndex);
   const nextMatch = usePDFStore(state => state.nextMatch);
   const previousMatch = usePDFStore(state => state.previousMatch);
@@ -23,13 +20,6 @@ export const SearchNavigationControls = () => {
       previousMatch();
     }
   };
-
-  useEffect(() => {
-    const currentMatch = allMatches[currentMatchIndex];
-    if (currentMatch && typeof currentMatch.pageIndex === 'number') {
-      handlePageChange(currentMatch.pageIndex + 1, 'input');
-    }
-  }, [currentMatchIndex, allMatches, handlePageChange]);
 
   return (
     <div className="flex items-center gap-2">
