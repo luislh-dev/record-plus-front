@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { usePageDetection } from '../hooks/determineCurrentPage';
 import { useCenterCanvas } from '../hooks/useCenterCanvas';
+import { useScrollControl } from '../hooks/useScrollControl';
 import { usePDFStore } from '../store/usePDFStore';
 
 export const PDFCanvas = () => {
@@ -23,9 +24,9 @@ export const PDFCanvas = () => {
 
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
-  const isScrollBlocked = useRef(false);
-  const timerRef = useRef<NodeJS.Timeout>(); // Referencia para el timer
   const shouldCenter = useCenterCanvas({ containerRef, canvasRefs, scale });
+
+  const isScrollBlocked = useScrollControl(isControlChange, setIsControlChange, lastControlChange);
 
   const determineCurrentPage = usePageDetection({ containerRef, isScrollBlocked });
 
@@ -36,32 +37,6 @@ export const PDFCanvas = () => {
       searchInDocument(pdfDoc, scale);
     }
   }, [pdfDoc, scale, searchInDocument]);
-
-  /**
-   * Efecto para manejar el bloqueo temporal del scroll después de cambios por control
-   * Previene que el observer de intersección detecte cambios durante la navegación controlada
-   * El bloqueo se libera después de 1.5 segundos
-   */
-  useEffect(() => {
-    if (isControlChange) {
-      isScrollBlocked.current = true;
-
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-
-      timerRef.current = setTimeout(() => {
-        isScrollBlocked.current = false;
-        setIsControlChange(false);
-      }, 1500);
-
-      return () => {
-        if (timerRef.current) {
-          clearTimeout(timerRef.current);
-        }
-      };
-    }
-  }, [isControlChange, lastControlChange, setIsControlChange]);
 
   /**
    * Efecto para renderizar todas las páginas del PDF
@@ -150,7 +125,14 @@ export const PDFCanvas = () => {
       // Usamos la misma variable en la función de limpieza
       container?.removeEventListener('scroll', handleScroll);
     };
-  }, [setCurrentPage, initialLoad, currentPage, pdfDoc?.numPages, determineCurrentPage]);
+  }, [
+    setCurrentPage,
+    initialLoad,
+    currentPage,
+    pdfDoc?.numPages,
+    determineCurrentPage,
+    isScrollBlocked
+  ]);
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-auto bg-gray-100 rounded-md">
