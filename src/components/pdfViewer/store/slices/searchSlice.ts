@@ -74,7 +74,7 @@ export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (s
       const nextMatch = state.allMatches[nextIndex];
       if (nextMatch) {
         const canvas = document.querySelector(`[data-page="${nextMatch.pageIndex + 1}"]`);
-        canvas?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        canvas?.scrollIntoView({ behavior: 'auto', block: 'center' });
       }
 
       return { currentMatchIndex: nextIndex };
@@ -90,7 +90,7 @@ export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (s
       const prevMatch = state.allMatches[prevIndex];
       if (prevMatch) {
         const canvas = document.querySelector(`[data-page="${prevMatch.pageIndex + 1}"]`);
-        canvas?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        canvas?.scrollIntoView({ behavior: 'auto', block: 'center' });
       }
 
       return { currentMatchIndex: prevIndex };
