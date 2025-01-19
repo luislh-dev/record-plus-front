@@ -17,7 +17,8 @@ export const PDFCanvas = () => {
     allMatches,
     currentMatchIndex,
     searchInDocument,
-    isCalculatingHighlights
+    isCalculatingHighlights,
+    setInitialLoad
   } = usePDFStore();
 
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
@@ -96,16 +97,11 @@ export const PDFCanvas = () => {
    */
   useEffect(() => {
     if (initialLoad && pdfDoc) {
-      const firstCanvas = canvasRefs.current[0];
-      if (firstCanvas) {
-        firstCanvas.scrollIntoView({ behavior: 'auto', block: 'start' });
-        setCurrentPage(1, 'control');
-      }
       setTimeout(() => {
-        usePDFStore.getState().setInitialLoad(false);
+        setInitialLoad(false);
       }, 100);
     }
-  }, [initialLoad, pdfDoc, setCurrentPage]);
+  }, [initialLoad, pdfDoc, setCurrentPage, setInitialLoad]);
 
   /**
    * Efecto para detectar la página visible actual mediante Intersection Observer
