@@ -13,9 +13,17 @@ export const SearchBar = () => {
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (pdfDoc) {
+    if (pdfDoc && searchText.trim()) {
       await searchInDocument(pdfDoc, scale);
     }
+  };
+
+  const handleClear = () => {
+    clearSearch();
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
   };
 
   return (
@@ -25,11 +33,11 @@ export const SearchBar = () => {
           size="sm"
           value={searchText}
           placeholder="Enter para buscar"
-          onChange={e => setSearchText(e.target.value)}
-          startContent={<Search aria-hidden="true" className="w-4 h-4  text-gray-400" />}
+          onChange={handleChange}
+          startContent={<Search aria-hidden="true" className="w-4 h-4 text-gray-400" />}
           type="search"
           isClearable
-          onClear={clearSearch}
+          onClear={handleClear}
           variant="bordered"
         />
       </form>
