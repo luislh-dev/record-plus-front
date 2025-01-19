@@ -12,13 +12,12 @@ export const SearchNavigationControls = () => {
 
   const maxDigits = totalMatches.toString().length + 'ch';
 
-  const handleResultNavigation = async (direction: 'next' | 'previous') => {
-    // Actualizamos el índice
-    if (direction === 'next') {
-      nextMatch();
-    } else {
-      previousMatch();
-    }
+  const HandleNextMatch = () => {
+    nextMatch();
+  };
+
+  const HandlePreviousMatch = () => {
+    previousMatch();
   };
 
   return (
@@ -34,14 +33,14 @@ export const SearchNavigationControls = () => {
       </div>
       <div className="flex">
         <ControlButton
-          onClick={() => handleResultNavigation('previous')}
+          onClick={HandlePreviousMatch}
           disabled={!allMatches.length}
           className="enabled:hover:bg-gray-200"
         >
           <ArrowUp />
         </ControlButton>
         <ControlButton
-          onClick={() => handleResultNavigation('next')}
+          onClick={HandleNextMatch}
           className="enabled:hover:bg-gray-200"
           disabled={!allMatches.length}
         >
