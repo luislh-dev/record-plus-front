@@ -1,5 +1,4 @@
 import { DrawerFileViewer } from '@/components/DrawerFileViewer';
-import { downloadFile } from '@/components/pdfViewer/utils/DownloadFIles';
 import { Calendar } from '@/icons/Calendar';
 import { Document } from '@/icons/Document';
 import { Download } from '@/icons/Download';
@@ -9,6 +8,7 @@ import { Person } from '@/icons/Person';
 import { getPresignedUrlByObjectKey } from '@/services/FileService';
 import { groupBy } from '@/utils/groupBy';
 import { Button, Card, CardBody, CardHeader, Chip, useDisclosure } from '@nextui-org/react';
+import { DownloadFile } from '@zeitui-org/file-fetch-utils';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRecordDetailById } from './hooks/useRecordDetailBy';
@@ -54,7 +54,7 @@ export const RecordDetail = () => {
       return;
     }
 
-    downloadFile(url);
+    DownloadFile(url);
   };
 
   return (
