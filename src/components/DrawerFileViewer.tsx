@@ -1,4 +1,5 @@
 import { Drawer, DrawerBody, DrawerContent } from '@nextui-org/react';
+import { ImageViewer } from '@zeitui-org/image-viewer';
 import { PDFViewer } from './pdfViewer/PDFViewer';
 
 interface DrawerFileViewerProps {
@@ -17,8 +18,10 @@ export const DrawerFileViewer = ({ isOpen, onClose, url, mineType }: DrawerFileV
             <div className="pt-8">
               {mineType === 'application/pdf' ? (
                 <PDFViewer src={url} />
+              ) : mineType.startsWith('image/') ? (
+                <ImageViewer src={url} controlSize="sm" />
               ) : (
-                <div>File type not supported</div>
+                <div>Tipo de archivo no permitido</div>
               )}
             </div>
           </DrawerBody>
