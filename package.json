@@ -26,6 +26,8 @@
     "@tanstack/query-sync-storage-persister": "5.62.15",
     "@tanstack/react-query": "5.62.15",
     "@tanstack/react-query-persist-client": "5.62.15",
+    "@zeitui-org/file-fetch-utils": "^0.1.0",
+    "@zeitui-org/image-viewer": "^0.2.3",
     "autoprefixer": "10.4.20",
     "axios": "1.7.7",
     "framer-motion": "11.11.17",
@@ -41,6 +43,7 @@
     "zustand": "5.0.2"
   },
   "devDependencies": {
+    "@biomejs/biome": "1.9.4",
     "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
     "@eslint/js": "9.14.0",
@@ -63,9 +66,10 @@
     "jsdom": "^25.0.1",
     "lint-staged": "^15.2.11",
     "prettier": "^3.4.2",
-    "typescript": "~5.6.3",
+    "typescript": "^5.7.3",
     "typescript-eslint": "8.12.2",
-    "vite": "5.4.10",
+    "vite": "^5.4.10",
+    "vite-plugin-dts": "^4.5.0",
     "vitest": "^2.1.8"
   }
 }
