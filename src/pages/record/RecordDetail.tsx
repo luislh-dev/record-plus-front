@@ -160,9 +160,9 @@ export const RecordDetail = () => {
                       >
                         <div className='flex items-center gap-2'>
                           {file.mime_type.startsWith('image') ? (
-                            <Image className='h-4 w-4 text-muted-foreground' />
+                            <Image className='h-4 w-4' fill='blue' />
                           ) : (
-                            <Document className='h-4 w-4 text-muted-foreground' />
+                            <Document className='h-4 w-4' fill='red' />
                           )}
                           <span className='text-sm font-medium'>{file.name}</span>
                         </div>
