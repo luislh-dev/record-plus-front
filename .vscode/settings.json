@@ -4,18 +4,23 @@
   "files.trimTrailingWhitespace": true,
   "files.eol": "\n",
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "biomejs.biome",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
   "[javascript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "biomejs.biome",
     "files.encoding": "utf8"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "biomejs.biome",
     "files.encoding": "utf8"
   },
-  "prettier.configPath": ".prettierrc",
-  "prettier.requireConfig": true
+  "[json]": {
+    "editor.defaultFormatter": "biomejs.biome",
+    "files.encoding": "utf8"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  }
 }
