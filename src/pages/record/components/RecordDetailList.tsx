@@ -37,25 +37,25 @@ const DocumentFileList = ({ files, maxVisible = 2 }: FilePreviewProps) => {
   const hiddenCount = totalFiles - maxVisible;
 
   return (
-    <div className="flex flex-col space-y-2">
-      <div className="flex flex-wrap gap-2 items-center justify-end">
-        {displayFiles.map(file => (
+    <div className='flex flex-col space-y-2'>
+      <div className='flex flex-wrap gap-2 items-center justify-end'>
+        {displayFiles.map((file) => (
           <div
             key={file.url}
-            className="flex items-center p-2 bg-gray-100 rounded hover:bg-gray-200 transition-colors cursor-pointer"
+            className='flex items-center p-2 bg-gray-100 rounded hover:bg-gray-200 transition-colors cursor-pointer'
           >
             {file.mime_type === ACCEPTED_MIME_TYPES.PDF ? (
-              <Document size={20} fill="red" className="shrink-0" />
+              <Document size={20} fill='red' className='shrink-0 ' />
             ) : (
-              <Image size={20} fill="blue" className="shrink-0" />
+              <Image size={20} fill='blue' className='shrink-0' />
             )}
-            <span className="ml-2 text-sm text-gray-600 hidden sm:inline">{file.type_name}</span>
-            <span className="ml-2 text-xs text-gray-500 hidden lg:inline">{file.size}</span>
+            <span className='ml-2 text-sm text-gray-600 hidden sm:inline'>{file.type_name}</span>
+            <span className='ml-2 text-xs text-gray-500 hidden lg:inline'>{file.size}</span>
           </div>
         ))}
 
         {hiddenCount > 0 && (
-          <Chip variant="bordered" size="md">
+          <Chip variant='bordered' size='md'>
             +{hiddenCount}
           </Chip>
         )}
@@ -84,26 +84,26 @@ export default function RecordDetailList({ personId }: RecordDetailListProps) {
 
   return (
     <>
-      <div className="flex flex-wrap items-center p-4 gap-4">
+      <div className='flex flex-wrap items-center p-4 gap-4'>
         {/* Search */}
-        <div className="w-80 ">
+        <div className='w-80 '>
           <SearchRecordDetail />
         </div>
         {/* Date Range */}
-        <div className="w-80">
+        <div className='w-80'>
           <DateRangeFilter />
         </div>
       </div>
 
       {isLoading && (
         <div>
-          <p className="text-lg font-medium text-center p-40">Cargando registros...</p>
+          <p className='text-lg font-medium text-center p-40'>Cargando registros...</p>
         </div>
       )}
 
       {isError && (
         <div>
-          <p className="text-lg font-medium text-center p-40 text-red-500">
+          <p className='text-lg font-medium text-center p-40 text-red-500'>
             Ocurrió un error al cargar los registros
           </p>
         </div>
@@ -111,38 +111,38 @@ export default function RecordDetailList({ personId }: RecordDetailListProps) {
 
       {recordDetails.length === 0 && !isLoading && !isError && (
         <div>
-          <p className="text-lg font-medium text-center p-40">No se encontraron registros</p>
+          <p className='text-lg font-medium text-center p-40'>No se encontraron registros</p>
         </div>
       )}
 
       {!isLoading && !isError && (
-        <div className="space-y-4">
-          <div className="divide-y divide-gray-300 border border-gray-300 rounded-lg">
-            {recordDetails.map(recordDetail => (
+        <div className='space-y-4'>
+          <div className='divide-y divide-gray-300 border border-gray-300 rounded-lg'>
+            {recordDetails.map((recordDetail) => (
               <div
                 key={recordDetail.id}
                 onClick={() => navigate(`/people/${personId}/detail/record/${recordDetail.id}`)}
-                className="p-4 flex flex-col sm:flex-row sm:justify-between gap-4 hover:bg-gray-50 transition-colors cursor-pointer group"
-                onKeyDown={e => handleKeyDown(e, recordDetail.id)}
+                className='p-4 flex flex-col sm:flex-row sm:justify-between gap-4 hover:bg-gray-50 transition-colors cursor-pointer group'
+                onKeyDown={(e) => handleKeyDown(e, recordDetail.id)}
               >
                 {/* Hospital Info */}
-                <div className="flex-1 w-3/5">
-                  <div className="flex items-center gap-2 ">
+                <div className='flex-1 w-3/5'>
+                  <div className='flex items-center gap-2 '>
                     <Hospital size={20} />
-                    <Typography variant="data-title">{recordDetail.hospital_name}</Typography>
+                    <Typography variant='data-title'>{recordDetail.hospital_name}</Typography>
                   </div>
-                  <div className="flex items-center gap-2 mt-1">
-                    <Reloj size={20} fill="gray" />
-                    <Typography variant="body-small">{recordDetail.visit_date}</Typography>
+                  <div className='flex items-center gap-2 mt-1'>
+                    <Reloj size={20} fill='gray' />
+                    <Typography variant='body-small'>{recordDetail.visit_date}</Typography>
                   </div>
-                  <p className="font-medium mt-2 line-clamp-1 overflow-hidden">
+                  <p className='font-medium mt-2 line-clamp-1 overflow-hidden'>
                     {recordDetail.reason}
                   </p>
-                  <p className="text-gray-600">{recordDetail.doctor_name}</p>
+                  <p className='text-gray-600'>{recordDetail.doctor_name}</p>
                 </div>
 
                 {/* Files List */}
-                <div className="flex flex-col sm:items-end 2xl:items-end justify-center space-y-2 w-full sm:w-2/5">
+                <div className='flex flex-col sm:items-end 2xl:items-end justify-center space-y-2 w-full sm:w-2/5'>
                   {recordDetail.files.length > 0 && (
                     <DocumentFileList
                       files={recordDetail.files}
@@ -155,7 +155,7 @@ export default function RecordDetailList({ personId }: RecordDetailListProps) {
           </div>
 
           {hasNextPage && (
-            <div className="flex justify-center py-4">
+            <div className='flex justify-center py-4'>
               <Button onPress={() => fetchNextPage()} disabled={isLoading}>
                 {isLoading ? 'Cargando...' : 'Cargar más registros'}
               </Button>

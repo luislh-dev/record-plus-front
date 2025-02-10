@@ -33,8 +33,8 @@ export const baseUserCreateSchema = z.object({
   personalInfo: z.object({
     name: z.string(),
     surnames: z.string(),
-    phone: z.string()
-  })
+    phone: z.string(),
+  }),
 });
 
 export type BaseUserCreateValues = z.infer<typeof baseUserCreateSchema>;

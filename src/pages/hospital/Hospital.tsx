@@ -12,11 +12,11 @@ const Hospital = () => {
         <Header />
 
         {/* Barra de búsqueda y filtros */}
-        <search className="px-2 pb-2 pt-4 flex gap-x-4">
-          <form className="px-2 pb-2 pt-4" onSubmit={e => e.preventDefault()}>
-            <div className="flex gap-x-4">
+        <search className='px-2 pb-2 pt-4 flex gap-x-4'>
+          <form className='px-2 pb-2 pt-4' onSubmit={(e) => e.preventDefault()}>
+            <div className='flex gap-x-4'>
               <SearchImput />
-              <div className="flex gap-x-4" aria-label="Filtros y ordenamiento">
+              <div className='flex gap-x-4' aria-label='Filtros y ordenamiento'>
                 <DropDownFilter />
                 <DropDownSort />
               </div>

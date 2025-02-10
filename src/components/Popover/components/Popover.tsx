@@ -13,7 +13,7 @@ export const Popover: React.FC<PopoverProps> = ({
   children,
   placement = 'bottom',
   className = '',
-  isDismissable = true
+  isDismissable = true,
 }) => {
   const [open, setOpen] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);

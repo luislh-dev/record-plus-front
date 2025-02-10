@@ -24,8 +24,8 @@ export const useAuthLogin = () => {
         payload: {
           token,
           username: decoded.sub,
-          authorities: decoded.authorities
-        }
+          authorities: decoded.authorities,
+        },
       });
       navigate('/dashboard');
       return { success: true };

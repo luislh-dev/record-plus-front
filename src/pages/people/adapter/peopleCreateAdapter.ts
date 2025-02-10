@@ -10,6 +10,6 @@ export const toPeopleRequiredDto = (data: PeopleCreateRequiredValues): PeopleCre
     typeDocumentId: data.typeDocumentId,
     documentNumber: data.documentNumber,
     birthdate: data.birthdate,
-    sexTypeId: data.sexTypeId
+    sexTypeId: data.sexTypeId,
   };
 };

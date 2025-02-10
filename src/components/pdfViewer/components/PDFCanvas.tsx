@@ -19,7 +19,7 @@ export const PDFCanvas = () => {
     currentMatchIndex,
     searchInDocument,
     isCalculatingHighlights,
-    setInitialLoad
+    setInitialLoad,
   } = usePDFStore();
 
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
@@ -42,6 +42,8 @@ export const PDFCanvas = () => {
    * Efecto para renderizar todas las páginas del PDF
    * Se ejecuta cuando cambia el documento, la escala o la función de renderizado
    */
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     canvasRefs.current.forEach((canvas, index) => {
       if (canvas) {
@@ -61,7 +63,7 @@ export const PDFCanvas = () => {
     if (currentCanvas) {
       currentCanvas.scrollIntoView({
         behavior: 'smooth',
-        block: 'start'
+        block: 'start',
       });
     }
   }, [currentPage, isControlChange]);
@@ -70,6 +72,8 @@ export const PDFCanvas = () => {
    * Efecto para manejar la carga inicial del PDF
    * Fuerza el scroll a la primera página y establece el estado inicial
    */
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (initialLoad && pdfDoc) {
       setTimeout(() => {
@@ -83,6 +87,8 @@ export const PDFCanvas = () => {
    * Actualiza el estado de la página actual basado en el scroll
    * No se activa durante el bloqueo temporal o la carga inicial
    */
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (initialLoad) return;
 
@@ -97,8 +103,8 @@ export const PDFCanvas = () => {
       },
       {
         threshold: 0.5,
-        rootMargin: '0px'
-      }
+        rootMargin: '0px',
+      },
     );
 
     const handleScroll = () => {
@@ -113,9 +119,9 @@ export const PDFCanvas = () => {
     };
 
     const pageContainers = document.querySelectorAll('[data-page]');
-    pageContainers.forEach(container => {
-      observer.observe(container);
-    });
+    for (let i = 0; i < pageContainers.length; i++) {
+      observer.observe(pageContainers[i]);
+    }
 
     // Usamos la variable container en lugar de containerRef.current
     container?.addEventListener('scroll', handleScroll, { passive: true });
@@ -131,11 +137,11 @@ export const PDFCanvas = () => {
     currentPage,
     pdfDoc?.numPages,
     determineCurrentPage,
-    isScrollBlocked
+    isScrollBlocked,
   ]);
 
   return (
-    <div ref={containerRef} className="absolute inset-0 overflow-auto bg-gray-100 rounded-md">
+    <div ref={containerRef} className='absolute inset-0 overflow-auto bg-gray-100 rounded-md'>
       <div className={`flex flex-col gap-2 min-h-full ${shouldCenter ? 'items-center' : ''}`}>
         {Array.from({ length: pdfDoc?.numPages || 0 }, (_, index) => (
           <div
@@ -144,23 +150,24 @@ export const PDFCanvas = () => {
             className={`relative inline-block ${shouldCenter ? 'flex justify-center' : ''}`}
           >
             <canvas
-              ref={el => (canvasRefs.current[index] = el)}
-              className="shadow-2xl"
+              // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
+              ref={(el) => (canvasRefs.current[index] = el)}
+              className='shadow-2xl'
               style={{
                 maxWidth: 'none',
                 width: 'auto',
-                height: 'auto'
+                height: 'auto',
               }}
             />
 
             {/* Capa de highlights */}
-            <div className="absolute inset-0">
+            <div className='absolute inset-0'>
               {!isCalculatingHighlights &&
                 allMatches
-                  .filter(match => match.pageIndex === index)
+                  .filter((match) => match.pageIndex === index)
                   .map((match, matchIndex) => {
                     const isCurrentMatch =
-                      matchIndex + allMatches.filter(m => m.pageIndex < index).length ===
+                      matchIndex + allMatches.filter((m) => m.pageIndex < index).length ===
                       currentMatchIndex;
 
                     return (
@@ -175,7 +182,7 @@ export const PDFCanvas = () => {
                           width: `${match.position.width}px`,
                           height: `${match.position.height}px`,
                           transform: 'scale(1.05)',
-                          borderRadius: '2px'
+                          borderRadius: '2px',
                         }}
                       />
                     );

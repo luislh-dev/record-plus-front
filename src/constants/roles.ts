@@ -3,7 +3,7 @@ export const Roles = {
   USER: 'ROLE_USER',
   DOCTOR: 'ROLE_DOCTOR',
   PATIENT: 'ROLE_PATIENT',
-  MANAGEMENT: 'ROLE_MANAGEMENT'
+  MANAGEMENT: 'ROLE_MANAGEMENT',
 } as const;
 
 export type RoleType = (typeof Roles)[keyof typeof Roles];

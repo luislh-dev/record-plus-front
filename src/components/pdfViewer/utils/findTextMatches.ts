@@ -1,6 +1,6 @@
-import { PDFDocumentProxy } from 'pdfjs-dist';
-import { TextItem } from 'pdfjs-dist/types/src/display/api';
-import { SearchMatch } from '../types/SearchTypes';
+import type { PDFDocumentProxy } from 'pdfjs-dist';
+import type { TextItem } from 'pdfjs-dist/types/src/display/api';
+import type { SearchMatch } from '../types/SearchTypes';
 import { normalizeText } from './normalizeText';
 
 const extractSurroundingText = (text: string, position: number, length: number): string => {
@@ -13,7 +13,7 @@ const extractSurroundingText = (text: string, position: number, length: number):
 export const findTextMatches = async (
   pdfDoc: PDFDocumentProxy,
   searchTerm: string,
-  scale: number
+  scale: number,
 ): Promise<SearchMatch[]> => {
   const matches: SearchMatch[] = [];
   const normalizedSearchTerm = normalizeText(searchTerm);
@@ -23,7 +23,7 @@ export const findTextMatches = async (
     const viewport = page.getViewport({ scale });
 
     const textContent = await page.getTextContent({
-      includeMarkedContent: true
+      includeMarkedContent: true,
     });
 
     for (const item of textContent.items) {
@@ -33,10 +33,11 @@ export const findTextMatches = async (
       const normalizedText = normalizeText(textItem.str);
       let index = 0;
 
+      // biome-ignore lint/suspicious/noAssignInExpressions: <explanation>
       while ((index = normalizedText.indexOf(normalizedSearchTerm, index)) !== -1) {
         const [baseX, baseY] = viewport.convertToViewportPoint(
           textItem.transform[4],
-          textItem.transform[5]
+          textItem.transform[5],
         );
 
         const fontSize = Math.abs(textItem.transform[3]) * scale;
@@ -55,13 +56,13 @@ export const findTextMatches = async (
             x: baseX + xOffset,
             y: baseY - height,
             width,
-            height: height * 1.2
+            height: height * 1.2,
           },
           surroundingText: extractSurroundingText(textItem.str, index, searchTerm.length),
           fontInfo: {
             size: fontSize,
-            name: textItem.fontName || 'unknown'
-          }
+            name: textItem.fontName || 'unknown',
+          },
         });
 
         index += normalizedSearchTerm.length;

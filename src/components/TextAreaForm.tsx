@@ -5,7 +5,7 @@ import {
   Controller,
   type FieldError,
   type FieldValues,
-  type Path
+  type Path,
 } from 'react-hook-form';
 
 interface Props<T extends FieldValues> {
@@ -25,23 +25,23 @@ export const TextAreaForm = <T extends FieldValues>({
   isRequired = true,
   placeholder,
   error,
-  variant = 'bordered'
+  variant = 'bordered',
 }: Props<T>) => (
   <>
     <Controller
       name={name}
       control={control}
       render={({ field }) => (
-        <div className="flex flex-col gap-1">
+        <div className='flex flex-col gap-1'>
           <Textarea
             label={label}
-            labelPlacement="outside"
+            labelPlacement='outside'
             placeholder={placeholder}
             variant={variant}
             isRequired={isRequired}
             {...field}
           />
-          <p className="h-4 text-xs text-danger pl-1">{error?.message}</p>
+          <p className='h-4 text-xs text-danger pl-1'>{error?.message}</p>
         </div>
       )}
     />

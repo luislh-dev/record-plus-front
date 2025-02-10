@@ -5,20 +5,20 @@ import type { PageResponse } from '@/types/Pagination';
 import type { HospitalNameListDTO } from '../types/HospitalNameListDTO';
 import type {
   HospitalFindByNameParams,
-  HospitalRequestParams
+  HospitalRequestParams,
 } from '../types/HospitalRequestParams';
 
 export const getHospitals = async (
-  params?: HospitalRequestParams
+  params?: HospitalRequestParams,
 ): Promise<PageResponse<HospitalListDTO>> => {
   const response = await api.get<PageResponse<HospitalListDTO>>('/hospitals', {
-    params
+    params,
   });
   return response.data;
 };
 
 export const createHospital = async (
-  hospitalData: HospitalCreateRequest
+  hospitalData: HospitalCreateRequest,
 ): Promise<HospitalCreateRequest> => {
   const response = await api.post<HospitalCreateRequest>('/hospitals', hospitalData);
   return response.data;
@@ -39,10 +39,10 @@ export const getHospital = async (id: number): Promise<HospitalCreateRequest> =>
 };
 
 export const getHospitalsByName = async (
-  params: HospitalFindByNameParams
+  params: HospitalFindByNameParams,
 ): Promise<PageResponse<HospitalNameListDTO>> => {
   const response = await api.get<PageResponse<HospitalNameListDTO>>('/hospitals/findByName', {
-    params
+    params,
   });
   return response.data;
 };

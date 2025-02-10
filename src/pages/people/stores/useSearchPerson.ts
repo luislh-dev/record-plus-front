@@ -2,7 +2,7 @@ import { CE_ID, DNI_ID } from '@/constants/documentType';
 import { ApiServiceError } from '@/services/api/ApiErrorHandler';
 import { useEffect, useState } from 'react';
 import { getPersonNameByDocument } from '../services/peopleService';
-import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
+import type { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 interface UseSearchPersonProps {
   documentNumber: string;
@@ -45,6 +45,7 @@ export const useSearchPerson = (config?: UseSearchPersonConfig): UseSearchPerson
   };
 
   // Efecto para manejar la limpieza de resultados cuando el input está vacío o incompleto
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     // Limpiamos los resultados si el documento está vacío o incompleto
     if (!documentNumber || isIncompleteDocument(documentNumber, documentType)) {
@@ -55,6 +56,7 @@ export const useSearchPerson = (config?: UseSearchPersonConfig): UseSearchPerson
   }, [documentNumber, documentType, config]);
 
   // Efecto para realizar la búsqueda
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (!shouldSearch) return;
 
@@ -139,6 +141,6 @@ export const useSearchPerson = (config?: UseSearchPersonConfig): UseSearchPerson
     setDocumentNumber: handleDocumentNumberChange,
     setDocumentType: handleDocumentTypeChange,
     searchPerson,
-    clearSearch
+    clearSearch,
   };
 };

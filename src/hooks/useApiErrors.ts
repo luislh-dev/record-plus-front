@@ -1,20 +1,21 @@
+import type { ApiError } from '@/types/errros/ApiError';
 import { useEffect, useState } from 'react';
-import { ApiError } from '@/types/errros/ApiError';
 
 export const useApiErrors = (apiErrors: ApiError | null | undefined) => {
   const [backendErrors, setBackendErrors] = useState<Record<string, string>>({});
 
   const parseErrors = (details: string[]) => {
     const parsed: Record<string, string> = {};
-    details.forEach(detail => {
+    for (const detail of details) {
       const [field, message] = detail.split(': ');
       parsed[field.toLowerCase()] = message;
-    });
+    }
     return parsed;
   };
 
   const resetErrors = () => setBackendErrors({});
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (apiErrors?.details) {
       setBackendErrors(parseErrors(apiErrors.details));
@@ -25,6 +26,6 @@ export const useApiErrors = (apiErrors: ApiError | null | undefined) => {
 
   return {
     backendErrors,
-    resetErrors
+    resetErrors,
   };
 };

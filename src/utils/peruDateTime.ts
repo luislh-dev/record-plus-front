@@ -3,7 +3,7 @@
  */
 const CONSTANTS = {
   TIMEZONE: 'America/Lima',
-  LOCALE: 'es-PE'
+  LOCALE: 'es-PE',
 } as const;
 
 /**
@@ -41,7 +41,7 @@ interface DateTimeParts {
 const createDateFormatter = (options: Intl.DateTimeFormatOptions) => {
   return new Intl.DateTimeFormat(CONSTANTS.LOCALE, {
     timeZone: CONSTANTS.TIMEZONE,
-    ...options
+    ...options,
   });
 };
 
@@ -60,13 +60,13 @@ const DATE_FORMAT_OPTIONS: Record<DateFormat, Intl.DateTimeFormatOptions> = {
   'short-date': {
     year: 'numeric',
     month: '2-digit',
-    day: '2-digit'
+    day: '2-digit',
   },
   'long-date': {
     weekday: 'long',
     year: 'numeric',
     month: 'long',
-    day: 'numeric'
+    day: 'numeric',
   },
   'short-datetime': {
     year: 'numeric',
@@ -74,7 +74,7 @@ const DATE_FORMAT_OPTIONS: Record<DateFormat, Intl.DateTimeFormatOptions> = {
     day: '2-digit',
     hour: '2-digit',
     minute: '2-digit',
-    hour12: true
+    hour12: true,
   },
   'long-datetime': {
     weekday: 'long',
@@ -84,8 +84,8 @@ const DATE_FORMAT_OPTIONS: Record<DateFormat, Intl.DateTimeFormatOptions> = {
     hour: '2-digit',
     minute: '2-digit',
     second: '2-digit',
-    hour12: true
-  }
+    hour12: true,
+  },
 };
 
 /**
@@ -103,7 +103,7 @@ export const getPeruDateTime = (): Date => {
       hour: '2-digit',
       minute: '2-digit',
       second: '2-digit',
-      hour12: false
+      hour12: false,
     });
 
     const formattedDate = formatter.format(date);
@@ -128,7 +128,7 @@ export const getPeruDateTime = (): Date => {
         year,
         hours,
         minutes,
-        seconds
+        seconds,
       });
       return date;
     }
@@ -139,7 +139,7 @@ export const getPeruDateTime = (): Date => {
       Number.parseInt(day),
       Number.parseInt(hours),
       Number.parseInt(minutes),
-      Number.parseInt(seconds)
+      Number.parseInt(seconds),
     );
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -161,7 +161,7 @@ export const parsePeruDate = (date: DateInput): string => {
     const formatter = createDateFormatter({
       year: 'numeric',
       month: '2-digit',
-      day: '2-digit'
+      day: '2-digit',
     });
 
     const [day, month, year] = formatter.format(dateObj).split('/');
@@ -187,7 +187,7 @@ export const getPeruDateTimeParts = (): DateTimeParts => {
     day: peruDate.getDate(),
     hour: peruDate.getHours(),
     minute: peruDate.getMinutes(),
-    second: peruDate.getSeconds()
+    second: peruDate.getSeconds(),
   };
 };
 
@@ -210,8 +210,8 @@ export const formatPeruDateTime = (format: 'short' | 'long' = 'short'): string =
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit'
-    })
+      second: '2-digit',
+    }),
   };
 
   return createDateFormatter(options).format(new Date());

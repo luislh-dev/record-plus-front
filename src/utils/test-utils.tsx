@@ -4,9 +4,9 @@ import { render } from '@testing-library/react';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false
-    }
-  }
+      retry: false,
+    },
+  },
 });
 
 export function renderWithProviders(ui: React.ReactElement) {

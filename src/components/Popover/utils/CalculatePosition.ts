@@ -1,10 +1,10 @@
-import { Placement } from '../types/Placement';
-import { Position } from '../types/Position';
+import type { Placement } from '../types/Placement';
+import type { Position } from '../types/Position';
 
 export const calculatePosition = (
   triggerRect: DOMRect,
   contentRect: DOMRect,
-  placement: Placement
+  placement: Placement,
 ): Position => {
   let top = 0;
   let left = 0;

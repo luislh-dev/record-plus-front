@@ -14,21 +14,21 @@ export const HospitalMinimalSearch: FC<{
     hasMore: hasNextPage,
     isEnabled: isOpen,
     shouldUseLoader: false,
-    onLoadMore: fetchNextPage
+    onLoadMore: fetchNextPage,
   });
 
   return (
     <Autocomplete
-      label="Hospital"
+      label='Hospital'
       items={hospitals}
       isLoading={isLoading}
       scrollRef={scrollerRef}
       onInputChange={setSearchTerm}
-      onSelectionChange={item => onHospitalSelected(Number.parseInt(item as string))}
-      variant="bordered"
+      onSelectionChange={(item) => onHospitalSelected(Number.parseInt(item as string))}
+      variant='bordered'
       onOpenChange={setIsOpen}
     >
-      {item => (
+      {(item) => (
         <AutocompleteItem key={item.id} value={item.id}>
           {item.name}
         </AutocompleteItem>

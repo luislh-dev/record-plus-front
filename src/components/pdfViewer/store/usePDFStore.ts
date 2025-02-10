@@ -2,9 +2,9 @@
 
 import * as pdfjs from 'pdfjs-dist';
 import { create } from 'zustand';
-import { configurePDFJS } from '../config/pdfConfig';
 import { DEFAULT_SCALE } from '../config/Zoom';
-import { PDFStore } from '../types/store.types';
+import { configurePDFJS } from '../config/pdfConfig';
+import type { PDFStore } from '../types/store.types';
 import { downloadFile } from '../utils/DownloadFIles';
 import { createBasePDFSlice } from './slices/baseSlice';
 import { createNavigationSlice } from './slices/createNavigationSlice';
@@ -38,7 +38,7 @@ export const usePDFStore = create<PDFStore>((set, get, api) => {
         const loadingTask = pdfjs.getDocument({
           url: src,
           useSystemFonts: true,
-          verbosity: 0
+          verbosity: 0,
         });
 
         const loadedDoc = await loadingTask.promise;
@@ -54,6 +54,6 @@ export const usePDFStore = create<PDFStore>((set, get, api) => {
     downloadPDF: () => {
       const { src } = get();
       if (src) downloadFile(src);
-    }
+    },
   };
 });

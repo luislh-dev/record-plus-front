@@ -14,6 +14,6 @@ export const useLoginForm = () => {
     password,
     setUsername,
     setPassword,
-    resetForm
+    resetForm,
   };
 };

@@ -14,7 +14,7 @@ export const PopoverTrigger: FC<PopoverTriggerProps> = ({
   className = '',
   'aria-label': ariaLabel,
   'aria-describedby': ariaDescribedby,
-  id
+  id,
 }) => {
   const { setOpen, triggerRef, open } = usePopover();
 
@@ -23,9 +23,9 @@ export const PopoverTrigger: FC<PopoverTriggerProps> = ({
       ref={triggerRef}
       onClick={() => setOpen(!open)}
       className={`cursor-pointer ${className}`}
-      type="button"
+      type='button'
       aria-expanded={open}
-      aria-haspopup="true"
+      aria-haspopup='true'
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedby}
       id={id}

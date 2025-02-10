@@ -12,12 +12,12 @@ const HospitalEdit = () => {
 
   const {
     getById,
-    getByIdState: { isLoading: isLoadingHospital, data: hospital, error: getError }
+    getByIdState: { isLoading: isLoadingHospital, data: hospital, error: getError },
   } = useHospitalGetBy();
 
   const {
     handleUpdate,
-    updateState: { isLoading: isUpdating, error: updateError }
+    updateState: { isLoading: isUpdating, error: updateError },
   } = useHospitalUpdate();
 
   useEffect(() => {
@@ -40,10 +40,10 @@ const HospitalEdit = () => {
     return <div>Error: {getError}</div>;
   }
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Editar Hospital</h1>
-        <Button color="danger" variant="light" onClick={() => navigate(-1)}>
+    <div className='space-y-6'>
+      <div className='flex justify-between items-center'>
+        <h1 className='text-3xl font-bold'>Editar Hospital</h1>
+        <Button color='danger' variant='light' onClick={() => navigate(-1)}>
           Cancelar
         </Button>
       </div>
@@ -57,7 +57,7 @@ const HospitalEdit = () => {
           phone: hospital?.phone || '',
           email: hospital?.email || '',
           ruc: hospital?.ruc || '',
-          stateId: hospital?.stateId || 0
+          stateId: hospital?.stateId || 0,
         }}
         apiErrors={updateError}
       />

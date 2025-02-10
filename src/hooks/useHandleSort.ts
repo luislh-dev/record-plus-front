@@ -1,4 +1,4 @@
-import { SortConfig, SortConfigGeneric, SortDirection } from '@/types/sorting';
+import { type SortConfig, type SortConfigGeneric, SortDirection } from '@/types/sorting';
 
 export const useHandleSort = (sortConfig: SortConfig) => {
   const getNextSortDirection = (field: string): SortDirection => {
@@ -9,12 +9,12 @@ export const useHandleSort = (sortConfig: SortConfig) => {
 
   const getNewSortConfig = (field: string): SortConfig => ({
     field,
-    direction: getNextSortDirection(field)
+    direction: getNextSortDirection(field),
   });
 
   return {
     getNextSortDirection,
-    getNewSortConfig
+    getNewSortConfig,
   };
 };
 
@@ -27,11 +27,11 @@ export const useHandleSortGeneric = <T>(sortConfig: SortConfigGeneric<T>) => {
 
   const getNewSortConfig = (field: T): SortConfigGeneric<T> => ({
     field,
-    direction: getNextSortDirection(field)
+    direction: getNextSortDirection(field),
   });
 
   return {
     getNextSortDirection,
-    getNewSortConfig
+    getNewSortConfig,
   };
 };

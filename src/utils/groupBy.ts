@@ -17,6 +17,6 @@ export function groupBy<T>(array: T[], callback: GroupByCallback<T>): Record<Gro
 
       return result;
     },
-    {} as Record<GroupByKey, T[]>
+    {} as Record<GroupByKey, T[]>,
   );
 }

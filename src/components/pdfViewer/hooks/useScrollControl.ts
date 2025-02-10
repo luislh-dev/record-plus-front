@@ -8,11 +8,12 @@ import { useEffect, useRef } from 'react';
 export const useScrollControl = (
   isControlChange: boolean,
   setIsControlChange: (value: boolean) => void,
-  lastControlChange: number
+  lastControlChange: number,
 ) => {
   const isScrollBlocked = useRef(false);
   const timerRef = useRef<NodeJS.Timeout>();
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
   useEffect(() => {
     if (isControlChange) {
       isScrollBlocked.current = true;

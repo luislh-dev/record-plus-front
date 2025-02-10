@@ -7,7 +7,7 @@ import type { HospitalCreateRequest } from '../types/HospitalCreateRequest';
 export function useHospitalUpdate(onSuccess?: () => void) {
   const [updateState, setUpdateState] = useState<MutationState>({
     isLoading: false,
-    error: null
+    error: null,
   });
 
   const handleUpdate = useCallback(
@@ -21,15 +21,15 @@ export function useHospitalUpdate(onSuccess?: () => void) {
         if (error instanceof ApiServiceError) {
           setUpdateState({
             isLoading: false,
-            error: error.error
+            error: error.error,
           });
         }
         throw error;
       } finally {
-        setUpdateState(prev => ({ ...prev, isLoading: false }));
+        setUpdateState((prev) => ({ ...prev, isLoading: false }));
       }
     },
-    [onSuccess]
+    [onSuccess],
   );
 
   return { updateState, handleUpdate };

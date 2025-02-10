@@ -10,12 +10,12 @@ export const PersonSearch: FC<{
 }> = ({ onPersonFound }) => {
   const { documentNumber, setDocumentType, isSearching, setDocumentNumber, documentType } =
     useSearchPerson({
-      onPersonFound
+      onPersonFound,
     });
 
   return (
-    <div className="flex w-full gap-4">
-      <div className="w-1/3">
+    <div className='flex w-full gap-4'>
+      <div className='w-1/3'>
         <DocumentTypeSelect
           value={documentType.toString()}
           onChange={setDocumentType}
@@ -24,15 +24,15 @@ export const PersonSearch: FC<{
       </div>
 
       <Input
-        className="w-2/3"
-        variant="bordered"
+        className='w-2/3'
+        variant='bordered'
         value={documentNumber}
-        onChange={e => setDocumentNumber(e.target.value)}
+        onChange={(e) => setDocumentNumber(e.target.value)}
         isDisabled={isSearching}
-        labelPlacement="outside"
+        labelPlacement='outside'
         onInput={allowOnlyNumbers}
-        label="Número de documento"
-        placeholder="Ingrese número de documento"
+        label='Número de documento'
+        placeholder='Ingrese número de documento'
       />
     </div>
   );

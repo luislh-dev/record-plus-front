@@ -22,7 +22,7 @@ export const hospitalCreateSchema = z.object({
     .min(1, 'RUC es requerido')
     .regex(/^[0-9]{11}$/, 'RUC debe tener 11 dígitos'),
 
-  stateId: z.number().min(1, 'Estado es requerido')
+  stateId: z.number().min(1, 'Estado es requerido'),
 });
 
 // Este tipo es para inferir el tipo de los valores

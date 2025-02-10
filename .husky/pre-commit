@@ -1,18 +1,4 @@
 #!/bin/sh
+set -eu
 
-echo "🔍 Ejecutando lint en archivos staged..."
-
-# Ejecutar lint y mostrar errores directamente en consola
-npm run lint:staged
-
-# Guardar código de salida
-exit_code=$?
-
-# Si hay errores, no permitir el commit
-if [ $exit_code -ne 0 ]; then
-  echo "\033[0;31m❌ Error en el linting. Corrige los errores antes de hacer commit.\033[0m"
-  exit 1
-fi
-
-echo "\033[0;32m✅ Linting exitoso\033[0m"
-exit 0
+npx @biomejs/biome check --staged --files-ignore-unknown=true --no-errors-on-unmatched

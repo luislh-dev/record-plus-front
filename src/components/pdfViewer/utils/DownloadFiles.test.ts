@@ -21,8 +21,8 @@ describe('downloadFile', () => {
       ok: true,
       blob: () => Promise.resolve(new Blob(['pdf content'], { type: 'application/pdf' })),
       headers: new Headers({
-        'content-type': 'application/pdf'
-      })
+        'content-type': 'application/pdf',
+      }),
     });
 
     const result = await downloadFile('http://example.com/document.pdf');
@@ -37,8 +37,8 @@ describe('downloadFile', () => {
       ok: true,
       blob: () => Promise.resolve(new Blob(['image content'], { type: 'image/jpeg' })),
       headers: new Headers({
-        'content-type': 'image/jpeg'
-      })
+        'content-type': 'image/jpeg',
+      }),
     });
 
     const result = await downloadFile('http://example.com/image.jpg');
@@ -53,8 +53,8 @@ describe('downloadFile', () => {
       ok: true,
       blob: () => Promise.resolve(new Blob(['content'], { type: 'image/png' })),
       headers: new Headers({
-        'content-type': 'image/png'
-      })
+        'content-type': 'image/png',
+      }),
     });
 
     const result = await downloadFile('http://example.com/image');
@@ -66,7 +66,7 @@ describe('downloadFile', () => {
   it('debe manejar errores de red', async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: false,
-      status: 404
+      status: 404,
     });
 
     await expect(downloadFile('http://example.com/notfound.pdf')).rejects.toThrow('HTTP error!');
@@ -77,8 +77,8 @@ describe('downloadFile', () => {
       ok: true,
       blob: () => Promise.resolve(new Blob(['content'])),
       headers: new Headers({
-        'content-type': 'application/unknown'
-      })
+        'content-type': 'application/unknown',
+      }),
     });
 
     const result = await downloadFile('http://example.com/file');

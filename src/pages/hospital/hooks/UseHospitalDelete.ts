@@ -12,7 +12,7 @@ export function useHospitalDelete() {
 
   const [modalState, setModalState] = useState<ModalState>({
     isOpen: false,
-    hospitalId: null
+    hospitalId: null,
   });
 
   const mutation = useMutation({
@@ -21,7 +21,7 @@ export function useHospitalDelete() {
       // Esperar a que se complete la invalidación antes de cerrar el modal
       await queryClient.invalidateQueries({ queryKey: ['hospitals'] });
       setModalState({ isOpen: false, hospitalId: null });
-    }
+    },
   });
 
   const handleDelete = useCallback(async () => {
@@ -48,11 +48,11 @@ export function useHospitalDelete() {
   return {
     deleteState: {
       isLoading: mutation.isPending,
-      error: mutation.error ? 'Error al eliminar el hospital' : null
+      error: mutation.error ? 'Error al eliminar el hospital' : null,
     },
     isOpen: modalState.isOpen,
     handleDelete,
     openDeleteModal,
-    closeDeleteModal
+    closeDeleteModal,
   };
 }

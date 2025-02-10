@@ -7,5 +7,5 @@ export const toHospitalCreateRequest = (values: HospitalCreateValues): HospitalC
   phone: values.phone,
   email: values.email,
   ruc: values.ruc,
-  stateId: values.stateId
+  stateId: values.stateId,
 });

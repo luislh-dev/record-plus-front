@@ -1,13 +1,13 @@
-import { UserManagementCreateValues } from '../models/userManagementCreateSchema';
-import { ManagementCreationDto } from '../types/ManagementCreationDto';
+import type { UserManagementCreateValues } from '../models/userManagementCreateSchema';
+import type { ManagementCreationDto } from '../types/ManagementCreationDto';
 
 export const toManagementCreationDto = (
-  values: UserManagementCreateValues
+  values: UserManagementCreateValues,
 ): ManagementCreationDto => ({
   name: values.name,
   email: values.email,
   password: values.password,
   personDNI: values.personDNI,
   stateId: values.stateId,
-  hospitalId: values.hospitalId
+  hospitalId: values.hospitalId,
 });

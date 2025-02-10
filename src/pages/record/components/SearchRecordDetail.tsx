@@ -8,10 +8,10 @@ export const SearchRecordDetail = () => {
   return (
     <Input
       startContent={<Search />}
-      type="search"
-      placeholder="Ingrese el nombre del hospital"
-      variant="bordered"
-      onChange={e => setSearchTerm(e.target.value)}
+      type='search'
+      placeholder='Ingrese el nombre del hospital'
+      variant='bordered'
+      onChange={(e) => setSearchTerm(e.target.value)}
     />
   );
 };

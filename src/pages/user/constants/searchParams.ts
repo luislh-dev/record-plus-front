@@ -1,4 +1,4 @@
-import { SearchFieldKeys } from '../types/UserRequestParams';
+import type { SearchFieldKeys } from '../types/UserRequestParams';
 
 interface SearchParam {
   id: SearchFieldKeys;
@@ -8,5 +8,5 @@ interface SearchParam {
 export const SEARCH_PARAMS: SearchParam[] = [
   { id: 'username', label: 'Nombre' },
   { id: 'dni', label: 'DNI' },
-  { id: 'hospitalName', label: 'Hospital' }
+  { id: 'hospitalName', label: 'Hospital' },
 ];

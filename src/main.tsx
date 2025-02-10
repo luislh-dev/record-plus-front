@@ -19,7 +19,7 @@ root.render(
       <AuthProvider>
         <RouterProvider router={router} />
       </AuthProvider>
-      <ReactQueryDevtools initialIsOpen={false} position="bottom" />
+      <ReactQueryDevtools initialIsOpen={false} position='bottom' />
     </QueryClientProvider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

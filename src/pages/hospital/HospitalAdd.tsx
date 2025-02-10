@@ -8,14 +8,14 @@ const HospitalAdd = () => {
 
   const {
     handleCreate,
-    createState: { isLoading, error }
+    createState: { isLoading, error },
   } = useHospitalCreate();
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Agregar Hospital</h1>
-        <Button color="danger" variant="light" onClick={() => navigate(-1)}>
+    <div className='space-y-6'>
+      <div className='flex justify-between items-center'>
+        <h1 className='text-3xl font-bold'>Agregar Hospital</h1>
+        <Button color='danger' variant='light' onClick={() => navigate(-1)}>
           Cancelar
         </Button>
       </div>

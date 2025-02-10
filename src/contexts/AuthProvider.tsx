@@ -4,7 +4,7 @@ import {
   type AuthAction,
   type AuthState,
   authReducer,
-  initialState
+  initialState,
 } from '../reducers/authReducer';
 import { decodeToken, getStoredToken } from '../utils/tokenUtils';
 
@@ -13,7 +13,7 @@ const AuthContext = createContext<{
   dispatch: React.Dispatch<AuthAction>;
 }>({
   state: initialState,
-  dispatch: () => null
+  dispatch: () => null,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -32,8 +32,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             payload: {
               token,
               username: decoded.sub,
-              authorities: decoded.authorities
-            }
+              authorities: decoded.authorities,
+            },
           });
         } catch {
           localStorage.removeItem('token');

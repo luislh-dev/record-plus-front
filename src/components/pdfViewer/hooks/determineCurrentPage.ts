@@ -1,4 +1,4 @@
-import { RefObject, useCallback } from 'react';
+import { type RefObject, useCallback } from 'react';
 
 interface UsePageDetectionProps {
   containerRef: RefObject<HTMLDivElement>;
@@ -13,7 +13,7 @@ export const usePageDetection = ({ containerRef, isScrollBlocked }: UsePageDetec
     const containerRect = container.getBoundingClientRect();
 
     // Obtener todas las páginas visibles
-    const visiblePages = Array.from(document.querySelectorAll('[data-page]')).filter(page => {
+    const visiblePages = Array.from(document.querySelectorAll('[data-page]')).filter((page) => {
       const rect = page.getBoundingClientRect();
       const isVisible = rect.top < containerRect.bottom && rect.bottom > containerRect.top;
       return isVisible;
@@ -25,9 +25,10 @@ export const usePageDetection = ({ containerRef, isScrollBlocked }: UsePageDetec
     const containerCenter = containerRect.top + containerRect.height / 2;
 
     let closestPage = visiblePages[0];
-    let smallestDistance = Infinity;
+    let smallestDistance = Number.POSITIVE_INFINITY;
 
-    visiblePages.forEach(page => {
+    for (let i = 0; i < visiblePages.length; i++) {
+      const page = visiblePages[i];
       const rect = page.getBoundingClientRect();
       const pageCenter = rect.top + rect.height / 2;
       const distance = Math.abs(pageCenter - containerCenter);
@@ -36,7 +37,7 @@ export const usePageDetection = ({ containerRef, isScrollBlocked }: UsePageDetec
         smallestDistance = distance;
         closestPage = page;
       }
-    });
+    }
 
     return Number(closestPage.getAttribute('data-page'));
   }, [containerRef, isScrollBlocked]);

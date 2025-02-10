@@ -7,8 +7,8 @@ import type { RecordDetailRequestParams } from '../types/RecordDetailRequestPara
 export const createRecordDetail = async (data: FormData) => {
   const response = await api.post('/record-details', data, {
     headers: {
-      'Content-Type': 'multipart/form-data'
-    }
+      'Content-Type': 'multipart/form-data',
+    },
   });
 
   return response.data;
@@ -16,13 +16,13 @@ export const createRecordDetail = async (data: FormData) => {
 
 export const getRecordDetailList = async (
   peopleId: string,
-  params?: RecordDetailRequestParams
+  params?: RecordDetailRequestParams,
 ): Promise<PageResponse<RecordDetailListResponseDto>> => {
   const response = await api.get<PageResponse<RecordDetailListResponseDto>>(
     `/record-details/findAllByPeopleId/${peopleId}`,
     {
-      params
-    }
+      params,
+    },
   );
 
   return response.data;

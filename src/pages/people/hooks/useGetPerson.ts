@@ -1,9 +1,9 @@
 import { ApiServiceError } from '@/services/api/ApiErrorHandler';
-import { ApiError } from '@/types/errros/ApiError';
+import type { ApiError } from '@/types/errros/ApiError';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { getPeopleDetail, getPersonNameByDocument } from '../services/peopleService';
-import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
+import type { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 export function useGetPersonByDni() {
   const [isLoading, setLoading] = useState(false);
@@ -50,7 +50,7 @@ export function useGetPersonDetailById() {
       return getPeopleDetail(personId);
     },
     enabled: !!id,
-    retry: false
+    retry: false,
   });
 
   return { isLoading, error, data, setId, refetch };

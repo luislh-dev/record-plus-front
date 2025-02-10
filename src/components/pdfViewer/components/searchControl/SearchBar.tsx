@@ -1,15 +1,15 @@
 import { Search } from '@/icons/Search';
-import { Input } from "@heroui/react";
+import { Input } from '@heroui/react';
 
 import { usePDFStore } from '../../store/usePDFStore';
 
 export const SearchBar = () => {
-  const pdfDoc = usePDFStore(state => state.pdfDoc);
-  const scale = usePDFStore(state => state.scale);
-  const searchText = usePDFStore(state => state.searchText);
-  const setSearchText = usePDFStore(state => state.setSearchText);
-  const searchInDocument = usePDFStore(state => state.searchInDocument);
-  const clearSearch = usePDFStore(state => state.clearSearch);
+  const pdfDoc = usePDFStore((state) => state.pdfDoc);
+  const scale = usePDFStore((state) => state.scale);
+  const searchText = usePDFStore((state) => state.searchText);
+  const setSearchText = usePDFStore((state) => state.setSearchText);
+  const searchInDocument = usePDFStore((state) => state.searchInDocument);
+  const clearSearch = usePDFStore((state) => state.clearSearch);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,17 +28,17 @@ export const SearchBar = () => {
 
   return (
     <search>
-      <form onSubmit={handleSearch} className="flex items-center gap-2">
+      <form onSubmit={handleSearch} className='flex items-center gap-2'>
         <Input
-          size="sm"
+          size='sm'
           value={searchText}
-          placeholder="Enter para buscar"
+          placeholder='Enter para buscar'
           onChange={handleChange}
-          startContent={<Search aria-hidden="true" className="w-4 h-4 text-gray-400" />}
-          type="search"
+          startContent={<Search aria-hidden='true' className='w-4 h-4 text-gray-400' />}
+          type='search'
           isClearable
           onClear={handleClear}
-          variant="bordered"
+          variant='bordered'
         />
       </form>
     </search>

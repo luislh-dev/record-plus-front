@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes } from 'react';
+import type { ButtonHTMLAttributes } from 'react';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
@@ -8,7 +8,7 @@ export const ControlButton: React.FC<ButtonProps> = ({ children, className = '',
   return (
     <button
       className={`p-1 hover:bg-gray-300 rounded-md disabled:text-gray-400 disabled:hover:bg-inherit ${className}`}
-      type="button"
+      type='button'
       {...props}
     >
       {children}

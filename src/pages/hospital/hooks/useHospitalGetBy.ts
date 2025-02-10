@@ -9,27 +9,27 @@ export function useHospitalGetBy() {
   const [getByIdState, setGetByIdState] = useState({
     isLoading: false,
     error: null as string | null,
-    data: null as HospitalCreateRequest | null
+    data: null as HospitalCreateRequest | null,
   });
 
   // Obtener por id
   const getById = useCallback(async (id: number) => {
-    setGetByIdState(prev => ({ ...prev, isLoading: true, error: null }));
+    setGetByIdState((prev) => ({ ...prev, isLoading: true, error: null }));
 
     try {
       const hospital = await getHospital(id);
-      setGetByIdState(prev => ({
+      setGetByIdState((prev) => ({
         ...prev,
         data: hospital,
-        isLoading: false
+        isLoading: false,
       }));
       return hospital;
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Error al obtener el hospital';
-      setGetByIdState(prev => ({
+      setGetByIdState((prev) => ({
         ...prev,
         error: message,
-        isLoading: false
+        isLoading: false,
       }));
       throw error;
     }
@@ -46,7 +46,7 @@ export function useHospitalGetByName() {
     const params: HospitalFindByNameParams = {
       name: debouncedSearchTerm,
       size: 10,
-      page: pageParam
+      page: pageParam,
     };
     return getHospitalsByName(params);
   };
@@ -55,10 +55,10 @@ export function useHospitalGetByName() {
     queryKey: ['hospitalsName', debouncedSearchTerm],
     queryFn: fetchHospitals,
     initialPageParam: 0,
-    getNextPageParam: (lastPage, allPages) => (lastPage.last ? undefined : allPages.length)
+    getNextPageParam: (lastPage, allPages) => (lastPage.last ? undefined : allPages.length),
   });
 
-  const hospitals = data?.pages.flatMap(page => page.content) ?? [];
+  const hospitals = data?.pages.flatMap((page) => page.content) ?? [];
 
   return {
     isLoading,
@@ -67,6 +67,6 @@ export function useHospitalGetByName() {
     isError,
     hospitals,
     searchTerm,
-    setSearchTerm
+    setSearchTerm,
   };
 }

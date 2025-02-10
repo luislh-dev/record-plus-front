@@ -5,10 +5,10 @@ import { useNavigate } from 'react-router-dom';
 export const HeaderList = () => {
   const navigate = useNavigate();
   return (
-    <div className="flex max-w-full justify-between px-3">
-      <h1 className="text-2xl font-bold">Lista de Pacientes</h1>
+    <div className='flex max-w-full justify-between px-3'>
+      <h1 className='text-2xl font-bold'>Lista de Pacientes</h1>
       <Button
-        color="primary"
+        color='primary'
         onPress={() => navigate('/people/add')}
         endContent={<Add size={18} />}
       >

@@ -17,14 +17,14 @@ export const useSearchStoreRecordDetail = create<SearchState>((set, get) => ({
   size: 4,
   rangeDate: [null, null],
 
-  setRangeDate: rangeDate => set({ rangeDate }),
-  setSearchTerm: term => set({ searchTerm: term }),
+  setRangeDate: (rangeDate) => set({ rangeDate }),
+  setSearchTerm: (term) => set({ searchTerm: term }),
 
   buildSearchParams: () => {
     const { searchTerm, size, rangeDate } = get();
 
     const params: Omit<RecordDetailRequestParams, 'page'> = {
-      size
+      size,
     };
 
     if (searchTerm) {
@@ -37,5 +37,5 @@ export const useSearchStoreRecordDetail = create<SearchState>((set, get) => ({
     }
 
     return params;
-  }
+  },
 }));

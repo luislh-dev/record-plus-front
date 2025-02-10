@@ -1,7 +1,7 @@
-import { execSync } from 'child_process';
-import { copyFileSync, existsSync, mkdirSync, rmSync } from 'fs';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { execSync } from 'node:child_process';
+import { copyFileSync, existsSync, mkdirSync, rmSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,7 +17,7 @@ try {
   const stagedFiles = execSync('git diff --cached --name-only').toString().trim().split('\n');
 
   // 3. Copiar los archivos staged al directorio temporal manteniendo la estructura
-  stagedFiles.forEach(file => {
+  for (const file of stagedFiles) {
     if (file) {
       const targetPath = join(tempDir, file);
       const targetDir = dirname(targetPath);
@@ -28,7 +28,7 @@ try {
 
       copyFileSync(file, targetPath);
     }
-  });
+  }
 
   // 4. Ejecutar TypeScript check usando npx
   console.log('Ejecutando TypeScript check...');

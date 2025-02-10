@@ -1,13 +1,13 @@
 import { api } from '@/services/api/api';
-import { PageResponse } from '@/types/Pagination';
-import { DoctorCreationDto } from '../types/DoctorCreationDto';
-import { ManagementCreationDto } from '../types/ManagementCreationDto';
-import { UserListDTO } from '../types/UserListDTO';
-import { UserRequestParams } from '../types/UserRequestParams';
+import type { PageResponse } from '@/types/Pagination';
+import type { DoctorCreationDto } from '../types/DoctorCreationDto';
+import type { ManagementCreationDto } from '../types/ManagementCreationDto';
+import type { UserListDTO } from '../types/UserListDTO';
+import type { UserRequestParams } from '../types/UserRequestParams';
 
 export const getUsers = async (params?: UserRequestParams): Promise<PageResponse<UserListDTO>> => {
   const response = await api.get<PageResponse<UserListDTO>>('/users', {
-    params
+    params,
   });
   return response.data;
 };

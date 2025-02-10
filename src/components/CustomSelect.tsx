@@ -5,7 +5,7 @@ import {
   Controller,
   type FieldError,
   type FieldValues,
-  type Path
+  type Path,
 } from 'react-hook-form';
 
 interface Option {
@@ -32,7 +32,7 @@ export const CustomSelect = <T extends FieldValues>({
   error,
   isRequired = true,
   placeholder,
-  variant = 'bordered'
+  variant = 'bordered',
 }: Props<T>) => (
   <>
     <Controller
@@ -42,29 +42,29 @@ export const CustomSelect = <T extends FieldValues>({
         // si value es null, usa el primer elemento del array, si no, usa el valor de value
         const selectedValue = value ? [value.toString()] : [options[0].id.toString()];
         return (
-          <div className="flex flex-col gap-1 w-full">
+          <div className='flex flex-col gap-1 w-full'>
             <Select
               variant={variant}
               label={label}
               selectedKeys={selectedValue}
-              onSelectionChange={keys => {
+              onSelectionChange={(keys) => {
                 const selected = Array.from(keys)[0];
                 onChange(selected ? Number(selected) : null);
               }}
               placeholder={placeholder}
-              labelPlacement="outside"
+              labelPlacement='outside'
               isRequired={isRequired}
               defaultSelectedKeys={selectedValue}
               errorMessage={error?.message}
               isInvalid={!!error}
             >
-              {options?.map(option => (
+              {options?.map((option) => (
                 <SelectItem key={option.id.toString()} value={option.id.toString()}>
                   {option.name}
                 </SelectItem>
               ))}
             </Select>
-            <p className="h-4 text-xs text-danger pl-1">{error?.message}</p>
+            <p className='h-4 text-xs text-danger pl-1'>{error?.message}</p>
           </div>
         );
       }}

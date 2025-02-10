@@ -37,6 +37,6 @@ export const usePresignedUrl = (): UsePresignedUrlReturn => {
     presignedUrl,
     isLoading,
     error,
-    fetchPresignedUrl
+    fetchPresignedUrl,
   };
 };

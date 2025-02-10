@@ -13,7 +13,7 @@ import {
   ModalBody,
   ModalContent,
   ModalFooter,
-  ModalHeader
+  ModalHeader,
 } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { type DateValue, parseDate } from '@internationalized/date';
@@ -22,7 +22,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { useCreateRequeridPerson } from '../hooks/useCreatePerson';
 import {
   type PeopleCreateRequiredValues,
-  peopleCreateRequiredSchema
+  peopleCreateRequiredSchema,
 } from '../models/peopleCreateRequiredSchema';
 import type { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
@@ -41,10 +41,10 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
     control,
     handleSubmit,
     reset,
-    formState: { errors, isValid }
+    formState: { errors, isValid },
   } = useForm<PeopleCreateRequiredValues>({
     resolver: zodResolver(peopleCreateRequiredSchema),
-    mode: 'onChange'
+    mode: 'onChange',
   });
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
         documentNumber: personData.documentNumber,
         birthdate: new Date(getPeruDateTime()),
         sexTypeId: undefined,
-        phone: ''
+        phone: '',
       });
     }
   }, [personData, reset]);
@@ -85,63 +85,63 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
         isOpen={isOpen}
         onClose={onCloseModal}
         isDismissable={false}
-        size="2xl"
-        aria-label="Modal de creación de persona"
+        size='2xl'
+        aria-label='Modal de creación de persona'
       >
-        <ModalContent aria-label="Contenido del modal de creación de persona">
+        <ModalContent aria-label='Contenido del modal de creación de persona'>
           <form onSubmit={handleSubmit(onSubmit)}>
-            <ModalHeader className="flex flex-col" aria-label="Cabezera de la modal de creación">
-              <Typography as="h3" variant="subsection">
+            <ModalHeader className='flex flex-col' aria-label='Cabezera de la modal de creación'>
+              <Typography as='h3' variant='subsection'>
                 Confirmar datos de {dataSource}
               </Typography>
-              <Typography variant="body" color="muted">
+              <Typography variant='body' color='muted'>
                 Se encontraron los siguientes datos en {dataSource}. Por favor confirme que son
                 correctos.
               </Typography>
             </ModalHeader>
             <ModalBody>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <div>
-                  <Typography variant="data-title" color="muted">
+                  <Typography variant='data-title' color='muted'>
                     Nombres
                   </Typography>
-                  <Typography variant="body-small" className="font-medium">
+                  <Typography variant='body-small' className='font-medium'>
                     {personData.name}
                   </Typography>
                 </div>
                 <div>
-                  <Typography variant="data-title" color="muted">
+                  <Typography variant='data-title' color='muted'>
                     Apellidos
                   </Typography>
-                  <Typography variant="body-small" className="font-medium">
+                  <Typography variant='body-small' className='font-medium'>
                     {personData.fatherLastName} {personData.motherLastName}
                   </Typography>
                 </div>
                 <div>
-                  <Typography variant="data-title" color="muted">
+                  <Typography variant='data-title' color='muted'>
                     Tipo de documento
                   </Typography>
-                  <Typography variant="body-small" className="font-medium">
+                  <Typography variant='body-small' className='font-medium'>
                     {personData.documentType}
                   </Typography>
                 </div>
                 <div>
-                  <Typography variant="data-title" color="muted">
+                  <Typography variant='data-title' color='muted'>
                     Número de documento
                   </Typography>
-                  <Typography variant="body-small" className="font-medium">
+                  <Typography variant='body-small' className='font-medium'>
                     {personData.documentNumber}
                   </Typography>
                 </div>
               </div>
               <Alert
-                variant="bordered"
-                description="Utiliza los datos recuperados para completar el formulario y registrar a la persona en el sistema de manera precisa."
+                variant='bordered'
+                description='Utiliza los datos recuperados para completar el formulario y registrar a la persona en el sistema de manera precisa.'
               />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                 <Controller
                   control={control}
-                  name="birthdate"
+                  name='birthdate'
                   render={({ field: { onChange, value } }) => {
                     const today = getPeruDateTime();
                     const formattedDate = value instanceof Date ? value : today;
@@ -151,12 +151,12 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
                     const selectedDate = parseDate(isoDate);
 
                     return (
-                      <div className="flex flex-col gap-1">
+                      <div className='flex flex-col gap-1'>
                         <DatePicker
                           isInvalid={!!errors.birthdate}
-                          label="Fecha de nacimiento"
-                          variant="bordered"
-                          labelPlacement="outside"
+                          label='Fecha de nacimiento'
+                          variant='bordered'
+                          labelPlacement='outside'
                           isRequired
                           value={selectedDate}
                           onChange={(date: DateValue | null) => {
@@ -166,13 +166,13 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
                               const newDate = new Date(
                                 Number.parseInt(year),
                                 Number.parseInt(month) - 1,
-                                Number.parseInt(day)
+                                Number.parseInt(day),
                               );
                               onChange(newDate);
                             }
                           }}
                         />
-                        <Typography variant="error" className="h-4 pl-1">
+                        <Typography variant='error' className='h-4 pl-1'>
                           {errors.birthdate?.message}
                         </Typography>
                       </div>
@@ -181,32 +181,32 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
                 />
 
                 <CustomSelect
-                  variant="bordered"
+                  variant='bordered'
                   control={control}
-                  name="sexTypeId"
-                  label="Genero"
+                  name='sexTypeId'
+                  label='Genero'
                   options={gender}
-                  placeholder="Seleccione un genero"
+                  placeholder='Seleccione un genero'
                 />
                 <CustomInput
-                  name="phone"
-                  variant="bordered"
+                  name='phone'
+                  variant='bordered'
                   control={control}
-                  type="tel"
+                  type='tel'
                   onInput={allowOnlyNumbers}
-                  label="Teléfono"
+                  label='Teléfono'
                   error={errors.phone}
-                  placeholder="Ingrese el teléfono"
+                  placeholder='Ingrese el teléfono'
                   isRequired
                 />
               </div>
             </ModalBody>
             <ModalFooter>
-              <Button type="button" color="danger" variant="flat" onPress={onCloseModal}>
+              <Button type='button' color='danger' variant='flat' onPress={onCloseModal}>
                 Cancelar
               </Button>
 
-              <Button type="submit" color="primary" isLoading={isLoading} isDisabled={!isValid}>
+              <Button type='submit' color='primary' isLoading={isLoading} isDisabled={!isValid}>
                 Confirmar
               </Button>
             </ModalFooter>

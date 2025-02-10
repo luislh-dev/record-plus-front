@@ -10,10 +10,12 @@ interface RoleBasedRouteProps {
 export const RoleBasedRoute = ({ children, allowedRoles }: RoleBasedRouteProps) => {
   const { state } = useAuth();
 
-  const hasRequiredRole = state.authorities?.some(role => allowedRoles.includes(role as RoleType));
+  const hasRequiredRole = state.authorities?.some((role) =>
+    allowedRoles.includes(role as RoleType),
+  );
 
   if (!hasRequiredRole) {
-    return <Navigate to="/" replace />;
+    return <Navigate to='/' replace />;
   }
 
   return children;

@@ -15,30 +15,30 @@ export function ModalConfirmDelete({
   onConfirm,
   title = 'Confirmar eliminación',
   message = '¿Está seguro que desea eliminar este elemento?',
-  isLoading = false
+  isLoading = false,
 }: ModalConfirmDeleteProps) {
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      backdrop="blur"
+      backdrop='blur'
       classNames={{
-        backdrop: 'backdrop-opacity-20'
+        backdrop: 'backdrop-opacity-20',
       }}
     >
       <ModalContent>
-        {onClose => (
+        {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>
+            <ModalHeader className='flex flex-col gap-1'>{title}</ModalHeader>
             <ModalBody>
               <p>{message}</p>
             </ModalBody>
             <ModalFooter>
-              <Button variant="light" onPress={onClose} disabled={isLoading}>
+              <Button variant='light' onPress={onClose} disabled={isLoading}>
                 Cancelar
               </Button>
               <Button
-                color="danger"
+                color='danger'
                 onPress={async () => {
                   await onConfirm();
                   onClose();

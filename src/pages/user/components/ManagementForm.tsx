@@ -5,9 +5,8 @@ import { useStates } from '@/hooks/state/useState';
 import { HospitalMinimalSearch } from '@/pages/hospital/components/HospitalMinimalSearch';
 import { PeopleCreateModal } from '@/pages/people/components/PeopleCreateModal';
 import { PersonSearch } from '@/pages/people/components/PersonSearch';
-import { MinimalPeopleResponseDto } from '@/pages/people/types/MinimalPeopleResponseDto';
-import { PeopleCreateRequiredDto } from '@/pages/people/types/PeopleCreateRequiredDto';
-import { zodResolver } from '@hookform/resolvers/zod';
+import type { MinimalPeopleResponseDto } from '@/pages/people/types/MinimalPeopleResponseDto';
+import type { PeopleCreateRequiredDto } from '@/pages/people/types/PeopleCreateRequiredDto';
 import {
   Alert,
   Button,
@@ -16,14 +15,15 @@ import {
   CardHeader,
   Divider,
   Input,
-  useDisclosure
-} from "@heroui/react";
+  useDisclosure,
+} from '@heroui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useUserManagementCreate } from '../hooks/useUserCreate';
 import {
+  type UserManagementCreateValues,
   userManagementCreateSchema,
-  UserManagementCreateValues
 } from '../models/userManagementCreateSchema';
 import { SearchHospitalTooltip } from './SearchHospitalTooltip';
 
@@ -36,12 +36,12 @@ export const ManagementForm = () => {
     personalInfo: {
       name: '',
       surnames: '',
-      phone: ''
+      phone: '',
     },
     email: '',
     name: '',
     password: '',
-    passwordConfirmation: ''
+    passwordConfirmation: '',
   } as Partial<UserManagementCreateValues>;
 
   const {
@@ -50,11 +50,11 @@ export const ManagementForm = () => {
     setValue,
     watch,
     formState: { errors },
-    reset
+    reset,
   } = useForm<UserManagementCreateValues>({
     resolver: zodResolver(userManagementCreateSchema),
     mode: 'onSubmit',
-    defaultValues
+    defaultValues,
   });
 
   const { isLoading: isSubmitting, handleCreate } = useUserManagementCreate();
@@ -80,8 +80,8 @@ export const ManagementForm = () => {
         personalInfo: {
           name: '',
           surnames: '',
-          phone: ''
-        }
+          phone: '',
+        },
       });
       return;
     }
@@ -116,55 +116,55 @@ export const ManagementForm = () => {
         personData={personData || ({} as MinimalPeopleResponseDto)}
       />
       <section>
-        <Card className="flex flex-col gap-5" shadow="md">
+        <Card className='flex flex-col gap-5' shadow='md'>
           <CardHeader>
             <header>
-              <Typography as="h3" variant="section-title">
+              <Typography as='h3' variant='section-title'>
                 Registro de usuario
               </Typography>
             </header>
           </CardHeader>
-          <CardBody className="flex flex-col">
-            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          <CardBody className='flex flex-col'>
+            <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4'>
               {/* Sección para buscar a la persona a traves de su documento de identidad */}
-              <div className="flex flex-col">
-                <div className="flex gap-4 mb-4">
-                  <div className="flex flex-col gap-2 w-full">
+              <div className='flex flex-col'>
+                <div className='flex gap-4 mb-4'>
+                  <div className='flex flex-col gap-2 w-full'>
                     <PersonSearch onPersonFound={foundPerson} />
                     {errors.personDNI && (
-                      <Typography as="p" variant="error" className="h-4 pl-1">
+                      <Typography as='p' variant='error' className='h-4 pl-1'>
                         {errors.personDNI.message}
                       </Typography>
                     )}
                   </div>
                 </div>
                 <Alert
-                  color="warning"
-                  variant="bordered"
-                  title="Consejo"
-                  description="Para registrar un nuevo usuario, primero ingrese el documento de identidad para cargar los datos personales. Luego complete la información de acceso al sistema"
+                  color='warning'
+                  variant='bordered'
+                  title='Consejo'
+                  description='Para registrar un nuevo usuario, primero ingrese el documento de identidad para cargar los datos personales. Luego complete la información de acceso al sistema'
                 />
-                <div className="flex flex-col mt-3">
-                  <Typography as="h5" variant="body-small" className="font-medium">
+                <div className='flex flex-col mt-3'>
+                  <Typography as='h5' variant='body-small' className='font-medium'>
                     Datos Encontrados
                   </Typography>
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className='grid grid-cols-3 gap-4'>
                     <Input
-                      type="text"
-                      label="Nombre"
+                      type='text'
+                      label='Nombre'
                       value={watch('personalInfo.name') || ''}
                       isDisabled
                     />
 
                     <Input
-                      type="text"
-                      label="Apellidos"
+                      type='text'
+                      label='Apellidos'
                       value={watch('personalInfo.surnames') || ''}
                       isDisabled
                     />
                     <Input
-                      type="phone"
-                      label="Teléfono"
+                      type='phone'
+                      label='Teléfono'
                       value={watch('personalInfo.phone') || ''}
                       isDisabled
                     />
@@ -172,25 +172,25 @@ export const ManagementForm = () => {
                 </div>
               </div>
 
-              <Divider className="my-2" />
+              <Divider className='my-2' />
 
               {/* Sección para buscar el hospital, al cual se le asignara al nuevo usuario */}
-              <div className="flex flex-col gap-4">
-                <div className="flex items-center gap-x-2">
-                  <Typography as="h5" variant="body-small" className="font-medium">
+              <div className='flex flex-col gap-4'>
+                <div className='flex items-center gap-x-2'>
+                  <Typography as='h5' variant='body-small' className='font-medium'>
                     Buscar Hospital
                   </Typography>
                   <SearchHospitalTooltip />
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className='flex flex-col gap-2'>
                   <Controller
-                    name="hospitalId"
+                    name='hospitalId'
                     control={control}
                     render={({ field: { onChange } }) => (
                       <>
                         <HospitalMinimalSearch onHospitalSelected={onChange} />
                         {errors.hospitalId && (
-                          <Typography as="p" variant="error" className="h-4 pl-1">
+                          <Typography as='p' variant='error' className='h-4 pl-1'>
                             {errors.hospitalId.message}
                           </Typography>
                         )}
@@ -200,64 +200,64 @@ export const ManagementForm = () => {
                 </div>
               </div>
 
-              <Divider className="my-2" />
+              <Divider className='my-2' />
 
               {/* Sección para la creación de usuario */}
-              <div className="flex flex-col gap-4">
-                <Typography as="h5" variant="body-small" className="font-medium">
+              <div className='flex flex-col gap-4'>
+                <Typography as='h5' variant='body-small' className='font-medium'>
                   Datos de acceso
                 </Typography>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-2">
+                <div className='grid grid-cols-2 gap-4'>
+                  <div className='col-span-2'>
                     <CustomInput
-                      name="email"
+                      name='email'
                       control={control}
-                      label="Email"
+                      label='Email'
                       error={errors.email}
-                      placeholder="Ingrese el email"
+                      placeholder='Ingrese el email'
                       isRequired
                     />
                   </div>
 
                   <CustomInput
-                    name="name"
+                    name='name'
                     control={control}
-                    label="Usuario"
-                    placeholder="Ingrese el nombre del usuario"
+                    label='Usuario'
+                    placeholder='Ingrese el nombre del usuario'
                     isRequired
                     error={errors.name}
                   />
                   <CustomSelect
-                    name="stateId"
+                    name='stateId'
                     control={control}
-                    label="Estado"
+                    label='Estado'
                     options={state}
                     error={errors.stateId}
                     isRequired
                   />
                   <CustomInput
-                    name="password"
-                    type="password"
+                    name='password'
+                    type='password'
                     control={control}
-                    label="Contraseña"
-                    placeholder="Ingrese la contraseña"
+                    label='Contraseña'
+                    placeholder='Ingrese la contraseña'
                     isRequired
                     error={errors.password}
                   />
                   <CustomInput
-                    name="passwordConfirmation"
-                    type="password"
+                    name='passwordConfirmation'
+                    type='password'
                     control={control}
-                    label="Confirmar contraseña"
-                    placeholder="Confirme la contraseña"
+                    label='Confirmar contraseña'
+                    placeholder='Confirme la contraseña'
                     isRequired
                     error={errors.passwordConfirmation}
                   />
                 </div>
               </div>
 
-              <div className="col-span-2 flex justify-end gap-2">
-                <Button type="submit" color="primary" isLoading={isSubmitting}>
+              <div className='col-span-2 flex justify-end gap-2'>
+                <Button type='submit' color='primary' isLoading={isSubmitting}>
                   Guardar
                 </Button>
               </div>

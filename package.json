@@ -9,8 +9,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "lint:staged": "lint-staged",
+    "lint": "biome lint",
+    "lint-staged": "biome lint --apply",
     "preview": "vite preview",
     "prepare": "husky",
     "test:build": "node --experimental-vm-modules scripts/test-staged-build.js",

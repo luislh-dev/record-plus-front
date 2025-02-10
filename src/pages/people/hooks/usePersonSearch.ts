@@ -4,10 +4,10 @@ import { getPersonList } from '../services/peopleService';
 import { useSearchPeopleStore } from '../stores/useSearchStore';
 
 export function usePersonSearch() {
-  const searchTerm = useSearchPeopleStore(state => state.searchTerm);
-  const filters = useSearchPeopleStore(state => state.filters);
-  const sortConfig = useSearchPeopleStore(state => state.sortConfig);
-  const buildSearchParams = useSearchPeopleStore(state => state.buildSearchParams);
+  const searchTerm = useSearchPeopleStore((state) => state.searchTerm);
+  const filters = useSearchPeopleStore((state) => state.filters);
+  const sortConfig = useSearchPeopleStore((state) => state.sortConfig);
+  const buildSearchParams = useSearchPeopleStore((state) => state.buildSearchParams);
 
   // Aplicar debounce al término de búsqueda
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -18,7 +18,7 @@ export function usePersonSearch() {
     queryFn: async () => {
       const params = buildSearchParams();
       return getPersonList(params);
-    }
+    },
   });
 
   return {
@@ -29,8 +29,8 @@ export function usePersonSearch() {
       totalPages: data?.totalPages ?? 0,
       totalElements: data?.totalElements ?? 0,
       pageSize: data?.size ?? filters.size,
-      currentPage: data?.number ?? 0
+      currentPage: data?.number ?? 0,
     },
-    refetch
+    refetch,
   };
 }

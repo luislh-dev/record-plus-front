@@ -1,6 +1,5 @@
-/* eslint-disable no-console */
-import { StateCreator } from 'zustand';
-import { PDFStore, RenderSlice } from '../../types/store.types';
+import type { StateCreator } from 'zustand';
+import type { PDFStore, RenderSlice } from '../../types/store.types';
 
 export const createRenderSlice: StateCreator<PDFStore, [], [], RenderSlice> = (_, get) => ({
   renderPage: async (pageNumber, canvas) => {
@@ -15,13 +14,13 @@ export const createRenderSlice: StateCreator<PDFStore, [], [], RenderSlice> = (_
       canvas.width = viewport.width;
 
       const renderContext = {
-        canvasContext: canvas.getContext('2d')!,
-        viewport
+        canvasContext: canvas.getContext('2d') as CanvasRenderingContext2D,
+        viewport,
       };
 
       await page.render(renderContext).promise;
     } catch (error) {
       console.error(`Error rendering page ${pageNumber}:`, error);
     }
-  }
+  },
 });

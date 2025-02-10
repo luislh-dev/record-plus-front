@@ -33,30 +33,30 @@ export const useSearchStore = create<SearchState>((set, get) => ({
   filters: { page: 0, size: 20 },
 
   // Acciones
-  setSearchTerm: term =>
+  setSearchTerm: (term) =>
     set({
       searchTerm: term,
-      filters: { ...get().filters, page: 0 }
+      filters: { ...get().filters, page: 0 },
     }),
 
-  setSortConfig: config => set({ sortConfig: config }),
+  setSortConfig: (config) => set({ sortConfig: config }),
 
-  setSelectedState: stateId =>
-    set(state => ({
+  setSelectedState: (stateId) =>
+    set((state) => ({
       selectedState: stateId,
       filters: {
         ...state.filters,
-        stateId: stateId ?? undefined
-      }
+        stateId: stateId ?? undefined,
+      },
     })),
 
-  setSearchFields: fields => set({ searchFields: fields }),
+  setSearchFields: (fields) => set({ searchFields: fields }),
 
-  setFilters: filters => set({ filters }),
+  setFilters: (filters) => set({ filters }),
 
-  setPage: page => set({ filters: { ...get().filters, page } }),
+  setPage: (page) => set({ filters: { ...get().filters, page } }),
 
-  setPageSize: size => set({ filters: { ...get().filters, size } }),
+  setPageSize: (size) => set({ filters: { ...get().filters, size } }),
 
   // Utilidades
   // Función para construir los parámetros de búsqueda
@@ -64,12 +64,12 @@ export const useSearchStore = create<SearchState>((set, get) => ({
     const state = get();
     const params: HospitalRequestParams = {
       ...state.filters,
-      sort: `${state.sortConfig.field},${state.sortConfig.direction}`
+      sort: `${state.sortConfig.field},${state.sortConfig.direction}`,
     };
 
     if (state.searchTerm) {
       for (const field of state.searchFields) {
-        if (SEARCH_PARAMS.some(param => param.id === field)) {
+        if (SEARCH_PARAMS.some((param) => param.id === field)) {
           if (field === 'id') {
             const numericId = Number.parseInt(state.searchTerm);
             if (!Number.isNaN(numericId)) {
@@ -83,5 +83,5 @@ export const useSearchStore = create<SearchState>((set, get) => ({
     }
 
     return params;
-  }
+  },
 }));

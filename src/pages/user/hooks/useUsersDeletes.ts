@@ -12,7 +12,7 @@ export function useUserDelete() {
 
   const [modalState, setModalState] = useState<ModalState>({
     isOpen: false,
-    userId: null
+    userId: null,
   });
 
   const mutation = useMutation({
@@ -21,7 +21,7 @@ export function useUserDelete() {
       // Wait for the invalidation to complete before closing the modal
       await queryClient.invalidateQueries({ queryKey: ['users'] });
       setModalState({ isOpen: false, userId: null });
-    }
+    },
   });
 
   const handleDelete = async () => {
@@ -47,11 +47,11 @@ export function useUserDelete() {
   return {
     deleteState: {
       isLoading: mutation.isPending,
-      error: mutation.error ? 'Error al eliminar el usuario' : null
+      error: mutation.error ? 'Error al eliminar el usuario' : null,
     },
     isOpen: modalState.isOpen,
     handleDelete,
     openDeleteModal,
-    closeDeleteModal
+    closeDeleteModal,
   };
 }

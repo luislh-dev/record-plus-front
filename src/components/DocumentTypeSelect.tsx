@@ -11,20 +11,20 @@ export const DocumentTypeSelect = ({ onChange, value, isDisabled }: DocumentType
   const { documentType, isLoading } = useDocumentType();
   return (
     <Select
-      label="Tipo de documento"
-      variant="bordered"
-      labelPlacement="outside"
+      label='Tipo de documento'
+      variant='bordered'
+      labelPlacement='outside'
       isRequired
-      className="w-full"
+      className='w-full'
       selectedKeys={[value]}
       isLoading={isLoading}
       disabled={isDisabled}
-      onSelectionChange={keys => {
+      onSelectionChange={(keys) => {
         const selected = Array.from(keys)[0];
         onChange(Number(selected));
       }}
     >
-      {documentType.map(type => (
+      {documentType.map((type) => (
         <SelectItem key={type.id} value={type.id}>
           {type.name}
         </SelectItem>

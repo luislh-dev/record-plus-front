@@ -7,7 +7,7 @@ export const useFileType = () => {
     queryKey: ['fileType'],
     queryFn: async () => getAllFileTypes(),
     staleTime: ONE_MONTH_IN_MS,
-    gcTime: ONE_MONTH_IN_MS
+    gcTime: ONE_MONTH_IN_MS,
   });
 
   return { fileTypes: data ?? [], isError, isLoading };

@@ -14,7 +14,7 @@ export function useRecordDetailSearch() {
     if (!personId) throw new Error('ID no proporcionado');
     return getRecordDetailList(personId, {
       ...buildSearchParams(),
-      page: pageParam
+      page: pageParam,
     });
   };
 
@@ -23,10 +23,10 @@ export function useRecordDetailSearch() {
     queryFn: fetchRecordDetails,
     initialPageParam: 0,
     getNextPageParam: (lastPage, allPages) => (lastPage.last ? undefined : allPages.length),
-    enabled: !!personId
+    enabled: !!personId,
   });
 
-  const recordDetails = data?.pages.flatMap(page => page.content) ?? [];
+  const recordDetails = data?.pages.flatMap((page) => page.content) ?? [];
   const totalElements = data?.pages[0].totalElements ?? 0;
   const currentPage = data?.pages[0].number ?? 0;
 
@@ -41,6 +41,6 @@ export function useRecordDetailSearch() {
     setPersonId,
     setRangeDate,
     searchTerm,
-    setSearchTerm
+    setSearchTerm,
   };
 }

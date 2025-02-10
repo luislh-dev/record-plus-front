@@ -7,7 +7,7 @@ import {
   DropdownSection,
   DropdownTrigger,
   Radio,
-  RadioGroup
+  RadioGroup,
 } from '@heroui/react';
 import { SEARCH_PARAMS } from '../constants/SearchParams';
 import { usePersonSearch } from '../hooks/usePersonSearch';
@@ -27,15 +27,15 @@ export const DropDownFilter = () => {
       <DropdownTrigger>
         <Button startContent={<Tune />}>Filtrar</Button>
       </DropdownTrigger>
-      <DropdownMenu variant="faded" aria-label="Lista de filtros">
-        <DropdownSection title="Filtros de busqueda" aria-label="Filtros de busqueda">
-          <DropdownItem textValue="Parámetro de busqueda" key={'peopleParams'}>
+      <DropdownMenu variant='faded' aria-label='Lista de filtros'>
+        <DropdownSection title='Filtros de busqueda' aria-label='Filtros de busqueda'>
+          <DropdownItem textValue='Parámetro de busqueda' key={'peopleParams'}>
             <RadioGroup
-              aria-label="Seleccionar parámetro de busqueda"
+              aria-label='Seleccionar parámetro de busqueda'
               value={selectedSearchField}
               onValueChange={handleSearchParamChange}
             >
-              {SEARCH_PARAMS.map(param => (
+              {SEARCH_PARAMS.map((param) => (
                 <Radio key={param.id} value={param.id}>
                   {param.label}
                 </Radio>

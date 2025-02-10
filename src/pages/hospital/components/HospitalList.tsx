@@ -26,29 +26,29 @@ export const HospitalList = () => {
     isOpen,
     closeDeleteModal,
     handleDelete,
-    openDeleteModal
+    openDeleteModal,
   } = useHospitalDelete();
 
   const columns: TableColumn<HospitalListDTO>[] = [
     {
       name: 'Nombre',
       key: 'name',
-      sortable: true
+      sortable: true,
     },
     {
       name: 'Teléfono',
       key: 'phone',
-      sortable: true
+      sortable: true,
     },
     {
       name: 'Correo electrónico',
       key: 'email',
-      sortable: true
+      sortable: true,
     },
     {
       name: 'RUC',
       key: 'ruc',
-      sortable: true
+      sortable: true,
     },
     {
       name: 'Estado',
@@ -56,14 +56,14 @@ export const HospitalList = () => {
       align: Align.CENTER,
       render: (hospital: HospitalListDTO) => (
         <Chip
-          className="capitalize"
+          className='capitalize'
           color={statusColorMap[hospital.stateName] || 'default'}
-          size="sm"
-          variant="flat"
+          size='sm'
+          variant='flat'
         >
           {hospital.stateName}
         </Chip>
-      )
+      ),
     },
     {
       name: 'Acciones',
@@ -76,8 +76,8 @@ export const HospitalList = () => {
           state={hospital.stateName}
           inactiveStates={[State.ELIMINADO, State.INACTIVO]}
         />
-      )
-    }
+      ),
+    },
   ];
 
   const handleSort = (field: keyof HospitalListDTO) => {
@@ -91,13 +91,13 @@ export const HospitalList = () => {
         columns={columns}
         data={hospitals}
         error={error?.message}
-        emptyMessage="No se encontraron hospitales."
+        emptyMessage='No se encontraron hospitales.'
         isLoading={isLoading}
-        loadingContent="Cargando hospitales..."
+        loadingContent='Cargando hospitales...'
         totalPages={pagination.totalPages}
         currentPage={pagination.currentPage}
         onPageChange={setPage}
-        onSort={field => handleSort(field as keyof HospitalListDTO)}
+        onSort={(field) => handleSort(field as keyof HospitalListDTO)}
         sortConfig={sortConfig}
       />
 
@@ -107,8 +107,8 @@ export const HospitalList = () => {
         onClose={closeDeleteModal}
         onConfirm={handleDelete}
         isLoading={isDeleting}
-        title="Eliminar Hospital"
-        message="¿Está seguro que desea eliminar este hospital? Esta acción no se puede deshacer."
+        title='Eliminar Hospital'
+        message='¿Está seguro que desea eliminar este hospital? Esta acción no se puede deshacer.'
       />
     </>
   );

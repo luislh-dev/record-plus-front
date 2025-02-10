@@ -73,10 +73,10 @@ export const PopoverContent: FC<PopoverContentProps> = ({ children, className = 
         maxHeight: '80vh',
         top: `${position.top}px`,
         left: `${position.left}px`,
-        transform: 'translate3d(0, 0, 0)'
+        transform: 'translate3d(0, 0, 0)',
       }}
     >
-      <div className="w-full h-full">{children}</div>
+      <div className='w-full h-full'>{children}</div>
     </div>
   );
 };

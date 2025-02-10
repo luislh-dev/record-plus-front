@@ -26,5 +26,5 @@ export const dateUtils = {
       return `${year}-${month}-${day}T23:59:59`;
     }
     return `${year}-${month}-${day}T00:00:00`;
-  }
+  },
 };

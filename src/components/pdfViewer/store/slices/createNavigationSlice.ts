@@ -1,18 +1,18 @@
-import { StateCreator } from 'zustand';
-import { NavigationSlice, PDFStore } from '../../types/store.types';
+import type { StateCreator } from 'zustand';
+import type { NavigationSlice, PDFStore } from '../../types/store.types';
 
 export const createNavigationSlice: StateCreator<PDFStore, [], [], NavigationSlice> = (
   set,
-  get
+  get,
 ) => ({
   currentPage: 1,
   isControlChange: false,
   lastControlChange: 0,
   initialLoad: true,
 
-  setIsControlChange: value => set({ isControlChange: value }),
+  setIsControlChange: (value) => set({ isControlChange: value }),
 
-  setInitialLoad: value => set({ initialLoad: value }),
+  setInitialLoad: (value) => set({ initialLoad: value }),
 
   setCurrentPage: (page, source) => {
     const { pdfDoc, currentPage, lastControlChange } = get();
@@ -22,12 +22,13 @@ export const createNavigationSlice: StateCreator<PDFStore, [], [], NavigationSli
     set({
       currentPage: page,
       isControlChange: source === 'control' || source === 'input',
-      lastControlChange: source === 'control' || source === 'input' ? Date.now() : lastControlChange
+      lastControlChange:
+        source === 'control' || source === 'input' ? Date.now() : lastControlChange,
     });
   },
 
   handlePageChange: (page, source) => {
     const { setCurrentPage } = get();
     setCurrentPage(page, source);
-  }
+  },
 });

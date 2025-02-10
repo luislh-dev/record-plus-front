@@ -7,7 +7,7 @@ const People = () => {
   return (
     <section>
       <HeaderList />
-      <nav className="flex gap-x-4 px-2 pb-2 pt-4">
+      <nav className='flex gap-x-4 px-2 pb-2 pt-4'>
         <Search />
         <DropDownFilter />
       </nav>

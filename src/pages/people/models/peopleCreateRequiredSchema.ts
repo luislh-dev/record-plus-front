@@ -17,13 +17,13 @@ export const peopleCreateRequiredSchema = z.object({
   birthdate: z
     .date({
       required_error: 'Fecha de nacimiento es requerida',
-      invalid_type_error: 'Fecha de nacimiento debe ser una fecha válida'
+      invalid_type_error: 'Fecha de nacimiento debe ser una fecha válida',
     })
-    .refine(date => date.getTime() < new Date().getTime(), {
-      message: 'La fecha de nacimiento no puede ser mayor a la fecha actual'
+    .refine((date) => date.getTime() < new Date().getTime(), {
+      message: 'La fecha de nacimiento no puede ser mayor a la fecha actual',
     })
-    .refine(date => date.getTime() > new Date('1900-01-01').getTime(), {
-      message: 'La fecha de nacimiento no puede ser menor a 1900'
+    .refine((date) => date.getTime() > new Date('1900-01-01').getTime(), {
+      message: 'La fecha de nacimiento no puede ser menor a 1900',
     }),
   documentNumber: z.string().min(1, 'Número de documento es requerido'),
   sexTypeId: z.number().min(1, 'Tipo de sexo es requerido'),
@@ -31,13 +31,13 @@ export const peopleCreateRequiredSchema = z.object({
   phone: z
     .string()
     .regex(/^9/, 'Teléfono debe empezar con 9')
-    .regex(/^[0-9]{9}$/, 'Teléfono debe tener 9 dígitos numéricos')
+    .regex(/^[0-9]{9}$/, 'Teléfono debe tener 9 dígitos numéricos'),
 });
 
 export const peopleCreateFullSchema = peopleCreateRequiredSchema.extend({
   bloodType: z.string().optional(),
   address: z.string().optional(),
-  nationality: z.string().optional()
+  nationality: z.string().optional(),
 });
 
 // Este tipo es para inferir el tipo de los valores

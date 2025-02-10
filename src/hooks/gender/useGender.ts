@@ -7,7 +7,7 @@ export const useGender = () => {
     queryKey: ['gender'],
     queryFn: async () => getGender(),
     staleTime: ONE_MONTH_IN_MS,
-    gcTime: ONE_MONTH_IN_MS
+    gcTime: ONE_MONTH_IN_MS,
   });
 
   return { gender: data ?? [], isError, isLoading };

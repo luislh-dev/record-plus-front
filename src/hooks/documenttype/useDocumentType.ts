@@ -7,7 +7,7 @@ export const useDocumentType = () => {
     queryKey: ['documentType'],
     queryFn: async () => getDocumentTypes(),
     staleTime: ONE_WEEK_IN_MS,
-    gcTime: ONE_WEEK_IN_MS
+    gcTime: ONE_WEEK_IN_MS,
   });
 
   return { documentType: data ?? [], isLoading, isError };

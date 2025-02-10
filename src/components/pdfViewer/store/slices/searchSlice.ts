@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
 
-import { StateCreator } from 'zustand';
-import { SearchMatch } from '../../types/SearchTypes';
-import { PDFStore, SearchSlice } from '../../types/store.types';
+import type { StateCreator } from 'zustand';
+import type { SearchMatch } from '../../types/SearchTypes';
+import type { PDFStore, SearchSlice } from '../../types/store.types';
 import { findTextMatches } from '../../utils/findTextMatches';
 
 export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (set, get) => ({
@@ -15,7 +15,7 @@ export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (s
   isCalculatingHighlights: false,
   matchesByPage: {},
 
-  setSearchText: text => set({ searchText: text }),
+  setSearchText: (text) => set({ searchText: text }),
 
   searchInDocument: async (pdfDoc, scale) => {
     const { searchText } = get();
@@ -25,7 +25,7 @@ export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (s
         allMatches: [],
         currentMatchIndex: -1,
         totalMatches: 0,
-        isCalculatingHighlights: false
+        isCalculatingHighlights: false,
       });
       return;
     }
@@ -43,7 +43,7 @@ export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (s
           acc[match.pageIndex].push(match);
           return acc;
         },
-        {} as Record<number, SearchMatch[]>
+        {} as Record<number, SearchMatch[]>,
       );
 
       set({
@@ -51,7 +51,7 @@ export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (s
         matchesByPage,
         totalMatches: matches.length,
         currentMatchIndex: matches.length > 0 ? 0 : -1,
-        isCalculatingHighlights: false
+        isCalculatingHighlights: false,
       });
     } catch (error) {
       console.error('Error en la búsqueda:', error);
@@ -60,13 +60,13 @@ export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (s
         allMatches: [],
         matchesByPage: {},
         currentMatchIndex: -1,
-        totalMatches: 0
+        totalMatches: 0,
       });
     }
   },
 
   nextMatch: () => {
-    set(state => {
+    set((state) => {
       const nextIndex =
         state.currentMatchIndex < state.allMatches.length - 1 ? state.currentMatchIndex + 1 : 0;
 
@@ -82,7 +82,7 @@ export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (s
   },
 
   previousMatch: () => {
-    set(state => {
+    set((state) => {
       const prevIndex =
         state.currentMatchIndex > 0 ? state.currentMatchIndex - 1 : state.allMatches.length - 1;
 
@@ -104,7 +104,7 @@ export const createSearchSlice: StateCreator<PDFStore, [], [], SearchSlice> = (s
       allMatches: [],
       currentMatchIndex: -1,
       totalMatches: 0,
-      isSearching: false
+      isSearching: false,
     });
-  }
+  },
 });

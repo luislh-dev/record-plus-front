@@ -12,20 +12,20 @@ export const StateSelect = ({ onChange, value, isDisabled }: Props) => {
 
   return (
     <Select
-      label="Estado"
-      variant="bordered"
-      labelPlacement="outside"
+      label='Estado'
+      variant='bordered'
+      labelPlacement='outside'
       isRequired
-      className="w-full"
+      className='w-full'
       selectedKeys={[value]}
       isLoading={isLoading}
       disabled={isDisabled}
-      onSelectionChange={keys => {
+      onSelectionChange={(keys) => {
         const selected = Array.from(keys)[0];
         onChange(Number(selected));
       }}
     >
-      {state.map(type => (
+      {state.map((type) => (
         <SelectItem key={type.id} value={type.id}>
           {type.name}
         </SelectItem>

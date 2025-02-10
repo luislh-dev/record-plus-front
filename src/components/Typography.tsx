@@ -21,7 +21,7 @@ const variantClasses = {
   'label-content': 'text-sm font-normal',
   metric: 'text-4xl font-bold',
   status: 'text-sm font-semibold uppercase',
-  error: 'text-xs'
+  error: 'text-xs',
 };
 
 const colorClasses = {
@@ -33,7 +33,7 @@ const colorClasses = {
   success: 'text-green-600',
   warning: 'text-yellow-600',
   danger: 'text-danger',
-  info: 'text-cyan-600'
+  info: 'text-cyan-600',
 };
 
 type TypographyProps = {
@@ -63,8 +63,8 @@ export const Typography = ({
     {
       className: classes,
       tabIndex: 0,
-      ...props
+      ...props,
     },
-    children
+    children,
   );
 };

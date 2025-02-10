@@ -24,7 +24,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
     control,
     handleSubmit,
     setValue,
-    formState: { errors }
+    formState: { errors },
   } = useForm<HospitalCreateValues>({
     resolver: zodResolver(hospitalCreateSchema),
     mode: 'onChange',
@@ -34,8 +34,8 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
       phone: '',
       email: '',
       ruc: '',
-      stateId: 0
-    }
+      stateId: 0,
+    },
   });
 
   // Solo establecemos el valor inicial si no hay un defaultValue
@@ -46,12 +46,12 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
   }, [state, setValue, defaultValues]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-2 gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-4'>
       <CustomInput
-        name="name"
+        name='name'
         control={control}
-        label="Nombre del hospital"
-        placeholder="Ingrese el nombre"
+        label='Nombre del hospital'
+        placeholder='Ingrese el nombre'
         error={
           errors.name ||
           (backendErrors.name ? { message: backendErrors.name, type: 'backend' } : undefined)
@@ -59,10 +59,10 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         isRequired
       />
       <CustomInput
-        name="address"
+        name='address'
         control={control}
-        label="Dirección"
-        placeholder="Ingrese la dirección"
+        label='Dirección'
+        placeholder='Ingrese la dirección'
         error={
           errors.address ||
           (backendErrors.address ? { message: backendErrors.address, type: 'backend' } : undefined)
@@ -70,10 +70,10 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         isRequired
       />
       <CustomInput
-        name="phone"
+        name='phone'
         control={control}
-        label="Teléfono"
-        placeholder="Ingrese el teléfono"
+        label='Teléfono'
+        placeholder='Ingrese el teléfono'
         error={
           errors.phone ||
           (backendErrors.phone ? { message: backendErrors.phone, type: 'backend' } : undefined)
@@ -81,10 +81,10 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         isRequired
       />
       <CustomInput
-        name="email"
+        name='email'
         control={control}
-        label="Correo electrónico"
-        placeholder="Ingrese el correo"
+        label='Correo electrónico'
+        placeholder='Ingrese el correo'
         error={
           errors.email ||
           (backendErrors.email ? { message: backendErrors.email, type: 'backend' } : undefined)
@@ -92,10 +92,10 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         isRequired
       />
       <CustomInput
-        name="ruc"
+        name='ruc'
         control={control}
-        label="RUC"
-        placeholder="Ingrese el RUC"
+        label='RUC'
+        placeholder='Ingrese el RUC'
         error={
           errors.ruc ||
           (backendErrors.ruc ? { message: backendErrors.ruc, type: 'backend' } : undefined)
@@ -103,17 +103,17 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         isRequired
       />
       <CustomSelect
-        name="stateId"
+        name='stateId'
         control={control}
-        label="Estado"
+        label='Estado'
         options={state}
         error={
           errors.stateId ||
           (backendErrors.stateId ? { message: backendErrors.stateId, type: 'backend' } : undefined)
         }
       />
-      <div className="col-span-2 flex justify-end gap-2">
-        <Button type="submit" color="primary" isLoading={isSubmitting}>
+      <div className='col-span-2 flex justify-end gap-2'>
+        <Button type='submit' color='primary' isLoading={isSubmitting}>
           Guardar
         </Button>
       </div>

@@ -9,7 +9,7 @@ export const initialState: AuthState = {
   isAuthenticated: false,
   token: null,
   username: null,
-  authorities: []
+  authorities: [],
 };
 
 export type AuthAction =
@@ -24,7 +24,7 @@ export const authReducer = (state: AuthState, action: AuthAction): AuthState => 
         isAuthenticated: true,
         token: action.payload.token,
         username: action.payload.username,
-        authorities: action.payload.authorities
+        authorities: action.payload.authorities,
       };
     case 'LOGOUT':
       return initialState;

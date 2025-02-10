@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="/dashboard" replace />
+        element: <Navigate to='/dashboard' replace />,
       },
       {
         path: 'login',
@@ -33,9 +33,9 @@ export const router = createBrowserRouter([
           <PublicRoute>
             <Login />
           </PublicRoute>
-        )
-      }
-    ]
+        ),
+      },
+    ],
   },
   {
     element: (
@@ -46,9 +46,9 @@ export const router = createBrowserRouter([
     children: [
       {
         path: 'dashboard',
-        element: <Home />
-      }
-    ]
+        element: <Home />,
+      },
+    ],
   },
   {
     element: (
@@ -66,7 +66,7 @@ export const router = createBrowserRouter([
               <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
                 <Hospital />
               </RoleBasedRoute>
-            )
+            ),
           },
           {
             path: 'add',
@@ -74,7 +74,7 @@ export const router = createBrowserRouter([
               <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
                 <HospitalAdd />
               </RoleBasedRoute>
-            )
+            ),
           },
           {
             path: ':id/edit',
@@ -82,9 +82,9 @@ export const router = createBrowserRouter([
               <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
                 <HospitalEdit />
               </RoleBasedRoute>
-            )
-          }
-        ]
+            ),
+          },
+        ],
       },
       {
         path: 'user',
@@ -95,7 +95,7 @@ export const router = createBrowserRouter([
               <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
                 <User />
               </RoleBasedRoute>
-            )
+            ),
           },
           {
             path: 'add',
@@ -103,9 +103,9 @@ export const router = createBrowserRouter([
               <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT]}>
                 <UserAdd />
               </RoleBasedRoute>
-            )
-          }
-        ]
+            ),
+          },
+        ],
       },
       {
         path: 'people',
@@ -116,7 +116,7 @@ export const router = createBrowserRouter([
               <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
                 <People />
               </RoleBasedRoute>
-            )
+            ),
           },
           {
             path: ':id/detail',
@@ -127,7 +127,7 @@ export const router = createBrowserRouter([
                   <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
                     <PeopleDetail />
                   </RoleBasedRoute>
-                )
+                ),
               },
               {
                 path: 'record/add',
@@ -135,7 +135,7 @@ export const router = createBrowserRouter([
                   <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
                     <CreateRecordDetail />
                   </RoleBasedRoute>
-                )
+                ),
               },
               {
                 path: 'record',
@@ -146,18 +146,18 @@ export const router = createBrowserRouter([
                       <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
                         <RecordDetail />
                       </RoleBasedRoute>
-                    )
-                  }
-                ]
-              }
-            ]
-          }
-        ]
-      }
-    ]
+                    ),
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    ],
   },
   {
     path: '*',
-    element: <NotFound />
-  }
+    element: <NotFound />,
+  },
 ]);

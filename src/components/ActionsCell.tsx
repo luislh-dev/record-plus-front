@@ -16,25 +16,25 @@ export function ActionsCell({
   onEdit,
   onDelete,
   inactiveStates,
-  onDetail
+  onDetail,
 }: ActionsCellProps) {
   const isInactive = state && inactiveStates?.includes(state);
 
   return (
-    <div className="relative flex items-center justify-center w-full gap-2">
+    <div className='relative flex items-center justify-center w-full gap-2'>
       {onEdit && (
-        <Tooltip content="Editar">
+        <Tooltip content='Editar'>
           <button
-            className="text-lg text-default-400 cursor-pointer active:opacity-50"
+            className='text-lg text-default-400 cursor-pointer active:opacity-50'
             onClick={onEdit}
-            type="button"
+            type='button'
           >
             <EditIcon />
           </button>
         </Tooltip>
       )}
       {onDelete && (
-        <Tooltip content="Eliminar">
+        <Tooltip content='Eliminar'>
           <button
             className={`text-lg transition-all duration-200 ${
               isInactive
@@ -42,18 +42,18 @@ export function ActionsCell({
                 : 'text-danger cursor-pointer active:opacity-50 hover:opacity-80'
             }`}
             onClick={isInactive ? undefined : onDelete}
-            type="button"
+            type='button'
           >
             <DeleteIcon />
           </button>
         </Tooltip>
       )}
       {onDetail && (
-        <Tooltip content="Detalle">
+        <Tooltip content='Detalle'>
           <button
-            className="text-lg text-default-400 cursor-pointer active:opacity-50"
+            className='text-lg text-default-400 cursor-pointer active:opacity-50'
             onClick={onDetail}
-            type="button"
+            type='button'
           >
             <EyeIcon />
           </button>

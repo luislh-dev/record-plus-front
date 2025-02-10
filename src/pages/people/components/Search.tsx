@@ -15,28 +15,28 @@ export const Search = () => {
   };
 
   return (
-    <div className="flex gap-2">
+    <div className='flex gap-2'>
       <Input
         classNames={{
           base: 'max-w-full sm:max-w-[15rem] h-10',
           mainWrapper: 'h-full',
           input: 'text-small',
           inputWrapper:
-            'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20'
+            'h-full font-normal text-default-500 bg-default-400/20 dark:bg-default-500/20',
         }}
-        placeholder="Buscar..."
+        placeholder='Buscar...'
         value={tempSearchTerm}
-        onChange={e => setTempSearchTerm(e.target.value)}
-        startContent={<SearchIcon className="text-default-400" />}
+        onChange={(e) => setTempSearchTerm(e.target.value)}
+        startContent={<SearchIcon className='text-default-400' />}
         isClearable
         onClear={handleClear}
-        onKeyUp={e => {
+        onKeyUp={(e) => {
           if (e.key === 'Enter') {
             handleSearch();
           }
         }}
       />
-      <Button onPress={handleSearch} color="primary">
+      <Button onPress={handleSearch} color='primary'>
         Buscar
       </Button>
     </div>

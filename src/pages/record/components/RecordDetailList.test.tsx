@@ -20,10 +20,10 @@ const mockRecords: RecordDetailListResponseDto[] = [
         url: 'http://example.com/radiografia.pdf',
         mime_type: 'application/pdf',
         size: '50.00 KB',
-        object_key: 'radiografia.pdf'
-      }
-    ]
-  }
+        object_key: 'radiografia.pdf',
+      },
+    ],
+  },
 ];
 
 describe('RecordDetailList', () => {
@@ -45,13 +45,13 @@ describe('RecordDetailList', () => {
       searchTerm: '',
       setSearchTerm: vi.fn(),
       fetchNextPage: vi.fn(),
-      hasNextPage: false
+      hasNextPage: false,
     });
 
     render(
       <BrowserRouter>
-        <RecordDetailList personId="123" />
-      </BrowserRouter>
+        <RecordDetailList personId='123' />
+      </BrowserRouter>,
     );
 
     await waitFor(() => {

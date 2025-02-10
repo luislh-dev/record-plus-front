@@ -11,14 +11,14 @@ export const FilePicker = ({
   className,
   label,
   id = `file-input-${Math.random().toString(36).substring(7)}`,
-  required = false
+  required = false,
 }: FilePickerProps) => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className='flex flex-col gap-2'>
       {label && (
-        <label htmlFor={id} className="text-sm font-medium text-gray-900 dark:text-gray-200">
+        <label htmlFor={id} className='text-sm font-medium text-gray-900 dark:text-gray-200'>
           {label}
-          {required && <span className="text-red-500 ml-0.5">*</span>}
+          {required && <span className='text-red-500 ml-0.5'>*</span>}
         </label>
       )}
 
@@ -36,8 +36,8 @@ export const FilePicker = ({
         dark:file:bg-blue-500
         dark:hover:file:bg-blue-400
         ${className}`}
-        type="file"
-        onChange={e => {
+        type='file'
+        onChange={(e) => {
           const file = e.target.files?.[0] || null;
           onChange?.(file);
         }}

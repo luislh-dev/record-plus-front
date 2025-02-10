@@ -19,18 +19,18 @@ export function DropDownSort() {
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Button aria-label="Clasificar" startContent={<FilterList />}>
+        <Button aria-label='Clasificar' startContent={<FilterList />}>
           Ordenar
         </Button>
       </DropdownTrigger>
       <DropdownMenu
-        variant="faded"
+        variant='faded'
         disallowEmptySelection
         selectedKeys={new Set([sortConfig.field])}
         onAction={handleAction}
         closeOnSelect={false}
       >
-        {Object.values(HOSPITAL_SORTABLE_FIELDS).map(field => (
+        {Object.values(HOSPITAL_SORTABLE_FIELDS).map((field) => (
           <DropdownItem
             key={field.field}
             textValue={field.field}

@@ -9,7 +9,7 @@ export async function downloadFile(url: string) {
       const validExtensions = ['.pdf', '.jpg', '.jpeg', '.png', '.webp'];
 
       // Verificar si el nombre tiene una extensión válida
-      const hasValidExtension = validExtensions.some(ext => fileName.toLowerCase().endsWith(ext));
+      const hasValidExtension = validExtensions.some((ext) => fileName.toLowerCase().endsWith(ext));
 
       if (hasValidExtension) {
         return decodeURIComponent(fileName);
@@ -28,7 +28,7 @@ export async function downloadFile(url: string) {
         'application/pdf': '.pdf',
         'image/jpeg': '.jpg',
         'image/png': '.png',
-        'image/webp': '.webp'
+        'image/webp': '.webp',
       };
 
       return contentTypeMap[contentType.toLowerCase()] || '.pdf';
@@ -58,7 +58,7 @@ export async function downloadFile(url: string) {
     return {
       success: true,
       fileName,
-      contentType: response.headers.get('content-type')
+      contentType: response.headers.get('content-type'),
     };
   } catch (error) {
     console.error('Error al descargar el archivo:', error);

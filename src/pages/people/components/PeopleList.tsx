@@ -18,25 +18,25 @@ export const PeopleList = () => {
     {
       name: 'dni',
       key: 'documentNumber',
-      sortable: true
+      sortable: true,
     },
     {
       name: 'Nombre',
-      key: 'fullName'
+      key: 'fullName',
     },
     {
       name: 'Total de visitas',
       key: 'totalVisits',
-      align: Align.CENTER
+      align: Align.CENTER,
     },
     {
       name: 'Última visita',
       key: 'lastVisitDate',
-      align: Align.CENTER
+      align: Align.CENTER,
     },
     {
       name: 'Hospital',
-      key: 'lastVisitHospitalName'
+      key: 'lastVisitHospitalName',
     },
     {
       name: 'Acciones',
@@ -44,8 +44,8 @@ export const PeopleList = () => {
       align: Align.CENTER,
       render: (people: MainPeopleListDto) => (
         <ActionsCell onDetail={() => navigate(`/people/${people.id}/detail`)} />
-      )
-    }
+      ),
+    },
   ];
 
   return (
@@ -55,12 +55,12 @@ export const PeopleList = () => {
         data={peoples}
         isLoading={isLoading}
         error={error?.message}
-        emptyMessage="No se encontraron personas"
-        loadingContent="Cargando personas..."
+        emptyMessage='No se encontraron personas'
+        loadingContent='Cargando personas...'
         totalPages={pagination.totalPages}
         currentPage={pagination.currentPage}
         onPageChange={setPage}
-        onSort={field => setSortConfig(getNewSortConfig(field as keyof MainPeopleListDto))}
+        onSort={(field) => setSortConfig(getNewSortConfig(field as keyof MainPeopleListDto))}
         sortConfig={sortConfig}
       />
     </>

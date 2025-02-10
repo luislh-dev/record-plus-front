@@ -13,7 +13,7 @@ export const MainLayout = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const hasAccess = (roles: string[]) => {
-    return roles.some(role => state.authorities.includes(role));
+    return roles.some((role) => state.authorities.includes(role));
   };
 
   const toggleMenu = () => {
@@ -21,37 +21,37 @@ export const MainLayout = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 overflow-x-hidden">
-      <nav className="h-16 bg-slate-900 text-white px-6 flex justify-between items-center">
-        <div className="flex items-center gap-4">
+    <div className='min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 overflow-x-hidden'>
+      <nav className='h-16 bg-slate-900 text-white px-6 flex justify-between items-center'>
+        <div className='flex items-center gap-4'>
           <button
             onClick={toggleMenu}
-            className="md:hidden p-2 hover:bg-slate-800 rounded-lg"
-            type="button"
+            className='md:hidden p-2 hover:bg-slate-800 rounded-lg'
+            type='button'
           >
             {isMenuOpen ? <Close size={24} /> : <Menu size={24} />}
           </button>
-          <h1 className="text-xl font-bold">Record Plus</h1>
+          <h1 className='text-xl font-bold'>Record Plus</h1>
         </div>
-        <div className="flex items-center gap-4">
+        <div className='flex items-center gap-4'>
           <span>{state.username}</span>
           <button
             onClick={handleLogout}
-            className="bg-purple-500 hover:bg-purple-600 px-4 py-1.5 rounded-full text-sm"
-            type="button"
+            className='bg-purple-500 hover:bg-purple-600 px-4 py-1.5 rounded-full text-sm'
+            type='button'
           >
             Cerrar Sesión
           </button>
         </div>
       </nav>
 
-      <div className="flex relative">
+      <div className='flex relative'>
         {/* Overlay para cerrar el menú al hacer clic fuera */}
         {isMenuOpen && (
           <button
-            className="fixed inset-0 bg-black bg-opacity-50 md:hidden z-20"
+            className='fixed inset-0 bg-black bg-opacity-50 md:hidden z-20'
             onClick={() => setIsMenuOpen(false)}
-            type="button"
+            type='button'
           />
         )}
 
@@ -63,9 +63,9 @@ export const MainLayout = () => {
             ${isMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
           `}
         >
-          <div className="p-4 flex flex-col gap-3">
+          <div className='p-4 flex flex-col gap-3'>
             {menuItems.map(
-              item =>
+              (item) =>
                 hasAccess(item.roles) && (
                   <RouterLink
                     key={item.path}
@@ -79,12 +79,12 @@ export const MainLayout = () => {
                   >
                     {item.label}
                   </RouterLink>
-                )
+                ),
             )}
           </div>
         </aside>
 
-        <main className="flex-1 p-4 md:p-8 w-full overflow-x-hidden">
+        <main className='flex-1 p-4 md:p-8 w-full overflow-x-hidden'>
           <Outlet />
         </main>
       </div>

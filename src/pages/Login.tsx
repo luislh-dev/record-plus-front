@@ -18,30 +18,30 @@ export function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-4 ">
+    <form onSubmit={handleSubmit} className='flex flex-col gap-4 '>
       <Input
-        labelPlacement="outside"
-        label="usuario"
-        variant="bordered"
+        labelPlacement='outside'
+        label='usuario'
+        variant='bordered'
         isRequired
-        placeholder="Ingrese su usuario"
+        placeholder='Ingrese su usuario'
         value={username}
-        onChange={e => setUsername(e.target.value)}
+        onChange={(e) => setUsername(e.target.value)}
       />
       <Input
-        labelPlacement="outside"
-        placeholder="Ingrese su contraseña"
-        variant="bordered"
-        label="Contraseña"
+        labelPlacement='outside'
+        placeholder='Ingrese su contraseña'
+        variant='bordered'
+        label='Contraseña'
         isRequired
         value={password}
-        onChange={e => setPassword(e.target.value)}
-        type="password"
+        onChange={(e) => setPassword(e.target.value)}
+        type='password'
       />
-      <Button color="primary" isDisabled={!isEnable} isLoading={isLoding} type="submit">
+      <Button color='primary' isDisabled={!isEnable} isLoading={isLoding} type='submit'>
         Login
       </Button>
-      {error && <p className="text-red-600 text-center">{error.message}</p>}
+      {error && <p className='text-red-600 text-center'>{error.message}</p>}
     </form>
   );
 }

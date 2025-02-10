@@ -5,7 +5,7 @@ import {
   Controller,
   type FieldError,
   type FieldValues,
-  type Path
+  type Path,
 } from 'react-hook-form';
 
 interface Props<T extends FieldValues> {
@@ -29,7 +29,7 @@ export const CustomInput = <T extends FieldValues>({
   type,
   error,
   variant = 'bordered',
-  onInput
+  onInput,
 }: Props<T>) => {
   return (
     <div>
@@ -37,7 +37,7 @@ export const CustomInput = <T extends FieldValues>({
         name={name}
         control={control}
         render={({ field }) => (
-          <div className="flex flex-col gap-1">
+          <div className='flex flex-col gap-1'>
             <Input
               {...field}
               onInput={onInput}
@@ -45,12 +45,12 @@ export const CustomInput = <T extends FieldValues>({
               variant={variant}
               type={type}
               label={label}
-              labelPlacement="outside"
+              labelPlacement='outside'
               placeholder={placeholder}
               isInvalid={!!error}
               isRequired={isRequired}
             />
-            <p className="h-4 text-xs text-danger pl-1">{error?.message}</p>
+            <p className='h-4 text-xs text-danger pl-1'>{error?.message}</p>
           </div>
         )}
       />

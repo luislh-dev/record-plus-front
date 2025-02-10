@@ -1,7 +1,10 @@
-import { PeopleRequestParams, SearchFieldKeys } from '@/pages/people/types/PeopleRequestParams';
-import { SortConfigGeneric, SortDirection } from '@/types/sorting';
+import type {
+  PeopleRequestParams,
+  SearchFieldKeys,
+} from '@/pages/people/types/PeopleRequestParams';
+import { type SortConfigGeneric, SortDirection } from '@/types/sorting';
 import { create } from 'zustand';
-import { SortablePeopleFields } from '../types/MainPeopleListDto';
+import type { SortablePeopleFields } from '../types/MainPeopleListDto';
 
 interface SearchState {
   searchTerm: string;
@@ -27,31 +30,31 @@ export const useSearchPeopleStore = create<SearchState>((set, get) => ({
   selectedSearchField: 'fullName',
   filters: { page: 0, size: 20 },
 
-  setTempSearchTerm: term => set({ tempSearchTerm: term }), // Nuevo
+  setTempSearchTerm: (term) => set({ tempSearchTerm: term }), // Nuevo
 
-  setSearchTerm: term =>
+  setSearchTerm: (term) =>
     set({
       searchTerm: term,
       tempSearchTerm: term,
-      filters: { ...get().filters, page: 0 }
+      filters: { ...get().filters, page: 0 },
     }),
 
-  setSortConfig: config => set({ sortConfig: config }),
+  setSortConfig: (config) => set({ sortConfig: config }),
 
-  setSelectedSearchField: field =>
+  setSelectedSearchField: (field) =>
     set({
       selectedSearchField: field,
-      filters: { ...get().filters, page: 0 }
+      filters: { ...get().filters, page: 0 },
     }),
 
-  setFilters: filters => set({ filters }),
-  setPage: page => set({ filters: { ...get().filters, page } }),
+  setFilters: (filters) => set({ filters }),
+  setPage: (page) => set({ filters: { ...get().filters, page } }),
 
   buildSearchParams: () => {
     const { searchTerm, filters, sortConfig } = get();
     const params: PeopleRequestParams = {
       ...filters,
-      sort: `${sortConfig.field},${sortConfig.direction}`
+      sort: `${sortConfig.field},${sortConfig.direction}`,
     };
 
     if (searchTerm) {
@@ -59,5 +62,5 @@ export const useSearchPeopleStore = create<SearchState>((set, get) => ({
     }
 
     return params;
-  }
+  },
 }));

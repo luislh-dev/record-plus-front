@@ -13,11 +13,11 @@ vi.mock('@/hooks/fileType/useFileType', () => ({
   useFileType: () => ({
     fileTypes: [
       { id: 1, name: 'Documento' },
-      { id: 2, name: 'Imagen' }
+      { id: 2, name: 'Imagen' },
     ],
     isLoading: false,
-    isError: false
-  })
+    isError: false,
+  }),
 }));
 
 describe('CreateRecordDetailForm', () => {
@@ -26,7 +26,7 @@ describe('CreateRecordDetailForm', () => {
   });
 
   it('debería renderizar todos los campos del formulario', () => {
-    renderWithProviders(<CreateRecordDetailForm personId="123" />);
+    renderWithProviders(<CreateRecordDetailForm personId='123' />);
 
     // Campos de texto y área
     expect(screen.getByLabelText(/motivo de la visita/i)).toBeInTheDocument();
@@ -53,7 +53,7 @@ describe('CreateRecordDetailForm', () => {
   });
 
   it('debería permitir seleccionar el tipo de archivo después de subir un archivo', () => {
-    renderWithProviders(<CreateRecordDetailForm personId="123" />);
+    renderWithProviders(<CreateRecordDetailForm personId='123' />);
 
     // Crear un archivo de prueba
     const file = new File(['test content'], 'test.pdf', { type: 'application/pdf' });
@@ -86,7 +86,7 @@ describe('CreateRecordDetailForm', () => {
   });
 
   it('debería permitir eliminar un archivo', () => {
-    renderWithProviders(<CreateRecordDetailForm personId="1" />);
+    renderWithProviders(<CreateRecordDetailForm personId='1' />);
 
     // Crear un archivo de prueba
     const file = new File(['test content'], 'test.pdf', { type: 'application/pdf' });
@@ -110,12 +110,12 @@ describe('CreateRecordDetailForm', () => {
   });
 
   it('debería limitar la cantidad de archivos a 5', () => {
-    renderWithProviders(<CreateRecordDetailForm personId="1" />);
+    renderWithProviders(<CreateRecordDetailForm personId='1' />);
 
     // Crear 6 archivos de prueba
     const files = Array.from(
       { length: 6 },
-      (_, index) => new File(['test content'], `test${index + 1}.pdf`, { type: 'application/pdf' })
+      (_, index) => new File(['test content'], `test${index + 1}.pdf`, { type: 'application/pdf' }),
     );
 
     const fileInput = screen.getByLabelText(/seleccionar archivo/i);

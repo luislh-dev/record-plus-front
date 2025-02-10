@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader } from "@heroui/react";
+import { Card, CardBody, CardHeader } from '@heroui/react';
 import { useParams } from 'react-router-dom';
 import RecordDetailList from '../record/components/RecordDetailList';
 import { HeaderRecord } from './components/HeaderRecord';
@@ -8,10 +8,10 @@ export const PeopleDetail = () => {
   const { id } = useParams<{ id: string }>();
 
   return (
-    <section className="flex flex-col-reverse md:flex-row gap-4 w-full">
+    <section className='flex flex-col-reverse md:flex-row gap-4 w-full'>
       {/* Columna izquierda - Principal */}
-      <div className="w-full md:w-3/4">
-        <Card className="bg-white shadow-2xl border">
+      <div className='w-full md:w-3/4'>
+        <Card className='bg-white shadow-2xl border'>
           <CardHeader>
             <HeaderRecord />
           </CardHeader>
@@ -22,8 +22,8 @@ export const PeopleDetail = () => {
       </div>
 
       {/* Columna derecha - Aside */}
-      <aside className="w-full md:w-1/4">
-        <div className="max-w-md mx-auto md:max-w-none">
+      <aside className='w-full md:w-1/4'>
+        <div className='max-w-md mx-auto md:max-w-none'>
           <PeopleBasicInfo personId={id} />
         </div>
       </aside>
