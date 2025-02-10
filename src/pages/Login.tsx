@@ -1,9 +1,13 @@
-import { useLoginForm } from '../hooks/auth/useloginForm';
+import { Button, Input } from '@heroui/react';
 import { useAuthLogin } from '../hooks/auth/useAuthLogin';
+import { useLoginForm } from '../hooks/auth/useloginForm';
 
 export function Login() {
   const { username, password, setUsername, setPassword, resetForm } = useLoginForm();
-  const { handleLogin } = useAuthLogin();
+
+  const isEnable = username.length > 0 && password.length > 0;
+
+  const { handleLogin, isLoding, error } = useAuthLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,16 +18,30 @@ export function Login() {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>Username:</label>
-        <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      </div>
-      <button type="submit">Login</button>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-4 ">
+      <Input
+        labelPlacement="outside"
+        label="usuario"
+        variant="bordered"
+        isRequired
+        placeholder="Ingrese su usuario"
+        value={username}
+        onChange={e => setUsername(e.target.value)}
+      />
+      <Input
+        labelPlacement="outside"
+        placeholder="Ingrese su contraseña"
+        variant="bordered"
+        label="Contraseña"
+        isRequired
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+        type="password"
+      />
+      <Button color="primary" isDisabled={!isEnable} isLoading={isLoding} type="submit">
+        Login
+      </Button>
+      {error && <p className="text-red-600 text-center">{error.message}</p>}
     </form>
   );
 }

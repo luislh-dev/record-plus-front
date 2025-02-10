@@ -1,14 +1,19 @@
 import { useAuth } from '@/contexts/useAuthContext';
 import { login } from '@/services/authService';
 import { decodeToken, removeStoredToken } from '@/utils/tokenUtils';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const useAuthLogin = () => {
   const { dispatch } = useAuth();
+  const [isLoding, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
   const navigate = useNavigate();
 
   const handleLogin = async (username: string, password: string) => {
     try {
+      setIsLoading(true);
       const response = await login({ username, password });
       const { token } = response.data;
       const decoded = decodeToken(token);
@@ -25,7 +30,10 @@ export const useAuthLogin = () => {
       navigate('/dashboard');
       return { success: true };
     } catch (error) {
+      setError(error as Error);
       return { success: false, error };
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -35,5 +43,5 @@ export const useAuthLogin = () => {
     navigate('/login');
   };
 
-  return { handleLogin, handleLogout };
+  return { handleLogin, handleLogout, isLoding, error };
 };
