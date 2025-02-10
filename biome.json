@@ -6,7 +6,7 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": false
     }
   },
   "formatter": {
@@ -16,7 +16,7 @@
     "indentWidth": 2,
     "lineWidth": 100,
     "lineEnding": "lf",
-    "ignore": ["dist"]
+    "ignore": ["dist", "node_modules", "coverage", "build"]
   },
   "javascript": {
     "formatter": {
