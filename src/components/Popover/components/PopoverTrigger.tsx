@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import type { FC } from 'react';
 import { usePopover } from '../context/PopoverContext';
 
 interface PopoverTriggerProps {
@@ -19,12 +19,11 @@ export const PopoverTrigger: FC<PopoverTriggerProps> = ({
   const { setOpen, triggerRef, open } = usePopover();
 
   return (
-    <div
+    <button
       ref={triggerRef}
       onClick={() => setOpen(!open)}
       className={`cursor-pointer ${className}`}
-      role="button"
-      tabIndex={0}
+      type="button"
       aria-expanded={open}
       aria-haspopup="true"
       aria-label={ariaLabel}
@@ -32,6 +31,6 @@ export const PopoverTrigger: FC<PopoverTriggerProps> = ({
       id={id}
     >
       {children}
-    </div>
+    </button>
   );
 };

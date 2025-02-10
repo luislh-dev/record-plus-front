@@ -1,6 +1,6 @@
-import { FC, useEffect, useRef, useState } from 'react';
+import { type FC, useEffect, useRef, useState } from 'react';
 import { usePopover } from '../context/PopoverContext';
-import { Position } from '../types/Position';
+import type { Position } from '../types/Position';
 import { calculatePosition } from '../utils/CalculatePosition';
 
 interface PopoverContentProps {

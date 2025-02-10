@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { PopoverProvider } from '../context/PopoverContext';
-import { Placement } from '../types/Placement';
+import type { Placement } from '../types/Placement';
 
 interface PopoverProps {
   placement?: Placement;
@@ -16,7 +16,7 @@ export const Popover: React.FC<PopoverProps> = ({
   isDismissable = true
 }) => {
   const [open, setOpen] = useState(false);
-  const triggerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   return (
     <PopoverProvider value={{ open, setOpen, triggerRef, placement, isDismissable }}>

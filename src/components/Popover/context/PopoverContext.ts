@@ -1,10 +1,10 @@
 import { createContext, useContext } from 'react';
-import { Placement } from '../types/Placement';
+import type { Placement } from '../types/Placement';
 
 interface PopoverContextType {
   open: boolean;
   setOpen: (open: boolean) => void;
-  triggerRef: React.RefObject<HTMLDivElement>;
+  triggerRef: React.RefObject<HTMLButtonElement>;
   placement: Placement;
   isDismissable: boolean;
 }
