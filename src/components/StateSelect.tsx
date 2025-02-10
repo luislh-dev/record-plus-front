@@ -1,5 +1,5 @@
 import { useStates } from '@/hooks/state/useState';
-import { Select, SelectItem } from '@nextui-org/react';
+import { Select, SelectItem } from "@heroui/react";
 
 interface Props {
   onChange: (stateId: number) => void;

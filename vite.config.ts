@@ -21,10 +21,10 @@ export default defineConfig({
       output: {
         manualChunks: {
           'react-vendor': ['react', 'react-dom'],
-          nextui: [
-            '@nextui-org/react',
-            '@nextui-org/use-infinite-scroll',
-            '@nextui-org/use-disclosure'
+          heroui: [
+            '@heroui/react',
+            '@heroui/use-infinite-scroll',
+            '@heroui/use-disclosure'
           ],
           tanstack: ['@tanstack/react-query', '@tanstack/react-query-persist-client'],
           zod: ['zod'],

@@ -1,6 +1,6 @@
 import { Person } from '@/icons/Person';
 import { calculateAge } from '@/utils/peruDateTime';
-import { Card, CardBody } from '@nextui-org/react';
+import { Card, CardBody } from "@heroui/react";
 import { useEffect } from 'react';
 import { useGetPersonDetailById } from '../hooks/useGetPerson';
 import { PeopleBasicInfoSkeleton } from './PeopleBasicInfo.skeleton';

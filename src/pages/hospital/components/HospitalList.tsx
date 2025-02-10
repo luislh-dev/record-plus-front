@@ -6,7 +6,7 @@ import { State } from '@/constants/state';
 import { statusColorMap } from '@/constants/statusColorMap';
 import { useHandleSort } from '@/hooks/useHandleSort';
 import { TableColumn } from '@/types/TableColumn';
-import { Chip } from '@nextui-org/react';
+import { Chip } from "@heroui/react";
 import { useNavigate } from 'react-router-dom';
 import { useHospitalDelete } from '../hooks/UseHospitalDelete';
 import { useHospitalSearch } from '../hooks/useHospitalSearch';

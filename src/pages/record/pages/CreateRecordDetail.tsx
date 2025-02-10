@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader } from '@nextui-org/react';
+import { Card, CardBody, CardHeader } from "@heroui/react";
 import { useParams } from 'react-router-dom';
 import { CreateRecordDetailForm } from '../components/CreateRecordDetailForm';
 

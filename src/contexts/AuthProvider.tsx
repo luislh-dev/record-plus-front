@@ -1,5 +1,11 @@
-import React, { createContext, ReactNode, useEffect, useReducer, useState } from 'react';
-import { AuthAction, authReducer, AuthState, initialState } from '../reducers/authReducer';
+import type React from 'react';
+import { type ReactNode, createContext, useEffect, useReducer, useState } from 'react';
+import {
+  type AuthAction,
+  type AuthState,
+  authReducer,
+  initialState
+} from '../reducers/authReducer';
 import { decodeToken, getStoredToken } from '../utils/tokenUtils';
 
 const AuthContext = createContext<{

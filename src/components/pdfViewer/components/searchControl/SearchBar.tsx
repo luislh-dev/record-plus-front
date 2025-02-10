@@ -1,5 +1,5 @@
 import { Search } from '@/icons/Search';
-import { Input } from '@nextui-org/react';
+import { Input } from "@heroui/react";
 
 import { usePDFStore } from '../../store/usePDFStore';
 

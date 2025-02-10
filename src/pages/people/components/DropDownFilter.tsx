@@ -8,7 +8,7 @@ import {
   DropdownTrigger,
   Radio,
   RadioGroup
-} from '@nextui-org/react';
+} from "@heroui/react";
 import { SEARCH_PARAMS } from '../constants/SearchParams';
 import { usePersonSearch } from '../hooks/usePersonSearch';
 import { useSearchPeopleStore } from '../stores/useSearchStore';

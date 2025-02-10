@@ -1,6 +1,6 @@
 import { DocumentTypeSelect } from '@/components/DocumentTypeSelect';
 import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
-import { Input } from '@nextui-org/react';
+import { Input } from "@heroui/react";
 import { FC } from 'react';
 import { useSearchPerson } from '../stores/useSearchPerson';
 import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';

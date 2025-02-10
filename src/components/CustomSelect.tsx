@@ -1,5 +1,5 @@
 import { InputVariant } from '@/types/InputVariant';
-import { Select, SelectItem } from '@nextui-org/react';
+import { Select, SelectItem } from "@heroui/react";
 import { Control, Controller, FieldError, FieldValues, Path } from 'react-hook-form';
 
 interface Option {

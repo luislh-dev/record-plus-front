@@ -1,5 +1,5 @@
 import { InputVariant } from '@/types/InputVariant';
-import { Textarea } from '@nextui-org/react';
+import { Textarea } from "@heroui/react";
 import { Control, Controller, FieldError, FieldValues, Path } from 'react-hook-form';
 
 interface Props<T extends FieldValues> {

@@ -1,7 +1,13 @@
-import { InputVariant } from '@/types/InputVariant';
-import { getLocalTimeZone, now, ZonedDateTime } from '@internationalized/date';
-import { DatePicker } from '@nextui-org/react';
-import { Control, Controller, FieldError, FieldValues, Path } from 'react-hook-form';
+import type { InputVariant } from '@/types/InputVariant';
+import { ZonedDateTime, getLocalTimeZone, now } from '@internationalized/date';
+import { DatePicker } from "@heroui/react";
+import {
+  type Control,
+  Controller,
+  type FieldError,
+  type FieldValues,
+  type Path
+} from 'react-hook-form';
 
 interface Props<T extends FieldValues> {
   name: Path<T>;

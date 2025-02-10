@@ -7,7 +7,7 @@ import { Image } from '@/icons/Image';
 import { Person } from '@/icons/Person';
 import { getPresignedUrlByObjectKey } from '@/services/FileService';
 import { groupBy } from '@/utils/groupBy';
-import { Button, Card, CardBody, CardHeader, Chip, useDisclosure } from '@nextui-org/react';
+import { Button, Card, CardBody, CardHeader, Chip, useDisclosure } from "@heroui/react";
 import { DownloadFile } from '@zeitui-org/file-fetch-utils';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';

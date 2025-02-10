@@ -5,7 +5,7 @@ import { TextAreaForm } from '@/components/TextAreaForm';
 import { useFileType } from '@/hooks/fileType/useFileType';
 import { useStates } from '@/hooks/state/useState';
 import { getLocalTimeZone, now } from '@internationalized/date';
-import { Alert, Button, Select, SelectItem } from '@nextui-org/react';
+import { Alert, Button, Select, SelectItem } from "@heroui/react";
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useCreateRecordDetail } from '../hooks/useCreateRecordDetail';

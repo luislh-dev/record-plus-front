@@ -4,7 +4,7 @@ import { Document } from '@/icons/Document';
 import { Hospital } from '@/icons/Hospital';
 import { Image } from '@/icons/Image';
 import { Reloj } from '@/icons/Reloj';
-import { Button, Chip } from '@nextui-org/react';
+import { Button, Chip } from "@heroui/react";
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecordDetailSearch } from '../hooks/useRecordDetailSearch';

@@ -1,4 +1,4 @@
-import { Button } from '@nextui-org/react';
+import { Button } from "@heroui/react";
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HospitalForm } from './components/HospitalForm';

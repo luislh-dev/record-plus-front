@@ -5,8 +5,6 @@ import { CE_ID, DNI_ID, DNI_NAME } from '@/constants/documentType';
 import { useGender } from '@/hooks/gender/useGender';
 import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
 import { getPeruDateTime } from '@/utils/peruDateTime';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { parseDate } from '@internationalized/date';
 import {
   Alert,
   Button,
@@ -16,15 +14,18 @@ import {
   ModalContent,
   ModalFooter,
   ModalHeader
-} from '@nextui-org/react';
+} from '@heroui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { parseDate } from '@internationalized/date';
+import { DateValue } from '@react-types/datepicker';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useCreateRequeridPerson } from '../hooks/useCreatePerson';
 import {
-  peopleCreateRequiredSchema,
-  PeopleCreateRequiredValues
+  type PeopleCreateRequiredValues,
+  peopleCreateRequiredSchema
 } from '../models/peopleCreateRequiredSchema';
-import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
+import type { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 interface Props {
   isOpen: boolean;
@@ -89,130 +90,128 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
         aria-label="Modal de creación de persona"
       >
         <ModalContent aria-label="Contenido del modal de creación de persona">
-          <>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <ModalHeader className="flex flex-col" aria-label="Cabezera de la modal de creación">
-                <Typography as="h3" variant="subsection">
-                  Confirmar datos de {dataSource}
-                </Typography>
-                <Typography variant="body" color="muted">
-                  Se encontraron los siguientes datos en {dataSource}. Por favor confirme que son
-                  correctos.
-                </Typography>
-              </ModalHeader>
-              <ModalBody>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Typography variant="data-title" color="muted">
-                      Nombres
-                    </Typography>
-                    <Typography variant="body-small" className="font-medium">
-                      {personData.name}
-                    </Typography>
-                  </div>
-                  <div>
-                    <Typography variant="data-title" color="muted">
-                      Apellidos
-                    </Typography>
-                    <Typography variant="body-small" className="font-medium">
-                      {personData.fatherLastName} {personData.motherLastName}
-                    </Typography>
-                  </div>
-                  <div>
-                    <Typography variant="data-title" color="muted">
-                      Tipo de documento
-                    </Typography>
-                    <Typography variant="body-small" className="font-medium">
-                      {personData.documentType}
-                    </Typography>
-                  </div>
-                  <div>
-                    <Typography variant="data-title" color="muted">
-                      Número de documento
-                    </Typography>
-                    <Typography variant="body-small" className="font-medium">
-                      {personData.documentNumber}
-                    </Typography>
-                  </div>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <ModalHeader className="flex flex-col" aria-label="Cabezera de la modal de creación">
+              <Typography as="h3" variant="subsection">
+                Confirmar datos de {dataSource}
+              </Typography>
+              <Typography variant="body" color="muted">
+                Se encontraron los siguientes datos en {dataSource}. Por favor confirme que son
+                correctos.
+              </Typography>
+            </ModalHeader>
+            <ModalBody>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <Typography variant="data-title" color="muted">
+                    Nombres
+                  </Typography>
+                  <Typography variant="body-small" className="font-medium">
+                    {personData.name}
+                  </Typography>
                 </div>
-                <Alert
-                  variant="bordered"
-                  description="Utiliza los datos recuperados para completar el formulario y registrar a la persona en el sistema de manera precisa."
+                <div>
+                  <Typography variant="data-title" color="muted">
+                    Apellidos
+                  </Typography>
+                  <Typography variant="body-small" className="font-medium">
+                    {personData.fatherLastName} {personData.motherLastName}
+                  </Typography>
+                </div>
+                <div>
+                  <Typography variant="data-title" color="muted">
+                    Tipo de documento
+                  </Typography>
+                  <Typography variant="body-small" className="font-medium">
+                    {personData.documentType}
+                  </Typography>
+                </div>
+                <div>
+                  <Typography variant="data-title" color="muted">
+                    Número de documento
+                  </Typography>
+                  <Typography variant="body-small" className="font-medium">
+                    {personData.documentNumber}
+                  </Typography>
+                </div>
+              </div>
+              <Alert
+                variant="bordered"
+                description="Utiliza los datos recuperados para completar el formulario y registrar a la persona en el sistema de manera precisa."
+              />
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Controller
+                  control={control}
+                  name="birthdate"
+                  render={({ field: { onChange, value } }) => {
+                    const today = getPeruDateTime();
+                    const formattedDate = value instanceof Date ? value : today;
+
+                    // Asegurarse que la fecha esté en formato YYYY-MM-DD
+                    const isoDate = formattedDate.toISOString().split('T')[0];
+                    const selectedDate = parseDate(isoDate) as DateValue;
+
+                    return (
+                      <div className="flex flex-col gap-1">
+                        <DatePicker
+                          isInvalid={!!errors.birthdate}
+                          label="Fecha de nacimiento"
+                          variant="bordered"
+                          labelPlacement="outside"
+                          isRequired
+                          value={selectedDate}
+                          onChange={date => {
+                            if (date) {
+                              // Convertir la fecha seleccionada a Date
+                              const [year, month, day] = date.toString().split('-');
+                              const newDate = new Date(
+                                Number.parseInt(year),
+                                Number.parseInt(month) - 1, // Los meses en JavaScript son 0-indexed
+                                Number.parseInt(day)
+                              );
+                              onChange(newDate);
+                            }
+                          }}
+                        />
+                        <Typography variant="error" className="h-4 pl-1">
+                          {errors.birthdate?.message}
+                        </Typography>
+                      </div>
+                    );
+                  }}
                 />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <Controller
-                    control={control}
-                    name="birthdate"
-                    render={({ field: { onChange, value } }) => {
-                      const today = getPeruDateTime();
-                      const formattedDate = value instanceof Date ? value : today;
 
-                      // Asegurarse que la fecha esté en formato YYYY-MM-DD
-                      const isoDate = formattedDate.toISOString().split('T')[0];
-                      const selectedDate = parseDate(isoDate);
+                <CustomSelect
+                  variant="bordered"
+                  control={control}
+                  name="sexTypeId"
+                  label="Genero"
+                  options={gender}
+                  placeholder="Seleccione un genero"
+                />
+                <CustomInput
+                  name="phone"
+                  variant="bordered"
+                  control={control}
+                  type="tel"
+                  onInput={allowOnlyNumbers}
+                  label="Teléfono"
+                  error={errors.phone}
+                  placeholder="Ingrese el teléfono"
+                  isRequired
+                />
+              </div>
+            </ModalBody>
+            <ModalFooter>
+              <Button type="button" color="danger" variant="flat" onPress={onCloseModal}>
+                Cancelar
+              </Button>
 
-                      return (
-                        <div className="flex flex-col gap-1">
-                          <DatePicker
-                            isInvalid={!!errors.birthdate}
-                            label="Fecha de nacimiento"
-                            variant="bordered"
-                            labelPlacement="outside"
-                            isRequired
-                            value={selectedDate}
-                            onChange={date => {
-                              if (date) {
-                                // Convertir la fecha seleccionada a Date
-                                const [year, month, day] = date.toString().split('-');
-                                const newDate = new Date(
-                                  parseInt(year),
-                                  parseInt(month) - 1, // Los meses en JavaScript son 0-indexed
-                                  parseInt(day)
-                                );
-                                onChange(newDate);
-                              }
-                            }}
-                          />
-                          <Typography variant="error" className="h-4 pl-1">
-                            {errors.birthdate?.message}
-                          </Typography>
-                        </div>
-                      );
-                    }}
-                  />
-
-                  <CustomSelect
-                    variant="bordered"
-                    control={control}
-                    name="sexTypeId"
-                    label="Genero"
-                    options={gender}
-                    placeholder="Seleccione un genero"
-                  />
-                  <CustomInput
-                    name="phone"
-                    variant="bordered"
-                    control={control}
-                    type="tel"
-                    onInput={allowOnlyNumbers}
-                    label="Teléfono"
-                    error={errors.phone}
-                    placeholder="Ingrese el teléfono"
-                    isRequired
-                  />
-                </div>
-              </ModalBody>
-              <ModalFooter>
-                <Button type="button" color="danger" variant="flat" onPress={onCloseModal}>
-                  Cancelar
-                </Button>
-
-                <Button type="submit" color="primary" isLoading={isLoading} isDisabled={!isValid}>
-                  Confirmar
-                </Button>
-              </ModalFooter>
-            </form>
-          </>
+              <Button type="submit" color="primary" isLoading={isLoading} isDisabled={!isValid}>
+                Confirmar
+              </Button>
+            </ModalFooter>
+          </form>
         </ModalContent>
       </Modal>
     </>

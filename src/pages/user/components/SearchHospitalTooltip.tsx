@@ -1,5 +1,5 @@
 import { Help } from '@/icons/Help';
-import { Tooltip } from '@nextui-org/react';
+import { Tooltip } from "@heroui/react";
 
 export const SearchHospitalTooltip = () => (
   <Tooltip

@@ -1,7 +1,7 @@
 import { DeleteIcon } from '@/icons/DeleteIcon';
 import { EditIcon } from '@/icons/EditIcon';
 import { EyeIcon } from '@/icons/EyeIcon';
-import { Tooltip } from '@nextui-org/react';
+import { Tooltip } from "@heroui/react";
 
 interface ActionsCellProps {
   state?: string;

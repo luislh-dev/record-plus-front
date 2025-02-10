@@ -1,5 +1,5 @@
 import { Search as SearchIcon } from '@/icons/Search';
-import { Button, Input } from '@nextui-org/react';
+import { Button, Input } from "@heroui/react";
 import { useSearchPeopleStore } from '../stores/useSearchStore';
 
 export const Search = () => {

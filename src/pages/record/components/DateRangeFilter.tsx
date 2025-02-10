@@ -1,6 +1,6 @@
 import { Close } from '@/icons/Close';
 import { DateValue, toCalendarDate } from '@internationalized/date';
-import { DateRangePicker, RangeValue } from '@nextui-org/react';
+import { DateRangePicker, RangeValue } from "@heroui/react";
 import { useState } from 'react';
 import { useRecordDetailSearch } from '../hooks/useRecordDetailSearch';
 

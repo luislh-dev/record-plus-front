@@ -1,4 +1,4 @@
-import { Drawer, DrawerBody, DrawerContent } from '@nextui-org/react';
+import { Drawer, DrawerBody, DrawerContent } from "@heroui/react";
 import { ImageViewer } from '@zeitui-org/image-viewer';
 import { PDFViewer } from './pdfViewer/PDFViewer';
 

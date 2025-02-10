@@ -1,5 +1,5 @@
-import { Autocomplete, AutocompleteItem } from '@nextui-org/react';
-import { useInfiniteScroll } from '@nextui-org/use-infinite-scroll';
+import { Autocomplete, AutocompleteItem } from "@heroui/react";
+import { useInfiniteScroll } from "@heroui/use-infinite-scroll";
 import { FC, useState } from 'react';
 import { useHospitalGetByName } from '../hooks/useHospitalGetBy';
 

@@ -1,5 +1,5 @@
 import { FilterList } from '@/icons/FIlterList';
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@nextui-org/react';
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
 import { Key } from 'react';
 import { ArrowUp } from '@/icons/ArrowUp';
 import { ArrowDown } from '@/icons/ArrowDown';

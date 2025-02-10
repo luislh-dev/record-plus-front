@@ -3,7 +3,7 @@ import { useHandleSortGeneric } from '@/hooks/useHandleSort';
 import { TableColumn } from '@/types/TableColumn';
 import { UserListDTO } from '../types/UserListDTO';
 import { Align } from '@/constants/align';
-import { Chip } from '@nextui-org/react';
+import { Chip } from "@heroui/react";
 import { statusColorMap } from '@/constants/statusColorMap';
 import { GenericTable } from '@/components/GenericTable';
 import { useUserSearch } from '../hooks/useUserSearch';
