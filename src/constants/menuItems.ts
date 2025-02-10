@@ -1,5 +1,5 @@
 import { Roles } from '@/constants/roles';
-import { MenuItem } from '@/types/MenuItem';
+import type { MenuItem } from '@/types/MenuItem';
 
 export const menuItems: MenuItem[] = [
   {

@@ -1,4 +1,4 @@
-import { SearchParam } from '@/types/SearchParam';
+import type { SearchParam } from '@/types/SearchParam';
 
 export const SEARCH_PARAMS: SearchParam[] = [
   { id: 'name', label: 'Nombre' },

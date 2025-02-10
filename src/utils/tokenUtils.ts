@@ -1,5 +1,5 @@
 import { jwtDecode } from 'jwt-decode';
-import { DecodedToken } from '../types/decodedToken';
+import type { DecodedToken } from '../types/decodedToken';
 
 export const decodeToken = (token: string): DecodedToken => {
   return jwtDecode<DecodedToken>(token);

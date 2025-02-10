@@ -1,5 +1,5 @@
-import { PeopleCreateRequiredValues } from '../models/peopleCreateRequiredSchema';
-import { PeopleCreateFullDto } from '../types/PeopleCreateFullDto';
+import type { PeopleCreateRequiredValues } from '../models/peopleCreateRequiredSchema';
+import type { PeopleCreateFullDto } from '../types/PeopleCreateFullDto';
 
 export const toPeopleRequiredDto = (data: PeopleCreateRequiredValues): PeopleCreateFullDto => {
   return {

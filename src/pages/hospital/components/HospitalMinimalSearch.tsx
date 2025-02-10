@@ -1,6 +1,6 @@
-import { Autocomplete, AutocompleteItem } from "@heroui/react";
-import { useInfiniteScroll } from "@heroui/use-infinite-scroll";
-import { FC, useState } from 'react';
+import { Autocomplete, AutocompleteItem } from '@heroui/react';
+import { useInfiniteScroll } from '@heroui/use-infinite-scroll';
+import { type FC, useState } from 'react';
 import { useHospitalGetByName } from '../hooks/useHospitalGetBy';
 
 export const HospitalMinimalSearch: FC<{
@@ -24,7 +24,7 @@ export const HospitalMinimalSearch: FC<{
       isLoading={isLoading}
       scrollRef={scrollerRef}
       onInputChange={setSearchTerm}
-      onSelectionChange={item => onHospitalSelected(parseInt(item as string))}
+      onSelectionChange={item => onHospitalSelected(Number.parseInt(item as string))}
       variant="bordered"
       onOpenChange={setIsOpen}
     >

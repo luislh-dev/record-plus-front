@@ -5,13 +5,13 @@ import { Align } from '@/constants/align';
 import { State } from '@/constants/state';
 import { statusColorMap } from '@/constants/statusColorMap';
 import { useHandleSort } from '@/hooks/useHandleSort';
-import { TableColumn } from '@/types/TableColumn';
-import { Chip } from "@heroui/react";
+import type { TableColumn } from '@/types/TableColumn';
+import { Chip } from '@heroui/react';
 import { useNavigate } from 'react-router-dom';
 import { useHospitalDelete } from '../hooks/UseHospitalDelete';
 import { useHospitalSearch } from '../hooks/useHospitalSearch';
 import { useSearchStore } from '../stores/searchStore';
-import { HospitalListDTO } from '../types/HospitalListDTO';
+import type { HospitalListDTO } from '../types/HospitalListDTO';
 
 export const HospitalList = () => {
   const navigate = useNavigate();

@@ -17,7 +17,7 @@ export const dateUtils = {
     return new CalendarDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
   },
 
-  formatDateForAPI: (date: CalendarDate, isEndDate: boolean = false): string => {
+  formatDateForAPI: (date: CalendarDate, isEndDate: boolean): string => {
     const year = date.year;
     const month = String(date.month).padStart(2, '0');
     const day = String(date.day).padStart(2, '0');

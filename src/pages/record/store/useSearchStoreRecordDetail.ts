@@ -1,7 +1,7 @@
 import { dateUtils } from '@/utils/dateUtils';
-import { CalendarDate } from '@internationalized/date';
+import type { CalendarDate } from '@internationalized/date';
 import { create } from 'zustand';
-import { RecordDetailRequestParams } from '../types/RecordDetailRequestParams';
+import type { RecordDetailRequestParams } from '../types/RecordDetailRequestParams';
 
 interface SearchState {
   searchTerm: string;

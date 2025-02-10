@@ -1,4 +1,4 @@
-import { Skeleton } from "@heroui/react";
+import { Skeleton } from '@heroui/react';
 
 export const PeopleBasicInfoSkeleton = () => {
   return (
@@ -9,7 +9,7 @@ export const PeopleBasicInfoSkeleton = () => {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {Array.from({ length: 5 }).map((_, index) => (
-          <div key={index} className="flex flex-col gap-2">
+          <div key={index.toString()} className="flex flex-col gap-2">
             <Skeleton className="h-4 w-10 rounded-lg" />
             <Skeleton className="h-4 w-20 rounded-lg" />
           </div>

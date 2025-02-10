@@ -2,9 +2,9 @@ import { Align } from '@/constants/align';
 import { ArrowDown } from '@/icons/ArrowDown';
 import { ArrowUp } from '@/icons/ArrowUp';
 import { UnfoldMore } from '@/icons/UnfoldMore';
-import { SortConfig, SortDirection } from '@/types/sorting';
-import { TableColumn } from '@/types/TableColumn';
-import { Pagination } from "@heroui/react";
+import type { TableColumn } from '@/types/TableColumn';
+import { type SortConfig, SortDirection } from '@/types/sorting';
+import { Pagination } from '@heroui/react';
 import React, { useEffect, useRef } from 'react';
 
 interface GenericTableProps<T> {
@@ -75,7 +75,7 @@ export function GenericTable<T extends { id: number | string }>({
     );
 
   return (
-    (<div className="w-full">
+    <div className="w-full">
       <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-2">
         <div className="overflow-x-auto">
           <table className="w-full min-w-full border-collapse">
@@ -91,36 +91,40 @@ export function GenericTable<T extends { id: number | string }>({
                     ${column === columns[columns.length - 1] ? 'rounded-tr-lg' : ''}
                     ${column.align === Align.CENTER ? 'text-center' : 'text-left'}
                   `}
-                    onClick={() => {
-                      if (column.sortable && onSort) {
-                        onSort(column.key as keyof T);
-                      }
-                    }}
                   >
-                    <div
-                      className={`flex items-center ${
-                        column.align === Align.CENTER
-                          ? 'justify-center'
-                          : sortConfig
-                            ? 'justify-between'
-                            : 'justify-start'
-                      }`}
+                    <button
+                      onClick={() => {
+                        if (column.sortable && onSort) {
+                          onSort(column.key as keyof T);
+                        }
+                      }}
+                      type="button"
                     >
-                      {column.name}
-                      {column.sortable && (
-                        <span className="ml-2">
-                          {sortConfig?.field === column.key ? (
-                            sortConfig.direction === SortDirection.ASC ? (
-                              <ArrowUp />
+                      <div
+                        className={`flex items-center ${
+                          column.align === Align.CENTER
+                            ? 'justify-center'
+                            : sortConfig
+                              ? 'justify-between'
+                              : 'justify-start'
+                        }`}
+                      >
+                        {column.name}
+                        {column.sortable && (
+                          <span className="ml-2">
+                            {sortConfig?.field === column.key ? (
+                              sortConfig.direction === SortDirection.ASC ? (
+                                <ArrowUp />
+                              ) : (
+                                <ArrowDown />
+                              )
                             ) : (
-                              <ArrowDown />
-                            )
-                          ) : (
-                            <UnfoldMore />
-                          )}
-                        </span>
-                      )}
-                    </div>
+                              <UnfoldMore />
+                            )}
+                          </span>
+                        )}
+                      </div>
+                    </button>
                   </th>
                 ))}
               </tr>
@@ -137,7 +141,7 @@ export function GenericTable<T extends { id: number | string }>({
                 </tr>
               ) : isLoading && !data.length && lastValidData.current.length > 0 ? (
                 // Usar datos en caché durante la carga si existen
-                (lastValidData.current.map(item => (
+                lastValidData.current.map(item => (
                   <tr
                     key={item.id}
                     className="hover:bg-gray-50 last:border-b-0 transition-opacity duration-200 opacity-50"
@@ -157,10 +161,10 @@ export function GenericTable<T extends { id: number | string }>({
                       </td>
                     ))}
                   </tr>
-                )))
+                ))
               ) : data.length > 0 ? (
                 // Mostrar datos actuales
-                (data.map(item => (
+                data.map(item => (
                   <tr
                     key={item.id}
                     className={`hover:bg-gray-50 last:border-b-0 transition-opacity duration-200 ${
@@ -182,17 +186,17 @@ export function GenericTable<T extends { id: number | string }>({
                       </td>
                     ))}
                   </tr>
-                )))
+                ))
               ) : isLoading ? (
                 // Solo mostrar loading cuando no hay datos ni caché
-                (<tr>
+                <tr>
                   <td
                     colSpan={columns.length}
                     className="text-center p-20 text-gray-500 font-semibold"
                   >
                     {loadingContent}
                   </td>
-                </tr>)
+                </tr>
               ) : (
                 <tr>
                   <td colSpan={columns.length} className="text-center p-20 text-gray-500">
@@ -205,6 +209,6 @@ export function GenericTable<T extends { id: number | string }>({
         </div>
       </div>
       <div className="px-3 py-4">{renderPagination()}</div>
-    </div>)
+    </div>
   );
 }

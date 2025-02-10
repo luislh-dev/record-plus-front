@@ -1,8 +1,8 @@
-import { DropDownFilter } from './components/DropDrownFilter';
 import { DropDownSort } from './components/DropDownSort';
-import { SearchImput } from './components/Search';
-import { HospitalList } from './components/HospitalList';
+import { DropDownFilter } from './components/DropDrownFilter';
 import { Header } from './components/Header';
+import { HospitalList } from './components/HospitalList';
+import { SearchImput } from './components/Search';
 
 const Hospital = () => {
   return (
@@ -16,7 +16,7 @@ const Hospital = () => {
           <form className="px-2 pb-2 pt-4" onSubmit={e => e.preventDefault()}>
             <div className="flex gap-x-4">
               <SearchImput />
-              <div className="flex gap-x-4" role="group" aria-label="Filtros y ordenamiento">
+              <div className="flex gap-x-4" aria-label="Filtros y ordenamiento">
                 <DropDownFilter />
                 <DropDownSort />
               </div>

@@ -1,6 +1,6 @@
+import type { RoleType } from '@/constants/roles';
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../contexts/useAuthContext';
-import { RoleType } from '@/constants/roles';
 
 interface RoleBasedRouteProps {
   children: JSX.Element;

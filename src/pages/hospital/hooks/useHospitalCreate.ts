@@ -1,8 +1,8 @@
 import { ApiServiceError } from '@/services/api/ApiErrorHandler';
-import { MutationState } from '@/types/MutationState';
+import type { MutationState } from '@/types/MutationState';
 import { useCallback, useState } from 'react';
 import { toHospitalCreateRequest } from '../adapter/hospitalAdapter';
-import { HospitalCreateValues } from '../models/hospitalCreateSchema';
+import type { HospitalCreateValues } from '../models/hospitalCreateSchema';
 import { createHospital } from '../service/hospitalService';
 
 export function useHospitalCreate(onSuccess?: () => void) {

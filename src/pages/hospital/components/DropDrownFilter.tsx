@@ -9,7 +9,7 @@ import {
   DropdownTrigger,
   Radio,
   RadioGroup
-} from "@heroui/react";
+} from '@heroui/react';
 import { SEARCH_PARAMS } from '../constants/searchParams';
 import { useHospitalSearch } from '../hooks/useHospitalSearch';
 import { useSearchStore } from '../stores/searchStore';
@@ -34,7 +34,7 @@ export function DropDownFilter() {
     }
     // Si se selecciona un estado, se pasa el ID
     else {
-      setSelectedState(parseInt(selectedValue));
+      setSelectedState(Number.parseInt(selectedValue));
     }
   };
 

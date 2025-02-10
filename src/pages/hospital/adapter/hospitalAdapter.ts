@@ -1,5 +1,5 @@
-import { HospitalCreateValues } from '../models/hospitalCreateSchema';
-import { HospitalCreateRequest } from '../types/HospitalCreateRequest';
+import type { HospitalCreateValues } from '../models/hospitalCreateSchema';
+import type { HospitalCreateRequest } from '../types/HospitalCreateRequest';
 
 export const toHospitalCreateRequest = (values: HospitalCreateValues): HospitalCreateRequest => ({
   name: values.name,

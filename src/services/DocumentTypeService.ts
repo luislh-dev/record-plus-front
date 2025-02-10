@@ -1,4 +1,4 @@
-import { DocumentType } from '@/types/DocumentType';
+import type { DocumentType } from '@/types/DocumentType';
 import { api } from './api/api';
 
 export const getDocumentTypes = async (): Promise<DocumentType[]> => {

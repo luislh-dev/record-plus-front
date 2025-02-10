@@ -1,9 +1,12 @@
-import { HospitalCreateRequest } from '@/pages/hospital/types/HospitalCreateRequest';
-import { HospitalListDTO } from '@/pages/hospital/types/HospitalListDTO';
+import type { HospitalCreateRequest } from '@/pages/hospital/types/HospitalCreateRequest';
+import type { HospitalListDTO } from '@/pages/hospital/types/HospitalListDTO';
 import { api } from '@/services/api/api';
-import { PageResponse } from '@/types/Pagination';
-import { HospitalNameListDTO } from '../types/HospitalNameListDTO';
-import { HospitalFindByNameParams, HospitalRequestParams } from '../types/HospitalRequestParams';
+import type { PageResponse } from '@/types/Pagination';
+import type { HospitalNameListDTO } from '../types/HospitalNameListDTO';
+import type {
+  HospitalFindByNameParams,
+  HospitalRequestParams
+} from '../types/HospitalRequestParams';
 
 export const getHospitals = async (
   params?: HospitalRequestParams

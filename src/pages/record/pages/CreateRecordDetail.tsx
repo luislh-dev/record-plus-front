@@ -1,4 +1,4 @@
-import { Card, CardBody, CardHeader } from "@heroui/react";
+import { Card, CardBody } from '@heroui/react';
 import { useParams } from 'react-router-dom';
 import { CreateRecordDetailForm } from '../components/CreateRecordDetailForm';
 
@@ -8,7 +8,6 @@ export const CreateRecordDetail = () => {
   return (
     <>
       <Card>
-        <CardHeader></CardHeader>
         <CardBody>
           <CreateRecordDetailForm personId={id!} />
         </CardBody>

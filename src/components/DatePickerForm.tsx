@@ -1,6 +1,6 @@
 import type { InputVariant } from '@/types/InputVariant';
 import { DatePicker } from '@heroui/react';
-import { ZonedDateTime, getLocalTimeZone, now } from '@internationalized/date';
+import { type ZonedDateTime, getLocalTimeZone, now } from '@internationalized/date';
 import {
   type Control,
   Controller,

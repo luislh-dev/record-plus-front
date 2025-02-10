@@ -1,8 +1,8 @@
-import { useCallback, useState } from 'react';
-import { HospitalCreateRequest } from '../types/HospitalCreateRequest';
-import { updateHospital } from '../service/hospitalService';
-import { MutationState } from '@/types/MutationState';
 import { ApiServiceError } from '@/services/api/ApiErrorHandler';
+import type { MutationState } from '@/types/MutationState';
+import { useCallback, useState } from 'react';
+import { updateHospital } from '../service/hospitalService';
+import type { HospitalCreateRequest } from '../types/HospitalCreateRequest';
 
 export function useHospitalUpdate(onSuccess?: () => void) {
   const [updateState, setUpdateState] = useState<MutationState>({

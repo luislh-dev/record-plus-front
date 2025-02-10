@@ -4,11 +4,11 @@ import { Document } from '@/icons/Document';
 import { Hospital } from '@/icons/Hospital';
 import { Image } from '@/icons/Image';
 import { Reloj } from '@/icons/Reloj';
-import { Button, Chip } from "@heroui/react";
+import { Button, Chip } from '@heroui/react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecordDetailSearch } from '../hooks/useRecordDetailSearch';
-import { FileDetailDto } from '../types/RecordDetailListResponseDto';
+import type { FileDetailDto } from '../types/RecordDetailListResponseDto';
 import { DateRangeFilter } from './DateRangeFilter';
 import { SearchRecordDetail } from './SearchRecordDetail';
 
@@ -74,6 +74,14 @@ export default function RecordDetailList({ personId }: RecordDetailListProps) {
 
   const navigate = useNavigate();
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>, recordId: string) => {
+    // Maneja las teclas Enter o Space para activar la navegación
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      navigate(`/people/${personId}/detail/record/${recordId}`);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-wrap items-center p-4 gap-4">
@@ -115,6 +123,7 @@ export default function RecordDetailList({ personId }: RecordDetailListProps) {
                 key={recordDetail.id}
                 onClick={() => navigate(`/people/${personId}/detail/record/${recordDetail.id}`)}
                 className="p-4 flex flex-col sm:flex-row sm:justify-between gap-4 hover:bg-gray-50 transition-colors cursor-pointer group"
+                onKeyDown={e => handleKeyDown(e, recordDetail.id)}
               >
                 {/* Hospital Info */}
                 <div className="flex-1 w-3/5">

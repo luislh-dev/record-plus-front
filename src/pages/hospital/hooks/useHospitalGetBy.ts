@@ -2,8 +2,8 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import { getHospital, getHospitalsByName } from '../service/hospitalService';
-import { HospitalCreateRequest } from '../types/HospitalCreateRequest';
-import { HospitalFindByNameParams } from '../types/HospitalRequestParams';
+import type { HospitalCreateRequest } from '../types/HospitalCreateRequest';
+import type { HospitalFindByNameParams } from '../types/HospitalRequestParams';
 
 export function useHospitalGetBy() {
   const [getByIdState, setGetByIdState] = useState({

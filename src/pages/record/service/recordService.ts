@@ -1,8 +1,8 @@
 import { api } from '@/services/api/api';
-import { PageResponse } from '@/types/Pagination';
-import { RecordDetailExtenseViewModel } from '../types/RecordDetailExtenseViewModel';
-import { RecordDetailListResponseDto } from '../types/RecordDetailListResponseDto';
-import { RecordDetailRequestParams } from '../types/RecordDetailRequestParams';
+import type { PageResponse } from '@/types/Pagination';
+import type { RecordDetailExtenseViewModel } from '../types/RecordDetailExtenseViewModel';
+import type { RecordDetailListResponseDto } from '../types/RecordDetailListResponseDto';
+import type { RecordDetailRequestParams } from '../types/RecordDetailRequestParams';
 
 export const createRecordDetail = async (data: FormData) => {
   const response = await api.post('/record-details', data, {

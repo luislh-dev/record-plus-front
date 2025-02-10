@@ -1,6 +1,6 @@
 import { Typography } from '@/components/Typography';
 import { Add } from '@/icons/Add';
-import { Button } from "@heroui/react";
+import { Button } from '@heroui/react';
 import { useNavigate } from 'react-router-dom';
 
 export const HeaderRecord = () => {
@@ -14,7 +14,7 @@ export const HeaderRecord = () => {
         color="primary"
         variant="solid"
         endContent={<Add size={20} />}
-        onPress={() => navigate(`record/add`)}
+        onPress={() => navigate('record/add')}
       >
         Nuevo Registro
       </Button>

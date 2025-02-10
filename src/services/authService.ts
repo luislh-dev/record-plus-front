@@ -1,4 +1,4 @@
-import { UserAuth } from '../types/userAuth';
+import type { UserAuth } from '../types/userAuth';
 import { api } from './api/api';
 
 export const login = async (user: UserAuth) => {

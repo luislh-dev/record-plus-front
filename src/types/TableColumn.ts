@@ -1,4 +1,4 @@
-import { Align } from '@/constants/align';
+import type { Align } from '@/constants/align';
 
 export interface TableColumn<T> {
   name: string;

@@ -1,4 +1,4 @@
-import { State } from '@/types/state';
+import type { State } from '@/types/state';
 import { api } from './api/api';
 
 export const getStates = async (): Promise<State[]> => {

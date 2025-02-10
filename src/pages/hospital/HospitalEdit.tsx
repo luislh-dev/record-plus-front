@@ -1,10 +1,10 @@
-import { Button } from "@heroui/react";
+import { Button } from '@heroui/react';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HospitalForm } from './components/HospitalForm';
 import { useHospitalGetBy } from './hooks/useHospitalGetBy';
 import { useHospitalUpdate } from './hooks/useHospitalUpdate';
-import { HospitalCreateValues } from './models/hospitalCreateSchema';
+import type { HospitalCreateValues } from './models/hospitalCreateSchema';
 
 const HospitalEdit = () => {
   const navigate = useNavigate();
@@ -22,13 +22,13 @@ const HospitalEdit = () => {
 
   useEffect(() => {
     if (id) {
-      getById(parseInt(id));
+      getById(Number.parseInt(id));
     }
   }, [id, getById]);
 
   const onSubmit = async (data: HospitalCreateValues) => {
     if (!id) return;
-    await handleUpdate(parseInt(id), data);
+    await handleUpdate(Number.parseInt(id), data);
     navigate(-1);
   };
 

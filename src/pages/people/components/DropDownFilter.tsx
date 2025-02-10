@@ -8,11 +8,11 @@ import {
   DropdownTrigger,
   Radio,
   RadioGroup
-} from "@heroui/react";
+} from '@heroui/react';
 import { SEARCH_PARAMS } from '../constants/SearchParams';
 import { usePersonSearch } from '../hooks/usePersonSearch';
 import { useSearchPeopleStore } from '../stores/useSearchStore';
-import { SearchFieldKeys } from '../types/PeopleRequestParams';
+import type { SearchFieldKeys } from '../types/PeopleRequestParams';
 
 export const DropDownFilter = () => {
   const { searchTerm, selectedSearchField, setSelectedSearchField } = useSearchPeopleStore();

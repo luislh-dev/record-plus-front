@@ -2,11 +2,11 @@ import { ActionsCell } from '@/components/ActionsCell';
 import { GenericTable } from '@/components/GenericTable';
 import { Align } from '@/constants/align';
 import { useHandleSortGeneric } from '@/hooks/useHandleSort';
-import { TableColumn } from '@/types/TableColumn';
+import type { TableColumn } from '@/types/TableColumn';
 import { useNavigate } from 'react-router-dom';
 import { usePersonSearch } from '../hooks/usePersonSearch';
 import { useSearchPeopleStore } from '../stores/useSearchStore';
-import { MainPeopleListDto } from '../types/MainPeopleListDto';
+import type { MainPeopleListDto } from '../types/MainPeopleListDto';
 
 export const PeopleList = () => {
   const navigate = useNavigate();

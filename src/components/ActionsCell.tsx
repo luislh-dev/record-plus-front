@@ -1,7 +1,7 @@
 import { DeleteIcon } from '@/icons/DeleteIcon';
 import { EditIcon } from '@/icons/EditIcon';
 import { EyeIcon } from '@/icons/EyeIcon';
-import { Tooltip } from "@heroui/react";
+import { Tooltip } from '@heroui/react';
 
 interface ActionsCellProps {
   state?: string;
@@ -24,36 +24,39 @@ export function ActionsCell({
     <div className="relative flex items-center justify-center w-full gap-2">
       {onEdit && (
         <Tooltip content="Editar">
-          <span
+          <button
             className="text-lg text-default-400 cursor-pointer active:opacity-50"
             onClick={onEdit}
+            type="button"
           >
             <EditIcon />
-          </span>
+          </button>
         </Tooltip>
       )}
       {onDelete && (
         <Tooltip content="Eliminar">
-          <span
+          <button
             className={`text-lg transition-all duration-200 ${
               isInactive
                 ? 'text-danger/40 pointer-events-none cursor-not-allowed opacity-70'
                 : 'text-danger cursor-pointer active:opacity-50 hover:opacity-80'
             }`}
             onClick={isInactive ? undefined : onDelete}
+            type="button"
           >
             <DeleteIcon />
-          </span>
+          </button>
         </Tooltip>
       )}
       {onDetail && (
         <Tooltip content="Detalle">
-          <span
+          <button
             className="text-lg text-default-400 cursor-pointer active:opacity-50"
             onClick={onDetail}
+            type="button"
           >
             <EyeIcon />
-          </span>
+          </button>
         </Tooltip>
       )}
     </div>

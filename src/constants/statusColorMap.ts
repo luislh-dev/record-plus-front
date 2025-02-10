@@ -1,4 +1,4 @@
-import { ChipProps } from "@heroui/react";
+import type { ChipProps } from '@heroui/react';
 import { State } from './state';
 
 export const statusColorMap: Record<string, ChipProps['color']> = {

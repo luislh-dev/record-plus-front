@@ -1,20 +1,20 @@
 import { Roles } from '@/constants/roles';
 import { AuthLayout } from '@/layouts/AuthLayout';
 import { MainLayout } from '@/layouts/MainLayout';
+import { Login } from '@/pages/Login';
 import { Home } from '@/pages/home/Home';
 import Hospital from '@/pages/hospital/Hospital';
 import HospitalAdd from '@/pages/hospital/HospitalAdd';
 import HospitalEdit from '@/pages/hospital/HospitalEdit';
-import { Login } from '@/pages/Login';
 import People from '@/pages/people/People';
 import { PeopleDetail } from '@/pages/people/PeopleDetail';
-import { CreateRecordDetail } from '@/pages/record/pages/CreateRecordDetail';
 import { RecordDetail } from '@/pages/record/RecordDetail';
+import { CreateRecordDetail } from '@/pages/record/pages/CreateRecordDetail';
 import User from '@/pages/user/User';
 import { UserAdd } from '@/pages/user/UserAdd';
 import { PrivateRoute } from '@/routes/PrivateRoute';
 import { PublicRoute } from '@/routes/PublicRoute';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
 import { RoleBasedRoute } from './RoleBasedRoute';
 
 export const router = createBrowserRouter([

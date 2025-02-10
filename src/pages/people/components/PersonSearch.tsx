@@ -1,9 +1,9 @@
 import { DocumentTypeSelect } from '@/components/DocumentTypeSelect';
 import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
-import { Input } from "@heroui/react";
-import { FC } from 'react';
+import { Input } from '@heroui/react';
+import type { FC } from 'react';
 import { useSearchPerson } from '../stores/useSearchPerson';
-import { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
+import type { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 export const PersonSearch: FC<{
   onPersonFound: (person: MinimalPeopleResponseDto | null) => void;

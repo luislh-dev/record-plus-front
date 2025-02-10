@@ -1,12 +1,12 @@
-import { FilterList } from '@/icons/FIlterList';
-import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from "@heroui/react";
-import { Key } from 'react';
-import { ArrowUp } from '@/icons/ArrowUp';
-import { ArrowDown } from '@/icons/ArrowDown';
-import { HOSPITAL_SORTABLE_FIELDS } from '../constants/sortableFields';
-import { SortDirection } from '@/types/sorting';
-import { useSearchStore } from '../stores/searchStore';
 import { useHandleSort } from '@/hooks/useHandleSort';
+import { ArrowDown } from '@/icons/ArrowDown';
+import { ArrowUp } from '@/icons/ArrowUp';
+import { FilterList } from '@/icons/FIlterList';
+import { SortDirection } from '@/types/sorting';
+import { Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger } from '@heroui/react';
+import type { Key } from 'react';
+import { HOSPITAL_SORTABLE_FIELDS } from '../constants/sortableFields';
+import { useSearchStore } from '../stores/searchStore';
 
 export function DropDownSort() {
   const { sortConfig, setSortConfig } = useSearchStore();

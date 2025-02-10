@@ -2,7 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { useRecordDetailSearch } from '../hooks/useRecordDetailSearch';
-import { RecordDetailListResponseDto } from '../types/RecordDetailListResponseDto';
+import type { RecordDetailListResponseDto } from '../types/RecordDetailListResponseDto';
 import RecordDetailList from './RecordDetailList';
 vi.mock('../hooks/useRecordDetailSearch');
 

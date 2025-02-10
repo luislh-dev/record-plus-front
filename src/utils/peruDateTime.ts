@@ -134,12 +134,12 @@ export const getPeruDateTime = (): Date => {
     }
 
     return new Date(
-      parseInt(year),
-      parseInt(month) - 1,
-      parseInt(day),
-      parseInt(hours),
-      parseInt(minutes),
-      parseInt(seconds)
+      Number.parseInt(year),
+      Number.parseInt(month) - 1,
+      Number.parseInt(day),
+      Number.parseInt(hours),
+      Number.parseInt(minutes),
+      Number.parseInt(seconds)
     );
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -233,7 +233,7 @@ export const calculateAge = (birthDate: DateInput): number => {
     const birth = parseToDate(birthDate);
 
     // Validar que la fecha es válida
-    if (isNaN(birth.getTime())) {
+    if (Number.isNaN(birth.getTime())) {
       // eslint-disable-next-line no-console
       console.warn('calculateAge: Fecha de nacimiento inválida', birthDate);
       return 0;

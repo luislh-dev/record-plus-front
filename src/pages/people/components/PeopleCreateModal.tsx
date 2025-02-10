@@ -16,7 +16,7 @@ import {
   ModalHeader
 } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { DateValue, parseDate } from '@internationalized/date';
+import { type DateValue, parseDate } from '@internationalized/date';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useCreateRequeridPerson } from '../hooks/useCreatePerson';

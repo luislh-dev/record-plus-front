@@ -1,6 +1,12 @@
-import { InputVariant } from '@/types/InputVariant';
-import { Select, SelectItem } from "@heroui/react";
-import { Control, Controller, FieldError, FieldValues, Path } from 'react-hook-form';
+import type { InputVariant } from '@/types/InputVariant';
+import { Select, SelectItem } from '@heroui/react';
+import {
+  type Control,
+  Controller,
+  type FieldError,
+  type FieldValues,
+  type Path
+} from 'react-hook-form';
 
 interface Option {
   id: number;

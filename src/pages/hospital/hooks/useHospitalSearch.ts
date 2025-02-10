@@ -1,6 +1,6 @@
 import { useDebounce } from '@/hooks/useDebounce';
-import { getHospitals } from '../service/hospitalService';
 import { useQuery } from '@tanstack/react-query';
+import { getHospitals } from '../service/hospitalService';
 import { useSearchStore } from '../stores/searchStore';
 
 /**

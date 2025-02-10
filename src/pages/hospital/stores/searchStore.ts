@@ -1,7 +1,7 @@
-import { SortConfig, SortDirection } from '@/types/sorting';
+import { type SortConfig, SortDirection } from '@/types/sorting';
 import { create } from 'zustand';
 import { SEARCH_PARAMS } from '../constants/searchParams';
-import { HospitalRequestParams } from '../types/HospitalRequestParams';
+import type { HospitalRequestParams } from '../types/HospitalRequestParams';
 
 interface SearchState {
   // Estado
@@ -68,18 +68,18 @@ export const useSearchStore = create<SearchState>((set, get) => ({
     };
 
     if (state.searchTerm) {
-      state.searchFields.forEach(field => {
+      for (const field of state.searchFields) {
         if (SEARCH_PARAMS.some(param => param.id === field)) {
           if (field === 'id') {
-            const numericId = parseInt(state.searchTerm);
-            if (!isNaN(numericId)) {
+            const numericId = Number.parseInt(state.searchTerm);
+            if (!Number.isNaN(numericId)) {
               params.id = numericId;
             }
           } else if (field === 'ruc' || field === 'name') {
             params[field] = state.searchTerm;
           }
         }
-      });
+      }
     }
 
     return params;

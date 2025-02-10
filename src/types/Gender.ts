@@ -1,3 +1,3 @@
-import { BaseEntity } from './BaseEntity';
+import type { BaseEntity } from './BaseEntity';
 
 export type Gender = BaseEntity;

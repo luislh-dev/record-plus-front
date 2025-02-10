@@ -2,12 +2,12 @@ import { CustomInput } from '@/components/CustomInput';
 import { CustomSelect } from '@/components/CustomSelect';
 import { useStates } from '@/hooks/state/useState';
 import { useApiErrors } from '@/hooks/useApiErrors';
-import { ApiError } from '@/types/errros/ApiError';
+import type { ApiError } from '@/types/errros/ApiError';
+import { Button } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Button } from "@heroui/react";
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { HospitalCreateValues, hospitalCreateSchema } from '../models/hospitalCreateSchema';
+import { type HospitalCreateValues, hospitalCreateSchema } from '../models/hospitalCreateSchema';
 
 interface Props {
   onSubmit: (data: HospitalCreateValues) => void;
@@ -54,7 +54,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         placeholder="Ingrese el nombre"
         error={
           errors.name ||
-          (backendErrors['name'] ? { message: backendErrors['name'], type: 'backend' } : undefined)
+          (backendErrors.name ? { message: backendErrors.name, type: 'backend' } : undefined)
         }
         isRequired
       />
@@ -65,9 +65,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         placeholder="Ingrese la dirección"
         error={
           errors.address ||
-          (backendErrors['address']
-            ? { message: backendErrors['address'], type: 'backend' }
-            : undefined)
+          (backendErrors.address ? { message: backendErrors.address, type: 'backend' } : undefined)
         }
         isRequired
       />
@@ -78,9 +76,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         placeholder="Ingrese el teléfono"
         error={
           errors.phone ||
-          (backendErrors['phone']
-            ? { message: backendErrors['phone'], type: 'backend' }
-            : undefined)
+          (backendErrors.phone ? { message: backendErrors.phone, type: 'backend' } : undefined)
         }
         isRequired
       />
@@ -91,9 +87,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         placeholder="Ingrese el correo"
         error={
           errors.email ||
-          (backendErrors['email']
-            ? { message: backendErrors['email'], type: 'backend' }
-            : undefined)
+          (backendErrors.email ? { message: backendErrors.email, type: 'backend' } : undefined)
         }
         isRequired
       />
@@ -104,7 +98,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         placeholder="Ingrese el RUC"
         error={
           errors.ruc ||
-          (backendErrors['ruc'] ? { message: backendErrors['ruc'], type: 'backend' } : undefined)
+          (backendErrors.ruc ? { message: backendErrors.ruc, type: 'backend' } : undefined)
         }
         isRequired
       />
@@ -115,9 +109,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         options={state}
         error={
           errors.stateId ||
-          (backendErrors['stateId']
-            ? { message: backendErrors['stateId'], type: 'backend' }
-            : undefined)
+          (backendErrors.stateId ? { message: backendErrors.stateId, type: 'backend' } : undefined)
         }
       />
       <div className="col-span-2 flex justify-end gap-2">

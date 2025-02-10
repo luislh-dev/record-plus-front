@@ -1,6 +1,6 @@
-import { Input } from "@heroui/react";
-import { useSearchStore } from '../stores/searchStore';
 import { Search } from '@/icons/Search';
+import { Input } from '@heroui/react';
+import { useSearchStore } from '../stores/searchStore';
 
 export const SearchImput = () => {
   const { searchTerm, setSearchTerm } = useSearchStore();
