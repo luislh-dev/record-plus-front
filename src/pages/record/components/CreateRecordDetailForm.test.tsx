@@ -121,17 +121,18 @@ describe('CreateRecordDetailForm', () => {
     const fileInput = screen.getByLabelText(/seleccionar archivo/i);
 
     // Intentar agregar 6 archivos
-    files.forEach(file => {
-      fireEvent.change(fileInput, { target: { files: [file] } });
-    });
+
+    for (let i = 0; i < files.length; i++) {
+      fireEvent.change(fileInput, { target: { files: [files[i]] } });
+    }
 
     // Verificar que solo se muestran 5 archivos
     const fileNames = files.slice(0, 5).map((_, index) => `test${index + 1}.pdf`);
 
     // Verificar que cada uno de los primeros 5 archivos está presente
-    fileNames.forEach(fileName => {
-      expect(screen.getByText(fileName)).toBeInTheDocument();
-    });
+    for (let i = 0; i < fileNames.length; i++) {
+      expect(screen.getByText(fileNames[i])).toBeInTheDocument();
+    }
 
     // Verificar que el sexto archivo no está presente
     expect(screen.queryByText('test6.pdf')).not.toBeInTheDocument();

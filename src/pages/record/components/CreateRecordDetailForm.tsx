@@ -4,8 +4,8 @@ import { FilePicker } from '@/components/FilePicker';
 import { TextAreaForm } from '@/components/TextAreaForm';
 import { useFileType } from '@/hooks/fileType/useFileType';
 import { useStates } from '@/hooks/state/useState';
+import { Alert, Button, Select, SelectItem } from '@heroui/react';
 import { getLocalTimeZone, now } from '@internationalized/date';
-import { Alert, Button, Select, SelectItem } from "@heroui/react";
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useCreateRecordDetail } from '../hooks/useCreateRecordDetail';
@@ -61,10 +61,11 @@ export const CreateRecordDetailForm = ({ personId }: Props) => {
     formData.append('treatment', data.treatment || '');
     formData.append('visitDate', data.visitDate);
 
-    filesWithTypes.forEach(({ file, typeId }) => {
+    for (let i = 0; i < filesWithTypes.length; i++) {
+      const { file, typeId } = filesWithTypes[i];
       formData.append('files', file);
       formData.append('fileTypeIds', typeId.toString());
-    });
+    }
 
     await handleCreate(formData);
 
@@ -159,7 +160,10 @@ export const CreateRecordDetailForm = ({ personId }: Props) => {
           <div className="space-y-2">
             <h3 className="text-sm font-medium">Archivos seleccionados:</h3>
             {filesWithTypes.map(({ file }, index) => (
-              <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded">
+              <div
+                key={index.toString()}
+                className="flex items-center gap-2 p-2 bg-gray-50 rounded"
+              >
                 <span className="flex-1">{file.name}</span>
                 <Controller
                   name={`fileTypes.file${index}`}
