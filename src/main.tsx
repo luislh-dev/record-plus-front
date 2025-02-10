@@ -10,7 +10,8 @@ import './index.css';
 import { router } from './routes/routes';
 
 const container = document.getElementById('root');
-const root = createRoot(container!);
+const isContainerValid = container !== null;
+const root = createRoot(isContainerValid ? container : document.body);
 
 root.render(
   <React.StrictMode>
