@@ -19,10 +19,10 @@
     "test": "npm run lint"
   },
   "dependencies": {
-    "@hookform/resolvers": "^3.9.1",
-    "@internationalized/date": "^3.7.0",
     "@heroui/react": "2.6.14",
     "@heroui/use-infinite-scroll": "2.2.3",
+    "@hookform/resolvers": "^3.9.1",
+    "@internationalized/date": "3.6.0",
     "@tanstack/query-sync-storage-persister": "5.62.15",
     "@tanstack/react-query": "5.62.15",
     "@tanstack/react-query-persist-client": "5.62.15",

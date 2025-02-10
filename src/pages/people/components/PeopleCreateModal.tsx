@@ -16,8 +16,7 @@ import {
   ModalHeader
 } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { parseDate } from '@internationalized/date';
-import { DateValue } from '@react-types/datepicker';
+import { DateValue, parseDate } from '@internationalized/date';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useCreateRequeridPerson } from '../hooks/useCreatePerson';
@@ -149,7 +148,7 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
 
                     // Asegurarse que la fecha esté en formato YYYY-MM-DD
                     const isoDate = formattedDate.toISOString().split('T')[0];
-                    const selectedDate = parseDate(isoDate) as DateValue;
+                    const selectedDate = parseDate(isoDate);
 
                     return (
                       <div className="flex flex-col gap-1">
@@ -160,13 +159,13 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
                           labelPlacement="outside"
                           isRequired
                           value={selectedDate}
-                          onChange={date => {
+                          onChange={(date: DateValue | null) => {
                             if (date) {
-                              // Convertir la fecha seleccionada a Date
-                              const [year, month, day] = date.toString().split('-');
+                              const dateString = date.toString();
+                              const [year, month, day] = dateString.split('-');
                               const newDate = new Date(
                                 Number.parseInt(year),
-                                Number.parseInt(month) - 1, // Los meses en JavaScript son 0-indexed
+                                Number.parseInt(month) - 1,
                                 Number.parseInt(day)
                               );
                               onChange(newDate);
