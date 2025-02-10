@@ -2,6 +2,7 @@ import { Roles } from '@/constants/roles';
 import { AuthLayout } from '@/layouts/AuthLayout';
 import { MainLayout } from '@/layouts/MainLayout';
 import { Login } from '@/pages/Login';
+import { NotFound } from '@/pages/NotFound';
 import { Home } from '@/pages/home/Home';
 import Hospital from '@/pages/hospital/Hospital';
 import HospitalAdd from '@/pages/hospital/HospitalAdd';
@@ -154,5 +155,9 @@ export const router = createBrowserRouter([
         ]
       }
     ]
+  },
+  {
+    path: '*',
+    element: <NotFound />
   }
 ]);
