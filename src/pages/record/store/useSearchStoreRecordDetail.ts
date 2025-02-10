@@ -32,7 +32,7 @@ export const useSearchStoreRecordDetail = create<SearchState>((set, get) => ({
     }
 
     if (rangeDate[0] && rangeDate[1]) {
-      params.startDate = dateUtils.formatDateForAPI(rangeDate[0]);
+      params.startDate = dateUtils.formatDateForAPI(rangeDate[0], false);
       params.endDate = dateUtils.formatDateForAPI(rangeDate[1], true);
     }
 
