@@ -1,4 +1,4 @@
-import { DocumentTypeName } from '@/common/enum/DocumentType';
+import type { DocumentTypeName } from '@/common/enum/DocumentType';
 import type { PeopleRequestParams } from '@/pages/people/types/PeopleRequestParams';
 import { api } from '@/services/api/api';
 import type { PageResponse } from '@/types/Pagination';
