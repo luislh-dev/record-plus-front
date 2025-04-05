@@ -17,7 +17,7 @@ export const PersonSearch: FC<{
     <div className='flex w-full gap-4'>
       <div className='w-1/3'>
         <DocumentTypeSelect
-          value={documentType.toString()}
+          value={documentType}
           onChange={setDocumentType}
           isDisabled={isSearching}
         />

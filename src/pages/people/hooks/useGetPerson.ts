@@ -1,3 +1,4 @@
+import type { DocumentTypeName } from '@/common/enum/DocumentType';
 import { ApiServiceError } from '@/services/api/ApiErrorHandler';
 import type { ApiError } from '@/types/errros/ApiError';
 import { useQuery } from '@tanstack/react-query';
@@ -11,11 +12,11 @@ export function useGetPersonByDni() {
   const [person, setPerson] = useState<MinimalPeopleResponseDto | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const getPerson = async (documentId: number, documentNumber: string) => {
+  const getPerson = async (documentType: DocumentTypeName, documentNumber: string) => {
     setLoading(true);
     setError(null);
     try {
-      const result = await getPersonNameByDocument(documentId, documentNumber);
+      const result = await getPersonNameByDocument(documentType, documentNumber);
       setPerson(result);
       setSuccess(true);
     } catch (err) {

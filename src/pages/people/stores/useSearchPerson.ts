@@ -1,4 +1,4 @@
-import { CE_ID, DNI_ID } from '@/constants/documentType';
+import { DocumentTypeName } from '@/common/enum/DocumentType';
 import { ApiServiceError } from '@/services/api/ApiErrorHandler';
 import { useEffect, useState } from 'react';
 import { getPersonNameByDocument } from '../services/peopleService';
@@ -6,13 +6,13 @@ import type { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto
 
 interface UseSearchPersonProps {
   documentNumber: string;
-  documentType: number;
+  documentType: DocumentTypeName;
   searchResult: MinimalPeopleResponseDto | null;
   isSearching: boolean;
   error: string | null;
   setDocumentNumber: (value: string) => void;
-  setDocumentType: (value: number) => void;
-  searchPerson: (documentNumber: string, documentType: number) => void;
+  setDocumentType: (value: DocumentTypeName) => void;
+  searchPerson: (documentNumber: string, documentType: DocumentTypeName) => void;
   clearSearch: () => void;
 }
 
@@ -22,25 +22,25 @@ interface UseSearchPersonConfig {
 
 export const useSearchPerson = (config?: UseSearchPersonConfig): UseSearchPersonProps => {
   const [documentNumber, setDocumentNumber] = useState('');
-  const [documentType, setDocumentType] = useState(DNI_ID);
+  const [documentType, setDocumentType] = useState<DocumentTypeName>(DocumentTypeName.DNI);
   const [searchResult, setSearchResult] = useState<MinimalPeopleResponseDto | null>(null);
   const [isSearching, setIsSearching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [shouldSearch, setShouldSearch] = useState(false);
 
   // Función para validar el documento según el tipo
-  const isValidDocument = (docNumber: string, docType: number) => {
+  const isValidDocument = (docNumber: string, docType: DocumentTypeName) => {
     if (!docNumber) return false;
-    if (docType === DNI_ID && docNumber.length === 8) return true;
-    if (docType === CE_ID && docNumber.length === 9) return true;
+    if (docType === DocumentTypeName.DNI && docNumber.length === 8) return true;
+    if (docType === DocumentTypeName.CE && docNumber.length === 9) return true;
     return false;
   };
 
   // Función para verificar si el documento está en proceso de ser completado
-  const isIncompleteDocument = (docNumber: string, docType: number) => {
+  const isIncompleteDocument = (docNumber: string, docType: DocumentTypeName) => {
     if (!docNumber) return false;
-    if (docType === DNI_ID && docNumber.length < 8) return true;
-    if (docType === CE_ID && docNumber.length < 9) return true;
+    if (docType === DocumentTypeName.DNI && docNumber.length < 8) return true;
+    if (docType === DocumentTypeName.CE && docNumber.length < 9) return true;
     return false;
   };
 
@@ -105,7 +105,7 @@ export const useSearchPerson = (config?: UseSearchPersonConfig): UseSearchPerson
   };
 
   // Función para manejar cambios en el tipo de documento
-  const handleDocumentTypeChange = (value: number) => {
+  const handleDocumentTypeChange = (value: DocumentTypeName) => {
     setDocumentType(value);
     // Limpiamos los resultados cuando cambia el tipo de documento
     setSearchResult(null);
@@ -118,7 +118,7 @@ export const useSearchPerson = (config?: UseSearchPersonConfig): UseSearchPerson
     }
   };
 
-  const searchPerson = (docNumber: string, docType: number) => {
+  const searchPerson = (docNumber: string, docType: DocumentTypeName) => {
     setDocumentNumber(docNumber);
     setDocumentType(docType);
     setShouldSearch(true);

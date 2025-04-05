@@ -1,9 +1,10 @@
+import type { DocumentTypeName } from '@/common/enum/DocumentType';
 import { useDocumentType } from '@/hooks/documenttype/useDocumentType';
 import { Select, SelectItem } from '@heroui/react';
 
 export interface DocumentTypeSelectProps {
-  onChange: (documentType: number) => void;
-  value: string;
+  onChange: (documentType: DocumentTypeName) => void;
+  value: DocumentTypeName;
   isDisabled?: boolean;
 }
 
@@ -21,11 +22,11 @@ export const DocumentTypeSelect = ({ onChange, value, isDisabled }: DocumentType
       disabled={isDisabled}
       onSelectionChange={(keys) => {
         const selected = Array.from(keys)[0];
-        onChange(Number(selected));
+        onChange(selected as DocumentTypeName);
       }}
     >
       {documentType.map((type) => (
-        <SelectItem key={type.id} value={type.id}>
+        <SelectItem key={type.name} value={type.name}>
           {type.name}
         </SelectItem>
       ))}

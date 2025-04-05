@@ -1,3 +1,4 @@
+import { DocumentTypeName } from '@/common/enum/DocumentType';
 import type { PeopleRequestParams } from '@/pages/people/types/PeopleRequestParams';
 import { api } from '@/services/api/api';
 import type { PageResponse } from '@/types/Pagination';
@@ -19,11 +20,11 @@ export const getPersonList = async (
 };
 
 export const getPersonNameByDocument = async (
-  id: number,
+  documentType: DocumentTypeName,
   documentNumber: string,
 ): Promise<MinimalPeopleResponseDto> => {
   const response = await api.get<MinimalPeopleResponseDto>(
-    `/people/getPersonNameByDocument/${id}/${documentNumber}`,
+    `/people/getPersonNameByDocument/${documentType}/${documentNumber}`,
   );
   return response.data;
 };
