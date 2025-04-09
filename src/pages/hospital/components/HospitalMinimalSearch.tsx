@@ -29,7 +29,7 @@ export const HospitalMinimalSearch: FC<{
       onOpenChange={setIsOpen}
     >
       {(item) => (
-        <AutocompleteItem key={item.id} value={item.id}>
+        <AutocompleteItem key={item.id} textValue={item.id.toString()}>
           {item.name}
         </AutocompleteItem>
       )}

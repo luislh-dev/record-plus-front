@@ -1,5 +1,5 @@
-import { DocumentType } from '@/types/DocumentType';
-import { Gender } from '@/types/Gender';
+import type { DocumentType } from '@/types/DocumentType';
+import type { Gender } from '@/types/Gender';
 
 export interface PeopleDetailDTO {
   id: string;

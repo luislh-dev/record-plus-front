@@ -26,7 +26,7 @@ export const DocumentTypeSelect = ({ onChange, value, isDisabled }: DocumentType
       }}
     >
       {documentType.map((type) => (
-        <SelectItem key={type.name} value={type.name}>
+        <SelectItem key={type.name} textValue={type.name}>
           {type.name}
         </SelectItem>
       ))}

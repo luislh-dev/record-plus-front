@@ -26,7 +26,7 @@ export const StateSelect = ({ onChange, value, isDisabled }: Props) => {
       }}
     >
       {state.map((type) => (
-        <SelectItem key={type.id} value={type.id}>
+        <SelectItem key={type.id} textValue={type.id.toString()}>
           {type.name}
         </SelectItem>
       ))}

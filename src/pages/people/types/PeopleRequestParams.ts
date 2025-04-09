@@ -1,4 +1,4 @@
-import { PageRequest } from '@/types/page/PageRequest';
+import type { PageRequest } from '@/types/page/PageRequest';
 
 export interface PeopleRequestParams extends PageRequest {
   documentNumber?: string;

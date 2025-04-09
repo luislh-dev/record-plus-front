@@ -181,7 +181,7 @@ export const CreateRecordDetailForm = ({ personId }: Props) => {
                       variant='bordered'
                     >
                       {fileTypes?.map((option) => (
-                        <SelectItem key={option.id.toString()} value={option.id}>
+                        <SelectItem key={option.id.toString()} textValue={option.id.toString()}>
                           {option.name}
                         </SelectItem>
                       ))}

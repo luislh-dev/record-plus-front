@@ -1,7 +1,7 @@
 import { ApiServiceError } from '@/services/api/ApiErrorHandler';
 import { useState } from 'react';
 import { toPeopleRequiredDto } from '../adapter/peopleCreateAdapter';
-import { PeopleCreateRequiredValues } from '../models/peopleCreateRequiredSchema';
+import type { PeopleCreateRequiredValues } from '../models/peopleCreateRequiredSchema';
 import { createPerson } from '../services/peopleService';
 
 export function useCreateRequeridPerson() {

@@ -1,4 +1,4 @@
-import { PageRequest } from '@/types/page/PageRequest';
+import type { PageRequest } from '@/types/page/PageRequest';
 
 export interface RecordDetailRequestParams extends PageRequest {
   hospitalName?: string;

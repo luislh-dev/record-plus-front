@@ -59,7 +59,7 @@ export const CustomSelect = <T extends FieldValues>({
               isInvalid={!!error}
             >
               {options?.map((option) => (
-                <SelectItem key={option.id.toString()} value={option.id.toString()}>
+                <SelectItem key={option.id.toString()} textValue={option.id.toString()}>
                   {option.name}
                 </SelectItem>
               ))}

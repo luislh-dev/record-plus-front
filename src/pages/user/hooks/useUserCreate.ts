@@ -2,8 +2,8 @@ import { ApiServiceError } from '@/services/api/ApiErrorHandler';
 import { useState } from 'react';
 import { toDoctorCreationDto } from '../adapter/toDoctorCreationDto';
 import { toManagementCreationDto } from '../adapter/toManagementCreationDto';
-import { UserDoctorCreateValues } from '../models/userDoctorCreateSchema';
-import { UserManagementCreateValues } from '../models/userManagementCreateSchema';
+import type { UserDoctorCreateValues } from '../models/userDoctorCreateSchema';
+import type { UserManagementCreateValues } from '../models/userManagementCreateSchema';
 import { createDoctorUser, createManagementUser } from '../service/userService';
 
 export function useUserManagementCreate() {

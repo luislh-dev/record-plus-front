@@ -1,4 +1,4 @@
-import { FileDetailDto } from './RecordDetailListResponseDto';
+import type { FileDetailDto } from './RecordDetailListResponseDto';
 
 export interface RecordDetailExtenseViewModel {
   id: string;
