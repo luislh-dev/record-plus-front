@@ -1,24 +1,19 @@
-import { Button } from '@heroui/react';
-import { useNavigate } from 'react-router-dom';
+import { HeaderForm } from '@/components/form/HeaderForm';
 import { HospitalForm } from './components/HospitalForm';
 import { useHospitalCreate } from './hooks/useHospitalCreate';
 
 const HospitalAdd = () => {
-  const navigate = useNavigate();
-
   const {
     handleCreate,
     createState: { isLoading, error },
   } = useHospitalCreate();
 
   return (
-    <div className='space-y-6'>
-      <div className='flex justify-between items-center'>
-        <h1 className='text-3xl font-bold'>Agregar Hospital</h1>
-        <Button color='danger' variant='light' onClick={() => navigate(-1)}>
-          Cancelar
-        </Button>
-      </div>
+    <div className='flex flex-col gap-4 w-full md:w-[600px]'>
+      <HeaderForm
+        title='Registrar Hospital'
+        description='Completa el siguiente formulario para registrar un nuevo hospital en el sistema.'
+      />
 
       <HospitalForm onSubmit={handleCreate} isSubmitting={isLoading} apiErrors={error} />
     </div>

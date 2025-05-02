@@ -7,6 +7,7 @@ import { Button } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { type HospitalCreateValues, hospitalCreateSchema } from '../models/hospitalCreateSchema';
 
 interface Props {
@@ -45,8 +46,14 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
     }
   }, [state, setValue, defaultValues]);
 
+  const navigate = useNavigate();
+
+  const handleGoBack = () => {
+    navigate(-1);
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='grid grid-cols-2 gap-4'>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <CustomInput
         name='name'
         control={control}
@@ -69,53 +76,59 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         }
         isRequired
       />
-      <CustomInput
-        name='phone'
-        control={control}
-        label='Teléfono'
-        placeholder='Ingrese el teléfono'
-        error={
-          errors.phone ||
-          (backendErrors.phone ? { message: backendErrors.phone, type: 'backend' } : undefined)
-        }
-        isRequired
-      />
-      <CustomInput
-        name='email'
-        control={control}
-        label='Correo electrónico'
-        placeholder='Ingrese el correo'
-        error={
-          errors.email ||
-          (backendErrors.email ? { message: backendErrors.email, type: 'backend' } : undefined)
-        }
-        isRequired
-      />
-      <CustomInput
-        name='ruc'
-        control={control}
-        label='RUC'
-        placeholder='Ingrese el RUC'
-        error={
-          errors.ruc ||
-          (backendErrors.ruc ? { message: backendErrors.ruc, type: 'backend' } : undefined)
-        }
-        isRequired
-      />
-      <CustomSelect
-        name='stateId'
-        control={control}
-        label='Estado'
-        options={state}
-        error={
-          errors.stateId ||
-          (backendErrors.stateId ? { message: backendErrors.stateId, type: 'backend' } : undefined)
-        }
-      />
-      <div className='col-span-2 flex justify-end gap-2'>
+      <div className='grid grid-cols-2 gap-x-4'>
+        <CustomInput
+          name='email'
+          control={control}
+          label='Correo electrónico'
+          placeholder='Ingrese el correo'
+          error={
+            errors.email ||
+            (backendErrors.email ? { message: backendErrors.email, type: 'backend' } : undefined)
+          }
+          isRequired
+        />
+        <CustomInput
+          name='phone'
+          control={control}
+          label='Teléfono'
+          placeholder='Ingrese el teléfono'
+          error={
+            errors.phone ||
+            (backendErrors.phone ? { message: backendErrors.phone, type: 'backend' } : undefined)
+          }
+          isRequired
+        />
+        <CustomInput
+          name='ruc'
+          control={control}
+          label='RUC'
+          placeholder='Ingrese el RUC'
+          error={
+            errors.ruc ||
+            (backendErrors.ruc ? { message: backendErrors.ruc, type: 'backend' } : undefined)
+          }
+          isRequired
+        />
+        <CustomSelect
+          name='stateId'
+          control={control}
+          label='Estado'
+          options={state}
+          error={
+            errors.stateId ||
+            (backendErrors.stateId
+              ? { message: backendErrors.stateId, type: 'backend' }
+              : undefined)
+          }
+        />
+      </div>
+
+      <div className='flex gap-2 mt-1'>
         <Button type='submit' color='primary' isLoading={isSubmitting}>
           Guardar
         </Button>
+        <Button onPress={handleGoBack}>Cancelar</Button>
       </div>
     </form>
   );

@@ -1,4 +1,4 @@
-import { Button } from '@heroui/react';
+import { HeaderForm } from '@/components/form/HeaderForm';
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HospitalForm } from './components/HospitalForm';
@@ -40,13 +40,11 @@ const HospitalEdit = () => {
     return <div>Error: {getError}</div>;
   }
   return (
-    <div className='space-y-6'>
-      <div className='flex justify-between items-center'>
-        <h1 className='text-3xl font-bold'>Editar Hospital</h1>
-        <Button color='danger' variant='light' onClick={() => navigate(-1)}>
-          Cancelar
-        </Button>
-      </div>
+    <div className='flex flex-col gap-4 w-full md:w-[600px]'>
+      <HeaderForm
+        title='Editar Hospital'
+        description='Completa el siguiente formulario para editar el hospital en el sistema.'
+      />
 
       <HospitalForm
         onSubmit={onSubmit}
