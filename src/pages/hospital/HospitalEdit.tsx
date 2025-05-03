@@ -1,5 +1,4 @@
 import { HeaderForm } from '@/components/form/HeaderForm';
-import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HospitalForm } from './components/HospitalForm';
 import { useHospitalGetBy } from './hooks/useHospitalGetBy';
@@ -10,21 +9,16 @@ const HospitalEdit = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const hospitalId = Number.parseInt(id || '0');
+
   const {
-    getById,
     getByIdState: { isLoading: isLoadingHospital, data: hospital, error: getError },
-  } = useHospitalGetBy();
+  } = useHospitalGetBy(hospitalId);
 
   const {
     handleUpdate,
     updateState: { isLoading: isUpdating, error: updateError },
   } = useHospitalUpdate();
-
-  useEffect(() => {
-    if (id) {
-      getById(Number.parseInt(id));
-    }
-  }, [id, getById]);
 
   const onSubmit = async (data: HospitalCreateValues) => {
     if (!id) return;
