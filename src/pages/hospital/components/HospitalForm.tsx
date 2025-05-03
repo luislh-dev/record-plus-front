@@ -5,7 +5,6 @@ import { useApiErrors } from '@/hooks/useApiErrors';
 import type { ApiError } from '@/types/errros/ApiError';
 import { Button } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type HospitalCreateValues, hospitalCreateSchema } from '../models/hospitalCreateSchema';
@@ -24,7 +23,6 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
   const {
     control,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<HospitalCreateValues>({
     resolver: zodResolver(hospitalCreateSchema),
@@ -38,13 +36,6 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
       stateId: 0,
     },
   });
-
-  // Solo establecemos el valor inicial si no hay un defaultValue
-  useEffect(() => {
-    if (state.length > 0 && !defaultValues?.stateId) {
-      setValue('stateId', state[0].id);
-    }
-  }, [state, setValue, defaultValues]);
 
   const navigate = useNavigate();
 
