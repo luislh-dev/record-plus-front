@@ -23,7 +23,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
   const {
     control,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid, isDirty },
   } = useForm<HospitalCreateValues>({
     resolver: zodResolver(hospitalCreateSchema),
     mode: 'onChange',
@@ -33,7 +33,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
       phone: '',
       email: '',
       ruc: '',
-      stateId: 0,
+      stateId: 1,
     },
   });
 
@@ -116,7 +116,12 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
       </div>
 
       <div className='flex gap-2 mt-1'>
-        <Button type='submit' color='primary' isLoading={isSubmitting}>
+        <Button
+          type='submit'
+          color='primary'
+          isLoading={isSubmitting}
+          isDisabled={!isValid || !isDirty}
+        >
           Guardar
         </Button>
         <Button onPress={handleGoBack}>Cancelar</Button>
