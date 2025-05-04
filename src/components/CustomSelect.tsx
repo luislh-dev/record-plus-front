@@ -47,6 +47,7 @@ export const CustomSelect = <T extends FieldValues>({
               variant={variant}
               label={label}
               selectedKeys={selectedValue}
+              disallowEmptySelection
               onSelectionChange={(keys) => {
                 const selected = Array.from(keys)[0];
                 onChange(selected ? Number(selected) : null);
