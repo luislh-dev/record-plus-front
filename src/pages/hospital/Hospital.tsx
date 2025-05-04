@@ -1,31 +1,28 @@
-import { DropDownSort } from './components/DropDownSort';
-import { DropDownFilter } from './components/DropDrownFilter';
-import { Header } from './components/Header';
-import { HospitalList } from './components/HospitalList';
-import { SearchImput } from './components/Search';
+import { ModalConfirmDelete } from '@/components/ModalConfirmDelete';
+import { HospitalTable } from './components/HospitalTable';
+import { useHospitalDelete } from './hooks/UseHospitalDelete';
 
 const Hospital = () => {
+  const {
+    isOpen,
+    closeDeleteModal,
+    handleDelete,
+    openDeleteModal,
+    deleteState: { isLoading: isDeleting },
+  } = useHospitalDelete();
+
   return (
     <>
-      <div>
-        {/* Encabezado */}
-        <Header />
+      <HospitalTable onDelete={openDeleteModal} />
 
-        {/* Barra de búsqueda y filtros */}
-        <search className='px-2 pb-2 pt-4 flex gap-x-4'>
-          <form className='px-2 pb-2 pt-4' onSubmit={(e) => e.preventDefault()}>
-            <div className='flex gap-x-4'>
-              <SearchImput />
-              <div className='flex gap-x-4' aria-label='Filtros y ordenamiento'>
-                <DropDownFilter />
-                <DropDownSort />
-              </div>
-            </div>
-          </form>
-        </search>
-        {/* Tabla de hospitales */}
-        <HospitalList />
-      </div>
+      <ModalConfirmDelete
+        isOpen={isOpen}
+        onClose={closeDeleteModal}
+        onConfirm={handleDelete}
+        isLoading={isDeleting}
+        title='Eliminar Hospital'
+        message='¿Está seguro que desea eliminar este hospital?'
+      />
     </>
   );
 };

@@ -7,3 +7,9 @@ export interface TableColumn<T> {
   sortable?: boolean;
   render?: (record: T) => React.ReactNode;
 }
+
+export interface TableColumnBase {
+  name: string;
+  uid: string;
+  sortable?: boolean;
+}

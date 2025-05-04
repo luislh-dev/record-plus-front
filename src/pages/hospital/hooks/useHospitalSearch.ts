@@ -1,5 +1,5 @@
 import { useDebounce } from '@/hooks/useDebounce';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getHospitals } from '../service/hospitalService';
 import { useSearchStore } from '../stores/searchStore';
 
@@ -16,23 +16,26 @@ export function useHospitalSearch() {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   // Construir parámetros de búsqueda
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, isLoading, error, refetch, isPlaceholderData, isFetching } = useQuery({
     queryKey: ['hospitals', filters, debouncedSearchTerm, sortConfig],
     queryFn: async () => {
       const params = buildSearchParams();
       return getHospitals(params);
     },
+    placeholderData: keepPreviousData,
   });
 
   return {
     hospitals: data?.content ?? [],
     isLoading,
+    isFetching,
+    isPlaceholderData,
     error,
     pagination: {
-      totalPages: data?.totalPages ?? 0,
+      totalPages: data?.totalPages ?? 1,
       totalElements: data?.totalElements ?? 0,
       pageSize: data?.size ?? filters.size,
-      currentPage: data?.number ?? 0,
+      currentPage: data?.number ? data.number + 1 : 1,
     },
     refetch,
   };

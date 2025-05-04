@@ -54,7 +54,7 @@ export const useSearchStore = create<SearchState>((set, get) => ({
 
   setFilters: (filters) => set({ filters }),
 
-  setPage: (page) => set({ filters: { ...get().filters, page } }),
+  setPage: (page) => set({ filters: { ...get().filters, page: page - 1 } }),
 
   setPageSize: (size) => set({ filters: { ...get().filters, size } }),
 
