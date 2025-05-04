@@ -16,6 +16,7 @@ export const DocumentTypeSelect = ({ onChange, value, isDisabled }: DocumentType
       variant='bordered'
       labelPlacement='outside'
       isRequired
+      disallowEmptySelection
       className='w-full'
       selectedKeys={[value]}
       isLoading={isLoading}
