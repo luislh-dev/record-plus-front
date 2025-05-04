@@ -21,12 +21,12 @@ export const MainLayout = () => {
   };
 
   return (
-    <div className='min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 overflow-x-hidden'>
-      <nav className='h-16 bg-slate-900 text-white px-6 flex justify-between items-center'>
+    <div className='min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex flex-col'>
+      <nav className='h-16 bg-slate-900 text-white px-6 flex justify-between items-center fixed w-full z-40'>
         <div className='flex items-center gap-4'>
           <button
             onClick={toggleMenu}
-            className='md:hidden p-2 hover:bg-slate-800 rounded-lg'
+            className='lg:hidden p-2 hover:bg-slate-800 rounded-lg'
             type='button'
           >
             {isMenuOpen ? <Close size={24} /> : <Menu size={24} />}
@@ -45,11 +45,11 @@ export const MainLayout = () => {
         </div>
       </nav>
 
-      <div className='flex relative'>
+      <div className='flex flex-1 pt-16'>
         {/* Overlay para cerrar el menú al hacer clic fuera */}
         {isMenuOpen && (
           <button
-            className='fixed inset-0 bg-black bg-opacity-50 md:hidden z-20'
+            className='fixed inset-0 bg-black bg-opacity-50 lg:hidden z-20'
             onClick={() => setIsMenuOpen(false)}
             type='button'
           />
@@ -58,9 +58,9 @@ export const MainLayout = () => {
         {/* Menú lateral */}
         <aside
           className={`
-            fixed md:static w-[240px] bg-white shadow-[4px_0_24px_-6px_rgba(59,130,246,0.3)]
-            min-h-[calc(100vh-64px)] z-30 transition-transform duration-300
-            ${isMenuOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+            fixed lg:static w-[240px] bg-white shadow-[4px_0_24px_-6px_rgba(59,130,246,0.3)]
+            h-[calc(100vh-64px)] z-30 transition-transform duration-300
+            ${isMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
           `}
         >
           <div className='p-4 flex flex-col gap-3'>
@@ -84,7 +84,7 @@ export const MainLayout = () => {
           </div>
         </aside>
 
-        <main className='flex-1 p-4 md:p-8 w-full overflow-x-hidden'>
+        <main className='flex-1 p-4 overflow-y-auto h-[calc(100vh-64px)]'>
           <Outlet />
         </main>
       </div>
