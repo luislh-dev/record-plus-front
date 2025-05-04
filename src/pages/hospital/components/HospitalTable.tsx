@@ -60,7 +60,7 @@ export function HospitalTable({ onDelete }: HospitalTableProps) {
   const navigate = useNavigate();
 
   const { hospitals, isLoading, pagination, isPlaceholderData, isFetching } = useHospitalSearch();
-  const { setPage } = useSearchStore();
+  const { setPage, sortDescriptor, setSortDescriptor } = useSearchStore();
 
   type Hospital = (typeof hospitals)[0];
 
@@ -140,6 +140,8 @@ export function HospitalTable({ onDelete }: HospitalTableProps) {
       topContentPlacement='outside'
       bottomContent={bottomContent}
       bottomContentPlacement='outside'
+      sortDescriptor={sortDescriptor}
+      onSortChange={setSortDescriptor}
     >
       <TableHeader columns={columns}>
         {(column) => (

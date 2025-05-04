@@ -1,4 +1,5 @@
 import { type SortConfig, SortDirection } from '@/types/sorting';
+import type { SortDescriptor } from '@heroui/react';
 import { create } from 'zustand';
 import { SEARCH_PARAMS } from '../constants/searchParams';
 import type { HospitalRequestParams } from '../types/HospitalRequestParams';
@@ -10,8 +11,10 @@ interface SearchState {
   selectedState: number | null;
   searchFields: string[];
   filters: HospitalRequestParams;
+  sortDescriptor: SortDescriptor;
 
   // Acciones
+  setSortDescriptor: (descriptor: SortDescriptor) => void;
   setSearchTerm: (searchTerm: string) => void;
   setSortConfig: (config: SortConfig) => void;
   setSelectedState: (stateId: number | null) => void;
@@ -31,6 +34,10 @@ export const useSearchStore = create<SearchState>((set, get) => ({
   selectedState: null,
   searchFields: [SEARCH_PARAMS[0].id],
   filters: { page: 0, size: 20 },
+  sortDescriptor: {
+    column: 'updatedAt',
+    direction: 'descending',
+  },
 
   // Acciones
   setSearchTerm: (term) =>
@@ -39,7 +46,14 @@ export const useSearchStore = create<SearchState>((set, get) => ({
       filters: { ...get().filters, page: 0 },
     }),
 
-  setSortConfig: (config) => set({ sortConfig: config }),
+  setSortConfig: (config) =>
+    set({
+      sortConfig: config,
+      sortDescriptor: {
+        column: config.field,
+        direction: config.direction === SortDirection.ASC ? 'ascending' : 'descending',
+      },
+    }),
 
   setSelectedState: (stateId) =>
     set((state) => ({
@@ -57,6 +71,16 @@ export const useSearchStore = create<SearchState>((set, get) => ({
   setPage: (page) => set({ filters: { ...get().filters, page: page - 1 } }),
 
   setPageSize: (size) => set({ filters: { ...get().filters, size } }),
+
+  setSortDescriptor: (descriptor) => {
+    set({
+      sortDescriptor: descriptor,
+      sortConfig: {
+        field: descriptor.column as string,
+        direction: descriptor.direction === 'ascending' ? SortDirection.ASC : SortDirection.DESC,
+      },
+    });
+  },
 
   // Utilidades
   // Función para construir los parámetros de búsqueda
