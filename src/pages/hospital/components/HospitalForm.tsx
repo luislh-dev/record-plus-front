@@ -18,12 +18,13 @@ interface Props {
 
 export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors }: Props) => {
   const state = useStates().state;
-  const { backendErrors } = useApiErrors(apiErrors);
+  const { backendErrors, resetErrors } = useApiErrors(apiErrors);
 
   const {
     control,
     handleSubmit,
     formState: { errors, isValid, isDirty },
+    watch,
   } = useForm<HospitalCreateValues>({
     resolver: zodResolver(hospitalCreateSchema),
     mode: 'onChange',
@@ -42,6 +43,12 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
   const handleGoBack = () => {
     navigate(-1);
   };
+
+  watch((value) => {
+    if (value.name || value.address || value.phone || value.email || value.ruc || value.stateId) {
+      resetErrors();
+    }
+  });
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
