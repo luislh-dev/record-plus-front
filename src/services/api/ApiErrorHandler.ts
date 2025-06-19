@@ -9,8 +9,48 @@ export class ApiServiceError extends Error {
 }
 
 export const handleApiError = (error: AxiosError) => {
-  if (error.response?.data) {
-    throw new ApiServiceError(error.response.data as ApiError);
+  const baseError: ApiError = {
+    code: 'UNKNOWN_ERROR',
+    message: error.message || 'Error desconocido',
+    details: [],
+    timestamp: new Date().toISOString(),
+    status: error.response?.status || 500,
+  };
+
+  if (error.response?.status === 401) {
+    throw {
+      ...baseError,
+      message: 'No autorizado. Por favor, inicia sesión nuevamente.',
+    };
   }
-  throw error;
+
+  if (error.response?.status === 403) {
+    throw {
+      ...baseError,
+      message: 'Acceso denegado. No tienes permiso para realizar esta acción.',
+    };
+  }
+
+  if (error.response?.status === 404) {
+    throw {
+      ...baseError,
+      message: 'Recurso no encontrado.',
+    };
+  }
+
+  if (error.response?.status === 500) {
+    throw {
+      ...baseError,
+      message: 'Error interno del servidor. Por favor, inténtalo más tarde.',
+    };
+  }
+
+  if (error.response?.data) {
+    throw {
+      ...baseError,
+      ...(error.response.data as ApiError),
+    };
+  }
+
+  throw baseError;
 };

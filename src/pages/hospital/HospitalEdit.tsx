@@ -1,5 +1,6 @@
+import { ErrorPanel } from '@/components/errors/ErrorPanel';
 import { HeaderForm } from '@/components/form/HeaderForm';
-import { Button, Link, Spinner } from '@heroui/react';
+import { Spinner } from '@heroui/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { HospitalForm } from './components/HospitalForm';
 import { useHospitalGetBy } from './hooks/useHospitalGetBy';
@@ -38,17 +39,7 @@ const HospitalEdit = () => {
   }
 
   if (getError) {
-    return (
-      <div className='flex items-center justify-center h-full w-full p-4'>
-        <div className='text-center space-y-2'>
-          <h1 className='text-2xl font-bold text-red-600'>Error</h1>
-          <p className='text-gray-500'>{getError}</p>
-          <Button onPress={handleGoBack} as={Link}>
-            Volver
-          </Button>
-        </div>
-      </div>
-    );
+    return <ErrorPanel error={getError} redirectTo='/hospitals' />;
   }
 
   return (

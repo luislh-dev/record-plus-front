@@ -1,20 +1,23 @@
 import { useDebounce } from '@/hooks/useDebounce';
+import type { ApiError } from '@/types/errros/ApiError';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { getHospital, getHospitalsByName } from '../service/hospitalService';
+import type { HospitalCreateRequest } from '../types/HospitalCreateRequest';
 import type { HospitalFindByNameParams } from '../types/HospitalRequestParams';
 
 export function useHospitalGetBy(id: number) {
-  const query = useQuery({
+  const query = useQuery<HospitalCreateRequest, ApiError>({
     queryKey: ['hospitalGetById', id],
     queryFn: () => getHospital(id),
     enabled: true,
+    retry: 1,
   });
 
   return {
     getByIdState: {
       isLoading: query.isLoading,
-      error: query.error?.message,
+      error: query.error,
       data: query.data,
     },
   };
