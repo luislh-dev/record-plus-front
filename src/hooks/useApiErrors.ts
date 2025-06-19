@@ -1,14 +1,17 @@
-import type { ApiError } from '@/types/errros/ApiError';
+import type { ApiError, ApiErrorDetail } from '@/types/errros/ApiError';
 import { useCallback, useEffect, useState } from 'react';
 
 export const useApiErrors = (apiErrors: ApiError | null | undefined) => {
   const [backendErrors, setBackendErrors] = useState<Record<string, string>>({});
 
-  const parseErrors = useCallback((details: string[]) => {
+  const parseErrors = useCallback((details: ApiErrorDetail[]) => {
     const parsed: Record<string, string> = {};
     for (const detail of details) {
-      const [field, message] = detail.split(': ');
-      parsed[field.toLowerCase()] = message;
+      if (detail.field) {
+        parsed[detail.field] = detail.message;
+      } else {
+        parsed.general = detail.message;
+      }
     }
     return parsed;
   }, []);
