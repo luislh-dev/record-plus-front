@@ -1,37 +1,21 @@
-import { ApiServiceError } from '@/services/api/ApiErrorHandler';
-import type { MutationState } from '@/types/MutationState';
-import { useCallback, useState } from 'react';
+import type { ApiError } from '@/types/errros/ApiError';
+import { useMutation } from '@tanstack/react-query';
 import { toHospitalCreateRequest } from '../adapter/hospitalAdapter';
 import type { HospitalCreateValues } from '../models/hospitalCreateSchema';
 import { createHospital } from '../service/hospitalService';
 
-export function useHospitalCreate(onSuccess?: () => void) {
-  const [createState, setCreateState] = useState<MutationState>({
-    isLoading: false,
-    error: null,
+export function useHospitalCreate() {
+  const mutation = useMutation<void, ApiError, HospitalCreateValues>({
+    mutationFn: async (data) => {
+      await createHospital(toHospitalCreateRequest(data));
+    },
   });
 
-  const handleCreate = useCallback(
-    async (data: HospitalCreateValues) => {
-      setCreateState({ isLoading: true, error: null });
-
-      try {
-        await createHospital(toHospitalCreateRequest(data));
-        onSuccess?.();
-      } catch (error) {
-        if (error instanceof ApiServiceError) {
-          setCreateState({
-            isLoading: false,
-            error: error.error,
-          });
-        }
-        throw error;
-      } finally {
-        setCreateState((prev) => ({ ...prev, isCreating: false }));
-      }
+  return {
+    createState: {
+      isLoading: mutation.isPending,
+      error: mutation.error ?? null,
     },
-    [onSuccess],
-  );
-
-  return { createState, handleCreate };
+    handleCreate: mutation.mutateAsync,
+  };
 }
