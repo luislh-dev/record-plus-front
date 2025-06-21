@@ -1,10 +1,10 @@
 import { CustomInput } from '@/components/CustomInput';
 import { CustomSelect } from '@/components/CustomSelect';
 import { useStates } from '@/hooks/state/useState';
-import { useApiErrors } from '@/hooks/useApiErrors';
 import type { ApiError } from '@/types/errros/ApiError';
 import { Button } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { type HospitalCreateValues, hospitalCreateSchema } from '../models/hospitalCreateSchema';
@@ -18,13 +18,14 @@ interface Props {
 
 export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors }: Props) => {
   const state = useStates().state;
-  const { backendErrors, resetErrors } = useApiErrors(apiErrors);
 
   const {
     control,
     handleSubmit,
     formState: { errors, isValid, isDirty },
     watch,
+    setError,
+    clearErrors,
   } = useForm<HospitalCreateValues>({
     resolver: zodResolver(hospitalCreateSchema),
     mode: 'onChange',
@@ -40,13 +41,39 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
 
   const navigate = useNavigate();
 
-  const handleGoBack = () => {
-    navigate(-1);
-  };
+  const handleGoBack = () => navigate(-1);
+
+  useEffect(() => {
+    if (apiErrors?.details) {
+      for (const detail of apiErrors.details) {
+        if (detail.field) {
+          setError(detail.field as keyof HospitalCreateValues, {
+            type: 'backend',
+            message: detail.message,
+          });
+        } else {
+          setError('root.server', {
+            type: 'backend',
+            message: detail.message,
+          });
+        }
+      }
+    }
+  }, [apiErrors, setError]);
 
   watch((value) => {
-    if (value.name || value.address || value.phone || value.email || value.ruc || value.stateId) {
-      resetErrors();
+    const fields: (keyof HospitalCreateValues)[] = [
+      'name',
+      'address',
+      'phone',
+      'email',
+      'ruc',
+      'stateId',
+    ];
+    for (const field of fields) {
+      if (value[field]) {
+        clearErrors(field);
+      }
     }
   });
 
@@ -57,10 +84,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         control={control}
         label='Nombre del hospital'
         placeholder='Ingrese el nombre'
-        error={
-          errors.name ||
-          (backendErrors.name ? { message: backendErrors.name, type: 'backend' } : undefined)
-        }
+        error={errors.name}
         isRequired
       />
       <CustomInput
@@ -68,10 +92,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
         control={control}
         label='Dirección'
         placeholder='Ingrese la dirección'
-        error={
-          errors.address ||
-          (backendErrors.address ? { message: backendErrors.address, type: 'backend' } : undefined)
-        }
+        error={errors.address}
         isRequired
       />
       <div className='grid grid-cols-2 gap-x-4'>
@@ -80,10 +101,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
           control={control}
           label='Correo electrónico'
           placeholder='Ingrese el correo'
-          error={
-            errors.email ||
-            (backendErrors.email ? { message: backendErrors.email, type: 'backend' } : undefined)
-          }
+          error={errors.email}
           isRequired
         />
         <CustomInput
@@ -91,10 +109,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
           control={control}
           label='Teléfono'
           placeholder='Ingrese el teléfono'
-          error={
-            errors.phone ||
-            (backendErrors.phone ? { message: backendErrors.phone, type: 'backend' } : undefined)
-          }
+          error={errors.phone}
           isRequired
         />
         <CustomInput
@@ -102,10 +117,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
           control={control}
           label='RUC'
           placeholder='Ingrese el RUC'
-          error={
-            errors.ruc ||
-            (backendErrors.ruc ? { message: backendErrors.ruc, type: 'backend' } : undefined)
-          }
+          error={errors.ruc}
           isRequired
         />
         <CustomSelect
@@ -113,12 +125,7 @@ export const HospitalForm = ({ onSubmit, isSubmitting, defaultValues, apiErrors 
           control={control}
           label='Estado'
           options={state}
-          error={
-            errors.stateId ||
-            (backendErrors.stateId
-              ? { message: backendErrors.stateId, type: 'backend' }
-              : undefined)
-          }
+          error={errors.stateId}
         />
       </div>
 
