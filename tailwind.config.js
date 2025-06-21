@@ -7,7 +7,11 @@ export const content = [
   './src/**/*.{js,ts,jsx,tsx}',
 ];
 export const theme = {
-  extend: {},
+  extend: {
+    fontFamily: {
+      sans: ['RobotoVariable', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+    },
+  },
 };
 export const darkMode = 'class';
 export const plugins = [heroui()];
