@@ -24,7 +24,7 @@ const HospitalEdit = () => {
 
   const onSubmit = async (data: HospitalCreateValues) => {
     if (!id) return;
-    await handleUpdate(Number.parseInt(id), data);
+    await handleUpdate({ id: Number.parseInt(id), data });
     handleGoBack();
   };
 
