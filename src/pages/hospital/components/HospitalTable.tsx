@@ -94,7 +94,7 @@ export function HospitalTable({ onDelete }: HospitalTableProps) {
 
   const topContent = (
     <div className='flex flex-col gap-y-3'>
-      <Header />
+      <Header totalHospitals={pagination.totalElements} />
       <search className='flex'>
         <form onSubmit={(e) => e.preventDefault()}>
           <div className='flex gap-x-4'>
