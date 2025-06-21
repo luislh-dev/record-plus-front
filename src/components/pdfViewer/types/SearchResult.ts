@@ -1,4 +1,4 @@
-import { SearchMatch } from './SearchTypes';
+import type { SearchMatch } from './SearchTypes';
 
 export interface SearchResult {
   pageIndex: number;

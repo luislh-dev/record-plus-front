@@ -1,7 +1,3 @@
 export const normalizeText = (text: string): string => {
-  return text
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '') // Eliminar acentos
-    .toLowerCase()
-    .trim();
+  return text.normalize('NFD').replace(/\p{M}/gu, '').toLowerCase().trim();
 };

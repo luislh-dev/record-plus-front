@@ -1,9 +1,8 @@
-import { RefObject, useEffect, useState } from 'react';
+import { type RefObject, useEffect, useState } from 'react';
 
 interface UseCenterCanvasProps {
   containerRef: RefObject<HTMLDivElement>;
   canvasRefs: RefObject<(HTMLCanvasElement | null)[]>;
-  scale: number;
 }
 
 /**
@@ -14,7 +13,7 @@ interface UseCenterCanvasProps {
  * @param scale Escala actual del PDF
  * @returns Indica si el canvas debe centrarse
  */
-export const useCenterCanvas = ({ containerRef, canvasRefs, scale }: UseCenterCanvasProps) => {
+export const useCenterCanvas = ({ containerRef, canvasRefs }: UseCenterCanvasProps) => {
   const [shouldCenter, setShouldCenter] = useState(true);
 
   useEffect(() => {
@@ -32,7 +31,7 @@ export const useCenterCanvas = ({ containerRef, canvasRefs, scale }: UseCenterCa
 
     observer.observe(canvas);
     return () => observer.disconnect();
-  }, [scale, containerRef, canvasRefs]);
+  }, [containerRef, canvasRefs]);
 
   return shouldCenter;
 };

@@ -1,4 +1,4 @@
-import { PDFTextItem } from './PDFTextItem';
+import type { PDFTextItem } from './PDFTextItem';
 
 export interface RawMatch {
   pageIndex: number;

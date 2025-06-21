@@ -24,7 +24,7 @@ export const PDFCanvas = () => {
 
   const canvasRefs = useRef<(HTMLCanvasElement | null)[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
-  const shouldCenter = useCenterCanvas({ containerRef, canvasRefs, scale });
+  const shouldCenter = useCenterCanvas({ containerRef, canvasRefs });
 
   const isScrollBlocked = useScrollControl(isControlChange, setIsControlChange, lastControlChange);
 

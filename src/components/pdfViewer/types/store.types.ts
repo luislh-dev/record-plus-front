@@ -1,7 +1,7 @@
-import { PDFDocumentProxy } from 'pdfjs-dist';
-import { PageChangeSource } from './PageChangeSource';
-import { SearchResult } from './SearchResult';
-import { SearchMatch } from './SearchTypes';
+import type { PDFDocumentProxy } from 'pdfjs-dist';
+import type { PageChangeSource } from './PageChangeSource';
+import type { SearchResult } from './SearchResult';
+import type { SearchMatch } from './SearchTypes';
 
 export interface BasePDFSlice {
   pdfDoc: PDFDocumentProxy | null;
