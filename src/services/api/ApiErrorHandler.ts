@@ -8,10 +8,10 @@ export class ApiServiceError extends Error {
   }
 }
 
-export const handleApiError = (error: AxiosError) => {
+export const handleApiError = (error: AxiosError<ApiError>) => {
   const baseError: ApiError = {
     code: 'UNKNOWN_ERROR',
-    message: error.message || 'Error desconocido',
+    message: error.response?.data?.message || error.message || 'Error desconocido',
     details: [],
     timestamp: new Date().toISOString(),
     status: error.response?.status || 500,
@@ -20,7 +20,6 @@ export const handleApiError = (error: AxiosError) => {
   if (error.response?.status === 401) {
     throw {
       ...baseError,
-      message: 'No autorizado. Por favor, inicia sesión nuevamente.',
     };
   }
 

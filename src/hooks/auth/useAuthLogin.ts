@@ -1,5 +1,6 @@
 import { useAuth } from '@/contexts/useAuthContext';
 import { login } from '@/services/authService';
+import type { ApiError } from '@/types/errros/ApiError';
 import { decodeToken, removeStoredToken } from '@/utils/tokenUtils';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -7,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 export const useAuthLogin = () => {
   const { dispatch } = useAuth();
   const [isLoding, setIsLoading] = useState(false);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<ApiError | null>(null);
 
   const navigate = useNavigate();
 
@@ -30,7 +31,7 @@ export const useAuthLogin = () => {
       navigate('/dashboard');
       return { success: true };
     } catch (error) {
-      setError(error as Error);
+      setError(error as ApiError);
       return { success: false, error };
     } finally {
       setIsLoading(false);
