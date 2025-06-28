@@ -1,9 +1,19 @@
+import { ModalConfirmDelete } from '@/components/ModalConfirmDelete';
 import { DropDownFilter } from './components/DropDownFilter';
 import { Header } from './components/Header';
 import { Search } from './components/Search';
 import { UserList } from './components/UserList';
+import { useUserDelete } from './hooks/useUsersDeletes';
 
 const User = () => {
+  const {
+    handleDelete,
+    openDeleteModal,
+    closeDeleteModal,
+    deleteState: { isLoading: isDeleting },
+    isOpen,
+  } = useUserDelete();
+
   return (
     <>
       <section>
@@ -12,8 +22,17 @@ const User = () => {
           <Search />
           <DropDownFilter />
         </nav>
-        <UserList />
+        <UserList onDelete={openDeleteModal} />
       </section>
+
+      <ModalConfirmDelete
+        isOpen={isOpen}
+        onClose={closeDeleteModal}
+        onConfirm={handleDelete}
+        isLoading={isDeleting}
+        title='Eliminar Usuario'
+        message='¿Estás seguro de que deseas eliminar este usuario?'
+      />
     </>
   );
 };

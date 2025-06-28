@@ -1,6 +1,5 @@
 import { ActionsCell } from '@/components/ActionsCell';
 import { GenericTable } from '@/components/GenericTable';
-import { ModalConfirmDelete } from '@/components/ModalConfirmDelete';
 import { Align } from '@/constants/align';
 import { State } from '@/constants/state';
 import { statusColorMap } from '@/constants/statusColorMap';
@@ -8,21 +7,17 @@ import { useHandleSortGeneric } from '@/hooks/useHandleSort';
 import type { TableColumn } from '@/types/TableColumn';
 import { Chip } from '@heroui/react';
 import { useUserSearch } from '../hooks/useUserSearch';
-import { useUserDelete } from '../hooks/useUsersDeletes';
 import { useUserSearchStore } from '../stores/searchStore';
 import type { UserListDTO } from '../types/UserListDTO';
 
-export const UserList = () => {
+interface UserListProps {
+  onDelete: (id: string) => void;
+}
+
+export const UserList = ({ onDelete }: UserListProps) => {
   const { setPage, sortConfig, setSortConfig } = useUserSearchStore();
   const { getNewSortConfig } = useHandleSortGeneric(sortConfig);
   const { users, isLoading, error, pagination } = useUserSearch();
-  const {
-    handleDelete,
-    openDeleteModal,
-    closeDeleteModal,
-    deleteState: { isLoading: isDeleting },
-    isOpen,
-  } = useUserDelete();
 
   const columns: TableColumn<UserListDTO>[] = [
     {
@@ -73,7 +68,7 @@ export const UserList = () => {
           onEdit={(): void => {
             throw new Error('Function not implemented.');
           }}
-          onDelete={() => openDeleteModal(user.id)}
+          onDelete={() => onDelete(user.id)}
           inactiveStates={[State.INACTIVO, State.ELIMINADO]}
         />
       ),
@@ -94,14 +89,6 @@ export const UserList = () => {
         onPageChange={setPage}
         onSort={(field) => setSortConfig(getNewSortConfig(field as keyof UserListDTO))}
         sortConfig={sortConfig}
-      />
-      <ModalConfirmDelete
-        isOpen={isOpen}
-        onClose={closeDeleteModal}
-        onConfirm={handleDelete}
-        isLoading={isDeleting}
-        title='Eliminar Usuario'
-        message='¿Estás seguro de que deseas eliminar este usuario?'
       />
     </>
   );
