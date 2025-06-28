@@ -1,3 +1,4 @@
+import { State } from '@/constants/state';
 import { DeleteIcon } from '@/icons/DeleteIcon';
 import { EditIcon } from '@/icons/EditIcon';
 import { EyeIcon } from '@/icons/EyeIcon';
@@ -18,7 +19,10 @@ export function ActionsCell({
   inactiveStates,
   onDetail,
 }: ActionsCellProps) {
-  const isInactive = state && inactiveStates?.includes(state);
+  const states = inactiveStates;
+  const isInactive = states
+    ? states.includes(state || '')
+    : [State.ELIMINADO, State.INACTIVO].includes(state || '');
 
   return (
     <div className='relative flex items-center justify-center w-full gap-2'>
