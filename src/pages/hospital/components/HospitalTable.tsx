@@ -52,6 +52,23 @@ const columns: TableColumnBase[] = [
   },
 ];
 
+const topContent = (totalElements: number) => (
+  <div className='flex flex-col gap-y-3'>
+    <Header totalHospitals={totalElements} />
+    <search className='flex'>
+      <form onSubmit={(e) => e.preventDefault()}>
+        <div className='flex gap-x-4'>
+          <SearchImput />
+          <div className='flex gap-x-4' aria-label='Filtros y ordenamiento'>
+            <DropDownFilter />
+            <DropDownSort />
+          </div>
+        </div>
+      </form>
+    </search>
+  </div>
+);
+
 type HospitalTableProps = {
   onDelete: (id: number) => void;
 };
@@ -92,23 +109,6 @@ export function HospitalTable({ onDelete }: HospitalTableProps) {
     }
   };
 
-  const topContent = (
-    <div className='flex flex-col gap-y-3'>
-      <Header totalHospitals={pagination.totalElements} />
-      <search className='flex'>
-        <form onSubmit={(e) => e.preventDefault()}>
-          <div className='flex gap-x-4'>
-            <SearchImput />
-            <div className='flex gap-x-4' aria-label='Filtros y ordenamiento'>
-              <DropDownFilter />
-              <DropDownSort />
-            </div>
-          </div>
-        </form>
-      </search>
-    </div>
-  );
-
   const bottomContent = (
     <div>
       {hospitals.length > 0 && (
@@ -136,7 +136,7 @@ export function HospitalTable({ onDelete }: HospitalTableProps) {
       classNames={{
         wrapper: 'max-h-[calc(100vh-16rem)]',
       }}
-      topContent={topContent}
+      topContent={topContent(pagination.totalElements)}
       topContentPlacement='outside'
       bottomContent={bottomContent}
       bottomContentPlacement='outside'
