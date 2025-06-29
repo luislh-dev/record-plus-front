@@ -1,9 +1,9 @@
 import { Search } from '@/icons/Search';
 import { Input } from '@heroui/react';
-import { useRecordDetailSearch } from '../hooks/useRecordDetailSearch';
+import { useSearchStoreRecordDetail } from '../store/useSearchStoreRecordDetail';
 
 export const SearchRecordDetail = () => {
-  const { setSearchTerm } = useRecordDetailSearch();
+  const { setSearchTerm } = useSearchStoreRecordDetail();
 
   return (
     <Input

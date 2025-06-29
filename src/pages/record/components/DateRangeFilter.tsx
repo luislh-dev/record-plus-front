@@ -2,10 +2,10 @@ import { Close } from '@/icons/Close';
 import { DateRangePicker, type RangeValue } from '@heroui/react';
 import { type DateValue, toCalendarDate } from '@internationalized/date';
 import { useState } from 'react';
-import { useRecordDetailSearch } from '../hooks/useRecordDetailSearch';
+import { useSearchStoreRecordDetail } from '../store/useSearchStoreRecordDetail';
 
 export const DateRangeFilter = () => {
-  const { setRangeDate } = useRecordDetailSearch();
+  const { setRangeDate } = useSearchStoreRecordDetail();
   const [value, setValue] = useState<RangeValue<DateValue> | null>(null);
 
   const handleDateChange = (newValue: RangeValue<DateValue> | null) => {
