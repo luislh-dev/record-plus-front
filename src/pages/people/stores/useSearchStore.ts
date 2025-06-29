@@ -2,20 +2,19 @@ import type {
   PeopleRequestParams,
   SearchFieldKeys,
 } from '@/pages/people/types/PeopleRequestParams';
-import { type SortConfigGeneric, SortDirection } from '@/types/sorting';
+import { type SortConfig, SortDirection } from '@/types/sorting';
 import { create } from 'zustand';
-import type { SortablePeopleFields } from '../types/MainPeopleListDto';
 
 interface SearchState {
   searchTerm: string;
   tempSearchTerm: string;
-  sortConfig: SortConfigGeneric<SortablePeopleFields>;
+  sortConfig: SortConfig;
   selectedSearchField: SearchFieldKeys;
   filters: PeopleRequestParams;
 
   setSearchTerm: (searchTerm: string) => void;
   setTempSearchTerm: (searchTerm: string) => void;
-  setSortConfig: (config: SortConfigGeneric<SortablePeopleFields>) => void;
+  setSortConfig: (config: SortConfig) => void;
   setSelectedSearchField: (field: SearchFieldKeys) => void;
   setFilters: (filters: PeopleRequestParams) => void;
   setPage: (page: number) => void;

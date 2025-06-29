@@ -1,5 +1,5 @@
 import { useDebounce } from '@/hooks/useDebounce';
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getPersonList } from '../services/peopleService';
 import { useSearchPeopleStore } from '../stores/useSearchStore';
 
@@ -13,12 +13,13 @@ export function usePersonSearch() {
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   // Construir parámetros de búsqueda
-  const { data, isLoading, error, refetch } = useQuery({
+  const { data, isLoading, error, refetch, isFetching, isPlaceholderData } = useQuery({
     queryKey: ['people', filters, debouncedSearchTerm, sortConfig],
     queryFn: async () => {
       const params = buildSearchParams();
       return getPersonList(params);
     },
+    placeholderData: keepPreviousData,
   });
 
   return {
@@ -32,5 +33,7 @@ export function usePersonSearch() {
       currentPage: data?.number ?? 0,
     },
     refetch,
+    isFetching,
+    isPlaceholderData,
   };
 }
