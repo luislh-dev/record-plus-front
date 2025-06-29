@@ -3,9 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "lint-staged": {
-    "*.{ts,tsx,js,jsx}": ["eslint --fix"]
-  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
@@ -58,10 +55,8 @@
     "husky": "^9.1.7",
     "jsdom": "^25.0.1",
     "knip": "^5.61.3",
-    "lint-staged": "^15.5.2",
     "prettier": "^3.6.2",
     "typescript": "^5.8.3",
-    "typescript-eslint": "8.12.2",
     "vite": "^5.4.19",
     "vite-plugin-dts": "^4.5.4",
     "vitest": "^2.1.9"

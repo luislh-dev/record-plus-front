@@ -2,7 +2,7 @@ import type { DocumentTypeName } from '@/common/enum/DocumentType';
 import { useDocumentType } from '@/hooks/documenttype/useDocumentType';
 import { Select, SelectItem } from '@heroui/react';
 
-export interface DocumentTypeSelectProps {
+interface DocumentTypeSelectProps {
   onChange: (documentType: DocumentTypeName) => void;
   value: DocumentTypeName;
   isDisabled?: boolean;

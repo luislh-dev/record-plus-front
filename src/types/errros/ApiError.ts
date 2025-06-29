@@ -6,7 +6,7 @@ export interface ApiError {
   status?: number;
 }
 
-export interface ApiErrorDetail {
+interface ApiErrorDetail {
   field: string;
   message: string;
 }

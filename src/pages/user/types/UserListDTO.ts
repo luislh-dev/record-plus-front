@@ -7,5 +7,3 @@ export interface UserListDTO {
   state: string;
   roles: string[];
 }
-
-export type SortableUserFields = keyof UserListDTO;

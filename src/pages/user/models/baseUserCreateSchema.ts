@@ -36,5 +36,3 @@ export const baseUserCreateSchema = z.object({
     phone: z.string(),
   }),
 });
-
-export type BaseUserCreateValues = z.infer<typeof baseUserCreateSchema>;

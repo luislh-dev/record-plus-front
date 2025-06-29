@@ -10,7 +10,7 @@ import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useCreateRecordDetail } from '../hooks/useCreateRecordDetail';
 
-export interface FileWithType {
+interface FileWithType {
   file: File;
   typeId: number;
 }

@@ -192,32 +192,6 @@ export const getPeruDateTimeParts = (): DateTimeParts => {
 };
 
 /**
- * Formatea la fecha actual en formato corto o largo
- * @param format 'short' o 'long'
- * @returns string Fecha formateada
- * @example
- * console.log(formatPeruDateTime('short')); // '20/03/2024, 3:30 PM'
- * console.log(formatPeruDateTime('long')); // 'miércoles, 20 de marzo de 2024, 03:30:00 PM'
- */
-export const formatPeruDateTime = (format: 'short' | 'long' = 'short'): string => {
-  const options: Intl.DateTimeFormatOptions = {
-    timeZone: CONSTANTS.TIMEZONE,
-    hour12: true,
-    ...(format === 'long' && {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    }),
-  };
-
-  return createDateFormatter(options).format(new Date());
-};
-
-/**
  * Calcula la edad en años a partir de una fecha de nacimiento
  * @param birthDate Fecha de nacimiento
  * @returns number Edad en años

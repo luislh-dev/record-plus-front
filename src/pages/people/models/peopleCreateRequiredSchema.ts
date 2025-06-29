@@ -34,12 +34,5 @@ export const peopleCreateRequiredSchema = z.object({
     .regex(/^[0-9]{9}$/, 'Teléfono debe tener 9 dígitos numéricos'),
 });
 
-export const peopleCreateFullSchema = peopleCreateRequiredSchema.extend({
-  bloodType: z.string().optional(),
-  address: z.string().optional(),
-  nationality: z.string().optional(),
-});
-
 // Este tipo es para inferir el tipo de los valores
 export type PeopleCreateRequiredValues = z.infer<typeof peopleCreateRequiredSchema>;
-export type PeopleCreateFullValues = z.infer<typeof peopleCreateFullSchema>;
