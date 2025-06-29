@@ -32,7 +32,7 @@ export function useUserSearch() {
       totalPages: data?.totalPages ?? 0,
       totalElements: data?.totalElements ?? 0,
       pageSize: data?.size ?? filters.size,
-      currentPage: data?.number ?? 0,
+      currentPage: data?.number ? data.number + 1 : 1,
     },
     refetch,
   };

@@ -79,7 +79,7 @@ export const useUserSearchStore = create<SearchState>((set, get) => ({
 
   setFilters: (filters) => set({ filters }),
 
-  setPage: (page) => set({ filters: { ...get().filters, page } }),
+  setPage: (page) => set({ filters: { ...get().filters, page: page - 1 } }),
 
   buildSearchParams: () => {
     const { searchTerm, selectedState, sortConfig, selectedSearchField, filters } = get();

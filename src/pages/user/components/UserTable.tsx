@@ -14,6 +14,7 @@ import {
   TableRow,
 } from '@heroui/react';
 import { useUserSearch } from '../hooks/useUserSearch';
+import { useUserSearchStore } from '../stores/searchStore';
 import { DropDownFilter } from './DropDownFilter';
 import { Header } from './Header';
 
@@ -74,6 +75,7 @@ const topContent = (totalElements: number) => (
 
 export function UserTable({ onDelete }: HospitalTableProps) {
   const { users, pagination, isLoading, isPlaceholderData, isFetching } = useUserSearch();
+  const { setPage } = useUserSearchStore();
 
   type User = (typeof users)[0];
 
@@ -104,6 +106,7 @@ export function UserTable({ onDelete }: HospitalTableProps) {
           showShadow
           total={pagination.totalPages}
           page={pagination.currentPage}
+          onChange={setPage}
         />
       )}
     </>
