@@ -1,5 +1,6 @@
 import { CustomInput } from '@/components/CustomInput';
 import { CustomSelect } from '@/components/CustomSelect';
+import { DatePickerForm } from '@/components/DatePickerForm';
 import { Typography } from '@/components/Typography';
 import { CE_ID, DNI_ID, DNI_NAME } from '@/constants/documentType';
 import { useGender } from '@/hooks/gender/useGender';
@@ -8,7 +9,6 @@ import { getPeruDateTime } from '@/utils/peruDateTime';
 import {
   Alert,
   Button,
-  DatePicker,
   Modal,
   ModalBody,
   ModalContent,
@@ -16,9 +16,8 @@ import {
   ModalHeader,
 } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type DateValue, parseDate } from '@internationalized/date';
 import { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useCreateRequeridPerson } from '../hooks/useCreatePerson';
 import {
   type PeopleCreateRequiredValues,
@@ -139,48 +138,15 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
                 description='Utiliza los datos recuperados para completar el formulario y registrar a la persona en el sistema de manera precisa.'
               />
               <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                <Controller
-                  control={control}
+                <DatePickerForm
                   name='birthdate'
-                  render={({ field: { onChange, value } }) => {
-                    const today = getPeruDateTime();
-                    const formattedDate = value instanceof Date ? value : today;
-
-                    // Asegurarse que la fecha esté en formato YYYY-MM-DD
-                    const isoDate = formattedDate.toISOString().split('T')[0];
-                    const selectedDate = parseDate(isoDate);
-
-                    return (
-                      <div className='flex flex-col gap-1'>
-                        <DatePicker
-                          showMonthAndYearPickers
-                          isInvalid={!!errors.birthdate}
-                          label='Fecha de nacimiento'
-                          variant='bordered'
-                          labelPlacement='outside'
-                          isRequired
-                          value={selectedDate}
-                          onChange={(date: DateValue | null) => {
-                            if (date) {
-                              const dateString = date.toString();
-                              const [year, month, day] = dateString.split('-');
-                              const newDate = new Date(
-                                Number.parseInt(year),
-                                Number.parseInt(month) - 1,
-                                Number.parseInt(day),
-                              );
-                              onChange(newDate);
-                            }
-                          }}
-                        />
-                        <Typography variant='error' className='h-4 pl-1'>
-                          {errors.birthdate?.message}
-                        </Typography>
-                      </div>
-                    );
-                  }}
+                  control={control}
+                  label='Fecha de nacimiento'
+                  isRequired
+                  variant='bordered'
+                  error={errors.birthdate}
+                  granularity='day'
                 />
-
                 <CustomSelect
                   variant='bordered'
                   control={control}
