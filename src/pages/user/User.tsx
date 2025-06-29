@@ -1,8 +1,5 @@
 import { ModalConfirmDelete } from '@/components/ModalConfirmDelete';
-import { DropDownFilter } from './components/DropDownFilter';
-import { Header } from './components/Header';
-import { Search } from './components/Search';
-import { UserList } from './components/UserList';
+import { UserTable } from './components/UserTable';
 import { useUserDelete } from './hooks/useUsersDeletes';
 
 const User = () => {
@@ -16,14 +13,7 @@ const User = () => {
 
   return (
     <>
-      <section>
-        <Header />
-        <nav className='flex gap-x-4 px-2 pb-2 pt-4'>
-          <Search />
-          <DropDownFilter />
-        </nav>
-        <UserList onDelete={openDeleteModal} />
-      </section>
+      <UserTable onDelete={openDeleteModal} />
 
       <ModalConfirmDelete
         isOpen={isOpen}
