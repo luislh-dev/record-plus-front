@@ -1,5 +1,6 @@
 import { ActionsCell } from '@/components/ActionsCell';
 import { statusColorMap } from '@/constants/statusColorMap';
+import { sortDescriptorMapper, sortMapper } from '@/mapper/SortMapper';
 import { SearchImput } from '@/pages/hospital/components/Search';
 import type { TableColumnBase } from '@/types/TableColumn';
 import {
@@ -75,7 +76,7 @@ const topContent = (totalElements: number) => (
 
 export function UserTable({ onDelete }: HospitalTableProps) {
   const { users, pagination, isLoading, isPlaceholderData, isFetching } = useUserSearch();
-  const { setPage } = useUserSearchStore();
+  const { setPage, sortConfig, setSortConfig } = useUserSearchStore();
 
   type User = (typeof users)[0];
 
@@ -124,10 +125,16 @@ export function UserTable({ onDelete }: HospitalTableProps) {
       topContent={topContent(pagination.totalElements)}
       bottomContentPlacement='outside'
       bottomContent={bottomContent}
+      sortDescriptor={sortDescriptorMapper(sortConfig)}
+      onSortChange={(e) => setSortConfig(sortMapper(e))}
     >
       <TableHeader columns={columns}>
         {(column) => (
-          <TableColumn key={column.uid} align={column.uid === 'actions' ? 'center' : 'start'}>
+          <TableColumn
+            key={column.uid}
+            allowsSorting={column.sortable}
+            align={column.uid === 'actions' ? 'center' : 'start'}
+          >
             {column.name}
           </TableColumn>
         )}

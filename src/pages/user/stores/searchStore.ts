@@ -1,13 +1,12 @@
-import { type SortConfigGeneric, SortDirection } from '@/types/sorting';
+import { type SortConfig, SortDirection } from '@/types/sorting';
 import { create } from 'zustand';
 import { SEARCH_PARAMS } from '../constants/searchParams';
-import type { SortableUserFields } from '../types/UserListDTO';
 import type { SearchFieldKeys, UserRequestParams } from '../types/UserRequestParams';
 
 interface SearchState {
   // Estado
   searchTerm: string;
-  sortConfig: SortConfigGeneric<SortableUserFields>;
+  sortConfig: SortConfig;
   selectedState: number | null;
   selectedRole: number | null;
   selectedSearchField: SearchFieldKeys;
@@ -15,7 +14,7 @@ interface SearchState {
 
   // Acciones
   setSearchTerm: (searchTerm: string) => void;
-  setSortConfig: (config: SortConfigGeneric<SortableUserFields>) => void;
+  setSortConfig: (config: SortConfig) => void;
   setSelectedState: (stateId: number | null) => void;
   setSelectedRole: (roleId: number | null) => void;
   setSelectedSearchField: (field: SearchFieldKeys) => void;

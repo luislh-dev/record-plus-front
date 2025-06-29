@@ -5,7 +5,7 @@ export enum SortDirection {
 }
 
 export interface SortConfig {
-  field: string;
+  field: string | number;
   direction: SortDirection;
 }
 
