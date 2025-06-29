@@ -1,24 +1,23 @@
 import { useDebounce } from '@/hooks/useDebounce';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 import { getRecordDetailList } from '../service/recordService';
 import { useSearchStoreRecordDetail } from '../store/useSearchStoreRecordDetail';
 
-export function useRecordDetailSearch() {
+export function useRecordDetailSearch(personId: string) {
   const { buildSearchParams, setRangeDate, searchTerm, setSearchTerm, rangeDate } =
     useSearchStoreRecordDetail();
-  const [personId, setPersonId] = useState<string | null>(null);
+
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const fetchRecordDetails = async ({ pageParam = 0 }) => {
-    if (!personId) throw new Error('ID no proporcionado');
-    return getRecordDetailList(personId, {
+    const params = {
       ...buildSearchParams(),
       page: pageParam,
-    });
+    };
+    return getRecordDetailList(personId, params);
   };
 
-  const { data, isLoading, isError, fetchNextPage, hasNextPage } = useInfiniteQuery({
+  const { data, isLoading, isError, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
     queryKey: ['recordDetail', personId, debouncedSearchTerm, rangeDate],
     queryFn: fetchRecordDetails,
     initialPageParam: 0,
@@ -27,8 +26,8 @@ export function useRecordDetailSearch() {
   });
 
   const recordDetails = data?.pages.flatMap((page) => page.content) ?? [];
-  const totalElements = data?.pages[0].totalElements ?? 0;
-  const currentPage = data?.pages[0].number ?? 0;
+  const totalElements = data?.pages[0]?.totalElements ?? 0;
+  const currentPage = data?.pages[0]?.number ?? 0;
 
   return {
     recordDetails,
@@ -38,9 +37,9 @@ export function useRecordDetailSearch() {
     currentPage,
     fetchNextPage,
     hasNextPage,
-    setPersonId,
     setRangeDate,
     searchTerm,
     setSearchTerm,
+    isFetching,
   };
 }
