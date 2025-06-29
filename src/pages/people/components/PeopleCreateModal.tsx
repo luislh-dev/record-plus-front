@@ -153,6 +153,7 @@ export const PeopleCreateModal = ({ isOpen, onClose, onConfirm, personData }: Pr
                     return (
                       <div className='flex flex-col gap-1'>
                         <DatePicker
+                          showMonthAndYearPickers
                           isInvalid={!!errors.birthdate}
                           label='Fecha de nacimiento'
                           variant='bordered'
