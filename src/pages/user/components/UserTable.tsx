@@ -1,7 +1,6 @@
 import { ActionsCell } from '@/components/ActionsCell';
 import { statusColorMap } from '@/constants/statusColorMap';
 import { sortDescriptorMapper, sortMapper } from '@/mapper/SortMapper';
-import { SearchImput } from '@/pages/hospital/components/Search';
 import type { TableColumnBase } from '@/types/TableColumn';
 import {
   Chip,
@@ -18,6 +17,7 @@ import { useUserSearch } from '../hooks/useUserSearch';
 import { useUserSearchStore } from '../stores/searchStore';
 import { DropDownFilter } from './DropDownFilter';
 import { Header } from './Header';
+import { Search } from './Search';
 
 const columns: TableColumnBase[] = [
   {
@@ -64,7 +64,7 @@ const topContent = (totalElements: number) => (
     <search className='flex'>
       <form onSubmit={(e) => e.preventDefault()}>
         <div className='flex gap-x-4'>
-          <SearchImput />
+          <Search />
           <div className='flex gap-x-4' aria-label='Filtros y ordenamiento'>
             <DropDownFilter />
           </div>
