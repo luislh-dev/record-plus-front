@@ -21,7 +21,7 @@
     "@heroui/react": "2.7.11",
     "@heroui/use-infinite-scroll": "2.2.9",
     "@hookform/resolvers": "^3.10.0",
-    "@internationalized/date": "3.7.0",
+    "@internationalized/date": "3.8.2",
     "@tanstack/query-sync-storage-persister": "5.62.15",
     "@tanstack/react-query": "5.62.15",
     "@tanstack/react-query-persist-client": "5.62.15",
