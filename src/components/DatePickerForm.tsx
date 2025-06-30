@@ -1,6 +1,6 @@
 import type { InputVariant } from '@/types/InputVariant';
 import { DatePicker } from '@heroui/react';
-import { type DateValue, getLocalTimeZone, now, today } from '@internationalized/date';
+import { type DateValue, getLocalTimeZone } from '@internationalized/date';
 import {
   type Control,
   Controller,
@@ -31,7 +31,7 @@ export const DatePickerForm = <T extends FieldValues>({
   <Controller
     name={name}
     control={control}
-    render={({ field: { onChange } }) => {
+    render={({ field: { onChange, value } }) => {
       const handleChange = (date: DateValue | null) => {
         if (granularity === 'day') {
           // Para fechas de solo día, convertir a formato YYYY-MM-DD
@@ -41,21 +41,17 @@ export const DatePickerForm = <T extends FieldValues>({
         }
       };
 
-      // Usar today() para fechas de solo día, now() para fechas con tiempo
-      const defaultValue =
-        granularity === 'day' ? today(getLocalTimeZone()) : now(getLocalTimeZone());
-
       return (
         <div className='flex flex-col gap-1'>
           <DatePicker
-            hideTimeZone
-            hourCycle={12}
+            showMonthAndYearPickers
             label={label}
-            defaultValue={defaultValue}
+            defaultValue={value}
             labelPlacement='outside'
             variant={variant}
             isRequired={isRequired}
             onChange={handleChange}
+            granularity={granularity}
           />
           <p className='h-4 text-xs text-danger pl-1'>{error?.message}</p>
         </div>

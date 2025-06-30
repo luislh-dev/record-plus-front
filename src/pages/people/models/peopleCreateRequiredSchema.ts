@@ -21,7 +21,6 @@ export const peopleCreateRequiredSchema = z.object({
     .pipe(
       z
         .date({
-          required_error: 'Fecha de nacimiento es requerida',
           invalid_type_error: 'Fecha de nacimiento debe ser una fecha válida',
         })
         .refine((date) => date.getTime() < new Date().getTime(), {

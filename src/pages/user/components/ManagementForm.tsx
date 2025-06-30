@@ -109,12 +109,15 @@ export const ManagementForm = () => {
 
   return (
     <>
-      <PeopleCreateModal
-        isOpen={isOpen}
-        onClose={onClose}
-        onConfirm={handleConfirmPerson}
-        personData={personData || ({} as MinimalPeopleResponseDto)}
-      />
+      {personData && (
+        <PeopleCreateModal
+          isOpen={isOpen}
+          onClose={onClose}
+          onConfirm={handleConfirmPerson}
+          personData={personData}
+        />
+      )}
+
       <section>
         <Card className='flex flex-col' shadow='md'>
           <CardHeader>
