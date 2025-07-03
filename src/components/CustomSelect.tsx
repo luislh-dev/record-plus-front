@@ -1,12 +1,6 @@
 import type { InputVariant } from '@/types/InputVariant';
 import { Select, SelectItem } from '@heroui/react';
-import {
-  type Control,
-  Controller,
-  type FieldError,
-  type FieldValues,
-  type Path,
-} from 'react-hook-form';
+import { type Control, Controller, type FieldError, type FieldValues, type Path } from 'react-hook-form';
 
 interface Option {
   id: number;
@@ -22,6 +16,7 @@ interface Props<T extends FieldValues> {
   isRequired?: boolean;
   placeholder?: string;
   variant?: InputVariant;
+  useFirstAsDefault?: boolean;
 }
 
 export const CustomSelect = <T extends FieldValues>({
@@ -33,14 +28,19 @@ export const CustomSelect = <T extends FieldValues>({
   isRequired = true,
   placeholder,
   variant = 'bordered',
+  useFirstAsDefault = true,
 }: Props<T>) => (
   <>
     <Controller
       name={name}
       control={control}
       render={({ field: { onChange, value } }) => {
-        // si value es null, usa el primer elemento del array, si no, usa el valor de value
-        const selectedValue = value ? [value.toString()] : [options[0].id.toString()];
+        const selectedValue = value
+          ? [value.toString()]
+          : useFirstAsDefault && options.length > 0
+            ? [options[0].id.toString()]
+            : [];
+
         return (
           <div className='flex flex-col gap-1 w-full'>
             <Select
