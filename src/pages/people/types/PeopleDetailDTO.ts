@@ -1,6 +1,3 @@
-import type { DocumentType } from '@/types/DocumentType';
-import type { Gender } from '@/types/Gender';
-
 export interface PeopleDetailDTO {
   id: string;
   name: string;
@@ -9,6 +6,6 @@ export interface PeopleDetailDTO {
   documentNumber: string;
   birthdate: string;
   nationality: string | null;
-  sexType: Gender;
-  typeDocument: DocumentType;
+  sexType: string;
+  documentType: string;
 }

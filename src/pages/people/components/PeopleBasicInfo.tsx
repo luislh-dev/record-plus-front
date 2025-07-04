@@ -37,7 +37,7 @@ export const PeopleBasicInfo = ({ personId }: Props) => {
               {/* Tipo de documento */}
               <div className='flex items-center space-x-3'>
                 <div>
-                  <div className='text-sm text-gray-500'>{data?.typeDocument?.name}</div>
+                  <div className='text-sm text-gray-500'>{data?.documentType}</div>
                   <div className='font-medium'>{data?.documentNumber}</div>
                 </div>
               </div>
@@ -64,7 +64,7 @@ export const PeopleBasicInfo = ({ personId }: Props) => {
               <div className='flex items-center space-x-3'>
                 <div>
                   <div className='text-sm text-gray-500'>Género</div>
-                  <div className='font-medium'>{data?.sexType.name}</div>
+                  <div className='font-medium'>{data?.sexType}</div>
                 </div>
               </div>
             </div>
