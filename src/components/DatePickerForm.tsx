@@ -1,13 +1,7 @@
 import type { InputVariant } from '@/types/InputVariant';
 import { DatePicker } from '@heroui/react';
-import { type DateValue, getLocalTimeZone } from '@internationalized/date';
-import {
-  type Control,
-  Controller,
-  type FieldError,
-  type FieldValues,
-  type Path,
-} from 'react-hook-form';
+import { type DateValue, getLocalTimeZone, parseDate, parseDateTime } from '@internationalized/date';
+import { type Control, Controller, type FieldError, type FieldValues, type Path } from 'react-hook-form';
 
 interface Props<T extends FieldValues> {
   name: Path<T>;
@@ -33,12 +27,41 @@ export const DatePickerForm = <T extends FieldValues>({
     control={control}
     render={({ field: { onChange, value } }) => {
       const handleChange = (date: DateValue | null) => {
-        if (granularity === 'day') {
-          // Para fechas de solo día, convertir a formato YYYY-MM-DD
-          onChange(date?.toString() ?? null);
-        } else {
-          onChange(date?.toDate(getLocalTimeZone()).toISOString().slice(0, 19) ?? null);
+        if (!date) {
+          onChange(null);
+          return;
         }
+
+        // Convertir DateValue a Date
+        const convertedDate = date.toDate(getLocalTimeZone());
+        onChange(convertedDate);
+      };
+
+      // Convertir Date a DateValue para el DatePicker
+      const getDateValue = (dateValue: Date | string | null): DateValue | null => {
+        if (!dateValue) return null;
+
+        let date: Date;
+
+        // Si es string, convertir a Date
+        if (typeof dateValue === 'string') {
+          date = new Date(dateValue);
+          if (Number.isNaN(date.getTime())) return null;
+        } else if (dateValue instanceof Date) {
+          date = dateValue;
+        } else {
+          return null;
+        }
+
+        if (granularity === 'day') {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, '0');
+          const day = String(date.getDate()).padStart(2, '0');
+          return parseDate(`${year}-${month}-${day}`);
+        }
+
+        const isoString = date.toISOString();
+        return parseDateTime(isoString.slice(0, 19));
       };
 
       return (
@@ -46,7 +69,7 @@ export const DatePickerForm = <T extends FieldValues>({
           <DatePicker
             showMonthAndYearPickers
             label={label}
-            defaultValue={value}
+            defaultValue={getDateValue(value)}
             labelPlacement='outside'
             variant={variant}
             isRequired={isRequired}
