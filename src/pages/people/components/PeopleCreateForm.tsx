@@ -7,10 +7,7 @@ import { allowOnlyNumbers } from '@/utils/allowOnlyNumbers';
 import { Alert, Button } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import {
-  type PeopleCreateRequiredValues,
-  peopleCreateRequiredSchema,
-} from '../models/peopleCreateRequiredSchema';
+import { type PeopleCreateRequiredValues, peopleCreateRequiredSchema } from '../models/peopleCreateRequiredSchema';
 import type { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 interface FormProps {
@@ -18,15 +15,10 @@ interface FormProps {
   onSubmit: (data: PeopleCreateRequiredValues) => Promise<void> | void;
   isLoading?: boolean;
   showReniecData?: boolean;
-  personData?: MinimalPeopleResponseDto;
+  personData?: MinimalPeopleResponseDto | null;
 }
 
-export const PeopleCreateForm = ({
-  onSubmit,
-  isLoading,
-  showReniecData = false,
-  personData,
-}: FormProps) => {
+export const PeopleCreateForm = ({ onSubmit, isLoading, showReniecData = false, personData }: FormProps) => {
   const { gender } = useGender();
 
   const {
@@ -35,12 +27,12 @@ export const PeopleCreateForm = ({
     formState: { errors, isValid },
   } = useForm<PeopleCreateRequiredValues>({
     resolver: zodResolver(peopleCreateRequiredSchema),
-    mode: 'onSubmit',
+    mode: 'onChange',
     defaultValues: {
-      birthdate: undefined,
-      sexTypeId: 3,
+      birthdate: personData?.birthdate || undefined,
+      sexTypeId: personData?.sexTypeId || undefined,
       phone: personData?.phone || '',
-      typeDocumentId: 1,
+      typeDocumentId: personData?.documentType || '',
       documentNumber: personData?.documentNumber || '',
       name: personData?.name || '',
       paternalSurname: personData?.fatherLastName || '',
@@ -52,16 +44,21 @@ export const PeopleCreateForm = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {showReniecData && personData && (
+      {showReniecData && (
         <>
           <div className='mb-4'>
             <Typography as='h3' variant='subsection'>
               Confirmar datos de {dataSource}
             </Typography>
-            <Typography variant='body' color='muted'>
-              Se encontraron los siguientes datos en {dataSource}. Por favor confirme que son
-              correctos.
-            </Typography>
+            {personData ? (
+              <Typography variant='body' color='muted'>
+                Se encontraron los siguientes datos en {dataSource}. Por favor confirme que son correctos.
+              </Typography>
+            ) : (
+              <Typography variant='body' color='muted'>
+                Los datos de la persona se están recuperando desde {dataSource}. Por favor, espere un momento.
+              </Typography>
+            )}
           </div>
 
           <div className='grid grid-cols-1 md:grid-cols-2 gap-4 mb-4'>
@@ -70,7 +67,7 @@ export const PeopleCreateForm = ({
                 Nombres
               </Typography>
               <Typography variant='body-small' className='font-medium'>
-                {personData.name}
+                {personData?.name || '-'}
               </Typography>
             </div>
             <div>
@@ -78,7 +75,7 @@ export const PeopleCreateForm = ({
                 Apellidos
               </Typography>
               <Typography variant='body-small' className='font-medium'>
-                {personData.fatherLastName} {personData.motherLastName}
+                {personData?.fatherLastName || '-'} {personData?.motherLastName}
               </Typography>
             </div>
             <div>
@@ -86,7 +83,7 @@ export const PeopleCreateForm = ({
                 Tipo de documento
               </Typography>
               <Typography variant='body-small' className='font-medium'>
-                {personData.documentType}
+                {personData?.documentType || '-'}
               </Typography>
             </div>
             <div>
@@ -94,7 +91,7 @@ export const PeopleCreateForm = ({
                 Número de documento
               </Typography>
               <Typography variant='body-small' className='font-medium'>
-                {personData.documentNumber}
+                {personData?.documentNumber || '-'}
               </Typography>
             </div>
           </div>
@@ -121,9 +118,10 @@ export const PeopleCreateForm = ({
           variant='bordered'
           control={control}
           name='sexTypeId'
-          label='Genero'
+          label='Género'
           options={gender}
-          placeholder='Seleccione un genero'
+          placeholder='Seleccione un género'
+          useFirstAsDefault={false}
         />
         <CustomInput
           name='phone'
@@ -139,7 +137,12 @@ export const PeopleCreateForm = ({
       </div>
 
       <div className='mt-6 flex justify-end gap-2'>
-        <Button type='submit' color='primary' isLoading={isLoading} isDisabled={!isValid}>
+        <Button
+          type='submit'
+          color='primary'
+          isLoading={isLoading}
+          isDisabled={!isValid || !personData?.hasExternalSource}
+        >
           Confirmar
         </Button>
       </div>

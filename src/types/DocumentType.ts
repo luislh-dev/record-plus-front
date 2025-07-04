@@ -1,3 +1,4 @@
-import type { BaseEntity } from './BaseEntity';
-
-export type DocumentType = BaseEntity;
+export type DocumentType = {
+  id: string;
+  name: string;
+};

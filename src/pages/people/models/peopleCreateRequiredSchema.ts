@@ -1,4 +1,3 @@
-import { DateMapper } from '@/mapper/DateMapper';
 import { z } from 'zod';
 
 export const peopleCreateRequiredSchema = z.object({
@@ -16,23 +15,18 @@ export const peopleCreateRequiredSchema = z.object({
     .min(1, 'Apellido materno es requerido')
     .min(3, 'Apellido materno debe tener al menos 3 caracteres'),
   birthdate: z
-    .string()
-    .transform((val) => DateMapper.fromISOString(val))
-    .pipe(
-      z
-        .date({
-          invalid_type_error: 'Fecha de nacimiento debe ser una fecha válida',
-        })
-        .refine((date) => date.getTime() < new Date().getTime(), {
-          message: 'La fecha de nacimiento no puede ser mayor a la fecha actual',
-        })
-        .refine((date) => date.getTime() > new Date('1900-01-01').getTime(), {
-          message: 'La fecha de nacimiento no puede ser menor a 1900',
-        }),
-    ),
+    .date({
+      invalid_type_error: 'Fecha de nacimiento debe ser una fecha válida',
+    })
+    .refine((date) => date.getTime() < new Date().getTime(), {
+      message: 'La fecha de nacimiento no puede ser mayor a la fecha actual',
+    })
+    .refine((date) => date.getTime() > new Date('1900-01-01').getTime(), {
+      message: 'La fecha de nacimiento no puede ser menor a 1900',
+    }),
   documentNumber: z.string().min(1, 'Número de documento es requerido'),
   sexTypeId: z.number().min(1, 'Tipo de sexo es requerido'),
-  typeDocumentId: z.number().min(1, 'Tipo de documento es requerido'),
+  typeDocumentId: z.string().min(1, 'Tipo de documento es requerido'),
   phone: z
     .string()
     .regex(/^9/, 'Teléfono debe empezar con 9')

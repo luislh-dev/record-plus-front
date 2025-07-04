@@ -7,4 +7,6 @@ export interface MinimalPeopleResponseDto {
   documentNumber: string;
   documentType: string;
   dataSource?: string;
+  sexTypeId: number;
+  birthdate?: Date;
 }
