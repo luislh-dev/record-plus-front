@@ -5,6 +5,6 @@ export interface PeopleCreateRequiredDto {
   birthdate: Date;
   documentNumber: string;
   sexTypeId: number;
-  typeDocumentId: number;
+  typeDocumentId: string;
   phone: string;
 }
