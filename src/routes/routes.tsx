@@ -8,6 +8,7 @@ import Hospital from '@/pages/hospital/Hospital';
 import HospitalAdd from '@/pages/hospital/HospitalAdd';
 import HospitalEdit from '@/pages/hospital/HospitalEdit';
 import People from '@/pages/people/People';
+import { PeopleAdd } from '@/pages/people/PeopleAdd';
 import { PeopleDetail } from '@/pages/people/PeopleDetail';
 import { RecordDetail } from '@/pages/record/RecordDetail';
 import { CreateRecordDetail } from '@/pages/record/pages/CreateRecordDetail';
@@ -115,6 +116,14 @@ export const router = createBrowserRouter([
             element: (
               <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
                 <People />
+              </RoleBasedRoute>
+            ),
+          },
+          {
+            path: 'add',
+            element: (
+              <RoleBasedRoute allowedRoles={[Roles.ADMIN, Roles.MANAGEMENT, Roles.DOCTOR]}>
+                <PeopleAdd />
               </RoleBasedRoute>
             ),
           },
