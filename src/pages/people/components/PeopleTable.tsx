@@ -2,16 +2,7 @@ import { ActionsCell } from '@/components/ActionsCell';
 import { Align } from '@/constants/align';
 import { sortDescriptorMapper, sortMapper } from '@/mapper/SortMapper';
 import type { TableColumnBase } from '@/types/TableColumn';
-import {
-  Pagination,
-  Spinner,
-  Table,
-  TableBody,
-  TableCell,
-  TableColumn,
-  TableHeader,
-  TableRow,
-} from '@heroui/react';
+import { Pagination, Spinner, Table, TableBody, TableCell, TableColumn, TableHeader, TableRow } from '@heroui/react';
 import { useNavigate } from 'react-router-dom';
 import { usePersonSearch } from '../hooks/usePersonSearch';
 import { useSearchPeopleStore } from '../stores/useSearchStore';
@@ -115,6 +106,7 @@ export function PeopleTable() {
       bottomContent={bottomContent}
       sortDescriptor={sortDescriptorMapper(sortConfig)}
       onSortChange={(e) => setSortConfig(sortMapper(e))}
+      aria-label='Tabla de personas'
     >
       <TableHeader columns={columns}>
         {(column) => (
@@ -123,17 +115,8 @@ export function PeopleTable() {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody
-        items={peoples}
-        isLoading={isLoading}
-        loadingState={loadingState}
-        loadingContent={<Spinner />}
-      >
-        {(people) => (
-          <TableRow key={people.id}>
-            {(key) => <TableCell>{renderCell(people, key)}</TableCell>}
-          </TableRow>
-        )}
+      <TableBody items={peoples} isLoading={isLoading} loadingState={loadingState} loadingContent={<Spinner />}>
+        {(people) => <TableRow key={people.id}>{(key) => <TableCell>{renderCell(people, key)}</TableCell>}</TableRow>}
       </TableBody>
     </Table>
   );

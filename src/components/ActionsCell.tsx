@@ -12,27 +12,15 @@ interface ActionsCellProps {
   inactiveStates?: string[];
 }
 
-export function ActionsCell({
-  state,
-  onEdit,
-  onDelete,
-  inactiveStates,
-  onDetail,
-}: ActionsCellProps) {
+export function ActionsCell({ state, onEdit, onDelete, inactiveStates, onDetail }: ActionsCellProps) {
   const states = inactiveStates;
-  const isInactive = states
-    ? states.includes(state || '')
-    : [State.ELIMINADO, State.INACTIVO].includes(state || '');
+  const isInactive = states ? states.includes(state || '') : [State.ELIMINADO, State.INACTIVO].includes(state || '');
 
   return (
     <div className='relative flex items-center justify-center w-full gap-2'>
       {onEdit && (
         <Tooltip content='Editar'>
-          <button
-            className='text-lg text-default-400 cursor-pointer active:opacity-50'
-            onClick={onEdit}
-            type='button'
-          >
+          <button className='text-lg text-default-400 cursor-pointer active:opacity-50' onClick={onEdit} type='button'>
             <EditIcon />
           </button>
         </Tooltip>

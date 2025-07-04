@@ -125,6 +125,7 @@ export function UserTable({ onDelete }: HospitalTableProps) {
       topContent={topContent(pagination.totalElements)}
       bottomContentPlacement='outside'
       bottomContent={bottomContent}
+      aria-label='Tabla de usuarios'
       sortDescriptor={sortDescriptorMapper(sortConfig)}
       onSortChange={(e) => setSortConfig(sortMapper(e))}
     >
@@ -139,17 +140,8 @@ export function UserTable({ onDelete }: HospitalTableProps) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody
-        items={users}
-        isLoading={isLoading}
-        loadingState={loadingState}
-        loadingContent={<Spinner />}
-      >
-        {(user) => (
-          <TableRow key={user.id}>
-            {(key) => <TableCell>{renderCell(user, key)}</TableCell>}
-          </TableRow>
-        )}
+      <TableBody items={users} isLoading={isLoading} loadingState={loadingState} loadingContent={<Spinner />}>
+        {(user) => <TableRow key={user.id}>{(key) => <TableCell>{renderCell(user, key)}</TableCell>}</TableRow>}
       </TableBody>
     </Table>
   );

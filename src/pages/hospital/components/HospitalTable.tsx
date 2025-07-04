@@ -86,12 +86,7 @@ export function HospitalTable({ onDelete }: HospitalTableProps) {
     switch (columnKey) {
       case 'stateName':
         return (
-          <Chip
-            className='capitalize'
-            color={statusColorMap[cellValue] || 'default'}
-            size='sm'
-            variant='flat'
-          >
+          <Chip className='capitalize' color={statusColorMap[cellValue] || 'default'} size='sm' variant='flat'>
             {cellValue}
           </Chip>
         );
@@ -142,6 +137,7 @@ export function HospitalTable({ onDelete }: HospitalTableProps) {
       bottomContentPlacement='outside'
       sortDescriptor={sortDescriptor}
       onSortChange={setSortDescriptor}
+      aria-label='Tabla de hospitales'
     >
       <TableHeader columns={columns}>
         {(column) => (
@@ -154,12 +150,7 @@ export function HospitalTable({ onDelete }: HospitalTableProps) {
           </TableColumn>
         )}
       </TableHeader>
-      <TableBody
-        items={hospitals}
-        isLoading={isLoading}
-        loadingState={loadingState}
-        loadingContent={<Spinner />}
-      >
+      <TableBody items={hospitals} isLoading={isLoading} loadingState={loadingState} loadingContent={<Spinner />}>
         {(hospital) => (
           <TableRow key={hospital.id}>
             {(columnKey) => <TableCell>{renderCell(hospital, columnKey)}</TableCell>}
