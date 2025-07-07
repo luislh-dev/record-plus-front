@@ -3,6 +3,7 @@ import { AuthLayout } from '@/layouts/AuthLayout';
 import { MainLayout } from '@/layouts/MainLayout';
 import { Login } from '@/pages/Login';
 import { NotFound } from '@/pages/NotFound';
+import { Allergies } from '@/pages/allergies/Allergies';
 import { Home } from '@/pages/home/Home';
 import Hospital from '@/pages/hospital/Hospital';
 import HospitalAdd from '@/pages/hospital/HospitalAdd';
@@ -160,6 +161,19 @@ export const router = createBrowserRouter([
                 ],
               },
             ],
+          },
+        ],
+      },
+      {
+        path: 'allergies',
+        children: [
+          {
+            index: true,
+            element: (
+              <RoleBasedRoute allowedRoles={[Roles.DOCTOR, Roles.MANAGEMENT]}>
+                <Allergies />
+              </RoleBasedRoute>
+            ),
           },
         ],
       },

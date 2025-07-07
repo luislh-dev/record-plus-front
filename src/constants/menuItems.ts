@@ -17,4 +17,9 @@ export const menuItems: MenuItem[] = [
     path: '/people',
     roles: [Roles.DOCTOR, Roles.PATIENT, Roles.ADMIN, Roles.MANAGEMENT],
   },
+  {
+    label: 'Alergias',
+    path: '/allergies',
+    roles: [Roles.DOCTOR, Roles.MANAGEMENT],
+  },
 ];
