@@ -17,6 +17,7 @@ import {
 import type React from 'react';
 import { useAllergiesSearch } from '../hooks/useAllergiesSearch';
 import { useSearchStore } from '../stores/searchStore';
+import { DropDownFilter } from './DropDownFilter';
 import { Header } from './Header';
 import { SearchInput } from './Search';
 
@@ -51,8 +52,11 @@ const topContent = (totalElements: number) => (
     <Header totalAllergies={totalElements} />
     <search className='flex'>
       <form onSubmit={(e) => e.preventDefault()}>
-        <div>
+        <div className='flex gap-x-4'>
           <SearchInput />
+          <div className='flex items-center gap-x-2'>
+            <DropDownFilter />
+          </div>
         </div>
       </form>
     </search>
