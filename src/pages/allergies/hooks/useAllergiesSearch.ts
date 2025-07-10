@@ -7,10 +7,10 @@ import { useSearchStore } from '../stores/searchStore';
 export function useAllergiesSearch() {
   const buildSearchParams = useSearchStore((state) => state.buildSearchParams);
   const filters = useSearchStore((state) => state.filters);
-  const searhTerm = useSearchStore((state) => state.searchTerm);
+  const searchTerm = useSearchStore((state) => state.searchTerm);
   const sortConfig = useSearchStore((state) => state.sortConfig);
 
-  const debouncedSearchTerm = useDebounce(searhTerm, 300);
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
 
   const { data, isLoading, refetch, isFetching, isPlaceholderData } = useQuery({
     queryKey: [ENDPOINTS.ALERRGIES_FIND_ALL_BY, filters, debouncedSearchTerm, sortConfig],
