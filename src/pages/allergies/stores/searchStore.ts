@@ -17,13 +17,16 @@ interface SearchState {
   buildSearchParams: () => AllergyPageParams;
 }
 
+const DEFAULT_FILTERS: AllergyPageParams = { page: 0, size: 20 };
+const DEFAULT_SORT: SortConfig = { field: 'updatedAt', direction: SortDirection.DESC };
+
 export const useSearchStore = create<SearchState>((set, get) => ({
   searchTerm: '',
   searchField: 'name',
-  sortConfig: { field: 'updatedAt', direction: SortDirection.DESC },
-  filters: { page: 0, size: 20 },
+  sortConfig: DEFAULT_SORT,
+  filters: DEFAULT_FILTERS,
 
-  setSearchTerm: (term) => set({ searchTerm: term, filters: { ...get().filters, page: 0 } }),
+  setSearchTerm: (term) => set({ searchTerm: term.trim(), filters: { ...get().filters, page: 0 } }),
 
   setSearchField: (field) => set({ searchField: field, filters: { ...get().filters, page: 0 } }),
 
