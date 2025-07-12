@@ -1,12 +1,6 @@
 import type { InputVariant } from '@/types/InputVariant';
 import { Input } from '@heroui/react';
-import {
-  type Control,
-  Controller,
-  type FieldError,
-  type FieldValues,
-  type Path,
-} from 'react-hook-form';
+import { type Control, Controller, type FieldError, type FieldValues, type Path } from 'react-hook-form';
 
 interface Props<T extends FieldValues> {
   name: Path<T>;
