@@ -17,7 +17,7 @@ const root = createRoot(isContainerValid ? container : document.body);
 root.render(
   <React.StrictMode>
     <HeroUIProvider>
-      <ToastProvider maxVisibleToasts={4} placement='top-right' />
+      <ToastProvider maxVisibleToasts={4} placement='bottom-left' />
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <RouterProvider router={router} />
