@@ -15,11 +15,9 @@ import {
   TableRow,
 } from '@heroui/react';
 import type React from 'react';
-import { useAllergiesSearch } from '../hooks/useAllergiesSearch';
-import { useSearchStore } from '../stores/searchStore';
-import { DropDownFilter } from './DropDownFilter';
-import { Header } from './Header';
-import { SearchInput } from './Search';
+import { useAllergiesSearch } from '../../hooks/useAllergiesSearch';
+import { useSearchStore } from '../../stores/searchStore';
+import { TopContent } from './TopContent';
 
 const columns: TableColumnBase[] = [
   {
@@ -46,22 +44,6 @@ const columns: TableColumnBase[] = [
     align: Align.CENTER,
   },
 ];
-
-const topContent = (totalElements: number) => (
-  <div className='flex flex-col gap-y-3'>
-    <Header totalAllergies={totalElements} />
-    <search className='flex'>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <div className='flex gap-x-4'>
-          <SearchInput />
-          <div className='flex items-center gap-x-2'>
-            <DropDownFilter />
-          </div>
-        </div>
-      </form>
-    </search>
-  </div>
-);
 
 export function AllergyTable() {
   const { allergies, isLoading, pagination, isFetching, isPlaceholderData } = useAllergiesSearch();
@@ -109,7 +91,7 @@ export function AllergyTable() {
       isHeaderSticky
       aria-label='Tabla de alergias'
       topContentPlacement='outside'
-      topContent={topContent(pagination.totalElements)}
+      topContent={TopContent(pagination.totalElements)}
       bottomContentPlacement='outside'
       bottomContent={bottomContent}
       sortDescriptor={sortDescriptorMapper(sortConfig)}

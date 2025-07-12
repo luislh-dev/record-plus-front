@@ -17,8 +17,7 @@ import { useSearchStore } from '../stores/searchStore';
 export function DropDownFilter() {
   const { state } = useStates();
 
-  const { selectedState, setSelectedState, searchFields, setSearchFields, searchTerm } =
-    useSearchStore();
+  const { selectedState, setSelectedState, searchFields, setSearchFields, searchTerm } = useSearchStore();
 
   const { refetch } = useHospitalSearch();
 
@@ -51,11 +50,7 @@ export function DropDownFilter() {
           Filtrar
         </Button>
       </DropdownTrigger>
-      <DropdownMenu
-        variant='faded'
-        aria-label='Lista de estados para filtrar'
-        closeOnSelect={false}
-      >
+      <DropdownMenu variant='faded' aria-label='Lista de estados para filtrar' closeOnSelect={false}>
         <DropdownSection title='Parámetro de busqueda' aria-label='Parámetros'>
           <DropdownItem textValue='Parámetros' key={'params'}>
             <RadioGroup
