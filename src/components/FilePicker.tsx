@@ -10,7 +10,7 @@ export const FilePicker = ({
   onChange,
   className,
   label,
-  id = `file-input-${Math.random().toString(36).substring(7)}`,
+  id = `file-input-${crypto.randomUUID()}`,
   required = false,
 }: FilePickerProps) => {
   return (
