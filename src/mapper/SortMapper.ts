@@ -10,7 +10,7 @@ export const sortMapper = (sort: SortDescriptor): SortConfig => {
 
 export const sortDescriptorMapper = (config: SortConfig): SortDescriptor => {
   return {
-    column: config.field as string | number,
+    column: config.field,
     direction: config.direction === SortDirection.ASC ? 'ascending' : 'descending',
   };
 };
