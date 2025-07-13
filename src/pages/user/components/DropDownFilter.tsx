@@ -66,11 +66,7 @@ export function DropDownFilter() {
           Filtrar
         </Button>
       </DropdownTrigger>
-      <DropdownMenu
-        variant='faded'
-        aria-label='Lista para selecionar los filtros de la web'
-        closeOnSelect={false}
-      >
+      <DropdownMenu variant='faded' aria-label='Lista para selecionar los filtros de la web' closeOnSelect={false}>
         <DropdownSection title='Parámetro de busqueda' aria-label='Parámetros'>
           <DropdownItem textValue='Parámetros' key={'Parámetros'}>
             <RadioGroup
@@ -101,11 +97,7 @@ export function DropDownFilter() {
                 Todos
               </Radio>
               {roles.map((r) => (
-                <Radio
-                  key={r.id}
-                  value={r.id.toString()}
-                  aria-label={`Mostrar solo los roles de ${r.name}`}
-                >
+                <Radio key={r.id} value={r.id.toString()} aria-label={`Mostrar solo los roles de ${r.name}`}>
                   {r.name}
                 </Radio>
               ))}
@@ -123,11 +115,7 @@ export function DropDownFilter() {
                 Todos
               </Radio>
               {state.map((s) => (
-                <Radio
-                  key={s.id}
-                  value={s.id.toString()}
-                  aria-label={`Mostrar solo los estados de ${s.name}`}
-                >
+                <Radio key={s.id} value={s.id.toString()} aria-label={`Mostrar solo los estados de ${s.name}`}>
                   {s.name}
                 </Radio>
               ))}
