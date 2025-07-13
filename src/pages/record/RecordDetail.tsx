@@ -32,9 +32,7 @@ export const RecordDetail = () => {
 
   const { isOpen, onClose, onOpen } = useDisclosure();
 
-  const [fileViewerData, setFileViewerData] = useState<{ url: string; mineType: string } | null>(
-    null,
-  );
+  const [fileViewerData, setFileViewerData] = useState<{ url: string; mineType: string } | null>(null);
 
   const handleOpenFileViewer = async (file: { object_key: string; mineType: string }) => {
     const url = await getPresignedUrlByObjectKey(file.object_key);
@@ -136,8 +134,8 @@ export const RecordDetail = () => {
           <CardHeader className='text-sm font-medium'>Tratamiento</CardHeader>
           <CardBody>
             <ul className='space-y-2'>
-              {treatmentList?.map((item, index) => (
-                <li key={index.toString()} className='text-sm text-muted'>
+              {treatmentList?.map((item) => (
+                <li key={crypto.randomUUID()} className='text-sm text-muted'>
                   {item}
                 </li>
               ))}
@@ -153,9 +151,9 @@ export const RecordDetail = () => {
                 <div key={type}>
                   <h3 className='mb-2 text-sm font-medium'>{type}</h3>
                   <div className='grid gap-2'>
-                    {typeFiles.map((file, index) => (
+                    {typeFiles.map((file) => (
                       <div
-                        key={index.toString()}
+                        key={crypto.randomUUID()}
                         className='flex items-center justify-between rounded-lg border p-3'
                       >
                         <div className='flex items-center gap-2'>

@@ -61,8 +61,8 @@ export const CreateRecordDetailForm = ({ personId }: Props) => {
     formData.append('treatment', data.treatment || '');
     formData.append('visitDate', data.visitDate);
 
-    for (let i = 0; i < filesWithTypes.length; i++) {
-      const { file, typeId } = filesWithTypes[i];
+    for (const element of filesWithTypes) {
+      const { file, typeId } = element;
       formData.append('files', file);
       formData.append('fileTypeIds', typeId.toString());
     }
@@ -105,109 +105,83 @@ export const CreateRecordDetailForm = ({ personId }: Props) => {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
-        <TextAreaForm
-          name='reason'
-          label='Motivo de la visita'
+    <form onSubmit={handleSubmit(onSubmit)} className='space-y-4'>
+      <TextAreaForm
+        name='reason'
+        label='Motivo de la visita'
+        control={control}
+        error={errors.reason}
+        placeholder='Motivo de la visita (mínimo 10 caracteres)'
+      />
+
+      <TextAreaForm name='diagnosis' label='Diagnóstico' control={control} placeholder='Diagnóstico (opcional)' />
+
+      <TextAreaForm name='treatment' label='Tratamiento' control={control} placeholder='Tratamiento (opcional)' />
+      <div className='grid content-center grid-cols-1 gap-4 md:grid-cols-2'>
+        <DatePickerForm name='visitDate' control={control} label='Fecha de la visita' isRequired variant='bordered' />
+
+        <CustomSelect
+          name='stateId'
           control={control}
-          error={errors.reason}
-          placeholder='Motivo de la visita (mínimo 10 caracteres)'
+          label='Estado'
+          options={state}
+          error={errors.stateId}
+          placeholder='Seleccione un estado'
         />
+      </div>
 
-        <TextAreaForm
-          name='diagnosis'
-          label='Diagnóstico'
-          control={control}
-          placeholder='Diagnóstico (opcional)'
+      <div className='space-y-2'>
+        <FilePicker
+          label='Seleccionar archivo'
+          required
+          onChange={handleFileAdd}
+          className='disabled:opacity-50 disabled:cursor-not-allowed'
         />
+      </div>
 
-        <TextAreaForm
-          name='treatment'
-          label='Tratamiento'
-          control={control}
-          placeholder='Tratamiento (opcional)'
-        />
-        <div className='grid content-center grid-cols-1 gap-4 md:grid-cols-2'>
-          <DatePickerForm
-            name='visitDate'
-            control={control}
-            label='Fecha de la visita'
-            isRequired
-            variant='bordered'
-          />
-
-          <CustomSelect
-            name='stateId'
-            control={control}
-            label='Estado'
-            options={state}
-            error={errors.stateId}
-            placeholder='Seleccione un estado'
-          />
-        </div>
-
+      {filesWithTypes.length > 0 && (
         <div className='space-y-2'>
-          <FilePicker
-            label='Seleccionar archivo'
-            required
-            onChange={handleFileAdd}
-            className='disabled:opacity-50 disabled:cursor-not-allowed'
-          />
+          <h3 className='text-sm font-medium'>Archivos seleccionados:</h3>
+          {filesWithTypes.map(({ file }, index) => (
+            <div key={crypto.randomUUID()} className='flex items-center gap-2 p-2 bg-gray-50 rounded'>
+              <span className='flex-1'>{file.name}</span>
+              <Controller
+                name={`fileTypes.file${index}`}
+                control={control}
+                defaultValue={1}
+                render={({ field }) => (
+                  <Select
+                    label='Tipo de archivo'
+                    selectedKeys={[field.value.toString()]}
+                    onSelectionChange={(keys) => {
+                      const selected = Array.from(keys)[0];
+                      field.onChange(selected ? Number(selected) : 1);
+                      handleFileTypeChange(index, Number(selected));
+                    }}
+                    variant='bordered'
+                  >
+                    {fileTypes?.map((option) => (
+                      <SelectItem key={option.id.toString()} textValue={option.id.toString()}>
+                        {option.name}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                )}
+              />
+              <Button type='button' variant='bordered' size='sm' onPress={() => removeFile(index)}>
+                Eliminar
+              </Button>
+            </div>
+          ))}
         </div>
+      )}
 
-        {filesWithTypes.length > 0 && (
-          <div className='space-y-2'>
-            <h3 className='text-sm font-medium'>Archivos seleccionados:</h3>
-            {filesWithTypes.map(({ file }, index) => (
-              <div
-                key={index.toString()}
-                className='flex items-center gap-2 p-2 bg-gray-50 rounded'
-              >
-                <span className='flex-1'>{file.name}</span>
-                <Controller
-                  name={`fileTypes.file${index}`}
-                  control={control}
-                  defaultValue={1}
-                  render={({ field }) => (
-                    <Select
-                      label='Tipo de archivo'
-                      selectedKeys={[field.value.toString()]}
-                      onSelectionChange={(keys) => {
-                        const selected = Array.from(keys)[0];
-                        field.onChange(selected ? Number(selected) : 1);
-                        handleFileTypeChange(index, Number(selected));
-                      }}
-                      variant='bordered'
-                    >
-                      {fileTypes?.map((option) => (
-                        <SelectItem key={option.id.toString()} textValue={option.id.toString()}>
-                          {option.name}
-                        </SelectItem>
-                      ))}
-                    </Select>
-                  )}
-                />
-                <Button
-                  type='button'
-                  variant='bordered'
-                  size='sm'
-                  onPress={() => removeFile(index)}
-                >
-                  Eliminar
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
+      {error && <Alert color='danger' description={error} />}
+      {isSuccess && <Alert color='success' description='Registro guardado exitosamente' />}
 
-        {error && <Alert color='danger' description={error} />}
-        {isSuccess && <Alert color='success' description='Registro guardado exitosamente' />}
-
-        <Button type='submit' color='primary' className='w-full' isDisabled={isLoading}>
-          {isLoading ? 'Guardando...' : 'Guardar Registro'}
-        </Button>
-      </form>
-    </>
+      <Button type='submit' color='primary' className='w-full' isDisabled={isLoading}>
+        {isLoading ? 'Guardando...' : 'Guardar Registro'}
+      </Button>
+    </form>
   );
 };
