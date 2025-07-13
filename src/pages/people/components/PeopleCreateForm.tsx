@@ -11,7 +11,6 @@ import { type PeopleCreateRequiredValues, peopleCreateRequiredSchema } from '../
 import type { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 interface FormProps {
-  defaultValues?: Partial<PeopleCreateRequiredValues>;
   onSubmit: (data: PeopleCreateRequiredValues) => Promise<void> | void;
   isLoading?: boolean;
   showReniecData?: boolean;
