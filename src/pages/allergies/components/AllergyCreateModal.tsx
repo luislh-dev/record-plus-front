@@ -4,6 +4,7 @@ import { AllergyCategoryController } from '@/components/controllers/AllergyCateg
 import type { ApiError } from '@/types/errros/ApiError';
 import {
   Button,
+  Checkbox,
   Drawer,
   DrawerBody,
   DrawerContent,
@@ -13,6 +14,7 @@ import {
   addToast,
 } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAllergyCreate } from '../hooks/useAllergyCreate';
 import { type AllergyCreateValues, allergyCreateSchema } from '../models/allergyCreateSchema';
@@ -23,6 +25,7 @@ interface AllergyCreateModalProps extends UseDisclosureProps {
 
 export function AllergyCreateModal({ onSave, ...props }: Readonly<AllergyCreateModalProps>) {
   const { handleCreate, state } = useAllergyCreate();
+  const [isEnabledRecreate, setIsEnabledRecreate] = useState(false);
 
   const {
     control,
@@ -51,7 +54,10 @@ export function AllergyCreateModal({ onSave, ...props }: Readonly<AllergyCreateM
         timeout: 5000,
       });
       reset();
-      props.onChange?.(true);
+
+      if (!isEnabledRecreate) {
+        props.onChange?.(true);
+      }
     } catch (error) {
       const typedError = error as ApiError;
 
@@ -77,29 +83,34 @@ export function AllergyCreateModal({ onSave, ...props }: Readonly<AllergyCreateM
           <form className='flex flex-col h-full' onSubmit={handleSubmit(onSubmit)}>
             <DrawerHeader>Formulario para crear una Alergía</DrawerHeader>
             <DrawerBody>
-              <CustomInput
-                name='name'
-                control={control}
-                label='Nombre de la alergia'
-                placeholder='Ingrese el nombre de la alergia'
-                isRequired
-                error={errors.name}
-              />
-              <AllergyCategoryController
-                name='category'
-                control={control}
-                label='Categoría de alergia'
-                isRequired
-                error={errors.category}
-              />
-              <TextAreaForm
-                name='description'
-                control={control}
-                label='Descripción'
-                placeholder='Ingrese una descripción de la alergia'
-                error={errors.description}
-                isRequired={false}
-              />
+              <div>
+                <CustomInput
+                  name='name'
+                  control={control}
+                  label='Nombre de la alergia'
+                  placeholder='Ingrese el nombre de la alergia'
+                  isRequired
+                  error={errors.name}
+                />
+                <AllergyCategoryController
+                  name='category'
+                  control={control}
+                  label='Categoría de alergia'
+                  isRequired
+                  error={errors.category}
+                />
+                <TextAreaForm
+                  name='description'
+                  control={control}
+                  label='Descripción'
+                  placeholder='Ingrese una descripción de la alergia'
+                  error={errors.description}
+                  isRequired={false}
+                />
+              </div>
+              <Checkbox isSelected={isEnabledRecreate} onValueChange={setIsEnabledRecreate}>
+                Crear otro al terminar
+              </Checkbox>
             </DrawerBody>
             <DrawerFooter>
               <Button color='danger' variant='flat' onPress={onClose}>
