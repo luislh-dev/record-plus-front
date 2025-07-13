@@ -30,7 +30,7 @@ export const peopleCreateRequiredSchema = z.object({
   phone: z
     .string()
     .regex(/^9/, 'Teléfono debe empezar con 9')
-    .regex(/^[0-9]{9}$/, 'Teléfono debe tener 9 dígitos numéricos'),
+    .regex(/^\D{9}$/, 'Teléfono debe tener 9 dígitos numéricos'),
 });
 
 // Este tipo es para inferir el tipo de los valores

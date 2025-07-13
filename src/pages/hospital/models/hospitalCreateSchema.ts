@@ -13,14 +13,14 @@ export const hospitalCreateSchema = z.object({
     .string()
     .min(1, 'Teléfono es requerido')
     .regex(/^9/, 'Teléfono debe empezar con 9')
-    .regex(/^[0-9]{9}$/, 'Teléfono debe tener 9 dígitos numéricos'),
+    .regex(/^\D{9}$/, 'Teléfono debe tener 9 dígitos numéricos'),
 
   email: z.string().min(1, 'Email es requerido').email('Email no es válido'),
 
   ruc: z
     .string()
     .min(1, 'RUC es requerido')
-    .regex(/^[0-9]{11}$/, 'RUC debe tener 11 dígitos'),
+    .regex(/^\D{11}$/, 'RUC debe tener 11 dígitos'),
 
   stateId: z.number().min(1, 'Estado es requerido'),
 });

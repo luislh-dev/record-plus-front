@@ -23,12 +23,10 @@ export const baseUserCreateSchema = z.object({
     .max(50, 'Contraseña debe tener máximo 50 caracteres')
     .regex(/[A-Z]/, 'Contraseña debe tener al menos una letra mayuscula')
     .regex(/[a-z]/, 'Contraseña debe tener al menos una letra minuscula')
-    .regex(/[0-9]/, 'Contraseña debe tener al menos un número')
+    .regex(/\D/, 'Contraseña debe tener al menos un número')
     .regex(/[^A-Za-z0-9]/, 'Contraseña debe tener al menos un caracter especial'),
 
-  passwordConfirmation: z
-    .string()
-    .min(8, { message: 'Contraseña debe tener al menos 8 caracteres' }),
+  passwordConfirmation: z.string().min(8, { message: 'Contraseña debe tener al menos 8 caracteres' }),
 
   personalInfo: z.object({
     name: z.string(),
