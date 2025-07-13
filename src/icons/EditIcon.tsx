@@ -1,6 +1,6 @@
-import type { iconProps } from './iconProps';
+import type { IconProps } from './IconProps';
 
-export const EditIcon = (props: iconProps) => (
+export const EditIcon = (props: IconProps) => (
   <svg
     aria-hidden='true'
     fill='none'

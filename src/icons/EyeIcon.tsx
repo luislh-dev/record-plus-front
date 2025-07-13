@@ -1,6 +1,6 @@
-import type { iconProps } from './iconProps';
+import type { IconProps } from './IconProps';
 
-export const EyeIcon = (props: iconProps) => (
+export const EyeIcon = (props: IconProps) => (
   <svg
     aria-hidden='true'
     fill='none'

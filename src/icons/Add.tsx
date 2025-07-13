@@ -1,6 +1,6 @@
-import type { iconProps } from './iconProps';
+import type { IconProps } from './IconProps';
 
-export function Add(props: iconProps) {
+export function Add(props: IconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'

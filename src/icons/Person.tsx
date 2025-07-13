@@ -1,6 +1,6 @@
-import type { iconProps } from './iconProps';
+import type { IconProps } from './IconProps';
 
-export const Person = (props: iconProps) => (
+export const Person = (props: IconProps) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     height={props.size || props.height || '24px'}

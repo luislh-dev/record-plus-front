@@ -1,12 +1,6 @@
-import type { iconProps } from './iconProps';
+import type { IconProps } from './IconProps';
 
-export const SearchIcon = ({
-  size = 24,
-  strokeWidth = 1.5,
-  width,
-  height,
-  ...props
-}: iconProps) => (
+export const SearchIcon = ({ size = 24, strokeWidth = 1.5, width, height, ...props }: IconProps) => (
   <svg
     aria-hidden='true'
     fill='none'

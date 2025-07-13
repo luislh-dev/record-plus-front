@@ -1,6 +1,6 @@
-import type { iconProps } from './iconProps';
+import type { IconProps } from './IconProps';
 
-export const Menu = (props: iconProps) => (
+export const Menu = (props: IconProps) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     height='24px'

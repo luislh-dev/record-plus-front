@@ -1,6 +1,6 @@
-import type { iconProps } from './iconProps';
+import type { IconProps } from './IconProps';
 
-export const DeleteIcon = (props: iconProps) => (
+export const DeleteIcon = (props: IconProps) => (
   <svg
     aria-hidden='true'
     fill='none'

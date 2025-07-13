@@ -1,6 +1,6 @@
-import type { iconProps } from './iconProps';
+import type { IconProps } from './IconProps';
 
-export const Minus = (props: iconProps) => (
+export const Minus = (props: IconProps) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width={props.size || props.height || '24'}

@@ -1,6 +1,6 @@
-import type { iconProps } from './iconProps';
+import type { IconProps } from './IconProps';
 
-export const Hospital = (props: iconProps) => (
+export const Hospital = (props: IconProps) => (
   <svg
     xmlns='http://www.w3.org/2000/svg'
     width={props.size || props.width || 24}
