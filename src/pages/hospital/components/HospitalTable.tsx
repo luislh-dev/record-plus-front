@@ -119,11 +119,7 @@ export function HospitalTable({ onDelete }: HospitalTableProps) {
     </div>
   );
 
-  const loadingState = isLoading
-    ? 'loading' // Primera carga sin datos en caché
-    : isFetching && isPlaceholderData
-      ? 'loading' // Cargando nuevos datos, mostrando datos anteriores
-      : 'idle'; // Datos actuales disponibles, sin carga en curso
+  const loadingState = isLoading || (isFetching && isPlaceholderData) ? 'loading' : 'idle';
 
   return (
     <Table

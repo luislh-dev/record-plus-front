@@ -30,45 +30,51 @@ export const CustomSelect = <T extends FieldValues>({
   variant = 'bordered',
   useFirstAsDefault = true,
 }: Props<T>) => (
-  <>
-    <Controller
-      name={name}
-      control={control}
-      render={({ field: { onChange, value } }) => {
-        const selectedValue = value
-          ? [value.toString()]
-          : useFirstAsDefault && options.length > 0
-            ? [options[0].id.toString()]
-            : [];
+  <Controller
+    name={name}
+    control={control}
+    render={({ field: { onChange, value } }) => {
+      const getSelectedValue = (): string[] => {
+        if (value) {
+          return [value.toString()];
+        }
 
-        return (
-          <div className='flex flex-col gap-1 w-full'>
-            <Select
-              variant={variant}
-              label={label}
-              selectedKeys={selectedValue}
-              disallowEmptySelection
-              onSelectionChange={(keys) => {
-                const selected = Array.from(keys)[0];
-                onChange(selected ? Number(selected) : null);
-              }}
-              placeholder={placeholder}
-              labelPlacement='outside'
-              isRequired={isRequired}
-              defaultSelectedKeys={selectedValue}
-              errorMessage={error?.message}
-              isInvalid={!!error}
-            >
-              {options?.map((option) => (
-                <SelectItem key={option.id.toString()} textValue={option.name}>
-                  {option.name}
-                </SelectItem>
-              ))}
-            </Select>
-            <p className='h-4 text-xs text-danger pl-1'>{error?.message}</p>
-          </div>
-        );
-      }}
-    />
-  </>
+        if (useFirstAsDefault && options.length > 0) {
+          return [options[0].id.toString()];
+        }
+
+        return [];
+      };
+
+      const selectedValue = getSelectedValue();
+
+      return (
+        <div className='flex flex-col gap-1 w-full'>
+          <Select
+            variant={variant}
+            label={label}
+            selectedKeys={selectedValue}
+            disallowEmptySelection
+            onSelectionChange={(keys) => {
+              const selected = Array.from(keys)[0];
+              onChange(selected ? Number(selected) : null);
+            }}
+            placeholder={placeholder}
+            labelPlacement='outside'
+            isRequired={isRequired}
+            defaultSelectedKeys={selectedValue}
+            errorMessage={error?.message}
+            isInvalid={!!error}
+          >
+            {options?.map((option) => (
+              <SelectItem key={option.id.toString()} textValue={option.name}>
+                {option.name}
+              </SelectItem>
+            ))}
+          </Select>
+          <p className='h-4 text-xs text-danger pl-1'>{error?.message}</p>
+        </div>
+      );
+    }}
+  />
 );

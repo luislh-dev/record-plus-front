@@ -81,7 +81,7 @@ export function AllergyTable() {
     </>
   );
 
-  const loadingState = isLoading ? 'loading' : isFetching && isPlaceholderData ? 'loading' : 'idle';
+  const loadingState = isLoading || (isFetching && isPlaceholderData) ? 'loading' : 'idle';
 
   return (
     <Table
