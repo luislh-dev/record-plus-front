@@ -15,7 +15,7 @@
       "@/types/*": ["src/types/*"],
       "@/test/*": ["src/test/*"],
       "@/utils/*": ["src/utils/*"],
-      "@/icons/": ["src/icons/"]
+      "@/icons/*": ["src/icons/*"]
     },
     "moduleResolution": "Bundler",
     "allowImportingTsExtensions": true,
