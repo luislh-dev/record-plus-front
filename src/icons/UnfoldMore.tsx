@@ -8,7 +8,7 @@ export const UnfoldMore = (props: IconProps) => (
     width={props.size || props.width || 20}
     fill={props.fill || '#64748b'}
     strokeWidth={props.strokeWidth || 2}
-    role='presentation'
+    role={props.role ?? 'presentation'}
     {...props}
   >
     <path d='M480-120 300-300l58-58 122 122 122-122 58 58-180 180ZM358-598l-58-58 180-180 180 180-58 58-122-122-122 122Z' />

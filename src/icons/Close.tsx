@@ -8,7 +8,7 @@ export const Close = (props: IconProps) => (
     width={props.size || props.width || '24px'}
     fill={props.fill || '#e8eaed'}
     stroke='currentColor'
-    role='presentation'
+    role={props.role ?? 'presentation'}
     {...props}
   >
     <path d='m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z' />

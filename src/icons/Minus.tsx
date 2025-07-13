@@ -9,7 +9,7 @@ export const Minus = (props: IconProps) => (
     fill={props.fill || 'none'}
     stroke={props.stroke || 'currentColor'}
     strokeWidth='2'
-    role='presentation'
+    role={props.role ?? 'presentation'}
     strokeLinecap='round'
     strokeLinejoin='round'
     {...props}

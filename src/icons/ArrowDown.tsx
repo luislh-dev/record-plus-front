@@ -11,7 +11,7 @@ export const ArrowDown = (props: IconProps) => (
     strokeWidth='2'
     strokeLinecap='round'
     strokeLinejoin='round'
-    role='presentation'
+    role={props.role ?? 'presentation'}
     {...props}
   >
     <path d='m6 9 6 6 6-6' />

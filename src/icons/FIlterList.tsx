@@ -9,7 +9,7 @@ export function FilterList(props: IconProps) {
       width={props.size || props.width || 20}
       fill={props.fill || '#64748b'}
       strokeWidth={props.strokeWidth || 2}
-      role='presentation'
+      role={props.role ?? 'presentation'}
       {...props}
     >
       <path d='M400-240v-80h160v80H400ZM240-440v-80h480v80H240ZM120-640v-80h720v80H120Z' />

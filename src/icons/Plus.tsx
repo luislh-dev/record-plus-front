@@ -11,7 +11,7 @@ export const Plus = (props: IconProps) => (
     strokeWidth='2'
     strokeLinecap='round'
     strokeLinejoin='round'
-    role='presentation'
+    role={props.role ?? 'presentation'}
     {...props}
   >
     <path d='M5 12h14' />

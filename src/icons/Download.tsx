@@ -11,7 +11,7 @@ export const Download = (props: IconProps) => (
     strokeWidth='2'
     strokeLinecap='round'
     strokeLinejoin='round'
-    role='presentation'
+    role={props.role ?? 'presentation'}
     {...props}
   >
     <path d='M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4' />

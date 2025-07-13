@@ -11,7 +11,7 @@ export const ZoomIn = (props: IconProps) => (
     strokeWidth='2'
     strokeLinecap='round'
     strokeLinejoin='round'
-    role='presentation'
+    role={props.role ?? 'presentation'}
     {...props}
   >
     <circle cx='11' cy='11' r='8' />
