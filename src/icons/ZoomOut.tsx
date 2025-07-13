@@ -2,9 +2,8 @@ import type { IconProps } from './IconProps';
 
 export const ZoomOut = (props: IconProps) => (
   <svg
-    xmlns='http://www.w3.org/2000/svg'
-    width={props.size || props.height || '24'}
     height={props.size || props.height || '24'}
+    width={props.size || props.height || '24'}
     viewBox='0 0 24 24'
     fill={props.fill || 'none'}
     stroke={props.stroke || 'currentColor'}

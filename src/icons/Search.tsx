@@ -1,6 +1,6 @@
 import type { IconProps } from './IconProps';
 
-export function Search(props: IconProps) {
+export const Search = (props: IconProps) => {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
@@ -19,4 +19,4 @@ export function Search(props: IconProps) {
       <path d='m21 21-4.3-4.3' />
     </svg>
   );
-}
+};
