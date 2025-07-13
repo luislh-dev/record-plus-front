@@ -7,13 +7,13 @@ import { getPeopleDetail, getPersonNameByDocument } from '../services/peopleServ
 import type { MinimalPeopleResponseDto } from '../types/MinimalPeopleResponseDto';
 
 export function useGetPersonByDni() {
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
   const [person, setPerson] = useState<MinimalPeopleResponseDto | null>(null);
   const [success, setSuccess] = useState(false);
 
   const getPerson = async (documentType: DocumentTypeName, documentNumber: string) => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       const result = await getPersonNameByDocument(documentType, documentNumber);
@@ -27,7 +27,7 @@ export function useGetPersonByDni() {
       setSuccess(false);
       throw err;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 

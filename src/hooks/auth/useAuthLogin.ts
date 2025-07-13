@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const useAuthLogin = () => {
   const { dispatch } = useAuth();
-  const [isLoding, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ApiError | null>(null);
 
   const navigate = useNavigate();
@@ -44,5 +44,5 @@ export const useAuthLogin = () => {
     navigate('/login');
   };
 
-  return { handleLogin, handleLogout, isLoding, error };
+  return { handleLogin, handleLogout, isLoading, error };
 };

@@ -7,11 +7,11 @@ import type { UserManagementCreateValues } from '../models/userManagementCreateS
 import { createDoctorUser, createManagementUser } from '../service/userService';
 
 export function useUserManagementCreate() {
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ApiServiceError | null>(null);
 
   const handleCreate = async (data: UserManagementCreateValues) => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       await createManagementUser(toManagementCreationDto(data));
@@ -21,7 +21,7 @@ export function useUserManagementCreate() {
       }
       throw error;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
@@ -31,11 +31,11 @@ export function useUserManagementCreate() {
 }
 
 export function useUserDoctorCreate() {
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<ApiServiceError | null>(null);
 
   const handleCreate = async (data: UserDoctorCreateValues) => {
-    setLoading(true);
+    setIsLoading(true);
     setError(null);
     try {
       await createDoctorUser(toDoctorCreationDto(data));
@@ -45,7 +45,7 @@ export function useUserDoctorCreate() {
       }
       throw error;
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
