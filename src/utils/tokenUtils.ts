@@ -24,7 +24,6 @@ export const getStoredToken = () => {
 
     return token;
   } catch {
-    //console.error('Error decoding token', error);
     localStorage.removeItem('token');
     return null;
   }
