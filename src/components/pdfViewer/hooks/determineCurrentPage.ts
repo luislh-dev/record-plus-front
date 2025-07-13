@@ -27,8 +27,8 @@ export const usePageDetection = ({ containerRef, isScrollBlocked }: UsePageDetec
     let closestPage = visiblePages[0];
     let smallestDistance = Number.POSITIVE_INFINITY;
 
-    for (let i = 0; i < visiblePages.length; i++) {
-      const page = visiblePages[i];
+    for (const element of visiblePages) {
+      const page = element;
       const rect = page.getBoundingClientRect();
       const pageCenter = rect.top + rect.height / 2;
       const distance = Math.abs(pageCenter - containerCenter);

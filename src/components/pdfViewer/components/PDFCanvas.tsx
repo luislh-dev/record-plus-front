@@ -119,8 +119,8 @@ export const PDFCanvas = () => {
     };
 
     const pageContainers = document.querySelectorAll('[data-page]');
-    for (let i = 0; i < pageContainers.length; i++) {
-      observer.observe(pageContainers[i]);
+    for (const element of pageContainers) {
+      observer.observe(element);
     }
 
     // Usamos la variable container en lugar de containerRef.current
@@ -131,14 +131,7 @@ export const PDFCanvas = () => {
       // Usamos la misma variable en la función de limpieza
       container?.removeEventListener('scroll', handleScroll);
     };
-  }, [
-    setCurrentPage,
-    initialLoad,
-    currentPage,
-    pdfDoc?.numPages,
-    determineCurrentPage,
-    isScrollBlocked,
-  ]);
+  }, [setCurrentPage, initialLoad, currentPage, pdfDoc?.numPages, determineCurrentPage, isScrollBlocked]);
 
   return (
     <div ref={containerRef} className='absolute inset-0 overflow-auto bg-gray-100 rounded-md'>
@@ -167,8 +160,7 @@ export const PDFCanvas = () => {
                   .filter((match) => match.pageIndex === index)
                   .map((match, matchIndex) => {
                     const isCurrentMatch =
-                      matchIndex + allMatches.filter((m) => m.pageIndex < index).length ===
-                      currentMatchIndex;
+                      matchIndex + allMatches.filter((m) => m.pageIndex < index).length === currentMatchIndex;
 
                     return (
                       <div
