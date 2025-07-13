@@ -74,7 +74,7 @@ const topContent = (totalElements: number) => (
   </div>
 );
 
-export function UserTable({ onDelete }: HospitalTableProps) {
+export function UserTable({ onDelete }: Readonly<HospitalTableProps>) {
   const { users, pagination, isLoading, isPlaceholderData, isFetching } = useUserSearch();
   const { setPage, sortConfig, setSortConfig } = useUserSearchStore();
 
@@ -113,7 +113,7 @@ export function UserTable({ onDelete }: HospitalTableProps) {
     </>
   );
 
-  const loadingState = isLoading ? 'loading' : isFetching && isPlaceholderData ? 'loading' : 'idle';
+  const loadingState = isLoading || (isFetching && isPlaceholderData) ? 'loading' : 'idle';
 
   return (
     <Table

@@ -21,7 +21,7 @@ interface AllergyCreateModalProps extends UseDisclosureProps {
   onSave?: (data: AllergyCreateValues) => void | Promise<void>;
 }
 
-export function AllergyCreateModal({ onSave, ...props }: AllergyCreateModalProps) {
+export function AllergyCreateModal({ onSave, ...props }: Readonly<AllergyCreateModalProps>) {
   const { handleCreate, state } = useAllergyCreate();
 
   const {

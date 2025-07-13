@@ -27,7 +27,7 @@ export function AllergyCategorySelect({
   size = 'md',
   className,
   errorMessage,
-}: AllergyCategorySelectProps) {
+}: Readonly<AllergyCategorySelectProps>) {
   const handleSelectionChange = (keys: 'all' | Set<React.Key>) => {
     if (keys === 'all') return;
 

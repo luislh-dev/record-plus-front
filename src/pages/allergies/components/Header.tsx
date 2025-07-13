@@ -2,11 +2,11 @@ import { Add } from '@/icons/Add';
 import { Button, Chip, useDisclosure } from '@heroui/react';
 import { AllergyCreateModal } from './AllergyCreateModal';
 
-interface props {
+interface Props {
   totalAllergies?: number;
 }
 
-export function Header({ totalAllergies }: props) {
+export function Header({ totalAllergies }: Readonly<Props>) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (

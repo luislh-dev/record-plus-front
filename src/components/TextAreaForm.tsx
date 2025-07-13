@@ -1,12 +1,6 @@
 import type { InputVariant } from '@/types/InputVariant';
 import { Textarea } from '@heroui/react';
-import {
-  type Control,
-  Controller,
-  type FieldError,
-  type FieldValues,
-  type Path,
-} from 'react-hook-form';
+import { type Control, Controller, type FieldError, type FieldValues, type Path } from 'react-hook-form';
 
 interface Props<T extends FieldValues> {
   name: Path<T>;
@@ -27,23 +21,21 @@ export const TextAreaForm = <T extends FieldValues>({
   error,
   variant = 'bordered',
 }: Props<T>) => (
-  <>
-    <Controller
-      name={name}
-      control={control}
-      render={({ field }) => (
-        <div className='flex flex-col gap-1'>
-          <Textarea
-            label={label}
-            labelPlacement='outside'
-            placeholder={placeholder}
-            variant={variant}
-            isRequired={isRequired}
-            {...field}
-          />
-          <p className='h-4 text-xs text-danger pl-1'>{error?.message}</p>
-        </div>
-      )}
-    />
-  </>
+  <Controller
+    name={name}
+    control={control}
+    render={({ field }) => (
+      <div className='flex flex-col gap-1'>
+        <Textarea
+          label={label}
+          labelPlacement='outside'
+          placeholder={placeholder}
+          variant={variant}
+          isRequired={isRequired}
+          {...field}
+        />
+        <p className='h-4 text-xs text-danger pl-1'>{error?.message}</p>
+      </div>
+    )}
+  />
 );

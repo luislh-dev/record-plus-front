@@ -26,7 +26,7 @@ export function AllergyCategoryController<T extends FieldValues>({
   size = 'md',
   className,
   error,
-}: AllergyCategoryControllerProps<T>) {
+}: Readonly<AllergyCategoryControllerProps<T>>) {
   return (
     <Controller
       name={name}

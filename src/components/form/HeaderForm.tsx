@@ -3,7 +3,7 @@ interface HeaderFormProps {
   description?: string;
 }
 
-export function HeaderForm(props: HeaderFormProps) {
+export function HeaderForm(props: Readonly<HeaderFormProps>) {
   const { title, description } = props;
 
   return (

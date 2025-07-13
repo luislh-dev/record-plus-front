@@ -12,7 +12,7 @@ interface ActionsCellProps {
   inactiveStates?: string[];
 }
 
-export function ActionsCell({ state, onEdit, onDelete, inactiveStates, onDetail }: ActionsCellProps) {
+export function ActionsCell({ state, onEdit, onDelete, inactiveStates, onDetail }: Readonly<ActionsCellProps>) {
   const states = inactiveStates;
   const isInactive = states ? states.includes(state || '') : [State.ELIMINADO, State.INACTIVO].includes(state || '');
 

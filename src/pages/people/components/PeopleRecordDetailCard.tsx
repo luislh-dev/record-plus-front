@@ -3,10 +3,7 @@ import { Document } from '@/icons/Document';
 import { Hospital } from '@/icons/Hospital';
 import { Image } from '@/icons/Image';
 import { Reloj } from '@/icons/Reloj';
-import type {
-  FileDetailDto,
-  RecordDetailListResponseDto,
-} from '@/pages/record/types/RecordDetailListResponseDto';
+import type { FileDetailDto, RecordDetailListResponseDto } from '@/pages/record/types/RecordDetailListResponseDto';
 import { Chip } from '@heroui/react';
 
 interface Props {
@@ -61,7 +58,7 @@ const DocumentFileList = ({ files, maxVisible = 2 }: FilePreviewProps) => {
   );
 };
 
-export function PeopleRecordDetailCard({ record }: Props) {
+export function PeopleRecordDetailCard({ record }: Readonly<Props>) {
   return (
     <div key={record.id} className='p-4 flex flex-col sm:flex-row sm:justify-between gap-4 '>
       {/* Hospital Info */}

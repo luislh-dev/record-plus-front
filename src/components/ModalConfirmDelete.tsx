@@ -16,7 +16,7 @@ export function ModalConfirmDelete({
   title = 'Confirmar eliminación',
   message = '¿Está seguro que desea eliminar este elemento?',
   isLoading = false,
-}: ModalConfirmDeleteProps) {
+}: Readonly<ModalConfirmDeleteProps>) {
   return (
     <Modal
       isOpen={isOpen}

@@ -73,7 +73,7 @@ type HospitalTableProps = {
   onDelete: (id: number) => void;
 };
 
-export function HospitalTable({ onDelete }: HospitalTableProps) {
+export function HospitalTable({ onDelete }: Readonly<HospitalTableProps>) {
   const navigate = useNavigate();
 
   const { hospitals, isLoading, pagination, isPlaceholderData, isFetching } = useHospitalSearch();

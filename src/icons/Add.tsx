@@ -1,16 +1,12 @@
-import type { SVGProps } from 'react';
+import type { iconProps } from './iconProps';
 
-interface AddProps extends SVGProps<SVGSVGElement> {
-  size?: number;
-}
-
-export function Add({ size = 24, ...props }: AddProps) {
+export function Add(props: iconProps) {
   return (
     <svg
       xmlns='http://www.w3.org/2000/svg'
-      height={size || props.height}
+      height={props.size || props.height || '24'}
       viewBox='0 -960 960 960'
-      width={size || props.width}
+      width={props.size || props.width || '24'}
       fill='#e8eaed'
       role='presentation'
       {...props}
