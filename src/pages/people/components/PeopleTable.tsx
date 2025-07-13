@@ -68,13 +68,12 @@ export function PeopleTable() {
   type People = (typeof peoples)[0];
 
   const renderCell = (people: People, column: React.Key) => {
-    const cellValue = people[column as keyof People];
-    switch (column) {
-      case 'actions':
-        return <ActionsCell onDetail={() => navigateDetail(people.id)} />;
-      default:
-        return cellValue;
+    if (column === 'actions') {
+      return <ActionsCell onDetail={() => navigateDetail(people.id)} />;
     }
+
+    const cellValue = people[column as keyof People];
+    return cellValue;
   };
 
   const bottomContent = (
@@ -92,7 +91,7 @@ export function PeopleTable() {
     </>
   );
 
-  const loadingState = isLoading ? 'loading' : isFetching && isPlaceholderData ? 'loading' : 'idle';
+  const loadingState = isLoading || (isFetching && isPlaceholderData) ? 'loading' : 'idle';
 
   return (
     <Table
