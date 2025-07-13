@@ -7,7 +7,7 @@ export function Login() {
 
   const isEnable = username.length > 0 && password.length > 0;
 
-  const { handleLogin, isLoding, error } = useAuthLogin();
+  const { handleLogin, isLoading, error } = useAuthLogin();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,7 +38,7 @@ export function Login() {
         onChange={(e) => setPassword(e.target.value)}
         type='password'
       />
-      <Button color='primary' isDisabled={!isEnable} isLoading={isLoding} type='submit'>
+      <Button color='primary' isDisabled={!isEnable} isLoading={isLoading} type='submit'>
         Login
       </Button>
       {error && <p className='text-red-600 text-center'>{error.message}</p>}
