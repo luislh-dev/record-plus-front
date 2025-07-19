@@ -1,7 +1,7 @@
 import { CalendarDate } from '@internationalized/date';
 
 // Constantes para configuración
-export const DEFAULT_DATE_RANGE_DAYS = 7;
+const DEFAULT_DATE_RANGE_DAYS = 7;
 
 // Utilidades para manejo de fechas
 export const dateUtils = {
