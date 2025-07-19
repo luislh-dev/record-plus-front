@@ -16,7 +16,7 @@ interface FilePreviewProps {
 }
 
 const DocumentFileList = ({ files, maxVisible = 2 }: FilePreviewProps) => {
-  const sortedFiles = files.sort((a, b) => {
+  const sortedFiles = files.toSorted((a, b) => {
     if (a.mime_type === ACCEPTED_MIME_TYPES.PDF && b.mime_type !== ACCEPTED_MIME_TYPES.PDF) {
       return -1;
     }
