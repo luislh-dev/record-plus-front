@@ -16,7 +16,7 @@ export const peopleCreateRequiredSchema = z.object({
     .min(3, 'Apellido materno debe tener al menos 3 caracteres'),
   birthdate: z
     .date({
-      invalid_type_error: 'Fecha de nacimiento debe ser una fecha válida',
+      error: 'Fecha de nacimiento debe ser una fecha válida',
     })
     .refine((date) => date.getTime() < new Date().getTime(), {
       message: 'La fecha de nacimiento no puede ser mayor a la fecha actual',
