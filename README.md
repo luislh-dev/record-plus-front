@@ -1,5 +1,5 @@
 # Sistema Administrativo de Gestión Hospitalaria - Frontend
-## Descrpción
+## Descripción
 Sistema web para la gestión administrativa de hospitales, permitiendo el manejo de expedientes médicos, gestión de usuarios, doctores y pacientes. Esta aplicación frontend está construida con React + TypeScript + Vite.
 
 ## Características Principales
